@@ -13,7 +13,16 @@ This repository contains analysis code for the fellowship project for
 Paul Brockway. One goal of the fellowship is building a world database
 of primary, final, and useful exergy for 1960–2015.
 
-# Contributors
+Analyses are completed using the
+[drake](https://github.com/ropensci/drake) environment. See the [drake
+manual](https://books.ropensci.org/drake/) for details.
+
+## Quick start
+
+`library(drake)`  
+`r_make()`
+
+## Contributors
 
   - Emmanuel Aramendia, University of Leeds
   - Paul Brockway, University of Leeds
