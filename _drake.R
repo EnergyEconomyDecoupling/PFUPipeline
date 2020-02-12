@@ -16,7 +16,8 @@ source("R/plan.R")                     # Create your drake plan.
 # The arguments to drake_config() are basically the same as those to make().
 # options(clustermq.scheduler = "multicore") # For parallel computing.
 drake_config(
-  plan 
+  plan, 
+  # max_expand = 1 # Set the number of countries you want to analyze
   # parallelism = "clustermq",
   # jobs = 16
 )
