@@ -50,6 +50,8 @@ to visualize the dependency tree as a directed acyclic graph. The
 command `sankey_drake_graph(plan)` will produce a Sankey diagram of the
 dependency tree.
 
+`clean()` invalidates drake’s cache and forces reanalysis of everything.
+
 ## Contributors
 
   - Emmanuel Aramendia, University of Leeds
