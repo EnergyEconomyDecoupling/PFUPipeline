@@ -40,3 +40,6 @@ vignettes/*.pdf
 
 # macOS files
 *.DS_Store
+
+# Drake files
+.drake
