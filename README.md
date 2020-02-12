@@ -18,3 +18,4 @@ of primary, final, and useful exergy for 1960–2015.
   - Emmanuel Aramendia, University of Leeds
   - Paul Brockway, University of Leeds
   - Matthew Kuperus Heun, Calvin University
+  - Zeke Marshall, University of Leeds
