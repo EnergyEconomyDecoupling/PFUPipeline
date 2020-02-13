@@ -21,9 +21,10 @@ get_abs_paths <- function(dropbox_path = "Dropbox",
                           iea_path = file.path(project_path, "IEA extended energy data", "IEA 2015 energy balance data"), 
                           oecd_path = file.path(iea_path, "energy-balances-oecd-extended-energy.csv"), 
                           nonoecd_path = file.path(iea_path, "energy-balances-nonoecd-extended-energy.csv")) {
-  # On Windows, user directories reported by Sys.getenv("R_USER") are set to the Documents folder.
+  # On Windows, user directories reported by Sys.getenv("HOME") are set to the Documents folder by default.
   # We want the path without the Documents folder appended.
-  # This code won't find anything at the end of macOS and Linux home paths and will return the R_USER path.
+  # This code won't find Documents" at the end of macOS and Linux home paths
+  # and will return the HOME path, as desired.
   home_path <- sub(pattern = "Documents$", replacement = "", x = file.path(Sys.getenv("HOME")))
   
   list(home_path = home_path,
