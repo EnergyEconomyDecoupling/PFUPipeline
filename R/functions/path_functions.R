@@ -6,11 +6,11 @@
 #'
 #' @return a named list containing paths to important directories and files, including
 #' `home_path` (the absolute path to the user's home),
-#' `dropbox_path` (the absolute path the the user's Dropbox folder)
-#' `project_path` (the path to the project folder inside Dropbox),
-#' `iea_path` (the path to a folder containing IEA data inside of `project_path`),
-#' `oecd_path` (the path to the IEA data file for the OECD countries), and
-#' `nonoecd_path` (the path to the IEA data file for non-OECD countries).
+#' `dropbox_path` (the path of the user's Dropbox folder relative to `home_path`)
+#' `project_path` (the path to the project folder relative to `dropbox_path`),
+#' `iea_path` (the path to a folder containing IEA data relative to `project_path`),
+#' `oecd_path` (the path to the IEA data file for the OECD countries relative to `iea_path`), and
+#' `nonoecd_path` (the path to the IEA data file for non-OECD countries relative to `iea_path`).
 #' 
 #' @export
 #'
