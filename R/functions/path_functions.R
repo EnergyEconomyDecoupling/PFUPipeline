@@ -2,11 +2,18 @@
 
 #' Get absolute paths to important files and folders appropriate for this computer
 #' 
-#' The default argument for `home_path` gets the value for `Sys.getenv("HOME")` and trims 
-#' trailing "Documents", if present.
-#' (Windows appends "Documents" by default, other OSs do not.)
 #' Default argument values assume a directory structure that includes Dropbox
 #' and is appropriate for the Fellowship project for Dr. Paul Brockway.
+#' 
+#' The default argument for `home_path` gets the value for `Sys.getenv("HOME")`.
+#' On Windows, user directories reported by Sys.getenv("HOME") are set to the user's "Documents" folder by default.
+#' `R` on other OSs does not append the "Documents" folder at the end of the `home_path`.
+#' For the `home_path` argument, 
+#' we want the path without the Documents folder appended, because that is the enclosing directory 
+#' for the Dropbox folder's default location.
+#' Thus, the default argument for `home_path` trims trailing "Documents", if present.
+#' The default value for the `home_path` argument won't find "Documents" at the end of macOS and Linux home paths
+#' and will return the HOME path, as desired.
 #'
 #' @param home_path the absolute path to the user's home directory.
 #' @param dropbox_path the path to the user's Dropbox directory, relative to `home_path`.
@@ -33,10 +40,6 @@ get_abs_paths <- function(home_path = sub(pattern = "Documents$", replacement = 
                           iea_path = file.path(project_path, "IEA extended energy data", "IEA 2015 energy balance data"), 
                           oecd_path = file.path(iea_path, "energy-balances-oecd-extended-energy.csv"), 
                           nonoecd_path = file.path(iea_path, "energy-balances-nonoecd-extended-energy.csv")) {
-  # On Windows, user directories reported by Sys.getenv("HOME") are set to the Documents folder by default.
-  # We want the path without the Documents folder appended.
-  # This code won't find Documents" at the end of macOS and Linux home paths
-  # and will return the HOME path, as desired.
 
   list(home_path = home_path,
        dropbox_path = file.path(home_path, dropbox_path),
