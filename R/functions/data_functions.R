@@ -15,8 +15,8 @@
 #' load_all_IEA_data(paths$oecd_path, paths$nonoecd_path)
 load_IEA_data <- function(oecd_path, nonoecd_path) {
   oecd <- load_tidy_iea_df(oecd_path)
-  # nonoecd <- IEATools::load_tidy_iea_df(nonoecd_path)
-  # dplyr::bind_rows(oecd, nonoecd)
+  nonoecd <- load_tidy_iea_df(nonoecd_path)
+  bind_rows(oecd, nonoecd)
 }
 
 #' Extract specific country data from AllIEAData
