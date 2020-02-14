@@ -1,4 +1,4 @@
-# The workflow plan data frame outlines what you are going to do.
+# The workflow plan data frame outlines the analyses to be conducted.
 
 plan <- drake_plan(
   countries = c("ESP", "USA", "CAN"),
