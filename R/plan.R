@@ -7,5 +7,6 @@ plan <- drake_plan(
   CountryIEAData = target(extract_country_data(AllIEAData, countries), dynamic = map(countries, .trace = countries)), 
   Balances = target(calc_tidy_iea_df_balances(CountryIEAData), dynamic = map(countries, .trace = countries)), 
   Balanced = target(tidy_iea_df_balanced(CountryIEAData), dynamic = map(countries, .trace = countries)), 
-  SpecifiedCountryIEAData = target(specify_all(CountryIEAData), dynamic = map(countries, .trace = countries))
+  SpecifiedCountryIEAData = target(specify_all(CountryIEAData), dynamic = map(countries, .trace = countries)), 
+  PreppedSpecifiedCountryIEAData = target(prep_psut(SpecifiedCountryIEAData), dynamic = map(countries, .trace = countries)) 
 )
