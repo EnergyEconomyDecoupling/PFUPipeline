@@ -15,17 +15,20 @@ of country-specific primary, final, and useful exergy for 1960–2015.
 
 Analyses are completed using the
 [drake](https://github.com/ropensci/drake) environment which provides
-helpful dependency management. See the [drake
-manual](https://books.ropensci.org/drake/) for details.
+helpful dependency management.
 
 ## Quick start
 
 At the RStudio console, type
 
-`library(drake)`  
-`r_make()`
+`library(drake)` \# to load the drake package  
+`vis_drake_graph(plan)` \# to see a directed acyclic graph of the
+calculations that will take place  
+`r_make()` \# to execute the calculations
 
 ## Advanced
+
+### Keyboard shortcuts
 
 Consider setting RStudio keyboard shortcuts for executing the drake plan
 in this repository. See `Tools|Modify keyboard shortcuts...`. Some
@@ -33,8 +36,8 @@ convenient keyboard shortcuts are:
 
   - `command-option-control-D` (for *d*rake) to execute the “Run a drake
     workflow” command on the `plan`
-  - `command-option-control-V` (for *v*isualize) to execute “Visualize a
-    drake workflow” command on the `plan`
+  - `command-option-control-V` (for *v*isualize) to execute the
+    “Visualize a drake workflow” command on the `plan`
 
 With those keyboard shortcuts in place, the
 
@@ -50,7 +53,21 @@ to visualize the dependency tree as a directed acyclic graph. The
 command `sankey_drake_graph(plan)` will produce a Sankey diagram of the
 dependency tree.
 
-`clean()` invalidates drake’s cache and forces reanalysis of everything.
+### Accessing targets
+
+`readd(<<target>>)` pulls the value of a target out of `drake`’s cache.
+
+`loadd(<<target>>)` copies the value of a target out of `drake`’s cache
+into the environment.
+
+### Fresh start
+
+`clean()` invalidates `drake`’s cache and forces reanalysis of
+everything.
+
+### More
+
+See the [drake manual](https://books.ropensci.org/drake/) for details.
 
 ## Contributors
 
