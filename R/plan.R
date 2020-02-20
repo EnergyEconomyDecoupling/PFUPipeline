@@ -1,13 +1,14 @@
 # The workflow plan data frame outlines the analyses to be conducted.
 
 plan <- drake_plan(
+  max_year = 2017,
   countries = c("ESP", "USA", "CAN"),
   paths = get_abs_paths(), 
   # Grab all the IEA data for ALL countries
   AllIEAData = load_tidy_iea_df(paths$iea_data_path),
   # Narrow down to only the countries of interest to us
   # and group in preparation for fixing energy balances
-  CountryIEAData = target(extract_country_data(AllIEAData, countries) %>% 
+  CountryIEAData = target(extract_country_data(AllIEAData, countries, max_year) %>% 
                             group_by(Country, Method, Energy.type, Last.stage, Year, Product),
                           dynamic = map(countries, .trace = countries)), 
   # Check whether energy products are balanced.

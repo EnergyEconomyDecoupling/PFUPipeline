@@ -20,13 +20,15 @@
 #' @param project_path the path to the project directory, relative to `dropbox_path`.
 #' @param iea_folder_path the path to the IEA data directory, relative to `project_path`.
 #' @param iea_data_path the path to the IEA data file, relative to `iea_folder_path`.
+#' @param fu_analysis_path the path to the folder continaing final-to-useful exergy information, relative to `project_path`.
 #'
 #' @return a named list containing paths to important directories and files, including
 #' `home_path` (the absolute path to the user's home),
 #' `dropbox_path` (the absolute path of the user's Dropbox folder)
 #' `project_path` (the absolute path to the project folder),
-#' `iea_folder_path` (the absolute path to a folder containing IEA data), and
-#' `iea_data_path` (the absolute path to the IEA data file for the OECD countries).
+#' `iea_folder_path` (the absolute path to a folder containing IEA data), 
+#' `iea_data_path` (the absolute path to the IEA data file for the OECD countries), and
+#' `fu_analysis_path` (the absolute path to the folder containing final-to-useful exergy information).
 #' 
 #' @export
 #'
@@ -40,11 +42,13 @@ get_abs_paths <- function(home_path = sub(pattern = "Documents$", replacement = 
                                                       "IEA extended energy balance data", 
                                                       "IEA 2018 energy balance data"), 
                           iea_data_path = file.path(iea_folder_path, 
-                                                    "Extended-Energy-Balances-2018-full-ktoe.csv")) {
+                                                    "Extended-Energy-Balances-2018-full-ktoe.csv"),
+                          fu_analysis_path = file.path(project_path, "Country-level exergy accounting")) {
 
   list(home_path = home_path,
        dropbox_path = file.path(home_path, dropbox_path),
        project_path = file.path(home_path, project_path), 
        iea_folder_path = file.path(home_path, iea_folder_path), 
-       iea_data_path = file.path(home_path, iea_data_path))
+       iea_data_path = file.path(home_path, iea_data_path),
+       fu_analysis_path = file.path(home_path, fu_analysis_path))
 }
