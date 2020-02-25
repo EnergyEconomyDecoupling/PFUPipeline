@@ -51,6 +51,18 @@ readd_by_country <- function(target, country, name_of_countries_object = "countr
   readd(target, character_only = TRUE, subtargets = country_index)
 }
 
+#' Create a final-to-useful allocation template
+#'
+#' @param country a string of the 3-letter ISO country code
+#' @param file_name the file name for the template. Default is "FU Allocations <<3-letter country code>>".
+#' @param ext the file name extension. Default is ".xlsx".
+#' @param data_target the data target from which the template is created. Default is "Specified".
+#' @param paths_name the name of the paths object. Default is "paths".
+#' @param fu_analysis_path_name the name of the final-to-useful path member of the paths object. Default is "fu_analysis_path".
+#'
+#' @return the path to the final-to-useful analysis template
+#' 
+#' @export
 generate_allocation_template <- function(country,
                                          file_name = paste0("FU Allocations ", country),
                                          ext = ".xlsx",
