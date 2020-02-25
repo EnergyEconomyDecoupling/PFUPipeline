@@ -51,8 +51,20 @@ readd_by_country <- function(target, country, name_of_countries_object = "countr
   readd(target, character_only = TRUE, subtargets = country_index)
 }
 
-generate_allocation_template <- function(country) {
-  
+generate_allocation_template <- function(country,
+                                         file_name = paste0("FU Allocations ", country),
+                                         ext = ".xlsx",
+                                         data_target = "Specified",
+                                         paths_name = "paths",
+                                         fu_analysis_path_name = "fu_analysis_path") {
+  output_path <- file.path(readd(paths_name, character_only = TRUE)[[fu_analysis_path_name]], 
+                           paste0(file_name, ext))
+  # Get the specified data for this country
+  readd_by_country(data_target, country) %>%
+    # Create the allocation template
+    fu_allocation_template() %>%
+    # Write the allocation template
+    write_fu_allocation_template(output_path)
 }
 
 generate_eta_fu_template <- function(country) {
