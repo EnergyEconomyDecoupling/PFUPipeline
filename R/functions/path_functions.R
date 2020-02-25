@@ -40,9 +40,9 @@ get_abs_paths <- function(home_path = sub(pattern = "Documents$", replacement = 
                                                    "Fellowship 1960-2015 PFU database"), 
                           iea_folder_path = file.path(project_path, 
                                                       "IEA extended energy balance data", 
-                                                      "IEA 2018 energy balance data"), 
+                                                      "IEA 2019 energy balance data"), 
                           iea_data_path = file.path(iea_folder_path, 
-                                                    "Extended-Energy-Balances-2018-full-ktoe.csv"),
+                                                    "IEA Extended Energy Balances 2019.csv"),
                           fu_analysis_path = file.path(project_path, "Country-level exergy accounting")) {
 
   list(home_path = home_path,
