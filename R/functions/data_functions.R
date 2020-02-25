@@ -13,8 +13,28 @@ extract_country_data <- function(AllIEAData, countries, max_year) {
   filter(AllIEAData, Country %in% countries, Year <= max_year)
 }
 
-get_index_for_country <- function(country, countries) {
-  which(country %in% countries, arr.ind = TRUE)
+is_balanced <- function(IEAData, countries, grp_vars = c("Country", "Method", "Energy.type", "Last.stage", "Product")) {
+  filter(IEAData, Country %in% countries) %>% 
+    group_by(!!as.name(grp_vars)) %>%  
+    calc_tidy_iea_df_balances() %>% 
+    tidy_iea_df_balanced()
+}
+
+make_balanced <- function(IEAData, countries, grp_vars = c("Country", "Method", "Energy.type", "Last.stage", "Product")) {
+  filter(IEAData, Country %in% countries) %>% 
+    group_by(!!as.name(grp_vars)) %>%  
+    fix_tidy_iea_df_balances() %>% 
+    ungroup()
+}
+
+specify <- function(BalancedIEAData, countries) {
+  filter(BalancedIEAData, Country %in% countries) %>% 
+    specify_all()
+}
+
+make_psut <- function(SpecifiedIEAData, countries) {
+  filter(SpecifiedIEAData, Country %in% countries) %>% 
+    prep_psut()
 }
 
 #' Read a subtarget based on country
