@@ -15,19 +15,19 @@ plan <- drake_plan(
   
   # Check whether energy products are balanced. They're not. 
   # FALSE indicates a country with at least one balance problem.
-  BalancedBefore = target(is_balanced(IEAData, countries), dynamic = map(countries)),
+  balanced_before = target(is_balanced(IEAData, countries), dynamic = map(countries)),
   # Balance all of the data by product and year.
   BalancedIEAData = target(make_balanced(IEAData, countries), dynamic = map(countries)),
   # Check that everything is balanced after balancing.
-  BalancedAfter = target(is_balanced(BalancedIEAData, countries), dynamic = map(countries)),
+  balanced_after = target(is_balanced(BalancedIEAData, countries), dynamic = map(countries)),
   # Don't continue if there is a problem.
-  OKToProceed = stopifnot(all(BalancedAfter)),
+  OKToProceed = stopifnot(all(balanced_after)),
   
   # Specify the BalancedIEAData data frame by being more careful with names, etc.
   Specified = target(specify(BalancedIEAData, countries), dynamic = map(countries)),
   
-  # Arrange all the data into PSUT matrices.
-  PSUT = target(make_psut(Specified, countries), dynamic = map(countries))
+  # Arrange all the data into PSUT matrices with final stage data.
+  PSUT_final = target(make_psut(Specified, countries), dynamic = map(countries))
   
   
 )
