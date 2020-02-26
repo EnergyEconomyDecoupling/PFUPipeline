@@ -13,12 +13,27 @@ extract_country_data <- function(AllIEAData, countries, max_year) {
   filter(AllIEAData, Country %in% countries, Year <= max_year)
 }
 
+
+#' Tells whether IEA data are balanced
+#' 
+#' Performs the check in a way that is amenable to subtargets in drake.
+#' Internally, this function uses [IEATools::calc_tidy_iea_df_balances()].
+#' Grouping is doing internal to this function using the value of `grp_vars`.
+#'
+#' @param IEAData a tidy IEA data frame
+#' @param countries the countries for which balancing should be checked as strings
+#' @param grp_vars the groups that should be checked.  Default is `c("Country", "Method", "Energy.type", "Last.stage", "Product")`.
+#'
+#' @return a logical stating whether all products are balanced for the country of interest
+#' 
+#' @export
 is_balanced <- function(IEAData, countries, grp_vars = c("Country", "Method", "Energy.type", "Last.stage", "Product")) {
   filter(IEAData, Country %in% countries) %>% 
     group_by(!!as.name(grp_vars)) %>%  
     calc_tidy_iea_df_balances() %>% 
     tidy_iea_df_balanced()
 }
+
 
 make_balanced <- function(IEAData, countries, grp_vars = c("Country", "Method", "Energy.type", "Last.stage", "Product")) {
   filter(IEAData, Country %in% countries) %>% 
@@ -27,15 +42,18 @@ make_balanced <- function(IEAData, countries, grp_vars = c("Country", "Method", 
     ungroup()
 }
 
+
 specify <- function(BalancedIEAData, countries) {
   filter(BalancedIEAData, Country %in% countries) %>% 
     specify_all()
 }
 
+
 make_psut <- function(SpecifiedIEAData, countries) {
   filter(SpecifiedIEAData, Country %in% countries) %>% 
     prep_psut()
 }
+
 
 #' Read a subtarget based on country
 #'
@@ -50,6 +68,7 @@ readd_by_country <- function(target, country, name_of_countries_object = "countr
   country_index <- which(country == readd(name_of_countries_object, character_only = TRUE), arr.ind = TRUE)
   readd(target, character_only = TRUE, subtargets = country_index)
 }
+
 
 #' Create a final-to-useful allocation template
 #'
@@ -78,6 +97,7 @@ generate_allocation_template <- function(country,
     # Write the allocation template
     write_fu_allocation_template(output_path)
 }
+
 
 generate_eta_fu_template <- function(country) {
   
