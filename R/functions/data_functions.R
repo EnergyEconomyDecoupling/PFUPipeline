@@ -76,19 +76,20 @@ readd_by_country <- function(target, country, name_of_countries_object = "countr
 #' @param file_name the file name for the template. Default is "FU Allocations <<3-letter country code>>".
 #' @param ext the file name extension. Default is ".xlsx".
 #' @param data_target the data target from which the template is created. Default is "Specified".
-#' @param paths_name the name of the paths object. Default is "paths".
+#' @param paths_target the name of the paths object. Default is "paths".
 #' @param fu_analysis_path_name the name of the final-to-useful path member of the paths object. Default is "fu_analysis_path".
 #'
 #' @return the path to the final-to-useful analysis template
 #' 
 #' @export
 generate_fu_allocation_template <- function(country,
-                                         file_name = paste0("FU Allocations ", country),
-                                         ext = ".xlsx",
-                                         data_target = "Specified",
-                                         paths_name = "paths",
-                                         fu_analysis_path_name = "fu_analysis_path") {
-  output_path <- file.path(readd(paths_name, character_only = TRUE)[[fu_analysis_path_name]], 
+                                            data_target = "Specified",
+                                            paths_target = "paths",
+                                            fu_analysis_path_name = "fu_analysis_path",
+                                            file_name = paste0("FU Allocations ", country),
+                                            ext = ".xlsx") {
+  # Construct the output path from the FU analysis folder and file_name.
+  output_path <- file.path(readd(paths_target, character_only = TRUE)[[fu_analysis_path_name]], 
                            paste0(file_name, ext))
   # Get the specified data for this country
   readd_by_country(data_target, country) %>%
