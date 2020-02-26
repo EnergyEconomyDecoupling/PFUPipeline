@@ -82,7 +82,7 @@ readd_by_country <- function(target, country, name_of_countries_object = "countr
 #' @return the path to the final-to-useful analysis template
 #' 
 #' @export
-generate_allocation_template <- function(country,
+generate_fu_allocation_template <- function(country,
                                          file_name = paste0("FU Allocations ", country),
                                          ext = ".xlsx",
                                          data_target = "Specified",
