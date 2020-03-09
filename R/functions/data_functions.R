@@ -1,6 +1,6 @@
 #' Extract specific country data from AllIEAData
 #' 
-#' Data is extracted according to the `countries` object.
+#' Data is extracted according to the `countries` object in a way that is amenable to drake subtargets.
 #' [dplyr::filter()] does the subsetting.
 #'
 #' @param AllIEAData a data frame containing cleaned IEA extended energy balance data
@@ -16,7 +16,7 @@ extract_country_data <- function(AllIEAData, countries, max_year) {
 
 #' Tells whether IEA data are balanced
 #' 
-#' Performs the check in a way that is amenable to subtargets in drake.
+#' Performs the the energy balance check in a way that is amenable to drake subtargets.
 #' Internally, this function uses [IEATools::calc_tidy_iea_df_balances()].
 #' Grouping is doing internal to this function using the value of `grp_vars`.
 #'
@@ -35,6 +35,19 @@ is_balanced <- function(IEAData, countries, grp_vars = c("Country", "Method", "E
 }
 
 
+#' Balance IEA data
+#' 
+#' Balances the IEA data in a way that is amenable to drake subtargets.
+#' Internally, this function uses [[IEATools::fix_tidy_iea_df_balances()]].
+#' Grouping is doing internal to this function using the value of `grp_vars`.
+#'
+#' @param IEAData a tidy IEA data frame
+#' @param countries the countries that should be balanced
+#' @param grp_vars the groups that should be checked.  Default is `c("Country", "Method", "Energy.type", "Last.stage", "Product")`.
+#'
+#' @return balanced IEA data
+#' 
+#' @export
 make_balanced <- function(IEAData, countries, grp_vars = c("Country", "Method", "Energy.type", "Last.stage", "Product")) {
   filter(IEAData, Country %in% countries) %>% 
     group_by(!!as.name(grp_vars)) %>%  
@@ -43,63 +56,34 @@ make_balanced <- function(IEAData, countries, grp_vars = c("Country", "Method", 
 }
 
 
+#' Specify the IEA data
+#' 
+#' Specifies the IEA data in a way that is amenable to drake subtargets.
+#' See [IEATools::specify_all()] for details.
+#'
+#' @param BalancedIEAData IEA data that have already been balanced
+#' @param countries the countries for which specificaion should occur
+#'
+#' @return a data frame of specified IEA data
+#' 
+#' @export
 specify <- function(BalancedIEAData, countries) {
   filter(BalancedIEAData, Country %in% countries) %>% 
     specify_all()
 }
 
 
+#' Convert to PSUT matrices
+#' 
+#' Converts tidy IEA data to PSUT matrices in a way that is amenable to drake subtargets.
+#' Internally, [IEATools::prep_psut()] does the conversion to matrices.
+#'
+#' @param SpecifiedIEAData 
+#' @param countries 
+#'
+#' @return a [matsindf]-style data frame
+#' @export
 make_psut <- function(SpecifiedIEAData, countries) {
   filter(SpecifiedIEAData, Country %in% countries) %>% 
     prep_psut()
-}
-
-
-#' Read a subtarget based on country
-#'
-#' @param target the name of the drake target as a string
-#' @param country the 3-letter ISO abbreviation of the country for whom `target` is to be readd from the drake cache, as a string
-#' @param name_of_countries_object a string giving the name of the countries object. Default is "countries".
-#'
-#' @return the country-specific version of `target`
-#' 
-#' @export
-readd_by_country <- function(target, country, name_of_countries_object = "countries") {
-  country_index <- which(country == readd(name_of_countries_object, character_only = TRUE), arr.ind = TRUE)
-  readd(target, character_only = TRUE, subtargets = country_index)
-}
-
-
-#' Create a final-to-useful allocation template
-#'
-#' @param country a string of the 3-letter ISO country code
-#' @param file_name the file name for the template. Default is "FU Allocations <<3-letter country code>>".
-#' @param ext the file name extension. Default is ".xlsx".
-#' @param data_target the data target from which the template is created. Default is "Specified".
-#' @param paths_target the name of the paths object. Default is "paths".
-#' @param fu_analysis_path_name the name of the final-to-useful path member of the paths object. Default is "fu_analysis_path".
-#'
-#' @return the path to the final-to-useful analysis template
-#' 
-#' @export
-generate_fu_allocation_template <- function(country,
-                                            data_target = "Specified",
-                                            paths_target = "paths",
-                                            fu_analysis_path_name = "fu_analysis_path",
-                                            file_name = paste0("FU Allocations ", country),
-                                            ext = ".xlsx") {
-  # Construct the output path from the FU analysis folder and file_name.
-  output_path <- file.path(readd(paths_target, character_only = TRUE)[[fu_analysis_path_name]], 
-                           paste0(file_name, ext))
-  # Get the specified data for this country
-  readd_by_country(data_target, country) %>%
-    # Create the allocation template
-    fu_allocation_template() %>%
-    # Write the allocation template
-    write_fu_allocation_template(output_path)
-}
-
-
-generate_eta_fu_template <- function(country) {
-  
 }
