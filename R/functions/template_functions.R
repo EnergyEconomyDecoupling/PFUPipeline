@@ -24,9 +24,9 @@ generate_fu_allocation_template <- function(country,
   # Get the specified data for this country
   readd_by_country(data_target, country) %>%
     # Create the allocation template
-    fu_allocation_template() %>%
+    IEATools::fu_allocation_template() %>%
     # Write the allocation template
-    write_fu_allocation_template(output_path, overwrite = overwrite)
+    IEATools::write_fu_allocation_template(output_path, overwrite_file = overwrite)
 }
 
 
