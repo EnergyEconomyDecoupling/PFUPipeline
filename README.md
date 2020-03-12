@@ -53,17 +53,28 @@ to visualize the dependency tree as a directed acyclic graph. The
 command `sankey_drake_graph(plan)` will produce a Sankey diagram of the
 dependency tree.
 
+### Programming
+
+Source the `R/init.R` file to load all resources for computation at the
+RStudio console.
+
 ### Accessing targets
 
 `readd(<<target>>)` pulls the value of a target out of `drake`’s cache.
+`<<target>>` should be a quoted character string such as “Specified”.
 
 `loadd(<<target>>)` copies the value of a target out of `drake`’s cache
 into the environment.
 
+`readd_by_country(<<target>>, <<country>>)` will reads country-specific
+data out of the `drake` cache. Both `<<target>>` and `<<country>>`
+should be strings. `<<country>>` should be a 3-letter ISO abbreviation
+such as “ESP” or "ZAF.
+
 ### Fresh start
 
 `clean()` invalidates `drake`’s cache and forces reanalysis of
-everything.
+everything. Reanalyzing everything may take a while.
 
 ### More
 
