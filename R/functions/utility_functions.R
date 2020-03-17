@@ -9,6 +9,6 @@
 #' @export
 readd_by_country <- function(target, country, name_of_countries_object = "countries") {
   country_index <- which(country == readd(name_of_countries_object, character_only = TRUE), arr.ind = TRUE)
-  readd(target, character_only = TRUE, subtargets = country_index)
+  drake::readd(target, character_only = TRUE, subtargets = country_index)
 }
 
