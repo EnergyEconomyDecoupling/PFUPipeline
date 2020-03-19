@@ -2,7 +2,7 @@
 
 plan <- drake_plan(
 
-  countries = c("ESP", "GHA"),
+  countries = c("ESP"),
   max_year = 2017,
   paths = get_abs_paths(),
   
