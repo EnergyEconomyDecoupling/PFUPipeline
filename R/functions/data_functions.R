@@ -10,7 +10,7 @@
 #' 
 #' @export
 extract_country_data <- function(AllIEAData, countries, max_year) {
-  filter(AllIEAData, Country %in% countries, Year <= max_year)
+  dplyr::filter(AllIEAData, Country %in% countries, Year <= max_year)
 }
 
 
@@ -29,9 +29,9 @@ extract_country_data <- function(AllIEAData, countries, max_year) {
 #' @export
 is_balanced <- function(IEAData, countries, grp_vars = c("Country", "Method", "Energy.type", "Last.stage", "Product")) {
   filter(IEAData, Country %in% countries) %>% 
-    group_by(!!as.name(grp_vars)) %>%  
-    calc_tidy_iea_df_balances() %>% 
-    tidy_iea_df_balanced()
+    dplyr::group_by(!!as.name(grp_vars)) %>%  
+    IEATools::calc_tidy_iea_df_balances() %>% 
+    IEATools::tidy_iea_df_balanced()
 }
 
 
@@ -50,9 +50,9 @@ is_balanced <- function(IEAData, countries, grp_vars = c("Country", "Method", "E
 #' @export
 make_balanced <- function(IEAData, countries, grp_vars = c("Country", "Method", "Energy.type", "Last.stage", "Product")) {
   filter(IEAData, Country %in% countries) %>% 
-    group_by(!!as.name(grp_vars)) %>%  
-    fix_tidy_iea_df_balances() %>% 
-    ungroup()
+    dplyr::group_by(!!as.name(grp_vars)) %>%  
+    IEATools::fix_tidy_iea_df_balances() %>% 
+    dplyr::ungroup()
 }
 
 
@@ -68,8 +68,8 @@ make_balanced <- function(IEAData, countries, grp_vars = c("Country", "Method", 
 #' 
 #' @export
 specify <- function(BalancedIEAData, countries) {
-  filter(BalancedIEAData, Country %in% countries) %>% 
-    specify_all()
+  dplyr::filter(BalancedIEAData, Country %in% countries) %>% 
+    IEATools::specify_all()
 }
 
 
@@ -84,6 +84,6 @@ specify <- function(BalancedIEAData, countries) {
 #' @return a [matsindf]-style data frame
 #' @export
 make_psut <- function(SpecifiedIEAData, countries) {
-  filter(SpecifiedIEAData, Country %in% countries) %>% 
-    prep_psut()
+  dplyr::filter(SpecifiedIEAData, Country %in% countries) %>% 
+    IEATools::prep_psut()
 }
