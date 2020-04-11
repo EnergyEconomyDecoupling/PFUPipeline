@@ -20,8 +20,9 @@ generate_fu_allocation_template <- function(country,
                                             ext = ".xlsx", 
                                             overwrite = FALSE) {
   # Construct the output path from the FU analysis folder and fu_allocation_template_file_name
-  output_path <- file.path(readd(paths_target, character_only = TRUE)[[fu_analysis_path_name]], 
-                           paste0(fu_allocation_template_file_name, ext))
+  output_folder <- file.path(readd(paths_target, character_only = TRUE)[[fu_analysis_path_name]], country)
+  dir.create(output_folder, showWarnings = FALSE)
+  output_path <- file.path(output_folder, paste0(fu_allocation_template_file_name, ext))
   # Get the specified data for this country from the drake cache
   readd_by_country(data_target, country) %>%
     # Create the blank allocation template
@@ -51,7 +52,7 @@ generate_fu_allocation_template <- function(country,
 #' @export
 generate_eta_fu_template <- function(country, 
                                      paths_target = "paths",
-                                     fu_analysis_path_name = "fu_analysis_path",
+                                     fu_analysis_path_name = file.path("fu_analysis_path", country),
                                      fu_analysis_file_name = paste0(country, " FU Analysis"),
                                      ext = ".xlsx",
                                      fu_allocation_tab_name = "FU Allocations",
@@ -60,10 +61,12 @@ generate_eta_fu_template <- function(country,
   # Construct the path to the input file (which contains the FU Allocation tab) 
   # from the fu_analysis_path_name and fu_analysis_file_name
   input_path <- file.path(readd(paths_target, character_only = TRUE)[[fu_analysis_path_name]],
+                          country,
                           paste0(fu_analysis_file_name, ext))
   # Construct the output path from the FU analysis folder and eta_fu_template_file_name
-  output_path <- file.path(readd(paths_target, character_only = TRUE)[[fu_analysis_path_name]], 
-                           paste0(eta_fu_template_file_name, ext))
+  output_folder <- file.path(readd(paths_target, character_only = TRUE)[[fu_analysis_path_name]], country)
+  dir.create(output_folder, showWarnings = FALSE)
+  output_path <- file.path(output_folder, paste0(eta_fu_template_file_name, ext))
   # Read the allocations from the file at fu_analysis_file_name
   IEATools::load_fu_allocation_data(input_path) %>% 
     # Create the eta_fu template
