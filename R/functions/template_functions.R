@@ -6,6 +6,7 @@
 #' @param fu_analysis_path_name the name of the final-to-useful path member of the paths object. Default is "fu_analysis_path".
 #' @param fu_allocation_template_file_name the file name for the template. Default is "`country` FU Allocations Template.`ext`".
 #' @param ext the file name extension. Default is ".xlsx" for an Excel file.
+#' @param n_allocation_rows the number of allocation rows per combination of sector and final energy carrier. Default is `4`.
 #' @param overwrite tells whether to overwrite an existing file named `fu_allocation_file_name`.`ext` in location `fu_analysis_path_name`. 
 #'        Default is `FALSE`.
 #'
@@ -18,6 +19,7 @@ generate_fu_allocation_template <- function(country,
                                             fu_analysis_path_name = "fu_analysis_path",
                                             fu_allocation_template_file_name = paste0(country, " FU Allocations Template"),
                                             ext = ".xlsx", 
+                                            n_allocation_rows = 4,
                                             overwrite = FALSE) {
   # Construct the output path from the FU analysis folder and fu_allocation_template_file_name
   output_folder <- file.path(readd(paths_target, character_only = TRUE)[[fu_analysis_path_name]], country)
@@ -28,7 +30,7 @@ generate_fu_allocation_template <- function(country,
     # Create the blank allocation template
     IEATools::fu_allocation_template() %>%
     # Write the blank allocation template
-    IEATools::write_fu_allocation_template(path = output_path, overwrite_file = overwrite)
+    IEATools::write_fu_allocation_template(path = output_path, overwrite_file = overwrite, n_allocation_rows = n_allocation_rows)
 }
 
 
