@@ -52,7 +52,7 @@ generate_fu_allocation_template <- function(country,
 #' @export
 generate_eta_fu_template <- function(country, 
                                      paths_target = "paths",
-                                     fu_analysis_path_name = file.path("fu_analysis_path", country),
+                                     fu_analysis_path_name = "fu_analysis_path",
                                      fu_analysis_file_name = paste0(country, " FU Analysis"),
                                      ext = ".xlsx",
                                      fu_allocation_tab_name = "FU Allocations",
