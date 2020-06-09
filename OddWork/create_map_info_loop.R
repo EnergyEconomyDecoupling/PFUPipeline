@@ -18,7 +18,12 @@ analysis_files <- analysis_files[!grepl(as.character("~$"), analysis_files$count
 
 analysis_files_list <- as.list(analysis_files)
 
-# Cretes a function which reads FU Analysis file and creates a simplified mapping data frame
+
+# Add Ef.product groups
+
+
+
+# Creates a function which reads FU Analysis file and creates a simplified mapping data frame
 
 map_func <- function(filename) {
   country <- readxl::read_excel(filename) %>%
