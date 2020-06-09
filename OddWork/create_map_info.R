@@ -16,6 +16,9 @@ ESP_mapping <- na.omit(ESP_mapping)
 
 ESP_mapping <- ESP_mapping[,c(2,1,3,4)]
 
+# Remove the all but the first instance of every entry?
+
+
 # View mapping info
 
 View(ESP_mapping)

@@ -12,31 +12,35 @@ analysis_files <- list.files(path = filepath, recursive = TRUE, full.names = TRU
 
 analysis_files <- data.frame(analysis_files)
 
+colnames(analysis_files) <- c("country_path")
 
-# Attempted methods to exclude "~$" files 
+analysis_files <- analysis_files[!grepl(as.character("~$"), analysis_files$country_path, fixed = TRUE),]
 
-analysis_files <- analysis_files[ !grepl("~$", analysis_files) ]
+analysis_files_list <- as.list(analysis_files)
 
-analysis_files <- dplyr::filter(analysis_files, !grepl('~$', analysis_files))
+# Cretes a function which reads FU Analysis file and creates a simplified mapping data frame
 
-analysis_files <- subset(analysis_files, grepl("*~$", analysis_files))
-
-
-# Loop through each folder and extract mapping information
-
-for country in analysis_files {
-  readxl::read_excel(country) %>%
+map_func <- function(filename) {
+  country <- readxl::read_excel(filename) %>%
     unique(country[,c('Ef.product','Destination', 'Machine', 'Eu.product')]) %>%
-      na.omit() %>%
-        country[,c(2,1,3,4)]
+    na.omit() %>%
+    country[,c(2,1,3,4)]
+}
   
-  # Add function to generate mapping table here 
+for (file in analysis_files_list) {
+ country_mapping <- map_func(file)
 }
 
 
 
-# list_analysis_files <- function(countries) { list.files(full.names = TRUE, pattern = '*Analysis.xlsx') }
 
-# analysis_files2 <- do.call(rbind, (countries, list_analysis_files))
 
-# do.call(rbind, lapply(countries, list_analysis_files))
+
+# Loop through each folder and extract mapping information
+
+for (country in analysis_files_list) {
+  mapping <- readxl::read_excel(country) %>%
+    unique(country[,c('Ef.product','Destination', 'Machine', 'Eu.product')]) %>%
+      na.omit() %>%
+        country[,c(2,1,3,4)]
+}
