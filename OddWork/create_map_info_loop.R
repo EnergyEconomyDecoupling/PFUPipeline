@@ -25,6 +25,7 @@ map_func <- function(filename) {
     unique(country[,c('Ef.product','Destination', 'Machine', 'Eu.product')]) %>%
     na.omit() %>%
     country[,c(2,1,3,4)]
+  return(country)
 }
   
 for (file in analysis_files_list) {
@@ -35,12 +36,6 @@ for (file in analysis_files_list) {
 
 
 
+## NEED TO
 
-# Loop through each folder and extract mapping information
-
-for (country in analysis_files_list) {
-  mapping <- readxl::read_excel(country) %>%
-    unique(country[,c('Ef.product','Destination', 'Machine', 'Eu.product')]) %>%
-      na.omit() %>%
-        country[,c(2,1,3,4)]
-}
+# Add the origin of the mapping. oes it come from its own table, the exemplar table, or world table?
