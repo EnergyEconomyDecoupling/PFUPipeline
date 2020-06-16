@@ -24,22 +24,18 @@ analysis_files_list <- as.list(analysis_files)
 
 
 # Creates a function which reads FU Analysis file and creates a simplified mapping data frame
-
-map_func <- function(filename) {
-  country <- readxl::read_excel(filename) %>%
-    unique(country[,c('Ef.product','Destination', 'Machine', 'Eu.product')]) %>%
-    na.omit() %>%
-    country[,c(2,1,3,4)]
+# Do I create a for loop inside this function?
+map_func <- function(country_path) {
+  country <- readxl::read_excel(country_path)
+    unique(country[,c('Ef.product','Destination', 'Machine', 'Eu.product')])
+      na.omit(country)
+        country[,c(2,1,3,4)]
   return(country)
 }
-  
-for (file in analysis_files_list) {
- country_mapping <- map_func(file)
-}
 
+test_world <- map_func(analysis_files[2])
 
-
-
+lapply(analysis_files_list, map_func)
 
 ## NEED TO
 
