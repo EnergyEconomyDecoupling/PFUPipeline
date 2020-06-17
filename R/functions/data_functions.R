@@ -10,7 +10,11 @@
 #' 
 #' @export
 extract_country_data <- function(AllIEAData, countries, max_year) {
-  filter(AllIEAData, Country %in% countries, Year <= max_year)
+  out <- filter(AllIEAData, Country %in% countries, Year <= max_year)
+  if (nrow(out) == 0) {
+    warning(paste0("No rows of data for countries ", countries))
+  }
+  return(out)
 }
 
 
