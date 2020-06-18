@@ -1,6 +1,6 @@
 # Assign the file path to the variable 'filepath'
 
-filepath <- "C:/Users/Zeke Marshall/Dropbox/Fellowship 1960-2015 PFU database/Country-level exergy accounting data"
+filepath <- get_abs_paths()$fu_analysis_path
 
 # List the file path for each countries folder
 
@@ -26,16 +26,16 @@ analysis_files_list <- as.list(analysis_files)
 # Creates a function which reads FU Analysis file and creates a simplified mapping data frame
 # Do I create a for loop inside this function?
 map_func <- function(country_path) {
-  country <- readxl::read_excel(country_path)
-    unique(country[,c('Ef.product','Destination', 'Machine', 'Eu.product')])
-      na.omit(country)
-        country[,c(2,1,3,4)]
-  return(country)
+  readxl::read_excel(country_path) %>%
+    dplyr::select("Country", "Destination", "Ef.product", "Machine", "Eu.product") %>%
+    unique() %>%
+    na.omit()
 }
 
-test_world <- map_func(analysis_files[2])
+# test_world <- map_func(analysis_files[2])
 
-lapply(analysis_files_list, map_func)
+lapply(analysis_files_list, map_func) %>% 
+  dplyr::bind_rows()
 
 ## NEED TO
 
