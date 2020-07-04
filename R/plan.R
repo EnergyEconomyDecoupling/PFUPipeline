@@ -2,7 +2,7 @@
 
 plan <- drake_plan(
 
-  countries = c("ESP", "PRT", "World"),
+  countries = c("CHN","DNK","ESP","GBR","GHA","GRC","IND","ISR","MAR","MEX","PRT","USA","World", "World marine bunkers", "World aviation bunkers"),
   max_year = 2017,
   paths = get_abs_paths(),
   
