@@ -1,6 +1,8 @@
 # The workflow plan data frame outlines the analyses to be conducted.
 
 
+paths <- get_abs_paths()
+
 # Create our plan
 plan <- SEAPSUTWorkflow::get_plan(countries = countries, 
                                   max_year = max_year,

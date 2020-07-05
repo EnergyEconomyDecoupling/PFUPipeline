@@ -6,6 +6,5 @@ source("R/functions/path_functions.R")     # Define your custom code as a bunch 
 
 countries <- c("ESP")
 max_year <- 2017
-paths <- get_abs_paths()
 
 source("R/plan.R")                         # Create the drake plan.
