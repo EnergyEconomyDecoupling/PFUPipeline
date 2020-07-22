@@ -24,6 +24,9 @@ data <- data[ , c("Country", 	"Method", "Energy.type",	"Last.stage",	"Unit",	"Ma
 # Filter the data DF to only include etas data
 etas_data <- dplyr::filter(data, data$Quantity == "eta.fu")
 
+# Writes a .csv file for the m_etas_data DF
+write.csv(m_etas_data, file = "C:/Github/PFU-Database/OddWork/etas_data.csv")
+
 # Groups etas_data DF by machine rather than country
 
 m_etas_data <- dplyr::arrange(etas_data, Machine)
@@ -38,24 +41,6 @@ machines <- unique(m_etas_data$Machine)
 # Generates a list of unique products
 eu.products <- unique(m_etas_data$Eu.product)
 
-
-
-
-# Creates DF's for each individual Machine
-
-
-# Writes a .csv file for the m_etas_data DF
-write.csv(m_etas_data, file = "C:/Github/PFU-Database/OddWork/m_etas_data.csv")
-
-
-# EXAMPLE : Petrol cars
-
-petrol_cars_MD <- filter(etas_data, etas_data$Machine == "Petrol cars")
-
-ind_hf_100C <- filter(etas_data, etas_data$Machine == "Industrial heat/furnace")
-ind_hf_100C <-  dplyr::filter(ind_hf_100C, ind_hf_100C$Eu.product == "MTH.100.C")
-                         
-                         
                         
                       
                       
