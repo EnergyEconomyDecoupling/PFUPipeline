@@ -44,8 +44,8 @@ get_abs_paths <- function(home_path = sub(pattern = "Documents$", replacement = 
                                                       "IEA 2019 energy balance data"),
                           iea_data_path = file.path(iea_folder_path,
                                                     "IEA Extended Energy Balances 2019.csv"),
-                          fu_analysis_folder = file.path(project_path, "Country-level exergy accounting data"), 
-                          exemplar_table_path = file.path(project_path, "Database plan", "Exemplar_Table.xlsx")) {
+                          exemplar_table_path = file.path(project_path, "Database plan", "Exemplar_Table.xlsx"),
+                          fu_analysis_folder = file.path(project_path, "Country-level exergy accounting data")) {
 
   list(home_path = home_path,
        dropbox_path = file.path(home_path, dropbox_path),
