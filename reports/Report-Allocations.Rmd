@@ -30,11 +30,20 @@ Put an introduction here.
 This is a sample graph showing the world allocation of residential electricity over time.
 
 ```{r}
-SEAPSUTWorkflow::readd_by_country("CompletedAllocationTables", "World", cache_path = cache_path) %>% 
+residential_elect <- function() {
+  drake::readd(SEAPSUTWorkflow::target_names$CompletedAllocationTables, path = cache_path, character_only = TRUE) %>%
+  dplyr::group_by(.data[[IEATools::iea_cols$country]]) %>% 
+  
+  dplyr::filter(Country == "World") %>% 
   dplyr::filter(.data[[IEATools::template_cols$ef_product]] == "Electricity", 
                 .data[[IEATools::template_cols$destination]] == "Residential") %>% 
+  
   ggplot2::ggplot(mapping = ggplot2::aes(x = .data[[IEATools::iea_cols$year]], 
-                                         y = .data[[IEATools::template_cols$.values]])) + 
+                                         y = .data[[IEATools::template_cols$.values]], 
+                                         fill = .data[[IEATools::template_cols$machine]])) + 
   ggplot2::geom_area()
+}
+residential_elect()
+
 
 ```
