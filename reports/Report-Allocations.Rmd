@@ -1,0 +1,40 @@
+---
+title: "Allocations"
+author: "Matthew Kuperus Heun"
+date: '`r parsedate::format_iso_8601(Sys.time())`'
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(drake)
+library(knitr)
+library(magrittr)
+library(parsedate)
+library(rprojroot)
+library(SEAPSUTWorkflow)
+
+# Set up the root directory
+root <- rprojroot::is_rstudio_project
+# And the cache
+cache_path <- root$find_file(".drake")
+```
+
+## Introduction
+
+Put an introduction here.
+
+
+## Residential electricity
+
+This is a sample graph showing the world allocation of residential electricity over time.
+
+```{r}
+SEAPSUTWorkflow::readd_by_country("CompletedAllocationTables", "World", cache_path = cache_path) %>% 
+  dplyr::filter(.data[[IEATools::template_cols$ef_product]] == "Electricity", 
+                .data[[IEATools::template_cols$destination]] == "Residential") %>% 
+  ggplot2::ggplot(mapping = ggplot2::aes(x = .data[[IEATools::iea_cols$year]], 
+                                         y = .data[[IEATools::template_cols$.values]])) + 
+  ggplot2::geom_area()
+
+```
