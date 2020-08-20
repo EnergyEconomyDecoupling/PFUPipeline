@@ -23,7 +23,5 @@ Put an introduction here.
 Add a graph here.
 
 ```{r}
-SEAPSUTWorkflow::readd_by_country(target = SEAPSUTWorkflow::target_names$CompletedEfficiencyTables, 
-                                  country = "World") %>% View
-  ggplot2::ggplot()
+Sys.Date()
 ```
