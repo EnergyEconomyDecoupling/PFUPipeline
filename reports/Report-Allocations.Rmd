@@ -1,5 +1,5 @@
 ---
-title: "Allocations"
+title: "Allocation Report"
 author: "Matthew Kuperus Heun"
 date: '`r parsedate::format_iso_8601(Sys.time())`'
 output: pdf_document
@@ -94,9 +94,12 @@ plots_df <- drake::readd(SEAPSUTWorkflow::target_names$CompletedAllocationTables
 ```
 
 
+
+
 ```{r}
+plots_df[[IEATools::iea_cols$country]][[1]]
+plots_df[[IEATools::template_cols$ef_product]][[1]]
+plots_df[[IEATools::template_cols$destination]][[1]]
 plots_df$plots[[1]]
-plots_df$plots[[2]]
-plots_df$plots[[3]]
 ```
 
