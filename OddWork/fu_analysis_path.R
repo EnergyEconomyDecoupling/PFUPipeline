@@ -1,5 +1,6 @@
-# Assign the file path to the variable 'filepath'
+source("R/init.R")
 
+# Assign the file path to the variable 'filepath'
 filepath <- get_abs_paths()$fu_analysis_path
 
 # List the file path for each countries folder
