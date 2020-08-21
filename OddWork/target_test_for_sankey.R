@@ -43,9 +43,9 @@ World_long %>%
   magrittr::extract2(1)
 
 # Code to make a sankey diagram for a specific year from the original target (World or World_tidy)
-World_sankey %>%
+World %>%
   dplyr::filter(Year == "2017") %>%
-  Recca::make_sankey(fontSize = 15, height = 1300, width = 1800) %>%
+  Recca::make_sankey(fontSize = 15, height = 1000, width = 1800) %>%
   magrittr::extract2("Sankey") %>%
   magrittr::extract2(1)
 
