@@ -1,14 +1,14 @@
 # Creates a list of target names
 target_name_list <- SEAPSUTWorkflow::target_names
 
-# Creates a lis of column names from the World PSUT_final target
-PSUT_final_World_colnames <- colnames(World)
-
 # Creates various data frames containing data for the world
 World <- SEAPSUTWorkflow::readd_by_country("PSUT_final", "World") %>%
   dplyr::mutate(
     U = matsbyname::sum_byname(U_EIOU, U_feed)) %>%
   dplyr::relocate(U, .after = U_feed)
+
+# Creates a list of column names from the World PSUT_final target
+PSUT_final_World_colnames <- colnames(World)
 
 World_U <- World %>% 
   dplyr::select(Year, U)
@@ -20,8 +20,20 @@ World_U_1971 <- World_U %>%
 World_1971 <- World %>%
   dplyr::filter(Year == "1971")
 
-World_long <- World %>%
-  tidyr::pivot_longer(-Year, names_to = "matrix.name", values_to = "matrix")
+# World_long <- World %>%
+#   tidyr::pivot_longer(-Year, names_to = "matrix.name", values_to = "matrix")
+
+# Set the metadata columns
+World_meta_columns <- c(IEATools::iea_cols$country,
+                        IEATools::iea_cols$year,
+                        IEATools::iea_cols$method,
+                        IEATools::iea_cols$energy_type,
+                        IEATools::iea_cols$last_stage)
+
+# Pivot on the difference between the columns present and the metadata columns
+World_long <- World %>% 
+  tidyr::pivot_longer(cols = all_of(setdiff(PSUT_final_World_colnames, World_meta_columns)), 
+                      names_to = "matnames", values_to = "matvals")
 
 # Test make-sankey using example method..
 World_U_1971 %>%
