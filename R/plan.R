@@ -1,6 +1,6 @@
 # The workflow plan data frame outlines the analyses to be conducted.
 
-paths <- get_abs_paths()
+paths <- PFUSetup::get_abs_paths()
 
 # Create our drake plan
 plan <- SEAPSUTWorkflow::get_plan(countries = countries, 

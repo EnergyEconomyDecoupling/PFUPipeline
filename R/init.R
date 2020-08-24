@@ -2,7 +2,7 @@
 
 # Setup
 source("R/packages.R")                     # Load your packages, e.g. library(drake).
-source("R/path_functions.R")               # Define your custom code as a bunch of functions.
+# source("R/path_functions.R")               # Define your custom code as a bunch of functions.
 
 # Custom parameters
 max_year <- 2017                           # The last year to be analyzed
