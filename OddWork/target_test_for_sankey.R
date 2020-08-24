@@ -8,7 +8,7 @@ World <- SEAPSUTWorkflow::readd_by_country("PSUT_final", "World") %>%
   dplyr::relocate(U, .after = U_feed)
 
 # Creates a list of column names from the World PSUT_final target
-PSUT_final_World_colnames <- colnames(World)
+PSUT_final_World_colnames <- as.data.frame(colnames(World))
 
 World_U <- World %>% 
   dplyr::select(Year, U)
@@ -35,30 +35,42 @@ World_long <- World %>%
   tidyr::pivot_longer(cols = all_of(setdiff(PSUT_final_World_colnames, World_meta_columns)), 
                       names_to = "matnames", values_to = "matvals")
 
-# Test make-sankey using example method..
-World_U_1971 %>%
-  tidyr::spread(key = "U", value = "U") %>%
+# Test make-sankey using example method. 
+World_long %>%
+  tidyr::spread(key = "matnames", value = "matvals") %>% # This converts World_long to World (or World_tidy)
   Recca::make_sankey(fontSize = 15, height = 1600) %>%
   magrittr::extract2("Sankey") %>%
   magrittr::extract2(1)
 
+# Code to make a sankey diagram for a specific year from the original target (World or World_tidy)
+World %>%
+  dplyr::filter(Year == "2017") %>%
+  Recca::make_sankey(fontSize = 15, height = 1000, width = 1800) %>%
+  magrittr::extract2("Sankey") %>%
+  magrittr::extract2(1)
+
+################################################################################
+
+# Creates various data frames containing data for ESP
+ESP_tidy <- SEAPSUTWorkflow::readd_by_country("PSUT_final", "ESP") %>%
+  dplyr::mutate(
+    U = matsbyname::sum_byname(U_EIOU, U_feed)) %>%
+  dplyr::relocate(U, .after = U_feed)
+
+ESP_tidy %>%
+  dplyr::filter(Year == "2017") %>%
+  Recca::make_sankey(fontSize = 15, height = 1000, width = 1800) %>%
+  magrittr::extract2("Sankey") %>%
+  magrittr::extract2(1)
+
+################################################################################
+
+
 # Working sankey code for the example dataset
 UKEnergy2000matsData <- Recca::UKEnergy2000mats
-
-View(UKEnergy2000matsData)
-
+#View(UKEnergy2000matsData)
 UKEnergy2000matsData %>%
   tidyr::spread(key = "matrix.name", value = "matrix") %>%
   Recca::make_sankey(fontSize = 15, height = 400, width = 800) %>%
   magrittr::extract2("Sankey") %>%
   magrittr::extract2(1)
-
-
-# Attempt to create sankey diagram using default usage as in function description
-World_1971_sankey <- make_sankey(.sutmats = World_1971,
-                                  R = "R",
-                                  U = "U",
-                                  V = "V",
-                                  Y = "Y",
-                                  simplify_edges = TRUE,
-                                  sankey = "Sankey")
