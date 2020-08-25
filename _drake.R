@@ -7,12 +7,26 @@
 # If you use supporting scripts like the ones below,
 # you will need to supply them yourself. Examples:
 # https://github.com/wlandau/drake-examples/tree/master/main/R
-source("R/init.R")
+
+library(SEAPSUTWorkflow)
+
+# Custom parameters
+max_year <- 1963                           # The last year to be analyzed
+countries <- c("World", "ESP", "GRC")      # The countries to be analyzed
+
+# Create our drake plan
+plan <- SEAPSUTWorkflow::get_plan(countries = countries, 
+                                  max_year = max_year,
+                                  iea_data_path = PFUSetup::get_abs_paths()[["iea_data_path"]], 
+                                  exemplar_table_path = PFUSetup::get_abs_paths()[["exemplar_table_path"]], 
+                                  fu_analysis_folder = PFUSetup::get_abs_paths()[["fu_analysis_folder"]], 
+                                  report_source_folders = system.file("reports", package = "SEAPSUTWorkflow"), 
+                                  report_dest_folder = "reports")
 
 # _drake.R must end with a call to drake_config().
 # The arguments to drake_config() are basically the same as those to make().
 # options(clustermq.scheduler = "multicore") # For parallel computing.
-drake_config(
+drake::drake_config(
   plan, 
   # max_expand = 1 # Set the number of countries you want to analyze
   # parallelism = "clustermq",
