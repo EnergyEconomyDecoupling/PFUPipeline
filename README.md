@@ -21,10 +21,11 @@ helpful dependency management.
 
 At the RStudio console, type
 
-`library(drake)` \# to load the drake package  
-`vis_drake_graph(plan)` \# to see a directed acyclic graph of the
-calculations that will take place  
-`r_make()` \# to execute the calculations
+``` r
+library(drake)         # to load the drake package   
+vis_drake_graph(plan)  # to see a directed acyclic graph of the calculations that will take place   
+r_make()               # to execute the calculations
+```
 
 ## Advanced
 
@@ -69,7 +70,7 @@ into the environment.
 `readd_by_country(<<target>>, <<country>>)` will reads country-specific
 data out of the `drake` cache. Both `<<target>>` and `<<country>>`
 should be strings. `<<country>>` should be a 3-letter ISO abbreviation
-such as “ESP” or "ZAF.
+such as “ESP” or “ZAF”.
 
 ### Fresh start
 

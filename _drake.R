@@ -11,7 +11,7 @@
 library(SEAPSUTWorkflow)
 
 # Custom parameters
-max_year <- 1971                           # The last year to be analyzed
+max_year <- 2017                           # The last year to be analyzed
 countries <- c("World", "ESP", "GRC")      # The countries to be analyzed
 
 # Create our drake plan
