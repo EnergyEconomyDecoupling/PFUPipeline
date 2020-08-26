@@ -11,7 +11,7 @@
 library(SEAPSUTWorkflow)
 
 # Custom parameters
-max_year <- 1963                           # The last year to be analyzed
+max_year <- 1971                           # The last year to be analyzed
 countries <- c("World", "ESP", "GRC")      # The countries to be analyzed
 
 # Create our drake plan
@@ -20,8 +20,8 @@ plan <- SEAPSUTWorkflow::get_plan(countries = countries,
                                   iea_data_path = PFUSetup::get_abs_paths()[["iea_data_path"]], 
                                   exemplar_table_path = PFUSetup::get_abs_paths()[["exemplar_table_path"]], 
                                   fu_analysis_folder = PFUSetup::get_abs_paths()[["fu_analysis_folder"]], 
-                                  report_source_folders = system.file("reports", package = "SEAPSUTWorkflow"), 
-                                  report_dest_folder = "reports")
+                                  reports_source_folders = PFUSetup::get_abs_paths()[["reports_source_folders"]], 
+                                  reports_dest_folder = PFUSetup::get_abs_paths()[["reports_dest_folder"]])
 
 # _drake.R must end with a call to drake_config().
 # The arguments to drake_config() are basically the same as those to make().
