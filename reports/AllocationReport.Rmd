@@ -39,6 +39,7 @@ alloc_plots <- drake::readd(SEAPSUTWorkflow::target_names$AllocationGraphs,
 
 ```{r, fig.width=6.5, fig.height=2.5, echo=FALSE}
 alloc_plots[1:100]
+# alloc_plots
 ```
 
 
