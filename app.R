@@ -21,47 +21,53 @@ library(PFUSetup)
 # Set up the root directory
 root <- rprojroot::is_rstudio_project
 
-
 # Identifies the file path for the drake cache
 cache_path <- root$find_file(".drake")
 
 ################################################################################
 
-# Source init.R file in PFU Database
-# How do i link the PFU-Database repository to this repository as the PFU-Database is not a package?????
-
-# Here i temporarily define the countries string found in init.R
-countries <- c("World", "ESP", "GRC")
-
-################################################################################
-
-
-
+# Creates a list of the countries in the drake workflow
+countries <- drake::readd(SEAPSUTWorkflow::target_names$countries, 
+             path = cache_path, 
+             character_only = TRUE)
 
 ################################################################################
 
-# This approach is only temporary and for demonstration purposes,
-# I will link this Shiny app to the PFU Drake work flow with MKH when ready
+#  Creates a list of years in the drake workflow
+max_year <- drake::readd(SEAPSUTWorkflow::target_names$max_year, 
+                         path = cache_path, 
+                         character_only = TRUE)
 
-# Loads .csv data as a DF
-etas_data <- read.csv("etas_data.csv")
-phi_data <- read.csv("phi_data.csv")
+years <- c(1960:max_year)
 
+################################################################################
 
-# Combine DF's 
-master_data <- etas_data %>%
-  dplyr::full_join(phi_data %>% dplyr::select(X, phi), by = "X")
-# Add column for eta_X
-master_data <- master_data %>%
-  dplyr::mutate(eta_X = eta * phi)
-# Removes redundant columns
-master_data[, c("Method", "Energy.type", "Maximum.values", "Quantity")] <- NULL
+# Creates a df with the final-to-useful efficiency (eta) data
 
+etas_and_phis <- drake::readd(SEAPSUTWorkflow::target_names$CompletedEfficiencyTables, 
+                         path = cache_path, 
+                         character_only = TRUE)
 
-# Load allocations .csv data as a DF
-allocations_data <- read.csv("allocations_data.csv")
+etas <- etas_and_phis %>%
+  dplyr::filter(Quantity == "eta.fu")
+
+################################################################################
+
+# Creates a df with the exergy-to-energy ratio (phi) data 
+
+phis <- etas_and_phis %>%
+  dplyr::filter(Quantity == "phi.u")
+
+################################################################################
+
+# Creates a df with the Destination-Machine&Eu.product allocation data
+
+allocations <- drake::readd(SEAPSUTWorkflow::target_names$CompletedAllocationTables, 
+                         path = cache_path, 
+                         character_only = TRUE)
+
 # Adds a combined Machine-Eu.product column
-allocations_data$Machine_Eu.product = paste(allocations_data$Machine," - ", allocations_data$Eu.product)
+allocations$Machine_Eu.product = paste(allocations$Machine," - ", allocations$Eu.product)
 
 
 ################################################################################
@@ -98,9 +104,8 @@ ui <- dashboardPage(
                 
                 # 5 - Direct hyperlink to Github repository (this is probably not necessary)
                 menuItem("Github Repository", icon = icon("file-code"), 
-                         href = "https://github.com/ZekeMarshall/PFU-Interface/"))
-    
-  ),
+                         href = "https://github.com/ZekeMarshall/PFU-Interface/")
+                )),
   
   dashboardBody(
     tabItems(
@@ -135,7 +140,7 @@ ui <- dashboardPage(
                               # selected = FALSE,
                               # selectize = FALSE,
                               # size = 6,
-                              choices = unique(allocations_data$Country)
+                              choices = countries
                               %>% sort()
                   ),
                   selectInput(inputId = "Ef.product_allocations",
@@ -143,7 +148,7 @@ ui <- dashboardPage(
                               #selected = FALSE,
                               #selectize = FALSE,
                               #size = 6,
-                              choices = unique(allocations_data$Ef.product)
+                              choices = unique(allocations$Ef.product)
                               %>% sort()
                   ),
                   selectInput(inputId = "Destination_allocations",
@@ -151,7 +156,7 @@ ui <- dashboardPage(
                               #selected = FALSE,
                               #selectize = FALSE,
                               #size = 6,
-                              choices = unique(allocations_data$Destination)
+                              choices = unique(allocations$Destination)
                               %>% sort()
                   )))),
       
@@ -186,19 +191,19 @@ ui <- dashboardPage(
                   ),
                   selectizeInput(inputId = "Country", 
                                  label = "Country:",
-                                 choices = unique(master_data$Country)
+                                 choices = countries
                                  %>% sort(),
                                  multiple = TRUE
                   ),
                   selectizeInput(inputId = "Machine", # Need to change to FUMachine throughout
                                  label = "Final-to-useful machine:",
-                                 choices = unique(master_data$Machine)
+                                 choices = unique(etas_and_phis$Machine)
                                  %>% sort(),
                                  multiple = TRUE
                   ),
                   selectizeInput(inputId = "Eu.product",
                                  label = "Useful product:",
-                                 choices = unique(master_data$Eu.product)
+                                 choices = unique(etas_and_phis$Eu.product)
                                  %>% sort(),
                                  multiple = TRUE
                   )))),
@@ -219,7 +224,7 @@ ui <- dashboardPage(
                   sliderInput(inputId = "Year_sankey", 
                               label = "Year",
                               min = 1960,
-                              max = 2018,
+                              max = max_year,
                               value = 1960,
                               step = 1,
                               sep = ""
@@ -259,19 +264,19 @@ ui <- dashboardPage(
                   
                   selectizeInput(inputId = "Country_DT", 
                                  label = "Country:",
-                                 choices = unique(master_data$Country)
+                                 choices = unique(etas_and_phis$Country)
                                  %>% sort(),
                                  multiple = TRUE
                   ),
                   selectizeInput(inputId = "Machine_DT",
                                  label = "Final-to-useful machine:",
-                                 choices = unique(master_data$Machine)
+                                 choices = unique(etas_and_phis$Machine)
                                  %>% sort(),
                                  multiple = TRUE
                   ),
                   selectizeInput(inputId = "Eu.product_DT",
                                  label = "Useful product:",
-                                 choices = unique(master_data$Eu.product)
+                                 choices = unique(etas_and_phis$Eu.product)
                                  %>% sort(),
                                  multiple = TRUE
                   ),
@@ -308,19 +313,19 @@ server <- function(input, output, session) {
   # These observe events update the final-to-useful efficiency tab
   observeEvent(input$Country,  {
     req(input$Country)
-    post_country_data <- master_data %>%
+    post_country_data <- etas_and_phis %>%
       dplyr::filter(Country %in% input$Country)
     
     updateSelectizeInput(session,
                          inputId = "Machine",
-                         choices = sort(unique(post_country_data$Machine)))
+                         choices = sort(unique(etas_and_phis$Machine)))
     
   })
   
   observeEvent(input$Machine,  {
     req(input$Country)
     req(input$Machine)
-    post_machine_data <- master_data %>%
+    post_machine_data <- etas_and_phis %>%
       dplyr::filter(Country %in% input$Country) %>%
       dplyr::filter(Machine %in% input$Machine) 
     
@@ -353,10 +358,11 @@ server <- function(input, output, session) {
   #                   choices = sort(unique(post_machine_data_phi$Eu.product)))
   #})
   
-  # These observe events update the allocations tab
+  
+# These observe events update the allocations tab
   observeEvent(input$Country_allocations,  {
     req(input$Country_allocations)
-    post_country_data_allocations <- allocations_data %>%
+    post_country_data_allocations <- allocations %>%
       dplyr::filter(Country %in% input$Country_allocations)
     
     updateSelectInput(session,
@@ -368,7 +374,7 @@ server <- function(input, output, session) {
   observeEvent(input$Ef.product_allocations,  {
     req(input$Country_allocations)
     req(input$Ef.product_allocations)
-    post_Ef.product_data_allocations <- allocations_data %>%
+    post_Ef.product_data_allocations <- allocations %>%
       dplyr::filter(Country %in% input$Country_allocations) %>%
       dplyr::filter(Ef.product %in% input$Ef.product_allocations) 
     
@@ -381,7 +387,7 @@ server <- function(input, output, session) {
   # These observe events update the data tab  
   observeEvent(input$Country_DT,  {
     req(input$Country_DT)
-    post_country_data_DT <- master_data %>%
+    post_country_data_DT <- etas_and_phis %>%
       dplyr::filter(Country %in% input$Country_DT)
     
     updateSelectizeInput(session,
@@ -393,7 +399,7 @@ server <- function(input, output, session) {
   observeEvent(input$Machine_DT,  {
     req(input$Country_DT)
     req(input$Machine_DT)
-    post_machine_data_DT<- master_data %>%
+    post_machine_data_DT <- etas_and_phis %>%
       dplyr::filter(Country %in% input$Country_DT) %>%
       dplyr::filter(Machine %in% input$Machine_DT) 
     
@@ -403,22 +409,21 @@ server <- function(input, output, session) {
   })
   
   
-  ################################################################################
+################################################################################
   
-  # This section acts to select the data used for each render object
+# This section acts to select the data used for each render object
   
   selected_data_eta <- reactive({
     validate(
-      need(input$State != "", "Please select at least one State"),
+      need(input$State != "", "Please select at least one State"), # Need to add this to dplyr::filter code when drake workflow includes exergy eta
       need(input$Country != "", "Please select at least one Country"),
       need(input$Machine != "", "Please select at least one Machine"),
       need(input$Eu.product != "", "Please select at least one form of Useful work")
     )
-    dplyr::filter(master_data,
+    dplyr::filter(etas,
                   Country == input$Country,  
                   Machine == input$Machine,
-                  Eu.product == input$Eu.product) %>%
-      dplyr::select(X, Country, Last.stage, Unit, Machine, Eu.product, Year, Quantity = input$State)
+                  Eu.product == input$Eu.product)
   })
   
   selected_data_phi <- reactive({
@@ -427,7 +432,7 @@ server <- function(input, output, session) {
       need(input$Machine != "", "Please select at least one Machine"),
       need(input$Eu.product != "", "Please select at least one form of Useful work")
     )
-    dplyr::filter(master_data,
+    dplyr::filter(phis,
                   Country == input$Country,  
                   Machine == input$Machine,
                   Eu.product == input$Eu.product)
@@ -439,7 +444,7 @@ server <- function(input, output, session) {
       need(input$Ef.product_allocations != "", "Please select one Final energy carrier"),
       need(input$Destination_allocations != "", "Please select one Destination")
     )
-    dplyr::filter(allocations_data,
+    dplyr::filter(allocations,
                   Country == input$Country_allocations,  
                   Ef.product == input$Ef.product_allocations,
                   Destination == input$Destination_allocations)
@@ -469,7 +474,7 @@ server <- function(input, output, session) {
       need(input$Machine_DT != "", "Please select at least one Machine"),
       need(input$Eu.product_DT != "", "Please select at least one form of Useful work")
     )
-    dplyr::filter(master_data,
+    dplyr::filter(etas_and_phis,
                   Country == input$Country_DT,  
                   Machine == input$Machine_DT,
                   Eu.product == input$Eu.product_DT)
@@ -484,7 +489,7 @@ server <- function(input, output, session) {
     height = 600, {
       selected_data_eta2 = selected_data_eta()
       ggplot2::ggplot(data = selected_data_eta2) +
-        geom_line(mapping = aes(x = Year, y = Quantity, colour = Country)) + # I need to figure out how to display multiple combinations e.g. linetype = Machine
+        geom_line(mapping = aes(x = Year, y = .values, colour = Country)) + # I need to figure out how to display multiple combinations e.g. linetype = Machine
         scale_y_continuous(limits = c(0, 1), breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1)) +
         scale_x_continuous(limits = c(1960, 2020), breaks = c(1960, 1970, 1980, 1990, 2000, 2010, 2020)) +
         MKHthemes::xy_theme()
@@ -494,7 +499,7 @@ server <- function(input, output, session) {
     height = 600, {
       selected_data_phi2 = selected_data_phi()
       ggplot2::ggplot(data = selected_data_phi2) +
-        geom_line(mapping = aes(x = Year, y = phi, colour = Country)) +
+        geom_line(mapping = aes(x = Year, y = .values, colour = Country)) +
         scale_y_continuous(limits = c(0, 1), breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1)) +
         scale_x_continuous(limits = c(1960, 2020), breaks = c(1960, 1970, 1980, 1990, 2000, 2010, 2020)) +
         MKHthemes::xy_theme()
@@ -504,7 +509,7 @@ server <- function(input, output, session) {
     height = 600, {
       selected_data_allocations2 = selected_data_allocations()
       ggplot2::ggplot(data = selected_data_allocations2) +
-        geom_area(mapping = aes(x = Year, y = Allocation, group = Machine_Eu.product, fill = Machine_Eu.product)) +
+        geom_area(mapping = aes(x = Year, y = .values, group = Machine_Eu.product, fill = Machine_Eu.product)) +
         scale_y_continuous(limits = c(0, 1), breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1)) +
         scale_x_continuous(breaks = c(1960, 1970, 1980, 1990, 2000, 2010, 2020)) +
         theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
@@ -513,7 +518,7 @@ server <- function(input, output, session) {
   
   output$sankey <- renderSankeyNetwork({
     selected_data_sankey() %>%
-      Recca::make_sankey(fontSize = 15, height = "100%", width = "100%") %>%
+      Recca::make_sankey(fontSize = 15, height = 900, width = "100%", nodeWidth = 30) %>%
       magrittr::extract2("Sankey") %>%
       magrittr::extract2(1)
   })
