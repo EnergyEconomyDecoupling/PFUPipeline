@@ -26,7 +26,7 @@ cache_path <- root$find_file(".drake")
 
 ################################################################################
 
-# Creates a list of the countries in the drake workflow
+# Creates a list of the countries in the drake workflow, set in the _drake.R script
 countries <- drake::readd(SEAPSUTWorkflow::target_names$countries, 
              path = cache_path, 
              character_only = TRUE)
@@ -78,7 +78,8 @@ allocations <- drake::readd(SEAPSUTWorkflow::target_names$CompletedAllocationTab
                          character_only = TRUE)
 
 # Adds a combined Machine-Eu.product column
-allocations$Machine_Eu.product = paste(allocations$Machine," - ", allocations$Eu.product)
+allocations$Machine_Eu.product = paste(allocations$Machine," - ", allocations$Eu.product) #%>%
+ #dplyr::relocate(Machine_Eu.product, .after = Eu.product)
 
 
 ################################################################################
@@ -134,24 +135,20 @@ ui <- dashboardPage(
                   id = "tabset_allocations",
                   width = 9,
                   tabPanel(
-                    title = "Final Energy to Machine and Useful Work",
+                    title = "Final Energy to Machine and Useful Work Allocations ",
                     plotOutput(outputId = "allocations_plot")
                   )),
-                # tabPanel(
-                #  title = "Final Energy to Destination",
-                #  plotOutput(outputId = "")
-                #)
-                # ),
                 
                 box(
                   title = "Variables", status = "warning", solidHeader = TRUE, width = 3,
                   #"Box content here", br(), "More box content",
-                  selectInput(inputId = "Country_allocations", 
+                  selectizeInput(inputId = "Country_allocations", 
                               label = "Country:",
                               # selected = FALSE,
                               # selectize = FALSE,
                               # size = 6,
-                              choices = countries
+                              choices = countries,
+                              multiple = TRUE
                               %>% sort()
                   ),
                   selectInput(inputId = "Ef.product_allocations",
@@ -169,7 +166,9 @@ ui <- dashboardPage(
                               #size = 6,
                               choices = unique(allocations$Destination)
                               %>% sort()
-                  )))),
+                  ))
+                
+                )),
       
       
       
@@ -239,10 +238,6 @@ ui <- dashboardPage(
                               value = 1960,
                               step = 1,
                               sep = ""
-                  
-                  #selectInput(inputId = "Year_sankey", 
-                  #            label = "Year:",
-                  #            choices = year <- c(paste(1960:2017)) # Need to change this to be dependent on SEAPSUTWorkflow
                   ),
                   
                   selectInput(inputId = "Country_sankey", 
@@ -478,6 +473,9 @@ server <- function(input, output, session) {
       dplyr::filter(Country == input$Country_sankey, Year == input$Year_sankey)
   })
   
+  # What data should be included here, at the moment it is simply etas and phis, need to add:
+  # allocations,
+  # 
   selected_data_DT <- reactive({
     validate(
       need(input$Quantity_DT != "", "Please select at least one Quantity"),
@@ -493,14 +491,14 @@ server <- function(input, output, session) {
   })
   
   
-  ################################################################################
+################################################################################
   
-  # This section contains code for producing the render objects in the ui
+# This section contains code for producing the render objects in the ui
   
   output$FU_etas_plot <- renderPlot(
     height = 600, {
-      selected_data_eta2 = selected_data_eta()
-      ggplot2::ggplot(data = selected_data_eta2) +
+      selected_data_eta = selected_data_eta()
+      ggplot2::ggplot(data = selected_data_eta) +
         geom_line(mapping = aes(x = Year, y = .values, colour = Country)) + # I need to figure out how to display multiple combinations e.g. linetype = Machine
         scale_y_continuous(limits = c(0, 1), breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1)) +
         scale_x_continuous(limits = c(1960, 2020), breaks = c(1960, 1970, 1980, 1990, 2000, 2010, 2020)) +
@@ -509,8 +507,8 @@ server <- function(input, output, session) {
   
   output$phi_plot <- renderPlot(
     height = 600, {
-      selected_data_phi2 = selected_data_phi()
-      ggplot2::ggplot(data = selected_data_phi2) +
+      selected_data_phi = selected_data_phi()
+      ggplot2::ggplot(data = selected_data_phi) +
         geom_line(mapping = aes(x = Year, y = .values, colour = Country)) +
         scale_y_continuous(limits = c(0, 1), breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1)) +
         scale_x_continuous(limits = c(1960, 2020), breaks = c(1960, 1970, 1980, 1990, 2000, 2010, 2020)) +
@@ -519,13 +517,38 @@ server <- function(input, output, session) {
   
   output$allocations_plot <- renderPlot(
     height = 600, {
-      selected_data_allocations2 = selected_data_allocations()
-      ggplot2::ggplot(data = selected_data_allocations2) +
-        geom_area(mapping = aes(x = Year, y = .values, group = Machine_Eu.product, fill = Machine_Eu.product)) +
+      selected_data_allocations = selected_data_allocations()
+      ggplot2::ggplot(data = selected_data_allocations) +
+        geom_area(mapping = aes(x = Year, y = .values, 
+                                #group = Machine_Eu.product, 
+                                #colour = Machine_Eu.product,  
+                                fill = Machine_Eu.product), 
+                  # position = "fill" # "fill" does not cause gaps in the data for individual countries, but it grossly deforms the data for multiple plots
+                  position = "stack" # "stack" causes gaps in the data for single countries, and the data to overlay on multiple plots rather than stack, but the proportions remain the same
+        ) +
         scale_y_continuous(limits = c(0, 1), breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1)) +
         scale_x_continuous(breaks = c(1960, 1970, 1980, 1990, 2000, 2010, 2020)) +
         theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-        MKHthemes::xy_theme()
+        MKHthemes::xy_theme() + 
+        facet_wrap(vars(Country),
+                   nrow = 1,
+                   scales = "free",
+                   )
+    })
+  
+  output$allocations_plot_drakemethod <- renderPlot(
+    height = 600, {
+      ggplot2::ggplot(data =
+                      drake::readd(SEAPSUTWorkflow::target_names$AllocationGraphs, 
+                                   path = cache_path, 
+                                   character_only = TRUE) %>%
+                        dplyr::filter(AllocationGraphs,
+                                      Country == input$Country_allocations,  
+                                      Ef.product == input$Ef.product_allocations,
+                                      Destination == input$Destination_allocations) %>%
+                          dplyr::select(data)
+                        
+      )
     })
   
   output$sankey <- renderSankeyNetwork({
