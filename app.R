@@ -42,6 +42,17 @@ years <- c(1960:max_year)
 
 ################################################################################
 
+# Creates a df with the Balanced IEA Data for the selected countries
+
+balanced_iea_data <- drake::readd(SEAPSUTWorkflow::target_names$BalancedIEAData, 
+                                  path = cache_path, 
+                                  character_only = TRUE)
+
+balancediea_flowaggpoints <- unique(balanced_iea_data$Flow.aggregation.point)
+
+balancediea_flows <- unique(balanced_iea_data$Flow)
+
+
 # Creates a df with the final-to-useful efficiency (eta) data
 
 etas_and_phis <- drake::readd(SEAPSUTWorkflow::target_names$CompletedEfficiencyTables, 
@@ -254,11 +265,11 @@ ui <- dashboardPage(
                 box(
                   title = "Variables",
                   width = 3,
-                  selectizeInput(inputId = "Quantity", 
+                  selectizeInput(inputId = "Quantity_DT", 
                                  label = "Quantity:",
-                                 choices = c(`FU Energy Efficiency` = "eta", 
+                                 choices = c(`FU Energy Efficiency` = "eta.fu", 
                                              `FU Exergy Efficiency` = "eta_X", 
-                                             `Exergy-to-Energy Ratio` = "phi"), 
+                                             `Exergy-to-Energy Ratio` = "phi.u"), 
                                  multiple = TRUE
                   ),
                   
@@ -469,12 +480,13 @@ server <- function(input, output, session) {
   
   selected_data_DT <- reactive({
     validate(
-      need(input$Quantity != "", "Please select at least one Quantity"),
+      need(input$Quantity_DT != "", "Please select at least one Quantity"),
       need(input$Country_DT != "", "Please select at least one Country"),
       need(input$Machine_DT != "", "Please select at least one Machine"),
       need(input$Eu.product_DT != "", "Please select at least one form of Useful work")
     )
     dplyr::filter(etas_and_phis,
+                  Quantity == input$Quantity_DT,
                   Country == input$Country_DT,  
                   Machine == input$Machine_DT,
                   Eu.product == input$Eu.product_DT)
@@ -525,7 +537,7 @@ server <- function(input, output, session) {
   
   output$data_table <- DT::renderDataTable({
     selected_data_DT() %>%
-      dplyr::select(X, Country, Last.stage, Unit, Machine, Eu.product, Year, input$Quantity)
+      dplyr::select(Country, Quantity, Last.stage, Unit, Machine, Eu.product, Year, .values)
   })
   
   output$downloadData <- downloadHandler(
