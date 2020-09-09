@@ -457,12 +457,12 @@ server <- function(input, output, session) {
   
   selected_data_allocations <- reactive({
     validate(
-      need(input$Country_allocations != "", "Please select one Country"),
+      need(input$Country_allocations != "", "Please select atleast one Country"),
       need(input$Ef.product_allocations != "", "Please select one Final energy carrier"),
       need(input$Destination_allocations != "", "Please select one Destination")
     )
     dplyr::filter(allocations,
-                  Country == input$Country_allocations,  
+                  Country %in% input$Country_allocations,  
                   Ef.product == input$Ef.product_allocations,
                   Destination == input$Destination_allocations)
   })
@@ -527,8 +527,8 @@ server <- function(input, output, session) {
                                 #colour = Machine_Eu.product,  
                                 fill = Machine_Eu.product 
         ),
-                  #position = "fill" # "fill" does not cause gaps in the data for individual countries, but it grossly deforms the data for multiple plots
-                  position = "stack" # "stack" causes gaps in the data for single countries, and the data to overlay on multiple plots rather than stack, but the proportions remain the same
+                  position = "fill" # "fill" does not cause gaps in the data for individual countries, but it grossly deforms the data for multiple plots
+                  #position = "stack" # "stack" causes gaps in the data for single countries, and the data to overlay on multiple plots rather than stack, but the proportions remain the same
         ) +
         scale_y_continuous(limits = c(0, 1), breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1)) +
         scale_x_continuous(breaks = c(1960, 1970, 1980, 1990, 2000, 2010, 2020)) +
