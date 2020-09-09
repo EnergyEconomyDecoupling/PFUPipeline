@@ -74,8 +74,8 @@ phis <- etas_and_phis %>%
 # Creates a df with the Destination-Machine&Eu.product allocation data
 
 allocations <- drake::readd(SEAPSUTWorkflow::target_names$CompletedAllocationTables, 
-                         path = cache_path, 
-                         character_only = TRUE)
+                           path = cache_path, 
+                           character_only = TRUE)
 
 # Adds a combined Machine-Eu.product column
 allocations$Machine_Eu.product = paste(allocations$Machine," - ", allocations$Eu.product) #%>%
@@ -84,6 +84,17 @@ allocations$Machine_Eu.product = paste(allocations$Machine," - ", allocations$Eu
 
 ################################################################################
 
+# Using SEAPSUTWorkflow::readd_by_country produces the error "Error: 'key' must be a scalar"
+
+PSUT_final_data <- drake::readd(SEAPSUTWorkflow::target_names$PSUT_final, 
+                               path = cache_path, 
+                               character_only = TRUE) %>%
+  dplyr::mutate(U = matsbyname::sum_byname(U_EIOU, U_feed)) %>% # Here I create U manually, this needs to be done in the drake workflow
+  
+  dplyr::relocate(U, .after = U_feed)
+
+################################################################################
+  
 ui <- dashboardPage(
   dashboardHeader(title = "PFU Database"
   ),
@@ -461,16 +472,8 @@ server <- function(input, output, session) {
     #need(input$Year_sankey != "", "Please select at least one year"),
     #need(input$Country_sankey != "", "Please select at least one Country"))
     
-    # Using SEAPSUTWorkflow::readd_by_country produces the error "Error: 'key' must be a scalar"
+    dplyr::filter(PSUT_final_data, Country == input$Country_sankey, Year == input$Year_sankey)
     
-    drake::readd(SEAPSUTWorkflow::target_names$PSUT_final, 
-                             path = cache_path, 
-                             character_only = TRUE) %>%
-      dplyr::mutate(U = matsbyname::sum_byname(U_EIOU, U_feed)) %>% # Here I create U manually, this needs to be done in the drake workflow
-      
-      dplyr::relocate(U, .after = U_feed) %>%
-    
-      dplyr::filter(Country == input$Country_sankey, Year == input$Year_sankey)
   })
   
   # What data should be included here, at the moment it is simply etas and phis, need to add:
@@ -520,10 +523,11 @@ server <- function(input, output, session) {
       selected_data_allocations = selected_data_allocations()
       ggplot2::ggplot(data = selected_data_allocations) +
         geom_area(mapping = aes(x = Year, y = .values, 
-                                #group = Machine_Eu.product, 
+                                group = Machine_Eu.product, 
                                 #colour = Machine_Eu.product,  
-                                fill = Machine_Eu.product), 
-                  # position = "fill" # "fill" does not cause gaps in the data for individual countries, but it grossly deforms the data for multiple plots
+                                fill = Machine_Eu.product 
+        ),
+                  #position = "fill" # "fill" does not cause gaps in the data for individual countries, but it grossly deforms the data for multiple plots
                   position = "stack" # "stack" causes gaps in the data for single countries, and the data to overlay on multiple plots rather than stack, but the proportions remain the same
         ) +
         scale_y_continuous(limits = c(0, 1), breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1)) +
@@ -531,8 +535,9 @@ server <- function(input, output, session) {
         theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
         MKHthemes::xy_theme() + 
         facet_wrap(vars(Country),
-                   nrow = 1,
-                   scales = "free",
+                   #ncol = 1, # Arranging by rows or columns makes no difference to the stacking issue.
+                   #nrow = 1,
+                   scales = "free_x"
                    )
     })
   
@@ -545,18 +550,34 @@ server <- function(input, output, session) {
                         dplyr::filter(AllocationGraphs,
                                       Country == input$Country_allocations,  
                                       Ef.product == input$Ef.product_allocations,
-                                      Destination == input$Destination_allocations) %>%
-                          dplyr::select(data)
+                                      Destination == input$Destination_allocations) # %>% dplyr::select(data)
                         
       )
     })
   
-  output$sankey <- renderSankeyNetwork({
-    selected_data_sankey() %>%
-      Recca::make_sankey(fontSize = 15, height = 900, width = "100%", nodeWidth = 30) %>%
-      magrittr::extract2("Sankey") %>%
-      magrittr::extract2(1)
+  output$sankey <- renderSankeyNetwork({ #  using height = 900 here results in the error "...unused argument (height = 900)"
+      selected_data_sankey() %>%
+        Recca::make_sankey(fontSize = 15, 
+                           width = "1400", # both width = and height = do not work when passed as arguments into make_sankey
+                           height = "1000",
+                           nodeWidth = 30) %>%
+        magrittr::extract2("Sankey") %>%
+        magrittr::extract2(1)
   })
+
+  
+  #output$sankey <- renderPlot(
+   # height = 900, {
+      #renderSankeyNetwork({ #  using height = 900 here results in the error "...unused argument (height = 900)"
+     # selected_data_sankey() %>%
+      # Recca::make_sankey(fontSize = 15, 
+       #                    width = 500, # both width = and height = do not work when passed as arguments into make_sankey
+        #                   height = "auto",
+        #                   nodeWidth = 30) %>%
+       # magrittr::extract2("Sankey") %>%
+       # magrittr::extract2(1)
+  #  })
+  # })
   
   output$data_table <- DT::renderDataTable({
     selected_data_DT() %>%
