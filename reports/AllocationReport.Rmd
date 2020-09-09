@@ -33,7 +33,7 @@ Note that numbers following "##" are the row number in the `AllocationGraphs` da
 alloc_plots <- drake::readd(SEAPSUTWorkflow::target_names$AllocationGraphs, 
                             path = cache_path, 
                             character_only = TRUE) %>% 
-  magrittr::extract2("plots")
+  magrittr::extract2("Plots")
 ```
 
 
