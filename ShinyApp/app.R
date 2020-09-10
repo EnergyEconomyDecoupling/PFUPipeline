@@ -122,10 +122,13 @@ ui <- dashboardPage(
                 # 3 - Data
                 menuItem("Data", tabName = "data", icon = icon("database")),
                 
-                # 4 - Reference and contact information
+                # 4 - SEA Studies
+                menuItem("SEA Studies", tabName = "seastudies", icon = icon("database")),
+                
+                # 5 - Reference and contact information
                 menuItem("Citation", tabName = "citation", icon = icon("book-open")), 
                 
-                # 5 - Direct hyperlink to Github repository (this is probably not necessary)
+                # 6 - Direct hyperlink to Github repository (this is probably not necessary)
                 menuItem("Github Repository", icon = icon("file-code"), 
                          href = "https://github.com/ZekeMarshall/PFU-Interface/")
                 )),
@@ -177,6 +180,16 @@ ui <- dashboardPage(
                               #size = 6,
                               choices = unique(allocations$Destination)
                               %>% sort()
+                  ),
+                  selectInput(inputId = "Rows",
+                               label = "Rows:",
+                               choices = c(1:6)
+                               %>% sort()
+                  ),
+                  selectInput(inputId = "Columns",
+                               label = "Columns:",
+                               choices = c(1:6)
+                               %>% sort()
                   ))
                 
                 )),
@@ -236,7 +249,7 @@ ui <- dashboardPage(
                   id = "sankey",
                   width = 11,
                   height = 950,
-                  sankeyNetworkOutput(outputId = "sankey")
+                  sankeyNetworkOutput(outputId = "sankey", height = 900)
                   
                 ),
                 box(
@@ -256,6 +269,13 @@ ui <- dashboardPage(
                               choices = countries
                               %>% sort()
                   )))),
+      
+      tabItem(tabName = "seastudies",
+              fluidRow(
+                box(title = "Societal Exergy Analysis (SEA) Studies",
+                    width = 12,
+                    tags$p("This tab contains information on the societal exergy analysis studies which acted as exemplars")
+                ))),
       
       tabItem(tabName = "data",
               fluidRow(
@@ -527,16 +547,14 @@ server <- function(input, output, session) {
                                 #colour = Machine_Eu.product,  
                                 fill = Machine_Eu.product 
         ),
-                  position = "fill" # "fill" does not cause gaps in the data for individual countries, but it grossly deforms the data for multiple plots
-                  #position = "stack" # "stack" causes gaps in the data for single countries, and the data to overlay on multiple plots rather than stack, but the proportions remain the same
-        ) +
+                  position = "fill") +
         scale_y_continuous(limits = c(0, 1), breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1)) +
         scale_x_continuous(breaks = c(1960, 1970, 1980, 1990, 2000, 2010, 2020)) +
         theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
         MKHthemes::xy_theme() + 
-        facet_wrap(vars(Country),
-                   #ncol = 1, # Arranging by rows or columns makes no difference to the stacking issue.
-                   #nrow = 1
+        ggplot2::facet_wrap(vars(Country),
+                   ncol = input$Columns,
+                   nrow = input$Rows
                    )
     })
   
@@ -554,29 +572,13 @@ server <- function(input, output, session) {
       )
     })
   
-  output$sankey <- renderSankeyNetwork({ #  using height = 900 here results in the error "...unused argument (height = 900)"
+  output$sankey <- renderSankeyNetwork({ 
       selected_data_sankey() %>%
-        Recca::make_sankey(fontSize = 15, 
-                           width = "1400", # both width = and height = do not work when passed as arguments into make_sankey
-                           height = "1000",
+        Recca::make_sankey(fontSize = 15,
                            nodeWidth = 30) %>%
         magrittr::extract2("Sankey") %>%
         magrittr::extract2(1)
   })
-
-  
-  #output$sankey <- renderPlot(
-   # height = 900, {
-      #renderSankeyNetwork({ #  using height = 900 here results in the error "...unused argument (height = 900)"
-     # selected_data_sankey() %>%
-      # Recca::make_sankey(fontSize = 15, 
-       #                    width = 500, # both width = and height = do not work when passed as arguments into make_sankey
-        #                   height = "auto",
-        #                   nodeWidth = 30) %>%
-       # magrittr::extract2("Sankey") %>%
-       # magrittr::extract2(1)
-  #  })
-  # })
   
   output$data_table <- DT::renderDataTable({
     selected_data_DT() %>%
