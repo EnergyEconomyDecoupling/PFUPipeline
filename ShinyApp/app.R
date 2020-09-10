@@ -536,8 +536,7 @@ server <- function(input, output, session) {
         MKHthemes::xy_theme() + 
         facet_wrap(vars(Country),
                    #ncol = 1, # Arranging by rows or columns makes no difference to the stacking issue.
-                   #nrow = 1,
-                   scales = "free_x"
+                   #nrow = 1
                    )
     })
   
