@@ -14,8 +14,10 @@ library(SEAPSUTWorkflow)
 max_year <- 2017                           # The last year to be analyzed
 
 # The countries with complete FU Analysis files c("World", "ESP", "PRT", "MEX", "GBR", "GHA", "CHN")
+# The countries to be analyzed, this should be read from Dropbox or the Exemplar_Table excel sheet
+# Currently only c("World", "ESP", "GRC", "GHA") are passing through the drake workflow without error
 
-countries <- c("World", "ESP", "GRC", "PRT", "MEX", "GBR", "GHA", "CHN")      # The countries to be analyzed, this should be read from Dropbox or the Exemplar_Table excel sheet
+countries <- c("World", "ESP", "GRC", "GHA")      
 
 # Create our drake plan
 plan <- SEAPSUTWorkflow::get_plan(countries = countries, 
