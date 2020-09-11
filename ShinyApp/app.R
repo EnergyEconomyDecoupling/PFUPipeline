@@ -550,7 +550,7 @@ server <- function(input, output, session) {
     })
   
   output$allocations_plot <- renderPlot(
-    height = 600, {
+    height = 900, {
       selected_data_allocations = selected_data_allocations()
       ggplot2::ggplot(data = selected_data_allocations) +
         geom_area(mapping = aes(x = Year, y = .values, 
