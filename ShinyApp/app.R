@@ -128,10 +128,10 @@ ui <- dashboardPage(
                          menuSubItem("IEA Data", tabName = "ieadata", icon = icon("archive")),
                          
                          # 2b) Allocations plots
-                         menuSubItem("Machine-Useful Work Allocations", tabName = "allocations", icon = icon("chart-pie")),
+                         menuSubItem("Useful Work Allocations", tabName = "allocations", icon = icon("chart-pie")),
                          
                          # 2c) FU etas and phi plots
-                         menuSubItem("Final-Useful Efficiencies", tabName = "eta_phi", icon = icon("chart-line")),
+                         menuSubItem("Conversion Efficiencies", tabName = "eta_phi", icon = icon("chart-line")),
                          
                          # 2d) ECC sankey diagram plots
                          menuSubItem("Energy Conversion Chain", tabName = "sankey", icon = icon("project-diagram"))
@@ -160,6 +160,20 @@ ui <- dashboardPage(
                     width = 12,
                     tags$p("This Shiny Dashboard App serves as an interactive interface for the PFU database project")
                 ))),
+      
+      tabItem(tabName = "dashboard", # why is this not displaying???
+              fluidRow(
+                box(title = "Visualisations - Contents",
+                    width = 12,
+                    tags$p("Visualisations of project outputs are detailed below"),
+                    tags$ol(
+                      tags$li("IEA World Extended Energy Balance Data"), 
+                      tags$li("Useful Work Allocations"), 
+                      tags$li("Conversion Efficiencies"),
+                      tags$li("Energy Conversion Chain")
+                    )
+                ))),
+      
       tabItem(tabName = "ieadata",
               fluidRow(
                 tabBox(
@@ -204,7 +218,7 @@ ui <- dashboardPage(
                   id = "tabset_allocations",
                   width = 9,
                   tabPanel(
-                    title = "Final Energy to Machine and Useful Work Allocations ",
+                    title = "Final Energy to Machine and Useful Work Allocations",
                     plotOutput(outputId = "allocations_plot")
                   )),
                 
@@ -257,7 +271,7 @@ ui <- dashboardPage(
       tabItem(tabName = "eta_phi",
               fluidRow(
                 tabBox(
-                  title = "Plots",
+                  title = "Conversion Efficiencies",
                   id = "tabset1",
                   width = 9,
                   tabPanel(
