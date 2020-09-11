@@ -190,7 +190,9 @@ ui <- dashboardPage(
                                label = "Columns:",
                                choices = c(1:6)
                                %>% sort()
-                  ))
+                  ),
+                  actionButton("plot", "Plot")
+                  )
                 
                 )),
       
@@ -420,8 +422,17 @@ server <- function(input, output, session) {
                       choices = sort(unique(post_Ef.product_data_allocations$Destination)))
   })
   
+  observeEvent(input$plot, {
+    showModal(modalDialog(
+      plotOutput("allocations_plot"),
+      footer = NULL,
+      easyClose = TRUE
+    ))
+  })
   
-  # These observe events update the data tab  
+  
+  
+# These observe events update the data tab  
   observeEvent(input$Country_DT,  {
     req(input$Country_DT)
     post_country_data_DT <- etas_and_phis %>%
