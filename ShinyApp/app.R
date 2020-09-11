@@ -327,31 +327,37 @@ ui <- dashboardPage(
       
       tabItem(tabName = "sankey",
               fluidRow(
-                box(
-                  title = "Primary-to-Final Energy flows from Production to Destination",
-                  id = "sankey",
-                  width = 11,
-                  height = 950,
-                  sankeyNetworkOutput(outputId = "sankey", height = 900)
-                  
-                ),
-                box(
-                  title = "Variables",
-                  width = 1,
-                  sliderInput(inputId = "Year_sankey", 
-                              label = "Year",
-                              min = 1960,
-                              max = max_year,
-                              value = 1960,
-                              step = 1,
-                              sep = ""
-                  ),
-                  
-                  selectInput(inputId = "Country_sankey", 
-                              label = "Country:",
-                              choices = countries
-                              %>% sort()
-                  )))),
+                      column(12,
+                             title = "Variables",
+                             sliderInput(inputId = "Year_sankey", 
+                                         label = "Year",
+                                         min = 1960,
+                                         max = max_year,
+                                         value = 1960,
+                                         step = 1,
+                                         sep = "",
+                                         width = "100%"
+                             ),
+                      
+               fluidRow(
+                       column(11,
+                              box(
+                                title = "Primary-to-Final Energy flows from Production to Destination",
+                                id = "sankey",
+                                width = 11,
+                                height = 950,
+                                sankeyNetworkOutput(outputId = "sankey", height = 900)
+                                
+                              ),
+                              
+                        column(1,
+                               selectInput(inputId = "Country_sankey", 
+                                           label = "Country:",
+                                           choices = countries
+                                           %>% sort()
+                               )
+              )))
+              ))),
       
       tabItem(tabName = "seastudies",
               fluidRow(
