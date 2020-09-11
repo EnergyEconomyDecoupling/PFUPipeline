@@ -110,10 +110,22 @@ PSUT_final_data <- drake::readd(SEAPSUTWorkflow::target_names$PSUT_final,
   dplyr::relocate(U, .after = U_feed)
 
 ################################################################################
-  
+
+
+# header <- dashboardHeader(title = "PFU Database",
+#                             # tags$li(a(href = 'http://shinyapps.company.com', # I'll turn this into a log-in button
+#                             #           icon("power-off"),
+#                             #           title = "Back to Apps Home"),
+#                             #         class = "dropdown"),
+#                             tags$li(a(href = 'http://www.leeds.ac.uk', # I'll link this to the project home page when this is up and running
+#                                       img(src = 'UoLHeader.png', height = "50px" # , height = "30px"
+#                                           )), # title = "PFU Database" ,style = "padding-top:10px; padding-bottom:10px;"
+#                                     class = "dropdown"))
+
 ui <- dashboardPage(
-  dashboardHeader(title = "PFU Database"
-  ),
+  # skin = "red",
+  # header,
+  dashboardHeader(title = "PFU Database"),
   
   dashboardSidebar(
     sidebarMenu(id = "sidebarmenu",
