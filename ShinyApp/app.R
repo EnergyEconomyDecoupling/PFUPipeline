@@ -262,11 +262,11 @@ ui <- dashboardPage(
                               #size = 6,
                               choices = unique(allocations$Destination)
                               %>% sort()
-                  ),
-                  selectInput(inputId = "Rows",
-                               label = "Rows:",
-                               choices = c(1:6)
-                               %>% sort()
+                  )
+                  # selectInput(inputId = "Rows",
+                  #              label = "Rows:",
+                  #              choices = c(1:6)
+                  #              %>% sort()
                   # ),
                   # selectInput(inputId = "Columns",
                   #              label = "Columns:",
@@ -276,7 +276,7 @@ ui <- dashboardPage(
                   # actionButton("plot", "Plot")
                   # )
                   # 
-                )),
+                ))),
       
       
       
@@ -423,6 +423,7 @@ ui <- dashboardPage(
                       tags$li("Matthew K. Heun"),
                       tags$li("Zeke Marshall"),
                       tags$li("Emmanuel Aramendia"))
+                    
                 ))))))
 
 
