@@ -1,6 +1,7 @@
 # Loads required CRAN packages
 require(drake)
 require(shiny)
+require(shinyBS)
 require(ggplot2)
 require(networkD3)
 require(tidyr)
@@ -94,8 +95,7 @@ allocations <- drake::readd(SEAPSUTWorkflow::target_names$CompletedAllocationTab
                            character_only = TRUE)
 
 # Adds a combined Machine-Eu.product column
-allocations$Machine_Eu.product = paste(allocations$Machine," - ", allocations$Eu.product) #%>%
- #dplyr::relocate(Machine_Eu.product, .after = Eu.product)
+allocations$Machine_Eu.product = paste(allocations$Machine," - ", allocations$Eu.product)
 
 
 ################################################################################
@@ -231,7 +231,8 @@ ui <- dashboardPage(
                   width = 9,
                   tabPanel(
                     title = "Final Energy to Machine and Useful Work Allocations",
-                    plotOutput(outputId = "allocations_plot")
+                    plotOutput(outputId = "allocations_plot"),
+                    bsModal("modalExample", "Your plot", "allocations_plot", size = "large", plotOutput("plot"), downloadButton('downloadPlot', 'Download'))
                   )),
                 
                 box(
@@ -266,15 +267,15 @@ ui <- dashboardPage(
                                label = "Rows:",
                                choices = c(1:6)
                                %>% sort()
-                  ),
-                  selectInput(inputId = "Columns",
-                               label = "Columns:",
-                               choices = c(1:6)
-                               %>% sort()
-                  ),
-                  actionButton("plot", "Plot")
-                  )
-                
+                  # ),
+                  # selectInput(inputId = "Columns",
+                  #              label = "Columns:",
+                  #              choices = c(1:6)
+                  #              %>% sort()
+                  # ),
+                  # actionButton("plot", "Plot")
+                  # )
+                  # 
                 )),
       
       
@@ -690,9 +691,9 @@ output$allocations_plot <- renderPlot(
       scale_x_continuous(breaks = c(1960, 1970, 1980, 1990, 2000, 2010, 2020)) +
       theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
       MKHthemes::xy_theme() + 
-      ggplot2::facet_wrap(vars(Country),
-                          ncol = input$Columns,
-                          nrow = input$Rows
+      ggplot2::facet_wrap(vars(Country)#,
+                          # ncol = input$Columns,
+                          # nrow = input$Rows
       )
   })
 
