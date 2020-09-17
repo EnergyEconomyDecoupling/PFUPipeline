@@ -216,9 +216,10 @@ ui <- dashboardPage(
                               choices = unique(balanced_iea_data$Flow)
                               %>% sort()
                   ),
-                  selectInput(inputId = "Product_ieadata",
+                  selectizeInput(inputId = "Product_ieadata",
                               label = "Final energy carrier:",
-                              choices = unique(balanced_iea_data$Product)
+                              choices = unique(balanced_iea_data$Product),
+                              multiple = TRUE
                               %>% sort()
                   )))),
       
@@ -597,7 +598,7 @@ selected_data_ieadata <- reactive({
                 Country %in% input$Country_ieadata,  
                 Flow.aggregation.point == input$Flow.aggregation.point_ieadata,
                 Flow == input$Flow_ieadata,
-                Product == input$Product_ieadata)
+                Product %in% input$Product_ieadata)
 })
 
 selected_data_allocations <- reactive({
