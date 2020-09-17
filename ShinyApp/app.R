@@ -78,6 +78,14 @@ etas_and_phis <- drake::readd(SEAPSUTWorkflow::target_names$CompletedEfficiencyT
 
 ################################################################################
 
+machines <- as.data.frame(unique(etas_and_phis$Machine))
+
+################################################################################
+
+Eu.products <- as.data.frame(unique(etas_and_phis$Eu.product))
+
+################################################################################
+
 # Creates a df with the Destination-Machine&Eu.product allocation data
 
 allocations <- drake::readd(SEAPSUTWorkflow::target_names$CompletedAllocationTables, 
@@ -121,22 +129,27 @@ ui <- dashboardPage(
     sidebarMenu(id = "sidebarmenu",
                 
                 # 1 - Project description
-                menuItem("Project Description", tabName = "description", icon = icon("chalkboard-teacher")),
+                menuItem("Project Description", tabName = "description", icon = icon("chalkboard-teacher"),
+                         
+                          menuSubItem("Outline", tabName = "outline", icon = icon("comments")),
+                
+                          menuSubItem("Framework", tabName = "framework", icon = icon("ruler-combined"))
+                ),
                 
                 # 2 - Interactive dashboard displaying results, I will eventually split this into multiple dashboards
                 menuItem("Visualisations", tabName = "dashboard", icon = icon("dashboard"),
                          
-                         # 2a) IEA WEEB data plots
-                         menuSubItem("IEA Data", tabName = "ieadata", icon = icon("archive")),
+                          # 2a) IEA WEEB data plots
+                          menuSubItem("IEA Data", tabName = "ieadata", icon = icon("archive")),
                          
-                         # 2b) Allocations plots
-                         menuSubItem("Useful Work Allocations", tabName = "allocations", icon = icon("chart-pie")),
+                          # 2b) Allocations plots
+                          menuSubItem("Useful Work Allocations", tabName = "allocations", icon = icon("chart-pie")),
                          
-                         # 2c) FU etas and phi plots
-                         menuSubItem("Conversion Efficiencies", tabName = "eta_phi", icon = icon("chart-line")),
+                          # 2c) FU etas and phi plots
+                          menuSubItem("Conversion Efficiencies", tabName = "eta_phi", icon = icon("chart-line")),
                          
-                         # 2d) ECC sankey diagram plots
-                         menuSubItem("Energy Conversion Chain", tabName = "sankey", icon = icon("project-diagram"))
+                          # 2d) ECC sankey diagram plots
+                          menuSubItem("Energy Conversion Chain", tabName = "sankey", icon = icon("project-diagram"))
                          
                 ),
                 
@@ -156,12 +169,27 @@ ui <- dashboardPage(
   
   dashboardBody(
     tabItems(
-      tabItem(tabName = "description",
+      tabItem(tabName = "outline",
               fluidRow(
-                box(title = "Project Description",
+                box(title = "Project Outline",
                     width = 12,
                     tags$p("This Shiny Dashboard App serves as an interactive interface for the PFU database project")
                 ))),
+      
+      tabItem(tabName = "framework",
+              fluidRow(
+                tabBox(title = "PFU Framework",
+                    id = "tabset_outline",
+                    width = 12,
+                    tabPanel(
+                      title = "Machines",
+                      DT::dataTableOutput(outputId = "machines")
+                    ),
+                    tabPanel(
+                      title = "Useful work products",
+                      DT::dataTableOutput(outputId = "Eu.products")
+                    )
+                    ))),
       
       tabItem(tabName = "dashboard", # why is this not displaying???
               fluidRow(
@@ -284,7 +312,8 @@ ui <- dashboardPage(
                   ),
                   tabPanel(
                     title = "Data",
-                    DT::dataTableOutput(outputId = "data_etaphi")
+                    DT::dataTableOutput(outputId = "data_etaphi"),
+                    downloadButton(outputId = "downloadData", label = "Download")
                   )),
                 
                 box(
@@ -586,8 +615,8 @@ selected_data_etaphi <- reactive({
   dplyr::filter(etas_and_phis,
                 Quantity == input$State,
                 Country %in% input$Country,  
-                Machine %in% input$Machine,
-                Eu.product %in% input$Eu.product)
+                Machine == input$Machine,
+                Eu.product == input$Eu.product)
 })
 
 
@@ -610,6 +639,7 @@ selected_data_DT <- reactive({
                 Machine == input$Machine_DT,
                 Eu.product == input$Eu.product_DT)
 })
+
   
   
 ################################################################################
@@ -684,6 +714,14 @@ output$data_etaphi <- DT::renderDataTable({
   selected_data_etaphi() 
   # %>%
   #   dplyr::select(Country, Quantity, Last.stage, Unit, Machine, Eu.product, Year, .values)
+})
+
+output$machines <- DT::renderDataTable({
+  machines
+})
+
+output$Eu.products <- DT::renderDataTable({
+  Eu.products
 })
 
 output$downloadData <- downloadHandler(
