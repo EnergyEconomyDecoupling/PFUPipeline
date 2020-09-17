@@ -76,16 +76,6 @@ etas_and_phis <- drake::readd(SEAPSUTWorkflow::target_names$CompletedEfficiencyT
                          path = cache_path, 
                          character_only = TRUE)
 
-etas <- etas_and_phis %>%
-  dplyr::filter(Quantity == "eta.fu")
-
-################################################################################
-
-# Creates a df with the exergy-to-energy ratio (phi) data 
-
-phis <- etas_and_phis %>%
-  dplyr::filter(Quantity == "phi.u")
-
 ################################################################################
 
 # Creates a df with the Destination-Machine&Eu.product allocation data
@@ -290,11 +280,11 @@ ui <- dashboardPage(
                   width = 9,
                   tabPanel(
                     title = "FU Efficiency Plots",
-                    plotOutput(outputId = "FU_etas_plot")
+                    plotOutput(outputId = "FU_etaphi_plot")
                   ),
                   tabPanel(
-                    title = "Exergy-to-Energy Ratio Plots",
-                    plotOutput(outputId = "phi_plot")
+                    title = "Data",
+                    DT::dataTableOutput(outputId = "data_etaphi")
                   )),
                 
                 box(
@@ -305,7 +295,7 @@ ui <- dashboardPage(
                   #"Box content here", br(), "More box content",
                   selectizeInput(inputId = "State", # Need to change to EorX throughout
                                  label = "Energy Quantification:",
-                                 choices = c(Energy = "eta", Exergy = "eta_X"), # `Exergy-to-energy ratio` = "phi"
+                                 choices = c(Energy = "eta.fu", `Exergy-to-energy ratio` = "phi.u"), # Exergy = "eta_X", 
                                  multiple = TRUE
                   ),
                   selectizeInput(inputId = "Country", 
@@ -501,15 +491,15 @@ observeEvent(input$Ef.product_allocations,  {
                     choices = sort(unique(post_Ef.product_data_allocations$Destination)))
 })
 
-observeEvent(input$plot, { # this is unfinished code for the popout plot button
-  showModal(modalDialog(
-    plotOutput("allocations_plot"),
-    footer = NULL,
-    easyClose = TRUE
-  ))
-})
+# observeEvent(input$plot, { # this is unfinished code for the popout plot button
+#   showModal(modalDialog(
+#     plotOutput("allocations_plot"),
+#     footer = NULL,
+#     easyClose = TRUE
+#   ))
+# })
 
-# These observe events update the final-to-useful efficiency tab
+# These observe events update the conversion efficiency tab
 observeEvent(input$Country,  {
   req(input$Country)
   post_country_data <- etas_and_phis %>%
@@ -532,33 +522,6 @@ observeEvent(input$Machine,  {
                        inputId = "Eu.product", 
                        choices = sort(unique(post_machine_data$Eu.product)))
 })
-
-
-
-
-# These observe events update the exergy-to-energy factor tab
-#observeEvent(input$Country_phi,  {
-# req(input$Country_phi)
-#post_country_data_phi <- master_data %>%
-# dplyr::filter(Country %in% input$Country_phi)
-
-#updateSelectizeInput(session,
-#                    inputId = "Machine_phi",
-#                   choices = sort(unique(post_country_data_phi$Machine)))
-
-#})
-
-#observeEvent(input$Machine_phi,  {
-# req(input$Country_phi)
-#req(input$Machine_phi)
-#post_machine_data_phi<- master_data %>%
-# dplyr::filter(Country %in% input$Country_phi) %>%
-#dplyr::filter(Machine %in% input$Machine_phi) 
-
-#updateSelectizeInput(session,
-#                    inputId = "Eu.product_phi", 
-#                   choices = sort(unique(post_machine_data_phi$Eu.product)))
-#})
 
   
 # These observe events update the data tab  
@@ -613,29 +576,18 @@ selected_data_allocations <- reactive({
                 Destination == input$Destination_allocations)
 })
 
-selected_data_eta <- reactive({
+selected_data_etaphi <- reactive({
   validate(
     need(input$State != "", "Please select at least one State"), # Need to add this to dplyr::filter code when drake workflow includes exergy eta
     need(input$Country != "", "Please select at least one Country"),
     need(input$Machine != "", "Please select at least one Machine"),
     need(input$Eu.product != "", "Please select at least one form of Useful work")
   )
-  dplyr::filter(etas,
-                Country == input$Country,  
-                Machine == input$Machine,
-                Eu.product == input$Eu.product)
-})
-
-selected_data_phi <- reactive({
-  validate(
-    need(input$Country != "", "Please select at least one Country"),
-    need(input$Machine != "", "Please select at least one Machine"),
-    need(input$Eu.product != "", "Please select at least one form of Useful work")
-  )
-  dplyr::filter(phis,
-                Country == input$Country,  
-                Machine == input$Machine,
-                Eu.product == input$Eu.product)
+  dplyr::filter(etas_and_phis,
+                Quantity == input$State,
+                Country %in% input$Country,  
+                Machine %in% input$Machine,
+                Eu.product %in% input$Eu.product)
 })
 
 
@@ -701,23 +653,11 @@ output$allocations_plot <- renderPlot(
 
 # Final-useful efficiency of Machine-useful work combination plots
 
-output$FU_etas_plot <- renderPlot(
+output$FU_etaphi_plot <- renderPlot(
   height = 600, {
-    selected_data_eta = selected_data_eta()
-    ggplot2::ggplot(data = selected_data_eta) +
+    selected_data_etaphi = selected_data_etaphi()
+    ggplot2::ggplot(data = selected_data_etaphi) +
       geom_line(mapping = aes(x = Year, y = .values, colour = Country)) + # I need to figure out how to display multiple combinations e.g. linetype = Machine
-      scale_y_continuous(limits = c(0, 1), breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1)) +
-      scale_x_continuous(limits = c(1960, 2020), breaks = c(1960, 1970, 1980, 1990, 2000, 2010, 2020)) +
-      MKHthemes::xy_theme()
-  })
-
-# Exergy-to-energy ratio (phi) plots 
-
-output$phi_plot <- renderPlot(
-  height = 600, {
-    selected_data_phi = selected_data_phi()
-    ggplot2::ggplot(data = selected_data_phi) +
-      geom_line(mapping = aes(x = Year, y = .values, colour = Country)) +
       scale_y_continuous(limits = c(0, 1), breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1)) +
       scale_x_continuous(limits = c(1960, 2020), breaks = c(1960, 1970, 1980, 1990, 2000, 2010, 2020)) +
       MKHthemes::xy_theme()
@@ -738,6 +678,12 @@ output$sankey <- renderSankeyNetwork({
 output$data_table <- DT::renderDataTable({
   selected_data_DT() %>%
     dplyr::select(Country, Quantity, Last.stage, Unit, Machine, Eu.product, Year, .values)
+})
+
+output$data_etaphi <- DT::renderDataTable({
+  selected_data_etaphi() 
+  # %>%
+  #   dplyr::select(Country, Quantity, Last.stage, Unit, Machine, Eu.product, Year, .values)
 })
 
 output$downloadData <- downloadHandler(
