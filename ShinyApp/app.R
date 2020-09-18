@@ -32,8 +32,6 @@ countries <- drake::readd(SEAPSUTWorkflow::target_names$countries,
              path = cache_path, 
              character_only = TRUE)
 
-################################################################################
-
 #  Creates a list of years in the drake workflow
 max_year <- drake::readd(SEAPSUTWorkflow::target_names$max_year, 
                          path = cache_path, 
@@ -41,53 +39,17 @@ max_year <- drake::readd(SEAPSUTWorkflow::target_names$max_year,
 
 years <- c(1960:max_year)
 
-################################################################################
-
 # Creates a df with the Balanced IEA Data for the selected countries
-
 balanced_iea_data <- drake::readd(SEAPSUTWorkflow::target_names$BalancedIEAData, 
                                   path = cache_path, 
                                   character_only = TRUE)
 
-
-################################################################################
-
-# Balanced IEA data DF's
-
-#cols_iea_bal <- colnames(balanced_iea_data)
-
-
-# Creates a DF with TES/TPES data
-
-#TPES_data <- balanced_iea_data %>%
- # dplyr::filter(Flow.aggregation.point == "Total primary energy supply") # Flow == c("Production", "Imports", "Exports", "Stock Changes", "World aviation bunkers", "World marine bunkers"), flows in TPES 
-
-# Creates a DF with TFC data 
-
-#TFC_data <- balanced_iea_data %>%
-#  dplyr::filter()
-
-
-################################################################################
-
 # Creates a df with the final-to-useful efficiency (eta) data
-
 etas_and_phis <- drake::readd(SEAPSUTWorkflow::target_names$CompletedEfficiencyTables, 
                          path = cache_path, 
                          character_only = TRUE)
 
-################################################################################
-
-machines <- as.data.frame(unique(etas_and_phis$Machine))
-
-################################################################################
-
-Eu.products <- as.data.frame(unique(etas_and_phis$Eu.product))
-
-################################################################################
-
 # Creates a df with the Destination-Machine&Eu.product allocation data
-
 allocations <- drake::readd(SEAPSUTWorkflow::target_names$CompletedAllocationTables, 
                            path = cache_path, 
                            character_only = TRUE)
@@ -99,7 +61,6 @@ allocations$Machine_Eu.product = paste(allocations$Machine," - ", allocations$Eu
 ################################################################################
 
 # Using SEAPSUTWorkflow::readd_by_country produces the error "Error: 'key' must be a scalar"
-
 PSUT_final_data <- drake::readd(SEAPSUTWorkflow::target_names$PSUT_final, 
                                path = cache_path, 
                                character_only = TRUE) %>%
@@ -154,16 +115,22 @@ ui <- dashboardPage(
                 ),
                 
                 # 3 - Data
-                menuItem("Data", tabName = "data", icon = icon("database")),
+                menuItem("Data", tabName = "data", icon = icon("database")
+                
+                ),
                 
                 # 4 - SEA Studies
-                menuItem("SEA Studies", tabName = "seastudies", icon = icon("book-open")),
+                menuItem("SEA Studies", tabName = "seastudies", icon = icon("book-open")
+                
+                ),
                 
                 # 5 - Reference and contact information
-                menuItem("Citation", tabName = "citation", icon = icon("user-graduate")), 
+                menuItem("Citation", tabName = "citation", icon = icon("user-graduate")
+                
+                ), 
                 
                 # 6 - Direct hyperlink to Github repository (this is probably not necessary)
-                menuItem("Github Repository", icon = icon("file-code"), 
+                menuItem("Github Repository", icon = icon("file-code"),
                          href = "https://github.com/ZekeMarshall/PFU-Interface/")
                 )),
   
@@ -307,14 +274,15 @@ ui <- dashboardPage(
                   id = "tabset1",
                   width = 9,
                   tabPanel(
-                    title = "FU Efficiency Plots",
+                    title = "Efficiency Plots",
                     plotOutput(outputId = "FU_etaphi_plot")
+                  )#,
+                  # tabPanel(
+                  #   title = "Efficiency Data",
+                  #   DT::dataTableOutput(outputId = "data_etaphi"),
+                  #   downloadButton(outputId = "downloadData", label = "Download")
+                  # )
                   ),
-                  tabPanel(
-                    title = "Data",
-                    DT::dataTableOutput(outputId = "data_etaphi"),
-                    downloadButton(outputId = "downloadData", label = "Download")
-                  )),
                 
                 box(
                   title = "Variables", 
@@ -322,28 +290,25 @@ ui <- dashboardPage(
                   solidHeader = TRUE, 
                   width = 3,
                   #"Box content here", br(), "More box content",
-                  selectizeInput(inputId = "State", # Need to change to EorX throughout
+                  selectInput(inputId = "State", # Need to change to EorX throughout
                                  label = "Energy Quantification:",
-                                 choices = c(Energy = "eta.fu", `Exergy-to-energy ratio` = "phi.u"), # Exergy = "eta_X", 
-                                 multiple = TRUE
+                                 choices = c(Energy = "eta.fu", `Exergy-to-energy ratio` = "phi.u")
                   ),
                   selectizeInput(inputId = "Country", 
                                  label = "Country:",
-                                 choices = countries
-                                 %>% sort(),
+                                 choices = countries,
                                  multiple = TRUE
+                                 %>% sort()
                   ),
-                  selectizeInput(inputId = "Machine", # Need to change to FUMachine throughout
+                  selectInput(inputId = "Machine", # Need to change to FUMachine throughout
                                  label = "Final-to-useful machine:",
                                  choices = unique(etas_and_phis$Machine)
-                                 %>% sort(),
-                                 multiple = TRUE
+                                 %>% sort()
                   ),
-                  selectizeInput(inputId = "Eu.product",
+                  selectInput(inputId = "Eu.product",
                                  label = "Useful product:",
                                  choices = unique(etas_and_phis$Eu.product)
-                                 %>% sort(),
-                                 multiple = TRUE
+                                 %>% sort()
                   )))),
       
       tabItem(tabName = "sankey",
@@ -545,7 +510,7 @@ observeEvent(input$Machine,  {
   req(input$Machine)
   post_machine_data <- etas_and_phis %>%
     dplyr::filter(Country %in% input$Country) %>%
-    dplyr::filter(Machine %in% input$Machine) 
+    dplyr::filter(Machine == input$Machine) 
   
   updateSelectizeInput(session,
                        inputId = "Eu.product", 
@@ -570,7 +535,7 @@ observeEvent(input$Machine_DT,  {
   req(input$Machine_DT)
   post_machine_data_DT <- etas_and_phis %>%
     dplyr::filter(Country %in% input$Country_DT) %>%
-    dplyr::filter(Machine %in% input$Machine_DT) 
+    dplyr::filter(Machine == input$Machine_DT) 
   
   updateSelectizeInput(session,
                        inputId = "Eu.product_DT", 
@@ -710,19 +675,19 @@ output$data_table <- DT::renderDataTable({
     dplyr::select(Country, Quantity, Last.stage, Unit, Machine, Eu.product, Year, .values)
 })
 
-output$data_etaphi <- DT::renderDataTable({
-  selected_data_etaphi() 
-  # %>%
-  #   dplyr::select(Country, Quantity, Last.stage, Unit, Machine, Eu.product, Year, .values)
-})
+# output$data_etaphi <- DT::renderDataTable({
+#   selected_data_etaphi() 
+#   # %>%
+#   #   dplyr::select(Country, Quantity, Last.stage, Unit, Machine, Eu.product, Year, .values)
+# })
 
-output$machines <- DT::renderDataTable({
-  machines
-})
-
-output$Eu.products <- DT::renderDataTable({
-  Eu.products
-})
+# output$machines <- DT::renderDataTable({
+#   machines
+# })
+# 
+# output$Eu.products <- DT::renderDataTable({
+#   Eu.products
+# })
 
 output$downloadData <- downloadHandler(
   
