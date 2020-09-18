@@ -17,6 +17,9 @@ Analyses are completed using the
 [drake](https://github.com/ropensci/drake) environment which provides
 helpful dependency management.
 
+This repository also includes a ShinyApp for visualisation of the data
+analysed in the drake workflow.
+
 ## Quick start
 
 At the RStudio console, type
@@ -27,6 +30,9 @@ source("_drake.R")       # to load the plan object
 r_vis_drake_graph()      # to see a directed acyclic graph of the calculations that will take place   
 r_make()                 # to execute the calculations
 ```
+
+To run the App simply open the App.R script in the ShinyApp file and
+click RunApp.
 
 ## Advanced
 
