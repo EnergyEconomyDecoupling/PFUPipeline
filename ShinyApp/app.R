@@ -57,6 +57,20 @@ allocations <- drake::readd(SEAPSUTWorkflow::target_names$CompletedAllocationTab
 # Adds a combined Machine-Eu.product column
 allocations$Machine_Eu.product = paste(allocations$Machine," - ", allocations$Eu.product)
 
+# Identifies the unique machine and eu_products
+
+machine_uniq <- as.data.frame(unique(etas_and_phis$Machine))
+
+machine_uniq <- magrittr::set_colnames(machine_uniq, "Machine")
+
+eu_product_uniq <- as.data.frame(unique(etas_and_phis$Eu.product))
+
+eu_product_uniq <- magrittr::set_colnames(eu_product_uniq, "Eu.product")
+
+machine_eu_product_uniq <- eu_product_uniq <- as.data.frame(unique(allocations$Machine_Eu.product))
+
+machine_eu_product_uniq <- magrittr::set_colnames(machine_eu_product_uniq, "Machine - Eu.product")
+
 
 ################################################################################
 
@@ -150,11 +164,15 @@ ui <- dashboardPage(
                     width = 12,
                     tabPanel(
                       title = "Machines",
-                      DT::dataTableOutput(outputId = "machines")
+                      DT::dataTableOutput(outputId = "Machines")
                     ),
                     tabPanel(
                       title = "Useful work products",
                       DT::dataTableOutput(outputId = "Eu.products")
+                    ),
+                    tabPanel(
+                      title = "Machine-Useful Work Product",
+                      DT::dataTableOutput(outputId = "machine_eu_product")
                     )
                     ))),
       
@@ -681,13 +699,19 @@ output$data_table <- DT::renderDataTable({
 #   #   dplyr::select(Country, Quantity, Last.stage, Unit, Machine, Eu.product, Year, .values)
 # })
 
-# output$machines <- DT::renderDataTable({
-#   machines
-# })
-# 
-# output$Eu.products <- DT::renderDataTable({
-#   Eu.products
-# })
+output$Machines <- DT::renderDataTable({
+  machine_uniq
+})
+
+output$Eu.products <- DT::renderDataTable({
+  eu_product_uniq
+})
+
+output$machine_eu_product <- DT::renderDataTable({
+  machine_eu_product_uniq
+})
+
+#########################################
 
 output$downloadData <- downloadHandler(
   
