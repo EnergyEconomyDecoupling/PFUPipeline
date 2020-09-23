@@ -145,7 +145,7 @@ ui <- dashboardPage(
                 
                 # 6 - Direct hyperlink to Github repository (this is probably not necessary)
                 menuItem("Github Repository", icon = icon("file-code"),
-                         href = "https://github.com/ZekeMarshall/PFU-Interface/")
+                         href = "https://github.com/EnergyEconomyDecoupling/PFU-Database")
                 )),
   
   dashboardBody(
@@ -340,7 +340,8 @@ ui <- dashboardPage(
                                          value = 1960,
                                          step = 1,
                                          sep = "",
-                                         width = "100%"
+                                         width = "100%",
+                                         animate = TRUE
                              ),
                       
                fluidRow(
@@ -609,6 +610,7 @@ selected_data_sankey <- reactive({
 })
 
 # What data should be included here, at the moment it is simply etas and phis, need to add: allocations, ECC, IEAData?
+# I need to remove this data section and have a seperate data tabPanel for each visualisation!
 selected_data_DT <- reactive({
   validate(
     need(input$Quantity_DT != "", "Please select at least one Quantity"),
