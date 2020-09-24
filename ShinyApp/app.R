@@ -92,7 +92,7 @@ GDP_data_final <- GDP_data_long %>%
 # Merges GDP data into etas data frame
 etas <- merge(etas, GDP_data_long, by = c("Year", "Country"), all.x = TRUE, sort = FALSE)
 
-
+max_gdp <- max(etas$GDP_Per_Capita, na.rm = TRUE)
 ################################################################################
 
 # Using SEAPSUTWorkflow::readd_by_country produces the error "Error: 'key' must be a scalar"
@@ -145,7 +145,7 @@ ui <- dashboardPage(
                           menuSubItem("Conversion Efficiencies", tabName = "eta_phi", icon = icon("chart-line")),
                          
                           # 2c) FU etas by GDP per capita PP
-                          menuSubItem("Efficiency by GDP", tabName = "eta_gdp", icon = icon("chart-line")),
+                          menuSubItem("Efficiency by GDP", tabName = "eta_gdp", icon = icon("dollar-sign")),
                          
                           # 2e) ECC sankey diagram plots
                           menuSubItem("Energy Conversion Chain", tabName = "sankey", icon = icon("project-diagram"))
@@ -391,7 +391,15 @@ ui <- dashboardPage(
                               label = "Useful product:",
                               choices = unique(etas$Eu.product)
                               %>% sort()
-                  )))),
+                              
+                  ),
+                  selectInput(inputId = "group_gdp",
+                              label = "Group",
+                              selected = NULL,
+                              choices = c(Year = "Year", Country = "Country" ) # How to include NULL option?
+                              %>% sort()
+                  )
+                  ))),
       
       tabItem(tabName = "sankey",
               fluidRow(
@@ -781,10 +789,13 @@ output$FU_etaphi_plot <- renderPlot(
 output$FU_etagdp_plot <- renderPlot(
   height = 600, {
     selected_data_etagdp = selected_data_etagdp()
-    ggplot2::ggplot(data = selected_data_etagdp, mapping = aes(x = GDP_Per_Capita, y = .values, color = Country)) + 
+    ggplot2::ggplot(data = selected_data_etagdp, mapping = aes_string(x = "GDP_Per_Capita", y = ".values", colour = input$group_gdp)) + 
       ggplot2::geom_point() + 
       geom_smooth(method = "lm") +
-      MKHthemes::xy_theme()
+      MKHthemes::xy_theme() +
+      scale_x_continuous(breaks = seq(from = 0, to = max_gdp, by = 5000)) +
+      xlab("Gross Domestic Product (GDP) per Capita in constant 2010 US Dollars [$]") +
+      ylab("Final-to-useful Efficiency [-]")
   })
 
 
