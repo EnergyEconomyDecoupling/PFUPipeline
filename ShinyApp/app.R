@@ -748,7 +748,9 @@ output$ieadata_plot <- renderPlot(
       scale_x_continuous(breaks = c(1960, 1970, 1980, 1990, 2000, 2010, 2020)) +
       theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
       MKHthemes::xy_theme() + 
-      ggplot2::facet_wrap(vars(Country))
+      ggplot2::facet_wrap(vars(Country)) +
+      xlab("Year [-]") +
+      ylab("Energy [ktoe]")
   })
 
 # Final Energy carrier-Destination to Machine-useful work allocation plots
@@ -770,7 +772,9 @@ output$allocations_plot <- renderPlot(
       ggplot2::facet_wrap(vars(Country)#,
                           # ncol = input$Columns,
                           # nrow = input$Rows
-      )
+      ) +
+      xlab("Year [-]") +
+      ylab("Proportion of energy consumption [-]")
   })
 
 # Final-useful efficiency of Machine-useful work combination plots
@@ -782,7 +786,9 @@ output$FU_etaphi_plot <- renderPlot(
       geom_line(mapping = aes(x = Year, y = .values, colour = Country)) + # I need to figure out how to display multiple combinations e.g. linetype = Machine
       scale_y_continuous(limits = c(0, 1), breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1)) +
       scale_x_continuous(limits = c(1960, 2020), breaks = c(1960, 1970, 1980, 1990, 2000, 2010, 2020)) +
-      MKHthemes::xy_theme()
+      MKHthemes::xy_theme() +
+      xlab("Year [-]") +
+      ylab("Final-to-useful Efficiency [-]")
   })
 
 
