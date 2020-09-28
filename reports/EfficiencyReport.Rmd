@@ -1,6 +1,6 @@
 ---
-title: "Allocation Report"
-author: "Matthew Kuperus Heun"
+title: "EfficiencyReport"
+author: "Zeke Marshall"
 date: '`r parsedate::format_iso_8601(Sys.time())`'
 output: pdf_document
 knit: (function(inputFile, encoding) 
@@ -30,13 +30,13 @@ cache_path <- root$find_file(".drake")
 
 ## Introduction
 
-This report shows graphs of all final energy allocations to final-to-useful machines.
+This report shows graphs of all final-to-useful energy efficiencies of machine-useful work product combinations
 
-Note that numbers following "##" are the row number in the `AllocationGraphs` data frame.
+Note that numbers following "##" are the row number in the `EfficiencyGraphs` data frame.
 
 
 ```{r, echo = FALSE}
-alloc_plots <- drake::readd(SEAPSUTWorkflow::target_names$AllocationGraphs, 
+eta_fu_plots <- drake::readd(SEAPSUTWorkflow::target_names$EfficiencyGraphs, 
                             path = cache_path, 
                             character_only = TRUE) %>% 
   magrittr::extract2("Plots")
@@ -44,8 +44,7 @@ alloc_plots <- drake::readd(SEAPSUTWorkflow::target_names$AllocationGraphs,
 
 
 ```{r, fig.width=6.5, fig.height=2.5, echo=FALSE}
-alloc_plots[1:10]
-
+eta_fu_plots
 ```
 
 
