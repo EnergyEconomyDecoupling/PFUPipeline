@@ -1,3 +1,5 @@
+* Added the ability to plot final-to-useful efficiencies vs GDP per Capita PPP
+
 # PFU-Database 0.0.2 (2020-09-18)
 
 * First version of PFU-Database which contains a working version of the Shiny App.
