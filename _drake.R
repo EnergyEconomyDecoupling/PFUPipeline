@@ -19,7 +19,6 @@ max_year <- 2017                           # The last year to be analyzed
 
 countries <- c("World", "ESP", "GRC", "GHA", "MEX", "PRT", "GBR", "CHN", "USA", "HND")
 
-
 # Create our drake plan
 plan <- SEAPSUTWorkflow::get_plan(countries = countries, 
                                   max_year = max_year,

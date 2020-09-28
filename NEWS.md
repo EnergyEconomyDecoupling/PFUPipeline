@@ -1,5 +1,13 @@
 
+# PFU-Database 0.0.3 (2020-09-28)
+
 * Added working final-useful efficiency report. Updated allocation report to include timestamp in file name.
+
+* Added play button to sankey diagram which runs through all years in an animation.
+
+* Added tables of the unique machines, useful work products, and machine-useful work product combinations to the "Framework" tab of the App.
+
+* Added the ability to plot final-to-useful efficiencies vs GDP per Capita PPP
 
 # PFU-Database 0.0.2 (2020-09-18)
 
@@ -8,3 +16,4 @@
 # PFU-Database 0.0.1 (2020-09-17)
 
 * First version of PFU-Database that contains develop branch for all work in this repository.
+
