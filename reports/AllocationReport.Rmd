@@ -3,6 +3,12 @@ title: "Allocation Report"
 author: "Matthew Kuperus Heun"
 date: '`r parsedate::format_iso_8601(Sys.time())`'
 output: pdf_document
+knit: (function(inputFile, encoding) 
+        {rmarkdown::render(inputFile, 
+                           encoding = encoding,
+                           output_file = paste0(substr(inputFile,1,nchar(inputFile)-4), "-", Sys.Date(),'.pdf')
+                           ) 
+        })
 ---
 
 ```{r setup, include=FALSE}
@@ -38,8 +44,8 @@ alloc_plots <- drake::readd(SEAPSUTWorkflow::target_names$AllocationGraphs,
 
 
 ```{r, fig.width=6.5, fig.height=2.5, echo=FALSE}
-alloc_plots[1:100]
-# alloc_plots
+alloc_plots[1:10]
+
 ```
 
 
