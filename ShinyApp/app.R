@@ -27,6 +27,13 @@ cache_path <- root$find_file(".drake")
 
 ################################################################################
 
+# Find the path to the GDP data
+path <- PFUSetup::get_abs_paths()
+project_path <- path$project_path
+GDP_path <- paste(project_path,"/GDP Data/GDP_by_country.xlsx", sep = "")
+
+################################################################################
+
 # Creates a list of the countries in the drake workflow, set in the _drake.R script
 countries <- drake::readd(SEAPSUTWorkflow::target_names$countries, 
              path = cache_path, 
@@ -37,17 +44,21 @@ max_year <- drake::readd(SEAPSUTWorkflow::target_names$max_year,
                          path = cache_path, 
                          character_only = TRUE)
 
-years <- c(1960:max_year)
+years <- paste(1960:max_year)
 
 # Creates a df with the Balanced IEA Data for the selected countries
 balanced_iea_data <- drake::readd(SEAPSUTWorkflow::target_names$BalancedIEAData, 
                                   path = cache_path, 
                                   character_only = TRUE)
 
-# Creates a df with the final-to-useful efficiency (eta) data
+# Creates a df with the final-to-useful efficiency (eta) and exergy-to-energy ratio (phi) data
 etas_and_phis <- drake::readd(SEAPSUTWorkflow::target_names$CompletedEfficiencyTables, 
                          path = cache_path, 
                          character_only = TRUE)
+
+# Creates a df with the final-to-useful efficiency (eta) data
+etas <- etas_and_phis %>%
+  dplyr::filter(Quantity == "eta.fu")
 
 # Creates a df with the Destination-Machine&Eu.product allocation data
 allocations <- drake::readd(SEAPSUTWorkflow::target_names$CompletedAllocationTables, 
@@ -57,6 +68,7 @@ allocations <- drake::readd(SEAPSUTWorkflow::target_names$CompletedAllocationTab
 # Adds a combined Machine-Eu.product column
 allocations$Machine_Eu.product = paste(allocations$Machine," - ", allocations$Eu.product)
 
+<<<<<<< HEAD
 # Identifies the unique machine and eu_products
 
 machine_uniq <- as.data.frame(unique(etas_and_phis$Machine))
@@ -71,7 +83,33 @@ machine_eu_product_uniq <- eu_product_uniq <- as.data.frame(unique(allocations$M
 
 machine_eu_product_uniq <- magrittr::set_colnames(machine_eu_product_uniq, "Machine - Eu.product")
 
+=======
+# Creates a data frame containing the GDP per capita constant 2010 US$ data
+GDP_data_wide <- readxl::read_xlsx(GDP_path) %>%
+  as.data.frame()
 
+# Removes unnecessary columns
+GDP_data_wide$`Country Name` <- NULL
+GDP_data_wide$`Indicator Name` <- NULL
+GDP_data_wide$`Indicator Code` <- NULL
+
+
+# Transposes the GDP per capita data from wide to long format
+GDP_data_long <- reshape2::melt(data = GDP_data_wide, id.vars = "Country Code", measure.vars = years) %>%
+  magrittr::set_colnames(c("Country", "Year", "GDP_Per_Capita"))
+>>>>>>> etaGDP
+
+# Sets Year column to numeric
+GDP_data_long$Year <- as.numeric(as.character(GDP_data_long$Year))
+
+# Filters GDP data for countries in workflow
+GDP_data_final <- GDP_data_long %>%
+  dplyr::filter(Country %in% countries)
+
+# Merges GDP data into etas data frame
+etas <- merge(etas, GDP_data_long, by = c("Year", "Country"), all.x = TRUE, sort = FALSE)
+
+max_gdp <- max(etas$GDP_Per_Capita, na.rm = TRUE)
 ################################################################################
 
 # Using SEAPSUTWorkflow::readd_by_country produces the error "Error: 'key' must be a scalar"
@@ -123,7 +161,10 @@ ui <- dashboardPage(
                           # 2c) FU etas and phi plots
                           menuSubItem("Conversion Efficiencies", tabName = "eta_phi", icon = icon("chart-line")),
                          
-                          # 2d) ECC sankey diagram plots
+                          # 2c) FU etas by GDP per capita PP
+                          menuSubItem("Efficiency by GDP", tabName = "eta_gdp", icon = icon("dollar-sign")),
+                         
+                          # 2e) ECC sankey diagram plots
                           menuSubItem("Energy Conversion Chain", tabName = "sankey", icon = icon("project-diagram"))
                          
                 ),
@@ -328,6 +369,58 @@ ui <- dashboardPage(
                                  choices = unique(etas_and_phis$Eu.product)
                                  %>% sort()
                   )))),
+      
+      tabItem(tabName = "eta_gdp",
+              fluidRow(
+                tabBox(
+                  title = "Efficiency by GDP",
+                  id = "tabset1",
+                  width = 9,
+                  tabPanel(
+                    title = "Efficiency Plots",
+                    plotOutput(outputId = "FU_etagdp_plot")
+                  )#,
+                  # tabPanel(
+                  #   title = "Efficiency Data",
+                  #   DT::dataTableOutput(outputId = "data_etaphi"),
+                  #   downloadButton(outputId = "downloadData", label = "Download")
+                  # )
+                ),
+                
+                box(
+                  title = "Variables", 
+                  status = "warning", 
+                  solidHeader = TRUE, 
+                  width = 3,
+                  #"Box content here", br(), "More box content",
+                  selectInput(inputId = "State_gdp", # Need to change to EorX throughout
+                              label = "Energy Quantification:",
+                              choices = c(Energy = "eta.fu", `Exergy-to-energy ratio` = "phi.u")
+                  ),
+                  selectizeInput(inputId = "Country_gdp", 
+                                 label = "Country:",
+                                 choices = countries,
+                                 multiple = TRUE
+                                 %>% sort()
+                  ),
+                  selectInput(inputId = "Machine_gdp", # Need to change to FUMachine throughout
+                              label = "Final-to-useful machine:",
+                              choices = unique(etas$Machine)
+                              %>% sort()
+                  ),
+                  selectInput(inputId = "Eu.product_gdp",
+                              label = "Useful product:",
+                              choices = unique(etas$Eu.product)
+                              %>% sort()
+                              
+                  ),
+                  selectInput(inputId = "group_gdp",
+                              label = "Group",
+                              selected = NULL,
+                              choices = c(Year = "Year", Country = "Country" ) # How to include NULL option?
+                              %>% sort()
+                  )
+                  ))),
       
       tabItem(tabName = "sankey",
               fluidRow(
@@ -536,6 +629,29 @@ observeEvent(input$Machine,  {
                        choices = sort(unique(post_machine_data$Eu.product)))
 })
 
+# These observe events update the efficiency by gdp tab
+observeEvent(input$Country_gdp,  {
+  req(input$Country_gdp)
+  post_country_data_gdp <- etas %>%
+    dplyr::filter(Country %in% input$Country_gdp)
+  
+  updateSelectizeInput(session,
+                       inputId = "Machine_gdp",
+                       choices = sort(unique(etas$Machine)))
+  
+})
+
+observeEvent(input$Machine_gdp,  {
+  req(input$Country_gdp)
+  req(input$Machine_gdp)
+  post_machine_data_gdp <- etas %>%
+    dplyr::filter(Country %in% input$Country_gdp) %>%
+    dplyr::filter(Machine == input$Machine_gdp) 
+  
+  updateSelectizeInput(session,
+                       inputId = "Eu.product_gdp", 
+                       choices = sort(unique(post_machine_data_gdp$Eu.product)))
+})
   
 # These observe events update the data tab  
 observeEvent(input$Country_DT,  {
@@ -603,6 +719,20 @@ selected_data_etaphi <- reactive({
                 Eu.product == input$Eu.product)
 })
 
+selected_data_etagdp <- reactive({
+  validate(
+    need(input$State_gdp != "", "Please select at least one State"), # Need to add this to dplyr::filter code when drake workflow includes exergy eta
+    need(input$Country_gdp != "", "Please select at least one Country"),
+    need(input$Machine_gdp != "", "Please select at least one Machine"),
+    need(input$Eu.product_gdp != "", "Please select at least one form of Useful work")
+  )
+  dplyr::filter(etas,
+                Quantity == input$State_gdp,
+                Country %in% input$Country_gdp,  
+                Machine == input$Machine_gdp,
+                Eu.product == input$Eu.product_gdp)
+})
+
 
 selected_data_sankey <- reactive({
   dplyr::filter(PSUT_final_data, Country == input$Country_sankey, Year == input$Year_sankey)
@@ -641,7 +771,9 @@ output$ieadata_plot <- renderPlot(
       scale_x_continuous(breaks = c(1960, 1970, 1980, 1990, 2000, 2010, 2020)) +
       theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
       MKHthemes::xy_theme() + 
-      ggplot2::facet_wrap(vars(Country))
+      ggplot2::facet_wrap(vars(Country)) +
+      xlab("Year [-]") +
+      ylab("Energy [ktoe]")
   })
 
 # Final Energy carrier-Destination to Machine-useful work allocation plots
@@ -663,7 +795,9 @@ output$allocations_plot <- renderPlot(
       ggplot2::facet_wrap(vars(Country)#,
                           # ncol = input$Columns,
                           # nrow = input$Rows
-      )
+      ) +
+      xlab("Year [-]") +
+      ylab("Proportion of energy consumption [-]")
   })
 
 # Final-useful efficiency of Machine-useful work combination plots
@@ -675,8 +809,26 @@ output$FU_etaphi_plot <- renderPlot(
       geom_line(mapping = aes(x = Year, y = .values, colour = Country)) + # I need to figure out how to display multiple combinations e.g. linetype = Machine
       scale_y_continuous(limits = c(0, 1), breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1)) +
       scale_x_continuous(limits = c(1960, 2020), breaks = c(1960, 1970, 1980, 1990, 2000, 2010, 2020)) +
-      MKHthemes::xy_theme()
+      MKHthemes::xy_theme() +
+      xlab("Year [-]") +
+      ylab("Final-to-useful Efficiency [-]")
   })
+
+
+output$FU_etagdp_plot <- renderPlot(
+  height = 600, {
+    selected_data_etagdp = selected_data_etagdp()
+    ggplot2::ggplot(data = selected_data_etagdp, mapping = aes_string(x = "GDP_Per_Capita", y = ".values", colour = input$group_gdp)) + 
+      ggplot2::geom_point() + 
+      geom_smooth(method = "lm") +
+      MKHthemes::xy_theme() +
+      scale_x_continuous(breaks = seq(from = 0, to = max_gdp, by = 5000)) +
+      xlab("Gross Domestic Product (GDP) per Capita in constant 2010 US Dollars [$]") +
+      ylab("Final-to-useful Efficiency [-]")
+  })
+
+
+
 
 # Energy conversion chain sankey diagrams
 
