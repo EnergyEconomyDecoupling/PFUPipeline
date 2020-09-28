@@ -17,7 +17,7 @@ max_year <- 2017                           # The last year to be analyzed
 # All are passing through the drake workflow without error at this time.
 # The countries to be analyzed should be read from Dropbox or the Exemplar_Table excel sheet
 
-countries <- c("World", "ESP", "GHA", "MEX", "PRT", "GBR", "CHN", "HND", "USA")
+countries <- c("World", "ESP", "GRC", "GHA", "MEX", "PRT", "GBR", "CHN", "USA", "HND")
 
 
 # Create our drake plan

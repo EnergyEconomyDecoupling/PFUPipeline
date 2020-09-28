@@ -1,4 +1,9 @@
+
 * Added working final-useful efficiency report. Updated allocation report to include timestamp in file name.
+
+* Added play button to sankey diagram which runs through all years in an animation.
+
+* Added tables of the unique machines, useful work products, and machine-useful work product combinations to the "Framework" tab of the App.
 
 # PFU-Database 0.0.2 (2020-09-18)
 
