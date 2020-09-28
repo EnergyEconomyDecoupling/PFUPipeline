@@ -68,7 +68,6 @@ allocations <- drake::readd(SEAPSUTWorkflow::target_names$CompletedAllocationTab
 # Adds a combined Machine-Eu.product column
 allocations$Machine_Eu.product = paste(allocations$Machine," - ", allocations$Eu.product)
 
-<<<<<<< HEAD
 # Identifies the unique machine and eu_products
 
 machine_uniq <- as.data.frame(unique(etas_and_phis$Machine))
@@ -83,7 +82,6 @@ machine_eu_product_uniq <- eu_product_uniq <- as.data.frame(unique(allocations$M
 
 machine_eu_product_uniq <- magrittr::set_colnames(machine_eu_product_uniq, "Machine - Eu.product")
 
-=======
 # Creates a data frame containing the GDP per capita constant 2010 US$ data
 GDP_data_wide <- readxl::read_xlsx(GDP_path) %>%
   as.data.frame()
@@ -97,7 +95,6 @@ GDP_data_wide$`Indicator Code` <- NULL
 # Transposes the GDP per capita data from wide to long format
 GDP_data_long <- reshape2::melt(data = GDP_data_wide, id.vars = "Country Code", measure.vars = years) %>%
   magrittr::set_colnames(c("Country", "Year", "GDP_Per_Capita"))
->>>>>>> etaGDP
 
 # Sets Year column to numeric
 GDP_data_long$Year <- as.numeric(as.character(GDP_data_long$Year))

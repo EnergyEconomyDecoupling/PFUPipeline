@@ -1,3 +1,6 @@
+# PFU-Database 0.0.4 (2020-09-28)
+
+* Hotfix: Removed missed merge conflicts from 0.0.3
 
 # PFU-Database 0.0.3 (2020-09-28)
 
