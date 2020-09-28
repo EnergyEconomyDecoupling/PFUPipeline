@@ -1,3 +1,5 @@
+* Added working final-useful efficiency report. Updated allocation report to include timestamp in file name.
+
 # PFU-Database 0.0.2 (2020-09-18)
 
 * First version of PFU-Database which contains a working version of the Shiny App.
