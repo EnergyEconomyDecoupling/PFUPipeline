@@ -38,8 +38,7 @@ eta_fu_plots <- drake::readd(SEAPSUTWorkflow::target_names$EfficiencyGraphs,
 
 
 ```{r, fig.width=6.5, fig.height=2.5, echo=FALSE}
-eta_fu_plots[1:100]
-# alloc_plots
+eta_fu_plots
 ```
 
 
