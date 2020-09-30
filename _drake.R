@@ -17,7 +17,13 @@ max_year <- 2017                           # The last year to be analyzed
 # All are passing through the drake workflow without error at this time.
 # The countries to be analyzed should be read from Dropbox or the Exemplar_Table excel sheet
 
-countries <- c("World", "ESP", "GRC", "GHA", "MEX", "PRT", "GBR", "CHN", "USA", "HND")
+countries <- c("World", "ESP", "PRT", "MEX", "GBR", "GHA", "CHN", "HND", "USA")
+
+# Exemplar countries and Non-exemplar countries
+#countries <- c("World", "ESP", "PRT", "MEX", "GBR", "GHA", "CHN", "HND", "USA", "GRC", "ZAF")
+
+# Spain (ESP) used to test workflow quickly
+#countries <- c("ESP")
 
 # Create our drake plan
 plan <- SEAPSUTWorkflow::get_plan(countries = countries, 
