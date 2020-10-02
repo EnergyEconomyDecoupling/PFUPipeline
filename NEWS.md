@@ -1,3 +1,5 @@
+* Added working exergy-to-energy ratio report.
+
 # PFU-Database 0.0.4 (2020-09-28)
 
 * Hotfix: Removed missed merge conflicts from 0.0.3
