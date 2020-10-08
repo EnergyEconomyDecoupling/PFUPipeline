@@ -1,3 +1,5 @@
+* Added working non-stationary final-to-useful allocations report.
+
 * Added working exergy-to-energy ratio report.
 
 # PFU-Database 0.0.4 (2020-09-28)

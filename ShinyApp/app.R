@@ -30,7 +30,7 @@ cache_path <- root$find_file(".drake")
 # Find the path to the GDP data
 path <- PFUSetup::get_abs_paths()
 project_path <- path$project_path
-GDP_path <- paste(project_path,"/GDP Data/GDP_by_country.xlsx", sep = "")
+GDP_path <- paste(project_path,"/Data/GDP Data/GDP_by_country.xlsx", sep = "")
 
 ################################################################################
 
