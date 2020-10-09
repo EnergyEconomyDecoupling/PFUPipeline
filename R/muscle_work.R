@@ -3,10 +3,6 @@ library(wbstats)
 library(FAOSTAT)
 library(Rilostat)
 
-# Sets list of exemplar country codes
-
-countries <- c("ESP", "PRT", "MEX", "GBR", "GHA", "CHN", "HND", "USA")
-
 
 ################################################################################
 ## WORLD BANK
@@ -61,82 +57,61 @@ human_labor_data <- population %>%
   merge(participation_rate) %>%
   merge(agr_workers_per) %>%
   merge(srv_workers_per) %>%
-  merge(ind_workers_per) %>% # MELT HERE
-  magrittr::set_colnames(c("ISO_Country_Code", "Country", "Year", "Total_Population", "WorkingAge_Population_Per", "Participation_Rate_Per", "Agriculture_per", "Services_per", "Industry_per"))
+  merge(ind_workers_per) %>%
+  magrittr::set_colnames(c("ISO_Country_Code", 
+                           "Country", 
+                           "Year", 
+                           "Total_Population", 
+                           "WorkingAge_Population_Per", 
+                           "Participation_Rate_Per", 
+                           "Agriculture", "Services", "Industry"))
 
 # Calculates working population in a new column
 human_labor_data <- human_labor_data %>%
   dplyr::mutate("Working_Population" = Total_Population * (WorkingAge_Population_Per/100) * (Participation_Rate_Per/100))
 
-# Calculates the total number of workers in agriculture, services and industry in new columns
-human_labor_data <- human_labor_data %>% # GROUP BY HERE
-  dplyr::mutate("Agriculture_Workers" = Working_Population * (Agriculture_per/100)) %>%
-  dplyr::mutate("Services_Workers" = Working_Population * (Services_per/100)) %>%
-  dplyr::mutate("Industry_Workers" = Working_Population * (Industry_per/100))
+# Reshapes data for the percentage of workers in each sector from wide to long format
+human_labor_data <- human_labor_data %>%
+  reshape2::melt(measure.vars = c("Agriculture", "Services", "Industry"),
+                 value.name = "Percentage_Workers_Sector",
+                 variable.name = "Sector")
+  
+# Calculates the workers per sector
+human_labor_data <- human_labor_data %>%
+  dplyr::mutate("Workers_Sector" = Working_Population * Percentage_Workers_Sector)
 
 
 # Creates a ddf containing unique countries in the wbstats data
 uniq_wb_countries_ISO <- unique(human_labor_data$ISO_Country_Code) %>%
   as.data.frame()
 
+# Sets list of exemplar country codes
+countries <- c("ESP", "PRT", "MEX", "GBR", "GHA", "CHN", "HND", "USA")
 
-# Re-organises data frame, should I do this before I calculate the workers?
-human_labor_data_long <- human_labor_data %>%
-  # reshape2::melt(measure.vars = c("Agriculture_Workers", 
-  #                                 "Services_Workers", 
-  #                                 "Industry_Workers"),
-  #                value.name = "Number",
-  #                variable.name = "SectorNumber"
-  #                ) %>%
-  reshape2::melt(measure.vars = c("Agriculture_per",
-                                  "Services_per",
-                                  "Industry_per"),
-                 value.name = "Percentage",
-                 variable.name = "SectorShare"
-                 )
-
-human_labor_data_long_exemplars <- human_labor_data_long %>%
+# Filters data frame to only include exemplar countries
+human_labor_data_exemplars <- human_labor_data %>%
   dplyr::filter(ISO_Country_Code %in% countries)
 
-shares_plot <- ggplot2::ggplot(human_labor_data_long_exemplars) +
+# Filters data to only include data for the USA
+USA <- human_labor_data_exemplars %>%
+  dplyr::filter(ISO_Country_Code == "USA")
+
+# Creates a grid of plots containing percentage shares in each sector by country
+shares_plot <- ggplot2::ggplot(human_labor_data_exemplars) +
   ggplot2::geom_area(mapping = aes(x = Year, 
-                                   y = Percentage,
-                                   # group = SectorShare,
-                                   fill = SectorShare)
-  ) +
+                                   y = Percentage_Workers_Sector,
+                                   fill = Sector)) +
   ggplot2::facet_wrap(vars(Country))
 
-################################################################################
 
-df1 <- reshape2::melt(human_labor_data, measure.vars = c("Agriculture_Workers", 
-                                                       "Services_Workers", 
-                                                       "Industry_Workers"),
-                      value.name = "Number",
-                      variable.name = "Sector_num")
-df1 <- df1[,-c(7:9)]
-
-df2 <- reshape2::melt(human_labor_data, measure.vars = c("Agriculture_per",
-                                                       "Services_per",
-                                                       "Industry_per"),
-                      value.name = "Percentage",
-                      variable.name = "Sector_per")
-df2 <- df2[,-c(8:10)]
-
-df3 <- df1 %>%
-  cbind(df2[c("Sector_per", "Percentage")]) %>%
-  dplyr::filter(ISO_Country_Code %in% countries)
-
-numbers_plot <- ggplot2::ggplot(df3) +
+# Creates a grid of plots containing worker numbers in each sector by country
+numbers_plot <- ggplot2::ggplot(human_labor_data_exemplars) +
   ggplot2::geom_area(mapping = aes(x = Year, 
-                                   y = Number,
-                                   # group = SectorShare,
-                                   fill = Sector_per)
-  ) +
+                                   y = Workers_Sector,
+                                   fill = Sector)) +
   ggplot2::facet_wrap(vars(Country),
                       scales = "free_y")
 
-# I need to reshape this ata earlier in the workflow to prevent having to create 
-# two df's to align perc and num workers by sector
 
 
 
