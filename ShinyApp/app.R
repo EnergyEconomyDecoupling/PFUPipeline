@@ -9,6 +9,7 @@ require(magrittr)
 require(DT)
 require(shinydashboard)
 require(rprojroot)
+require(dashboardthemes)
 
 # Loads required non-CRAN packages. Is there an equivalent to require for non-CRAN packages?
 library(MKHthemes)
@@ -187,6 +188,12 @@ ui <- dashboardPage(
                 )),
   
   dashboardBody(
+    
+    # Establishes theme. I will create a custom theme using dashboardThemeDesigner which uses Leeds color schemes
+    dashboardthemes::shinyDashboardThemes(
+      theme = "grey_light"
+    ),
+    
     tabItems(
       tabItem(tabName = "outline",
               fluidRow(
