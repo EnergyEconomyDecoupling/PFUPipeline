@@ -92,7 +92,7 @@ countries <- c("ESP", "PRT", "MEX", "GBR", "GHA", "CHN", "HND", "USA")
 human_labor_data_exemplars <- human_labor_data %>%
   dplyr::filter(ISO_Country_Code %in% countries)
 
-# Filters data to only include data for the USA
+# Filters data to only include data for the USA as an example
 USA <- human_labor_data_exemplars %>%
   dplyr::filter(ISO_Country_Code == "USA")
 
