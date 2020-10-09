@@ -1,5 +1,4 @@
 library(tidyverse)
-library(magrittr)
 
 # Creates a file path to the FAO data in dropbox.
 # This data contains the number of live animals, per species, per country, by year
