@@ -125,8 +125,26 @@ numbers_plot <- ggplot2::ggplot(human_labor_data_exemplars) +
 # (https://gitlab.com/paulrougieux/faostatpackage) which is maintained by a 
 # different author
 
-# Searches for the domain,  element and item code for a specific FAOSTAT query
-FAOSTAT::FAOsearch
+
+# Code to bulk download the livestock data
+#### This is not as clean as simply downloading the required data from FAOSTAT directly
+
+# install.packages("FAOSTAT")
+# library(FAOSTAT)
+# 
+# data_folder <- "data_raw"
+# dir.create(data_folder)
+# 
+# url_bulk_site <- "http://fenixservices.fao.org/faostat/static/bulkdownloads"
+# 
+# url_livestock <- "Production_Livestock_E_All_Data.zip"
+# 
+# url <- file.path(url_bulk_site, url_livestock)
+# 
+# download_faostat_bulk(url_bulk = url, data_folder = data_folder)
+# 
+# livestock <- read_faostat_bulk("data_raw/Production_Livestock_E_All_Data.zip")
+
 
 
 
