@@ -44,6 +44,16 @@ animals_plot <- ggplot2::ggplot(working_species_animals_exemplar) +
   ggplot2::facet_wrap(vars(Country),
                       scales = "free_y")
 
+# Creates a 2 column DF containing the country names and associated ISO codes in
+# the FAO data
+FAO_Country_ISO <- animals_data_trimmed %>%
+  dplyr::select(c("ISO_Country_Code", "Country")) %>%
+  unique()
+
+# Writes a .csv file to the Mapping folder for use in Country_Mapping 
+write.csv(FAO_Country_ISO, file = paste0(PFUSetup::get_abs_paths()$project_path, 
+                                        "/Mapping/FAO_countries.csv", sep = ""))
+
 
 ################################################################################
 ## FAOSTAT

@@ -80,11 +80,6 @@ human_labor_data <- human_labor_data %>%
 human_labor_data <- human_labor_data %>%
   dplyr::mutate("Workers_Sector" = Working_Population * Percentage_Workers_Sector)
 
-
-# Creates a ddf containing unique countries in the wbstats data
-uniq_wb_countries_ISO <- unique(human_labor_data$ISO_Country_Code) %>%
-  as.data.frame()
-
 # Sets list of exemplar country codes
 countries <- c("ESP", "PRT", "MEX", "GBR", "GHA", "CHN", "HND", "USA")
 
@@ -111,6 +106,16 @@ numbers_plot <- ggplot2::ggplot(human_labor_data_exemplars) +
                                    fill = Sector)) +
   ggplot2::facet_wrap(vars(Country),
                       scales = "free_y")
+
+# Creates a 2 column DF containing the country names and associated ISO codes in
+# the World Bank data
+WB_Country_ISO <- human_labor_data %>%
+  dplyr::select(c("ISO_Country_Code", "Country")) %>%
+  unique()
+
+# Writes a .csv file to the Mapping folder for use in Country_Mapping 
+write.csv(WB_Country_ISO, file = paste0(PFUSetup::get_abs_paths()$project_path, 
+                                        "/Mapping/WB_countries.csv", sep = ""))
 
 
 
