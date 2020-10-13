@@ -87,9 +87,9 @@ countries <- c("ESP", "PRT", "MEX", "GBR", "GHA", "CHN", "HND", "USA")
 human_labor_data_exemplars <- human_labor_data %>%
   dplyr::filter(ISO_Country_Code %in% countries)
 
-# Filters data to only include data for the USA as an example
-USA <- human_labor_data_exemplars %>%
-  dplyr::filter(ISO_Country_Code == "USA")
+# # Filters data to only include data for the USA as an example
+# USA <- human_labor_data_exemplars %>%
+#   dplyr::filter(ISO_Country_Code == "USA")
 
 # Creates a grid of plots containing percentage shares in each sector by country
 shares_plot <- ggplot2::ggplot(human_labor_data_exemplars) +
@@ -118,6 +118,27 @@ write.csv(WB_Country_ISO, file = paste0(PFUSetup::get_abs_paths()$project_path,
                                         "/Mapping/WB_countries.csv", sep = ""))
 
 
+# Creates a filepath to the country_mapping concordance file
+country_mapping_path <- paste(PFUSetup::get_abs_paths()$project_path, 
+                              "/Mapping/Country_Mapping.xlsx", sep = "")
+
+# Reads the exemplar_table sheet of the country mapping file, this contains 
+# a list of corresponding continent/regions codes, ISO codes and IEA country names
+country_mapping <- readxl::read_excel(country_mapping_path,
+                                      sheet = "exemplar_table") %>%
+  tibble::tibble()
+
+# Selects relevant columns, and removes countries with no region code (i.e. World)
+continent_concordance_iea <- country_mapping %>%
+  dplyr::select(c("Region.code", "2017")) %>% # This will need to updated with each update of the IEA data!
+  magrittr::set_colnames(c("Region.code", "ISO_Country_Code")) %>%
+  dplyr::filter(Region.code != "")
+
+# Creates a tibble from human_labor_data which only contains iea countries
+# and adds a region.code column
+
+pfu_human_labor_data <- human_labor_data %>%
+  dplyr::right_join(continent_concordance_iea, by = "ISO_Country_Code")
 
 ################################################################################
 ## ILOSTAT

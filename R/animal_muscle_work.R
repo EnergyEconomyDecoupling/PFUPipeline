@@ -54,6 +54,27 @@ FAO_Country_ISO <- animals_data_trimmed %>%
 write.csv(FAO_Country_ISO, file = paste0(PFUSetup::get_abs_paths()$project_path, 
                                         "/Mapping/FAO_countries.csv", sep = ""))
 
+# Creates a filepath to the country_mapping concordance file
+country_mapping_path <- paste(PFUSetup::get_abs_paths()$project_path, 
+                              "/Mapping/Country_Mapping.xlsx", sep = "")
+
+# Reads the exemplar_table sheet of the country mapping file, this contains 
+# a list of corresponding continent/regions codes, ISO codes and IEA country names
+country_mapping <- readxl::read_excel(country_mapping_path,
+                                      sheet = "exemplar_table") %>%
+  tibble::tibble()
+
+# Selects relevant columns, and removes countries with no region code (i.e. World)
+continent_concordance_iea <- country_mapping %>%
+  dplyr::select(c("Region.code", "2017")) %>% # This will need to updated with each update of the IEA data!
+  magrittr::set_colnames(c("Region.code", "ISO_Country_Code")) %>%
+  dplyr::filter(Region.code != "")
+
+# Creates a tibble from working_species_animals which only contains iea countries
+# and adds a region.code column
+
+pfu_working_species_animals <- working_species_animals %>%
+  dplyr::right_join(continent_concordance_iea, by = "ISO_Country_Code")
 
 ################################################################################
 ## FAOSTAT
