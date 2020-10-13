@@ -120,7 +120,7 @@ write.csv(WB_Country_ISO, file = paste0(PFUSetup::get_abs_paths()$project_path,
 
 # Creates a filepath to the country_mapping concordance file
 country_mapping_path <- paste(PFUSetup::get_abs_paths()$project_path, 
-                              "/Mapping/Country_Mapping.xlsx", sep = "")
+                              "/Mapping/Country_Mapping_2019.xlsx", sep = "")
 
 # Reads the exemplar_table sheet of the country mapping file, this contains 
 # a list of corresponding continent/regions codes, ISO codes and IEA country names
