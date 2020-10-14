@@ -1,3 +1,7 @@
+* Added scripts to download and tidy data for the number of animals and workers for muscle work calculations.
+
+* Added scripts to download, tidy, and plot temperature data from CEDA
+
 * Added working non-stationary final-to-useful allocations report.
 
 * Added working exergy-to-energy ratio report.
