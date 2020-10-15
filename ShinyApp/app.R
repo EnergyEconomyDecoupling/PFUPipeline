@@ -11,7 +11,6 @@ require(shinydashboard)
 require(rprojroot)
 require(dashboardthemes)
 require(knitr)
-require(markdown)
 require(rmarkdown)
 
 # Loads required non-CRAN packages. Is there an equivalent to require for non-CRAN packages?
@@ -123,8 +122,11 @@ PSUT_final_data <- drake::readd(SEAPSUTWorkflow::target_names$PSUT_final,
 
 ################################################################################
 
-rmdfiles <- c("PFU-Database Documentation Test.rmd") # "databasedocumentation.bib" renders to .txt file
-sapply(rmdfiles, knit, quiet = T)
+rmdfiles <- c("datadoctest.rmd") # "databasedocumentation.bib" renders to .txt file
+sapply(rmdfiles, knitr::knit2html, quiet = T)
+
+rmdfile <- c("datadoctest.Rmd")
+knitr::knit2html(rmdfile)
 
 ################################################################################
 
@@ -543,7 +545,7 @@ ui <- dashboardPage(
       tabItem(tabName = "documentation",
               fluidPage(
                 #uiOutput(`markdown`)
-                withMathJax(includeMarkdown("PFU-Database Documentation Test.md")) 
+                withMathJax(includeMarkdown("PFU-Database Documentation.md")) 
                 #includeMarkdown("PFU-Database Documentation Test.md") # does not render latex math, as expected!
                 ))
       )))
