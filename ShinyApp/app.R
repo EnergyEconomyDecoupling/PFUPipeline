@@ -10,6 +10,8 @@ require(DT)
 require(shinydashboard)
 require(rprojroot)
 require(dashboardthemes)
+require(knitr)
+require(rmarkdown)
 
 # Loads required non-CRAN packages. Is there an equivalent to require for non-CRAN packages?
 library(MKHthemes)
@@ -120,6 +122,14 @@ PSUT_final_data <- drake::readd(SEAPSUTWorkflow::target_names$PSUT_final,
 
 ################################################################################
 
+rmdfiles <- c("datadoctest.rmd") # "databasedocumentation.bib" renders to .txt file
+sapply(rmdfiles, knitr::knit2html, quiet = T)
+
+rmdfile <- c("datadoctest.Rmd")
+knitr::knit2html(rmdfile)
+
+################################################################################
+
 
 # header <- dashboardHeader(title = "PFU Database",
 #                             # tags$li(a(href = 'http://shinyapps.company.com', # I'll turn this into a log-in button
@@ -182,17 +192,22 @@ ui <- dashboardPage(
                 
                 ), 
                 
-                # 6 - Direct hyperlink to Github repository (this is probably not necessary)
+                # 6 - Database documentation
+                menuItem("Database documentation", tabName = "documentation", icon = icon("book")
+                         
+                ), 
+                
+                # 7 - Direct hyperlink to Github repository (this is probably not necessary)
                 menuItem("Github Repository", icon = icon("file-code"),
                          href = "https://github.com/EnergyEconomyDecoupling/PFU-Database")
                 )),
   
   dashboardBody(
     
-    # Establishes theme. I will create a custom theme using dashboardThemeDesigner which uses Leeds color schemes
-    dashboardthemes::shinyDashboardThemes(
-      theme = "grey_light"
-    ),
+    # # Establishes theme. I will create a custom theme using dashboardThemeDesigner which uses Leeds color schemes
+    # dashboardthemes::shinyDashboardThemes(
+    #   theme = "grey_light"
+    # ),
     
     tabItems(
       tabItem(tabName = "outline",
@@ -525,7 +540,15 @@ ui <- dashboardPage(
                       tags$li("Zeke Marshall"),
                       tags$li("Emmanuel Aramendia"))
                     
-                ))))))
+                ))),
+      
+      tabItem(tabName = "documentation",
+              fluidPage(
+                #uiOutput(`markdown`)
+                withMathJax(includeMarkdown("PFU-Database Documentation.md")) 
+                #includeMarkdown("PFU-Database Documentation Test.md") # does not render latex math, as expected!
+                ))
+      )))
 
 
 ################################################################################
@@ -869,7 +892,14 @@ output$machine_eu_product <- DT::renderDataTable({
   machine_eu_product_uniq
 })
 
-#########################################
+################################################################################
+
+# Alternative method of rendering r markdown file in Shiny
+# output$markdown <- renderUI({
+#   HTML(markdown::markdownToHTML(knit("PFU-Database Documentation Test.rmd", quiet = TRUE)))
+# })
+
+################################################################################
 
 output$downloadData <- downloadHandler(
   
