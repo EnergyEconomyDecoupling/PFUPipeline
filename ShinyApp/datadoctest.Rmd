@@ -1,0 +1,136 @@
+---
+title: "PFU-Database Documentation"
+author: "Zeke Marshall"
+date: "14/10/2020" # Sys.Date()
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+    self_contained: false
+bibliography: databasedocumentation.bib
+link-citations: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# Load required packages
+library(tidyverse)
+library(drake)
+
+## Establishes connection to drake cache
+# Set up the root directory
+root <- rprojroot::is_rstudio_project
+
+# Identifies the file path for the drake cache
+cache_path <- root$find_file(".drake")
+
+## Loads required data from drake cache
+
+# Creates a DF with the allocations data
+allocations <- drake::readd(SEAPSUTWorkflow::target_names$CompletedAllocationTables, 
+                           path = cache_path, 
+                           character_only = TRUE)
+
+allocations$Machine_Eu.product = paste(allocations$Machine," - ", allocations$Eu.product)
+
+
+```
+
+# Introduction
+
+In this document the structure, data sources, underlying code, and methodologies used in the construction of the primary-final-useful (PFU) database are recorded.
+
+# Energy Conversion Chain Framework
+
+# Societal Exergy Analysis
+
+# Data
+
+# Final-to-Useful Allocations
+
+Extending the IEA's World Extended Energy Balance data from the final energy stage to the useful energy stage was achieved through assigning a number of Machine - Useful work product combinations to each unique Final energy carrier - Destination combination. For example, for the United Kingdom of Great Britain and Northern Ireland (GBR), residential electricity consumption was allocated to.....
+
+ZM: After updating GBR with the newest BEIS ECUK data (22/10/2020) I will insert an image of the relevant section of the GBR FU Analysis spreadsheet.
+
+```{r GBRResElec, echo=FALSE, fig.height = 5, fig.width = 7}
+
+gbr_res_elec <- allocations %>%
+  dplyr::filter(Country == "GBR",
+                Ef.product == "Electricity",
+                Destination == "Residential")
+
+ggplot2::ggplot(data = gbr_res_elec) +
+  geom_area(mapping = aes(x = Year, y = .values, 
+                          group = Machine_Eu.product, 
+                          fill = Machine_Eu.product),
+            position = "fill") +
+  scale_y_continuous(limits = c(0, 1), breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1)) +
+  scale_x_continuous(breaks = c(1960, 1970, 1980, 1990, 2000, 2010, 2020)) +
+  # theme(legend.position="bottom", legend.box="vertical", legend.margin=margin())
+  # theme(legend.position = "bottom", 
+  #       legend.text = element_text(color = "black", size = 8)
+  theme(legend.position = "bottom",
+        legend.text = element_text(size = 10)) +
+  guides(fill = guide_legend(nrow = 3, byrow = TRUE))
+  #MKHthemes::xy_theme()
+
+```
+
+# Final-to-Useful Efficiencies and Exergy-to-Energy Ratios
+
+## Framework
+
+Conventional, Approximate, Exact methodologies
+
+## Machine and Useful Work Products
+
+### Electric Lamps - Light
+
+### Computers - Information processing
+
+In societal exergy analysis the treatment of the machine-useful work product combination Computer - Information processing has been subject to neglect, with only Ayres [@Ayres2005] providing data for the final-to-useful efficiency of what he terms "Electronic signal processing".
+
+In the PFU-Database we calculate the final-to-useful efficiency by establishing that the maximum efficiency of a computation is determined by the minimum quantity of energy required to erase one bit of information in an irreversible computer as set by the Landauer limit.
+
+The Landauer limit is expressed in the following equation
+
+$$
+E = k_{B}Tln2
+$$
+
+Here $k_{B}$ represents the Boltzmann constant, $T$ represents the temperature of the heat sink, or the environmental temperature (termed $T_{0}$ when calculating Carnot efficiencies), and $E$ represents the quantity of energy required to erase one bit of information. In the PFU Database $T_{0}$ is assumed to represent an average room temperature of 20C.
+
+To calculate the efficiency of a computer we require corresponding performance data, i.e. data for the number of bit operations performed per unit energy, however, such data is rare necessitating an approximate approach. To achieve this we used data provided by Jonathan Koomey et al [@koomey2010implications] for "Computations per kWh", from which Koomey's Law was established, which states *"The electrical efficiency of computation has doubled roughly every year and a half for more than six decades"*.
+
+The performance metric "Computations" is a estimation based on the methodology in Nordhaus [@nordhaus2007two], preventing conversion into bit operations per second, consequently we used this trend as an indicator of technological progress, which we then applied to a sample of bit operations per second data points.
+
+ZM: Utilising this approach yields a single final-to-useful exergy efficiency metric, we need to think about how to separate eta.fu and phi.u.
+
+## Efficiency Limits
+
+Limits to the final-to-useful efficiencies of machines used in the PFU Database project were compiled from a variety of sources. Table
+
+```{r TEL}
+
+```
+
+# Countries
+
+# R Ecosystem for the PFU-Database
+
+## Outline
+
+## IEATools
+
+## Recca
+
+## SEAPSUTWorkflow
+
+## PFUSetup
+
+## PFUInterface
+
+# Nomenclature
+
+# References
