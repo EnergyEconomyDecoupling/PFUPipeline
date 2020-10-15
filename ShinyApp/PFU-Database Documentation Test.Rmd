@@ -2,7 +2,7 @@
 title: "PFU-Database Documentation"
 author: "Zeke Marshall"
 date: "14/10/2020"
-output: html_document
+output: pdf_document # HTML_document
 bibliography: databasedocumentation.bib
 link-citations: yes
 ---
@@ -17,19 +17,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 In this document the structure, data sources, underlying code, and methodologies used in the construction of the primary-final-useful (PFU) database are recorded.
 
-```{r cars}
-summary(cars)
-```
-
 ## Energy Conversion Chain Framework
 
 ## Societal Exergy Analysis
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
 
 ## Data
 
@@ -59,7 +49,7 @@ $$
 
 Here $k_{B}$ represents the Boltzmann constant, $T$ represents the temperature of the heat sink, or the environmental temperature (termed $T_{0}$ when calculating Carnot efficiencies), and $E$ represents the quantity of energy required to erase one bit of information. In the PFU Database $T_{0}$ is assumed to represent an average room temperature of 20C.
 
-To calculate the efficiency of a computer we require corresponding performance data, i.e. data for the number of bit operations performed per unit energy, however, such data is rare necessitating an approximate approach. To achieve this we used data provided by Jonathan Koomey et al [@koomey2010implications] for "Computations per kWh", from which Koomey's Law was established, which states *"The electrical efficiency of computation has doubled roughly every year and a half for more than six decades"*.
+To calculate the efficiency of a computer we require corresponding performance data, i.e. data for the number of bit operations performed per unit energy, however, such data is rare necessitating an approximate approach. To achieve this we used data provided by Koomey et al [@koomey2010implications] for "Computations per kWh", from whichKoomey's Law was established, which states *"The electrical efficiency of computation has doubled roughly every year and a half for more than six decades"*.
 
 The performance metric "Computations" is a estimation based on the methodology in Nordhaus [@nordhaus2007two], preventing conversion into bit operations per second, consequently we used this trend as an indicator of technological progress, which we then applied to a sample of bit operations per second data points.
 
