@@ -5,10 +5,10 @@ library(RCurl)
 ## Mean monthly temperature
 
 # Establishes FTP url for CEDA mean temperature (tmp)
-url_tmp <- "ftp://ftp.ceda.ac.uk/badc/cru/data/cru_cy/cru_cy_4.03/data/tmp/"
+url_tmp <- "ftp://ftp.ceda.ac.uk/badc/cru/data/cru_cy/cru_cy_4.04/data/tmp/"
 
 # Establishes destination directory for files
-dest_file_tmp <- paste0(PFUSetup::get_abs_paths()$project_path, "/Data/Temperature Data/CEDA_2018/tmp", sep ="")
+dest_file_tmp <- paste0(PFUSetup::get_abs_paths()$project_path, "/Data/Temperature Data/CEDA_2020/tmp", sep ="")
 
 # protocol <- "sftp"
 
@@ -36,10 +36,10 @@ for(file in filenames_tmp) {
 ## Maximum daily temperature, mean by month
 
 # Establishes FTP url for CEDA max temperature (tmx)
-url_tmx <- "ftp://ftp.ceda.ac.uk/badc/cru/data/cru_cy/cru_cy_4.03/data/tmx/"
+url_tmx <- "ftp://ftp.ceda.ac.uk/badc/cru/data/cru_cy/cru_cy_4.04/data/tmx/"
 
 # Establishes destination directory for files
-dest_file_tmx <- paste0(PFUSetup::get_abs_paths()$project_path, "/Data/Temperature Data/CEDA_2018/tmx", sep ="")
+dest_file_tmx <- paste0(PFUSetup::get_abs_paths()$project_path, "/Data/Temperature Data/CEDA_2020/tmx", sep ="")
 
 # protocol <- "sftp"
 
