@@ -11,7 +11,7 @@ library(magrittr)
 # Reads and combines mean temperature data into a single data frame
 
 # Establishes destination directory for files
-dest_file_tmp <- paste0(PFUSetup::get_abs_paths()$project_path, "/Data/Temperature Data/CEDA_2018/tmp", sep ="")
+dest_file_tmp <- paste0(PFUSetup::get_abs_paths()$project_path, "/Data/Temperature Data/CEDA_2020/tmp", sep ="")
 
 # Creates a list of CEDA tmp files in directory
 tmp_files <- list.files(path = dest_file_tmp)
@@ -40,7 +40,7 @@ all_tmp <- all_tmp %>%
 # Reads and combines max temperature data into a single data frame
 
 # Establishes destination directory for files
-dest_file_tmx <- paste0(PFUSetup::get_abs_paths()$project_path, "/Data/Temperature Data/CEDA_2018/tmx", sep ="")
+dest_file_tmx <- paste0(PFUSetup::get_abs_paths()$project_path, "/Data/Temperature Data/CEDA_2020/tmx", sep ="")
 
 # Creates a list of CEDA tmp files in directory
 tmx_files <- list.files(path = dest_file_tmx)
