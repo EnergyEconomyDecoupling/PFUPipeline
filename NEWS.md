@@ -1,6 +1,4 @@
-* Added scripts to download and tidy data for the number of animals and workers for muscle work calculations.
-
-* Added scripts to download, tidy, and plot temperature data from CEDA
+* Updated SEAPSUTWorkflow::get_plan() arguments to add a target for CEDA temperature data
 
 * Added working non-stationary final-to-useful allocations report.
 
