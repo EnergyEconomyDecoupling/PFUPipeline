@@ -1,3 +1,5 @@
+# PFU-Database 0.0.5 (2021-01-24)
+
 * Updated SEAPSUTWorkflow::get_plan() arguments to add a target for Machine data
 
 * Updated SEAPSUTWorkflow::get_plan() arguments to add a target for CEDA temperature data
