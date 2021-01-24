@@ -1,13 +1,13 @@
 ---
-title: "AllocationReport"
-author: "Matthew Kuperus Heun"
+title: "NonStationaryAllocationReport"
+author: "Zeke Marshall"
 date: '`r parsedate::format_iso_8601(Sys.time())`'
 output: pdf_document
 knit: (function(inputFile, encoding) 
   {rmarkdown::render(inputFile, 
   encoding = encoding,
   output_file = paste0(substr(inputFile,1,nchar(inputFile)-4), "-", Sys.Date(),'.pdf'),
-  output_dir = paste0(PFUSetup::get_abs_paths()$reports_dest_folder, "/Final-to-Useful Allocation Reports/", Sys.Date(), sep = "")
+  output_dir = paste0(PFUSetup::get_abs_paths()$reports_dest_folder, "/Final-to-Useful Allocation Reports/",      Sys.Date(), sep = "")
   ) 
   })
 ---
@@ -37,7 +37,7 @@ Note that numbers following "##" are the row number in the `AllocationGraphs` da
 
 
 ```{r, echo = FALSE}
-alloc_plots <- drake::readd(SEAPSUTWorkflow::target_names$AllocationGraphs, 
+nonstat_alloc_plots <- drake::readd(SEAPSUTWorkflow::target_names$NonStationaryAllocationGraphs,
                             path = cache_path, 
                             character_only = TRUE) %>% 
   magrittr::extract2("Plots")
@@ -45,7 +45,7 @@ alloc_plots <- drake::readd(SEAPSUTWorkflow::target_names$AllocationGraphs,
 
 
 ```{r, fig.width=6.5, fig.height=2.5, echo=FALSE}
-alloc_plots[1:10]
+nonstat_alloc_plots 
 
 ```
 

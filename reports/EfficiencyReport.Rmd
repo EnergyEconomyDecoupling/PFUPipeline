@@ -4,11 +4,12 @@ author: "Zeke Marshall"
 date: '`r parsedate::format_iso_8601(Sys.time())`'
 output: pdf_document
 knit: (function(inputFile, encoding) 
-        {rmarkdown::render(inputFile, 
-                           encoding = encoding,
-                           output_file = paste0(substr(inputFile,1,nchar(inputFile)-4), "-", Sys.Date(),'.pdf')
-                           ) 
-        })
+  {rmarkdown::render(inputFile, 
+  encoding = encoding,
+  output_file = paste0(substr(inputFile,1,nchar(inputFile)-4), "-", Sys.Date(),'.pdf'),
+  output_dir = paste0(PFUSetup::get_abs_paths()$reports_dest_folder, "/Final-to-Useful Efficiency Reports/", Sys.Date(), sep = "")
+  ) 
+  })
 ---
 
 ```{r setup, include=FALSE}

@@ -1,3 +1,13 @@
+# PFU-Database 0.0.5 (2021-01-24)
+
+* Updated SEAPSUTWorkflow::get_plan() arguments to add a target for Machine data
+
+* Updated SEAPSUTWorkflow::get_plan() arguments to add a target for CEDA temperature data
+
+* Added working non-stationary final-to-useful allocations report.
+
+* Added working exergy-to-energy ratio report.
+
 # PFU-Database 0.0.4 (2020-09-28)
 
 * Hotfix: Removed missed merge conflicts from 0.0.3

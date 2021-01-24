@@ -1,13 +1,13 @@
 ---
-title: "AllocationReport"
-author: "Matthew Kuperus Heun"
+title: "ExergyEnergyReport"
+author: "Zeke Marshall"
 date: '`r parsedate::format_iso_8601(Sys.time())`'
 output: pdf_document
 knit: (function(inputFile, encoding) 
   {rmarkdown::render(inputFile, 
   encoding = encoding,
   output_file = paste0(substr(inputFile,1,nchar(inputFile)-4), "-", Sys.Date(),'.pdf'),
-  output_dir = paste0(PFUSetup::get_abs_paths()$reports_dest_folder, "/Final-to-Useful Allocation Reports/", Sys.Date(), sep = "")
+  output_dir = paste0(PFUSetup::get_abs_paths()$reports_dest_folder, "/Exergy-to-Energy Ratio Reports/", Sys.Date(), sep = "")
   ) 
   })
 ---
@@ -31,13 +31,13 @@ cache_path <- root$find_file(".drake")
 
 ## Introduction
 
-This report shows graphs of all final energy allocations to final-to-useful machines.
+This report shows graphs of exergy-to-energy ratios (phi.u) for all of the machine-useful work product combinations
 
-Note that numbers following "##" are the row number in the `AllocationGraphs` data frame.
+Note that numbers following "##" are the row number in the `ExergyEnergyGraphs` data frame.
 
 
 ```{r, echo = FALSE}
-alloc_plots <- drake::readd(SEAPSUTWorkflow::target_names$AllocationGraphs, 
+phi_u_plots <- drake::readd(SEAPSUTWorkflow::target_names$ExergyEnergyGraphs, 
                             path = cache_path, 
                             character_only = TRUE) %>% 
   magrittr::extract2("Plots")
@@ -45,10 +45,6 @@ alloc_plots <- drake::readd(SEAPSUTWorkflow::target_names$AllocationGraphs,
 
 
 ```{r, fig.width=6.5, fig.height=2.5, echo=FALSE}
-alloc_plots[1:10]
-
+phi_u_plots
 ```
-
-
-
 
