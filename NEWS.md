@@ -1,3 +1,5 @@
+* Updated SEAPSUTWorkflow::get_plan() arguments to add a target for Machine data
+
 * Updated SEAPSUTWorkflow::get_plan() arguments to add a target for CEDA temperature data
 
 * Added working non-stationary final-to-useful allocations report.
