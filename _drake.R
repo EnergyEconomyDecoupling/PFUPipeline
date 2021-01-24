@@ -17,19 +17,20 @@ max_year <- 2017                           # The last year to be analyzed
 # All are passing through the drake workflow without error at this time.
 # The countries to be analyzed should be read from Dropbox or the Exemplar_Table excel sheet
 
-countries <- c("World", "ESP", "PRT", "MEX", "GBR", "GHA", "CHN", "HND", "USA")
+# countries <- c("World", "ESP", "PRT", "MEX", "GBR", "GHA", "CHN", "HND", "USA")
 
 # Exemplar countries and Non-exemplar countries
 # countries <- c("World", "ESP", "PRT", "MEX", "GBR", "GHA", "CHN", "HND", "USA", "GRC", "ZAF")
 
 # Spain (ESP) used to test workflow quickly
-# countries <- c("ESP")
+countries <- c("ESP")
 
 # Create our drake plan
 plan <- SEAPSUTWorkflow::get_plan(countries = countries, 
                                   max_year = max_year,
                                   iea_data_path = PFUSetup::get_abs_paths()[["iea_data_path"]],
                                   ceda_data_folder = file.path(PFUSetup::get_abs_paths()[["project_path"]], "Data", "CEDA Data"),
+                                  machine_data_path = file.path(PFUSetup::get_abs_paths()[["project_path"]], "Data", "Machines - Data"),
                                   exemplar_table_path = PFUSetup::get_abs_paths()[["exemplar_table_path"]], 
                                   fu_analysis_folder = PFUSetup::get_abs_paths()[["fu_analysis_folder"]], 
                                   reports_source_folders = PFUSetup::get_abs_paths()[["reports_source_folders"]], 
@@ -37,10 +38,10 @@ plan <- SEAPSUTWorkflow::get_plan(countries = countries,
 
 # _drake.R must end with a call to drake_config().
 # The arguments to drake_config() are basically the same as those to make().
-options(clustermq.scheduler = "multicore") # For parallel computing.
+# options(clustermq.scheduler = "multicore") # For parallel computing.
 drake::drake_config(
   plan, 
   # max_expand = 1 # Set the number of countries you want to analyze
-  parallelism = "clustermq",
-  jobs = 16
+  # parallelism = "clustermq",
+  # jobs = 16
 )
