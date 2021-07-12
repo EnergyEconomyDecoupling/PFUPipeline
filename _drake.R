@@ -11,7 +11,7 @@
 library(SEAPSUTWorkflow)
 
 # Custom parameters
-max_year <- 1971                           # The last year to be analyzed
+max_year <- 2013                         # The last year to be analyzed
 
 # The countries with complete FU Analysis files c("World", "ESP", "PRT", "MEX", "GBR", "GHA", "CHN", "HND", "USA")
 # All are passing through the drake workflow without error at this time.
