@@ -23,7 +23,7 @@ max_year <- 2013                         # The last year to be analyzed
 # countries <- c("World", "ESP", "PRT", "MEX", "GBR", "GHA", "CHN", "HND", "USA", "GRC", "ZAF")
 
 # Honduras (HND) used to test workflow quickly
-countries <- c("HND")
+countries <- c("HND", "WAB", "WMB")
 additional_exemplars <- "World"
 
 # Create our drake plan
