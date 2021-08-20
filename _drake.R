@@ -11,7 +11,7 @@
 library(SEAPSUTWorkflow)
 
 # Custom parameters
-max_year <- 2017                           # The last year to be analyzed
+max_year <- 2013                         # The last year to be analyzed
 
 # The countries with complete FU Analysis files c("World", "ESP", "PRT", "MEX", "GBR", "GHA", "CHN", "HND", "USA")
 # All are passing through the drake workflow without error at this time.
@@ -22,13 +22,16 @@ max_year <- 2017                           # The last year to be analyzed
 # Exemplar countries and Non-exemplar countries
 # countries <- c("World", "ESP", "PRT", "MEX", "GBR", "GHA", "CHN", "HND", "USA", "GRC", "ZAF")
 
-# Spain (ESP) used to test workflow quickly
-countries <- c("ESP")
+# Honduras (HND) used to test workflow quickly
+countries <- c("HND", "WAB", "WMB")
+additional_exemplars <- "World"
 
 # Create our drake plan
 plan <- SEAPSUTWorkflow::get_plan(countries = countries, 
+                                  additional_exemplar_countries = additional_exemplars,
                                   max_year = max_year,
                                   iea_data_path = PFUSetup::get_abs_paths()[["iea_data_path"]],
+                                  country_concordance_path = PFUSetup::get_abs_paths()[["country_concordance_path"]],
                                   ceda_data_folder = file.path(PFUSetup::get_abs_paths()[["project_path"]], "Data", "CEDA Data"),
                                   machine_data_path = file.path(PFUSetup::get_abs_paths()[["project_path"]], "Data", "Machines - Data"),
                                   exemplar_table_path = PFUSetup::get_abs_paths()[["exemplar_table_path"]], 
