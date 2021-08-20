@@ -1,3 +1,5 @@
+# PFU-Database 0.0.6 (2021-08-20)
+
 * Updated `debugging.R` for new `CountryConcordanceTable` target. 
 
 
