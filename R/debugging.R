@@ -8,7 +8,7 @@ library(PFUSetup)
 library(SEAPSUTWorkflow)
 
 plan <- get_plan(countries = c("HND", "WMB"),
-                 additional_exemplar_countries = c("World"),
+                 additional_exemplar_countries = c("WLD"),
                  max_year = 1971,
                  iea_data_path = PFUSetup::get_abs_paths()[["iea_data_path"]],
                  country_concordance_path = PFUSetup::get_abs_paths()[["country_concordance_path"]],
