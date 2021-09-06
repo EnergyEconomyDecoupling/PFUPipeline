@@ -11,7 +11,7 @@
 library(SEAPSUTWorkflow)
 
 # Custom parameters
-max_year <- 2013                         # The last year to be analyzed
+max_year <- 2019                         # The last year to be analyzed
 
 # The countries with complete FU Analysis files c("World", "ESP", "PRT", "MEX", "GBR", "GHA", "CHN", "HND", "USA")
 # All are passing through the drake workflow without error at this time.
@@ -23,8 +23,8 @@ max_year <- 2013                         # The last year to be analyzed
 # countries <- c("World", "ESP", "PRT", "MEX", "GBR", "GHA", "CHN", "HND", "USA", "GRC", "ZAF")
 
 # Honduras (HND) used to test workflow quickly
-countries <- c("HND", "WAB", "WMB")
-additional_exemplars <- "World"
+countries <- c("HND")
+additional_exemplars <- "WLD"
 
 # Create our drake plan
 plan <- SEAPSUTWorkflow::get_plan(countries = countries, 
@@ -32,12 +32,15 @@ plan <- SEAPSUTWorkflow::get_plan(countries = countries,
                                   max_year = max_year,
                                   iea_data_path = PFUSetup::get_abs_paths()[["iea_data_path"]],
                                   country_concordance_path = PFUSetup::get_abs_paths()[["country_concordance_path"]],
-                                  ceda_data_folder = file.path(PFUSetup::get_abs_paths()[["project_path"]], "Data", "CEDA Data"),
-                                  machine_data_path = file.path(PFUSetup::get_abs_paths()[["project_path"]], "Data", "Machines - Data"),
-                                  exemplar_table_path = PFUSetup::get_abs_paths()[["exemplar_table_path"]], 
-                                  fu_analysis_folder = PFUSetup::get_abs_paths()[["fu_analysis_folder"]], 
-                                  reports_source_folders = PFUSetup::get_abs_paths()[["reports_source_folders"]], 
+                                  ceda_data_folder = PFUSetup::get_abs_paths()[["ceda_data_folder"]],
+                                  machine_data_path = PFUSetup::get_abs_paths()[["machine_data_folder"]],
+                                  exemplar_table_path = PFUSetup::get_abs_paths()[["exemplar_table_path"]],
+                                  fu_analysis_folder = PFUSetup::get_abs_paths()[["fu_analysis_folder"]],
+                                  reports_source_folders = PFUSetup::get_abs_paths()[["reports_source_folders"]],
                                   reports_dest_folder = PFUSetup::get_abs_paths()[["reports_dest_folder"]])
+
+
+
 
 # _drake.R must end with a call to drake_config().
 # The arguments to drake_config() are basically the same as those to make().
