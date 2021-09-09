@@ -1,5 +1,6 @@
 * Added `phi_constants_path` to the _drake.R file.
-  This enables use of many constant values for phi (the energy-to-exergy ratio).
+  This enables use of many constant values for phi (the energy-to-exergy ratio), 
+  taking advantage of new features in the SEAPSUTWorkflow package.
 
 
 # PFU-Database 0.0.6 (2021-08-20) [![DOI](https://zenodo.org/badge/239981862.svg)](https://zenodo.org/badge/latestdoi/239981862)
