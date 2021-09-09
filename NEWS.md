@@ -26,7 +26,8 @@
 
 * Added working final-useful efficiency report. Updated allocation report to include timestamp in file name.
 * Added play button to Sankey diagram which runs through all years in an animation.
-* Added tables of the unique machines, useful work products, and machine-useful work product combinations to the "Framework" tab of the App.
+* Added tables of the unique machines, useful work products, and machine-useful work product combinations 
+  to the "Framework" tab of the App.
 * Added the ability to plot final-to-useful efficiencies vs GDP per Capita PPP
 
 
