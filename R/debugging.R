@@ -7,9 +7,9 @@
 library(PFUSetup)
 library(SEAPSUTWorkflow)
 
-plan <- get_plan(countries = c("HND", "WMB"),
+plan <- get_plan(countries = c("USA"),
                  additional_exemplar_countries = c("WLD"),
-                 max_year = 1971,
+                 max_year = 2019,
                  iea_data_path = PFUSetup::get_abs_paths()[["iea_data_path"]],
                  country_concordance_path = PFUSetup::get_abs_paths()[["country_concordance_path"]],
                  ceda_data_folder = PFUSetup::get_abs_paths()[["ceda_data_folder"]],
