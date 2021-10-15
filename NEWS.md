@@ -4,7 +4,7 @@ output: html_document
 ---
 
 
-# PFU-Database 0.0.7 (2021-10-15) 
+# PFU-Database 0.0.7 (2021-10-15) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5572434.svg)](https://doi.org/10.5281/zenodo.5572434)
 
 * Added `phi_constants_path` to the _drake.R file.
   This enables use of many constant values for phi (the energy-to-exergy ratio), 
