@@ -1,4 +1,18 @@
-# PFU-Database 0.0.6 (2021-08-20)
+---
+title: "Release notes for `PFU-Database`"
+output: html_document
+---
+
+
+# PFU-Database 0.0.7 (2021-10-15) 
+
+* Added `phi_constants_path` to the _drake.R file.
+  This enables use of many constant values for phi (the energy-to-exergy ratio), 
+  taking advantage of new features in the SEAPSUTWorkflow package.
+* Updated `debugging.R` for new targets.
+
+
+# PFU-Database 0.0.6 (2021-08-20) [![DOI](https://zenodo.org/badge/239981862.svg)](https://zenodo.org/badge/latestdoi/239981862)
 
 * Updated `debugging.R` for new `CountryConcordanceTable` target. 
 
@@ -19,8 +33,9 @@
 # PFU-Database 0.0.3 (2020-09-28)
 
 * Added working final-useful efficiency report. Updated allocation report to include timestamp in file name.
-* Added play button to sankey diagram which runs through all years in an animation.
-* Added tables of the unique machines, useful work products, and machine-useful work product combinations to the "Framework" tab of the App.
+* Added play button to Sankey diagram which runs through all years in an animation.
+* Added tables of the unique machines, useful work products, and machine-useful work product combinations 
+  to the "Framework" tab of the App.
 * Added the ability to plot final-to-useful efficiencies vs GDP per Capita PPP
 
 
