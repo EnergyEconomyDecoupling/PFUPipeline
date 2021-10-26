@@ -14,7 +14,13 @@ library(SEAPSUTWorkflow)
 max_year <- 2019                         # The last year to be analyzed
 
 # Run the workflow with one country
-countries <- c("USA")
+countries <- c("WMB")
+# countries <- c("USA")
+# countries <- c("BRA", "CAN", "CHN", "DEU", "ESP", "GBR", "GHA", "GRC", "HKG",
+#                "HND", "IDN", "IND")
+# , "JOR", "KOR", "MEX",
+#                "USA", "ZAF", "WAB", "WMB")
+
 
 # Countries with complete FU Analysis files
 # countries <- c("USA", "JPN", "WMB", "WAB", "HKG")
