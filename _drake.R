@@ -17,9 +17,6 @@ max_year <- 2019                         # The last year to be analyzed
 countries <- c("WMB")
 
 
-# Countries with complete FU Analysis files
-# countries <- c("USA", "JPN", "WMB", "WAB", "HKG")
-
 additional_exemplars <- "WLD"
 
 # Create our drake plan
@@ -41,10 +38,10 @@ plan <- SEAPSUTWorkflow::get_plan(countries = countries,
 
 # _drake.R must end with a call to drake_config().
 # The arguments to drake_config() are basically the same as those to make().
-# options(clustermq.scheduler = "multicore") # For parallel computing.
+options(clustermq.scheduler = "multicore") # For parallel computing.
 drake::drake_config(
   plan, 
   # max_expand = 1 # Set the number of countries you want to analyze
-  # parallelism = "clustermq",
-  # jobs = 16
+  parallelism = "clustermq",
+  jobs = 16
 )
