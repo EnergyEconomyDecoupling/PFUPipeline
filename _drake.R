@@ -13,9 +13,10 @@ library(SEAPSUTWorkflow)
 # Custom parameters
 max_year <- 2019                         # The last year to be analyzed
 
-countries <- c("BRA", "CAN", "CHN", "DEU", "ESP", "GBR", "GHA", "GRC", "HKG", "HND", "IDN", "JPN", "IND", "JOR", "KOR", "MEX", "NOR", "RUS", "USA", "WMB", "WAB", "ZAF")
+# countries <- c("BRA", "CAN", "CHN", "DEU", "ESP", "GBR", "GHA", "GRC", "HKG", "HND", "IDN", "JPN", "IND", "JOR", "KOR", "MEX", "NOR", "RUS", "USA", "WMB", "WAB", "ZAF")
 # countries <- c("WMB")
-
+# countries <- c("FSU", "YGS")
+countries <- c("YGS")
 
 additional_exemplars <- "WLD"
 
