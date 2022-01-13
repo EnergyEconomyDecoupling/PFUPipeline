@@ -20,91 +20,105 @@ max_year <- 2019                         # The last year to be analyzed
 # countries <- c("SUN", "YUG")
 # countries <- c("YGS")
 # countries <- setdiff(SEAPSUTWorkflow::canonical_countries, c("FSU", "FYG", "CIV")) |> as.character()
-countries <- setdiff(SEAPSUTWorkflow::canonical_countries, c("CIV", "CUW", "WLD")) |> as.character()
+# countries <- setdiff(SEAPSUTWorkflow::canonical_countries, c("CIV", "CUW", "WLD")) |> as.character()
 
-# countries <- list(
-#   ago = "AGO",
-#   alb = "ALB",
-#   are = "ARE",
-#   arg = "ARG",
-#   arm = "ARM",
-#   aus = "AUS",
-#   aut = "AUT",
-#   aze = "AZE",
-#   bel = "BEL",
-#   ben = "BEN",
-#   bfa = "BFA",
-#   bgd = "BGD",
-#   bgr = "BGR",
-#   bhr = "BHR",
-#   bih = "BIH",
-#   blr = "BLR",
-#   bol = "BOL",
-#   bra = "BRA",
-#   brn = "BRN",
-#   bwa = "BWA",
-#   can = "CAN",
-#   che = "CHE",
-#   chl = "CHL",
-#   chn = "CHN",
-#   cmr = "CMR",
-#   cod = "COD",
-#   cog = "COG",
-#   col = "COL",
-#   # civ = "CIV",   # Fails: No IEA data.
-#   cri = "CRI",
-#   cub = "CUB",
-#   # cuw = "CUW",   # Fails: No IEA data.
-#   cyp = "CYP",
-#   cze = "CZE",
-#   deu = "DEU",
-#   dnk = "DNK",
-#   dom = "DOM",
-#   dza = "DZA",
-#   ecu = "ECU",
-#   egy = "EGY",
-#   eri = "ERI",
-#   esp = "ESP",
-#   est = "EST",
-#   eth = "ETH",
-#   fin = "FIN",
-#   fra = "FRA",
-#   # fsu = "FSU",   # Fails for unknown reasons.
-#   # fyg = "FYG",   # Fails for unknown reasons.
-#   gab = "GAB",
-#   gbr = "GBR",
-#   gbr = "GEO",
-#   gha = "GHA",
-#   gib = "GIB",
-#   gnq = "GNQ",
-#   grc = "GRC",
-#   grl = "GRL",
-#   gtm = "GTM",
-#   guy = "GUY",
-#   hkg = "HKG",
-#   hnd = "HND",
-#   hrv = "HRV",
-#   hti = "HTI",
-#   hun = "HUN",
-#   idn = "IDN",
-#   ind = "IND",
-#   irl = "IRL",
-#   irn = "IRN",
-#   irq = "IRQ",
-#   isl = "ISL",
-#   isr = "ISR",
-#   ita = "ITA",
-#   jam = "JAM",
-#   jor = "JOR",
-#   jpn = "JPN",
-#   kaz = "KAZ",
-#   ken = "KEN",
-#   kgz = "KGZ",
-#   khm = "KHM",
-#   kor = "KOR",
-#   kwt = "KWT",
-#   lao = "LAO",
-#   lbn = "LBN",
+countries <- list(
+  # ago = "AGO",
+  # alb = "ALB",
+  # are = "ARE",
+  # arg = "ARG",
+  # arm = "ARM",
+  # aus = "AUS",
+  # aut = "AUT",
+  # aze = "AZE",
+  # bel = "BEL",
+  # ben = "BEN",
+  # bfa = "BFA",
+  # bgd = "BGD",
+  # bgr = "BGR",
+  # bhr = "BHR",
+  # bih = "BIH",
+  # blr = "BLR",
+  # bol = "BOL",
+  # bra = "BRA",
+  # brn = "BRN",
+  # bwa = "BWA",
+  # can = "CAN",
+  # che = "CHE",
+  # chl = "CHL",
+  # chn = "CHN",
+  # cmr = "CMR",
+  # cod = "COD",
+  # cog = "COG",
+  # col = "COL",
+  # # civ = "CIV",   # Fails: No IEA data.
+  # cri = "CRI",
+  # cub = "CUB",
+  # # cuw = "CUW",   # Fails: No IEA data.
+  # cyp = "CYP",
+  # cze = "CZE",
+  # deu = "DEU",
+  # dnk = "DNK",
+  # dom = "DOM",
+  # dza = "DZA",
+  # ecu = "ECU",
+  # egy = "EGY",
+  # eri = "ERI",
+  # esp = "ESP",
+  # est = "EST"
+  
+  
+  
+  # eth = "ETH",
+  # fin = "FIN",
+  # fra = "FRA",
+  # gab = "GAB",
+  # gbr = "GBR",
+  # gbr = "GEO",
+  # gha = "GHA",
+  # gib = "GIB",
+  # gnq = "GNQ",
+  # grc = "GRC",
+  
+  
+  grl = "GRL"
+  
+  
+  
+  # gtm = "GTM",
+  # guy = "GUY",
+  # hkg = "HKG",
+  # hnd = "HND",
+  
+  
+  
+  # hrv = "HRV",
+  # hti = "HTI",
+  # hun = "HUN",
+  # idn = "IDN",
+  # ind = "IND",
+  # irl = "IRL",
+  # irn = "IRN",
+  # irq = "IRQ",
+  # isl = "ISL",
+  # isr = "ISR",
+  # ita = "ITA",
+  # jam = "JAM",
+  # jor = "JOR",
+  # jpn = "JPN",
+  # kaz = "KAZ",
+  # ken = "KEN",
+  # kgz = "KGZ",
+  # khm = "KHM",
+  # kor = "KOR",
+  # kwt = "KWT",
+  # lao = "LAO",
+  # lbn = "LBN",
+  
+  
+  
+  
+  
 #   lby = "LBY",
 #   lka = "LKA",
 #   ltu = "LTU",
@@ -191,7 +205,7 @@ countries <- setdiff(SEAPSUTWorkflow::canonical_countries, c("CIV", "CUW", "WLD"
 #   zaf = "ZAF",
 #   zmb = "ZMB",
 #   zwe = "ZWE"
-# )
+)
 
 
 
