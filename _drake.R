@@ -46,17 +46,27 @@ countries <- list(
   # can = "CAN",
   # che = "CHE",
   # chl = "CHL",
-  # chn = "CHN",
+  
+  
+  
+  chn = "CHN")
   # cmr = "CMR",
+  
   # cod = "COD",
   # cog = "COG",
   # col = "COL",
-  # # civ = "CIV",   # Fails: No IEA data.
+
+
+
+  # civ = "CIV",   # Fails: No IEA data.
   # cri = "CRI",
   # cub = "CUB",
-  # # cuw = "CUW",   # Fails: No IEA data.
+  # cuw = "CUW",   # Fails: No IEA data.
   # cyp = "CYP",
   # cze = "CZE",
+
+
+
   # deu = "DEU",
   # dnk = "DNK",
   # dom = "DOM",
@@ -65,12 +75,11 @@ countries <- list(
   # egy = "EGY",
   # eri = "ERI",
   # esp = "ESP",
-  # est = "EST"
-  
-  
-  
+  # est = "EST",
   # eth = "ETH",
   # fin = "FIN",
+
+
   # fra = "FRA",
   # gab = "GAB",
   # gbr = "GBR",
@@ -79,19 +88,11 @@ countries <- list(
   # gib = "GIB",
   # gnq = "GNQ",
   # grc = "GRC",
-  
-  
-  grl = "GRL"
-  
-  
-  
+  # grl = "GRL",
   # gtm = "GTM",
   # guy = "GUY",
   # hkg = "HKG",
   # hnd = "HND",
-  
-  
-  
   # hrv = "HRV",
   # hti = "HTI",
   # hun = "HUN",
@@ -114,21 +115,20 @@ countries <- list(
   # kwt = "KWT",
   # lao = "LAO",
   # lbn = "LBN",
-  
-  
-  
-  
-  
-#   lby = "LBY",
-#   lka = "LKA",
-#   ltu = "LTU",
-#   lux = "LUX",
-#   lva = "LVA",
-#   mar = "MAR",
-#   mda = "MDA",
-#   mdg = "MDG",
-#   mex = "MEX",
-#   mfs = "MFS",
+  # lby = "LBY",
+  # lka = "LKA",
+  # ltu = "LTU",
+  # lux = "LUX",
+  # lva = "LVA",
+  # mar = "MAR",
+  # mda = "MDA",
+  # mdg = "MDG",
+  # mex = "MEX",
+  # mfs = "MFS",
+
+
+
+
 #   mkd = "MKD",
 #   mli = "MLI",
 #   mlt = "MLT",
@@ -195,17 +195,17 @@ countries <- list(
 #   ven = "VEN",
 #   vnm = "VNM",
 #   wab = "WAB",
-#   
+# 
 #   # wld = "WLD"    # Causes a stack too large error.  Maybe getting into a weird infinite loop?
 #                    # Perhaps WLD should not be its own exemmplar?
-#   
+# 
 #   wmb = "WMB",
 #   xkx = "XKX",
 #   yem = "YEM",
 #   zaf = "ZAF",
 #   zmb = "ZMB",
 #   zwe = "ZWE"
-)
+# )
 
 
 
