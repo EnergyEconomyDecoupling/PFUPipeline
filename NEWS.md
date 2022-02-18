@@ -4,6 +4,9 @@ output: html_document
 ---
 
 
+* Now using `pins` pacakge for storing the `PSUT` target.
+
+
 # PFU-Database 0.0.7 (2021-10-15) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5572434.svg)](https://doi.org/10.5281/zenodo.5572434)
 
 * Added `phi_constants_path` to the _drake.R file.
