@@ -20,7 +20,7 @@ max_year <- 2019                         # The last year to be analyzed
 # countries <- c("SUN", "YUG")
 # countries <- c("YGS")
 # countries <- setdiff(SEAPSUTWorkflow::canonical_countries, c("FSU", "FYG", "CIV")) |> as.character()
-countries <- setdiff(SEAPSUTWorkflow::canonical_countries, c("CIV", "CUW", "WLD")) |> as.character()
+countries <- setdiff(SEAPSUTWorkflow::canonical_countries, c("WLD")) |> as.character()
 
 additional_exemplars <- "WLD"
 
