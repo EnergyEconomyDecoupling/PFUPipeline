@@ -38,7 +38,8 @@ plan <- SEAPSUTWorkflow::get_plan(countries = countries,
                                   reports_source_folders = PFUSetup::get_abs_paths()[["reports_source_folders"]],
                                   reports_dest_folder = PFUSetup::get_abs_paths()[["reports_dest_folder"]], 
                                   workflow_output_folder = PFUSetup::get_abs_paths()[["workflow_output_folder"]],
-                                  workflow_releases_folder = PFUSetup::get_abs_paths()[["workflow_releases_folder"]])
+                                  workflow_releases_folder = PFUSetup::get_abs_paths()[["workflow_releases_folder"]], 
+                                  release = FALSE)
 
 
 
