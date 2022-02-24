@@ -7,7 +7,7 @@
 
 <!-- *********** -->
 
-# PFU-Database
+# PFUDatabase
 
 This repository contains analysis code for the fellowship project for
 Paul Brockway. One goal of the fellowship is building a world database
@@ -55,9 +55,9 @@ analysis.
 
 ### Accessing targets
 
-A list of targets can be found with `SEAPSUTWorkflow::target_names`. A
+A list of targets can be found with `PFUWorkflow::target_names`. A
 list of target meanings can be found with
-`?SEAPSUTWorkflow::target_names`.
+`?PFUWorkflow::target_names`.
 
 `drake::readd(<<target>>)` pulls the value of a target out of `drake`’s
 cache. `<<target>>` should be a quoted character string such as
@@ -66,11 +66,11 @@ cache. `<<target>>` should be a quoted character string such as
 `drake::loadd(<<target>>)` copies the value of a target out of `drake`’s
 cache into the environment.
 
-`SEAPSUTWorkflow::readd_by_country(<<target>>, <<country>>)` reads
+`PFUWorkflow::readd_by_country(<<target>>, <<country>>)` reads
 country-specific data out of the `drake` cache. Both `<<target>>` and
 `<<country>>` should be quoted strings. `<<country>>` should be a
 3-letter ISO abbreviation such as “ESP” or “ZAF”. See
-`?SEAPSUTWorkflow::readd_by_country` for more details.
+`?PFUWorkflow::readd_by_country` for more details.
 
 ### Fresh start
 
