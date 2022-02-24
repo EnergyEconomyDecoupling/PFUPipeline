@@ -3,7 +3,7 @@ title: "Release notes for `PFUDatabase`"
 output: html_document
 ---
 
-# PFU-Database 0.0.8 (2022-02-24) 
+# PFUDatabase 0.0.8 (2022-02-24) 
 
 * Name change to `PFUDatabase`.
 * Now using `pins` package for storing the `PSUT` target.
