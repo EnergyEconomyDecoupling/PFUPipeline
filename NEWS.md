@@ -1,9 +1,10 @@
 ---
-title: "Release notes for `PFU-Database`"
+title: "Release notes for `PFUDatabase`"
 output: html_document
 ---
 
 
+* Name change to `PFUDatabase`.
 * Now using `pins` pacakge for storing the `PSUT` target.
 
 
@@ -11,7 +12,7 @@ output: html_document
 
 * Added `phi_constants_path` to the _drake.R file.
   This enables use of many constant values for phi (the energy-to-exergy ratio), 
-  taking advantage of new features in the SEAPSUTWorkflow package.
+  taking advantage of new features in the PFUWorkflow package.
 * Updated `debugging.R` for new targets.
 
 
@@ -22,8 +23,8 @@ output: html_document
 
 # PFU-Database 0.0.5 (2021-01-24)
 
-* Updated SEAPSUTWorkflow::get_plan() arguments to add a target for Machine data
-* Updated SEAPSUTWorkflow::get_plan() arguments to add a target for CEDA temperature data
+* Updated PFUWorkflow::get_plan() arguments to add a target for Machine data
+* Updated PFUWorkflow::get_plan() arguments to add a target for CEDA temperature data
 * Added working non-stationary final-to-useful allocations report.
 * Added working exergy-to-energy ratio report.
 

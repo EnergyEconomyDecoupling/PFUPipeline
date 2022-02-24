@@ -1,5 +1,5 @@
 # library(PFUSetup)
-# library(SEAPSUTWorkflow)
+# library(PFUWorkflow)
 # 
 # 
 # max_year <- 2019                        
@@ -7,7 +7,7 @@
 # additional_exemplars <- "WLD"
 # 
 # # Create our drake plan
-# plan <- SEAPSUTWorkflow::get_plan(countries = countries, 
+# plan <- PFUWorkflow::get_plan(countries = countries, 
 #                                   additional_exemplar_countries = additional_exemplars,
 #                                   max_year = max_year,
 #                                   iea_data_path = PFUSetup::get_abs_paths()[["iea_data_path"]],

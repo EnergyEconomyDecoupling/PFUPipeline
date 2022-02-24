@@ -21,7 +21,7 @@ library(magrittr)
 library(MKHthemes)
 library(parsedate)
 library(rprojroot)
-library(SEAPSUTWorkflow)
+library(PFUWorkflow)
 
 # Set up the root directory
 root <- rprojroot::is_rstudio_project
@@ -37,7 +37,7 @@ Note that numbers following "##" are the row number in the `AllocationGraphs` da
 
 
 ```{r, echo = FALSE}
-alloc_plots <- drake::readd(SEAPSUTWorkflow::target_names$AllocationGraphs, 
+alloc_plots <- drake::readd(PFUWorkflow::target_names$AllocationGraphs, 
                             path = cache_path, 
                             character_only = TRUE) %>% 
   magrittr::extract2("Plots")
