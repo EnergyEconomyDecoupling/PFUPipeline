@@ -8,7 +8,7 @@ output: github_document
 <!-- *********** -->
 
 
-# PFUDatabase
+# PFUDatabase [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5228375.svg)](https://doi.org/10.5281/zenodo.5228375)
 
 This repository contains analysis code for the fellowship project for Paul Brockway.
 One goal of the fellowship is building a world database of country-specific primary, final, and useful exergy 

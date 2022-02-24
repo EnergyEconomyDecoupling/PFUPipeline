@@ -1,17 +1,14 @@
 
 <!-- *********** -->
-
 <!-- Note: README.md is generated from README.Rmd.   -->
-
 <!-- Be sure to edit README.Rmd and generate the README.md file by Cmd/Ctl-shift-K -->
-
 <!-- *********** -->
 
-# PFUDatabase
+# PFUDatabase [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5228375.svg)](https://doi.org/10.5281/zenodo.5228375)
 
 This repository contains analysis code for the fellowship project for
 Paul Brockway. One goal of the fellowship is building a world database
-of country-specific primary, final, and useful exergy for 1960–2015.
+of country-specific primary, final, and useful exergy for 1960–2018.
 
 Analyses are completed using the
 [drake](https://github.com/ropensci/drake) environment which provides
@@ -42,9 +39,9 @@ Consider setting RStudio keyboard shortcuts for executing the drake plan
 in this repository. See `Tools|Modify keyboard shortcuts...`. Some
 convenient keyboard shortcuts are:
 
-  - `command-option-control-V` (for *v*isualize) to execute the
+-   `command-option-control-V` (for *v*isualize) to execute the
     “Visualize a drake workflow” command on the `plan`
-  - `command-option-control-D` (for *d*rake) to execute the “Run a drake
+-   `command-option-control-D` (for *d*rake) to execute the “Run a drake
     workflow” command on the `plan`
 
 Type the keyboard shortcut `command-option-control-V` (instead of
@@ -55,9 +52,8 @@ analysis.
 
 ### Accessing targets
 
-A list of targets can be found with `PFUWorkflow::target_names`. A
-list of target meanings can be found with
-`?PFUWorkflow::target_names`.
+A list of targets can be found with `PFUWorkflow::target_names`. A list
+of target meanings can be found with `?PFUWorkflow::target_names`.
 
 `drake::readd(<<target>>)` pulls the value of a target out of `drake`’s
 cache. `<<target>>` should be a quoted character string such as
@@ -83,7 +79,7 @@ See the [drake manual](https://books.ropensci.org/drake/).
 
 ## Contributors
 
-  - Emmanuel Aramendia, University of Leeds
-  - Paul Brockway, University of Leeds
-  - Matthew Kuperus Heun, Calvin University
-  - Zeke Marshall, University of Leeds
+-   Emmanuel Aramendia, University of Leeds
+-   Paul Brockway, University of Leeds
+-   Matthew Kuperus Heun, Calvin University
+-   Zeke Marshall, University of Leeds
