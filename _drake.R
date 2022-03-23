@@ -37,8 +37,8 @@ plan <- PFUWorkflow::get_plan(countries = countries,
                               fu_analysis_folder = PFUSetup::get_abs_paths()[["fu_analysis_folder"]],
                               reports_source_folders = PFUSetup::get_abs_paths()[["reports_source_folders"]],
                               reports_dest_folder = PFUSetup::get_abs_paths()[["reports_dest_folder"]], 
-                              workflow_output_folder = PFUSetup::get_abs_paths()[["workflow_output_folder"]],
-                              workflow_releases_folder = PFUSetup::get_abs_paths()[["workflow_releases_folder"]], 
+                              pipeline_caches_folder = PFUSetup::get_abs_paths()[["pipeline_caches_folder"]],
+                              pipeline_releases_folder = PFUSetup::get_abs_paths()[["pipeline_releases_folder"]], 
                               release = FALSE)
 
 
