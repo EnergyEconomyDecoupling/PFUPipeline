@@ -1,0 +1,31 @@
+Package: PFUDatabase
+Title: Functions and Workflows for Primary-Final-Useful Societal Exergy Analysis Within the PSUT Framework
+Version: 0.0.0.9000
+Authors@R: 
+    c(person(given = "Matthew",
+             family = "Heun",
+             role = c("aut", "cre"),
+             email = "matthew.heun@me.com",
+             comment = c(ORCID = "0000-0002-7438-214X")),
+      person(given = "Zeke", family = "Marshall", role = "aut"))
+Description: This package functions and workflows for primary-final-useful societal exergy analysis within the PSUT framework.
+             The package is compatible with `targets`.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
+Imports:
+    IEATools
+Suggests: 
+    knitr
+Remotes: 
+    github::EnergyEconomyDecoupling/CEDATools,
+    github::MatthewHeun/IEATools,
+    github::MatthewHeun/MKHthemes,
+    github::MatthewHeun/Recca
+Depends: 
+    R (>= 2.10)
+VignetteBuilder: knitr
+
+
+
