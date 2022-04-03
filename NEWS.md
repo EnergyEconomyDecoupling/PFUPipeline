@@ -3,7 +3,13 @@ title: "Release notes for `PFUDatabase`"
 output: html_document
 ---
 
-# PFUDatabase 0.0.8 (2022-02-24) 
+
+# PFUDatabase 0.0.9 (2022-04-03)
+
+* Update names of constants in debugging file.
+
+
+# PFUDatabase 0.0.8 (2022-02-24) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6264718.svg)](https://doi.org/10.5281/zenodo.6264718)
 
 * Name change to `PFUDatabase`.
 * Now using `pins` package for storing the `PSUT` target.
