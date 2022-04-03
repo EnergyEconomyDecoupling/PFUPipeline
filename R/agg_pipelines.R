@@ -15,4 +15,17 @@ get_pipeline <- function(countries,
                          pipeline_releases_folder,
                          release = FALSE) {
   
+  
+  # Create the pipeline
+  list(
+    
+    # Identify the countries for this analysis.
+    # "all" means all countries.
+    targets::tar_target_raw(
+      name = "countries",
+      command = countries
+    )
+    
+    
+  )
 }
