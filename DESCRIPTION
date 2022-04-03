@@ -7,7 +7,9 @@ Authors@R:
              role = c("aut", "cre"),
              email = "matthew.heun@me.com",
              comment = c(ORCID = "0000-0002-7438-214X")),
-      person(given = "Zeke", family = "Marshall", role = "aut"))
+      person(given = "Zeke", 
+             family = "Marshall", 
+             role = "aut"))
 Description: This package functions and workflows for primary-final-useful societal exergy analysis within the PSUT framework.
              The package is compatible with `targets`.
 License: MIT + file LICENSE
