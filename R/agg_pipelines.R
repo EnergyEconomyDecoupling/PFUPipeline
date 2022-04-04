@@ -1,9 +1,9 @@
 #' Title
 #'
-#' @param countries A vector of abbreviations for countries whose energy conversion chain is to be analyzed,
-#'                  such as "c('GHA', 'ZAF')".
-#'                  Countries named in `countries` can also serve as exemplars for
-#'                  final-to-useful allocations and efficiencies.
+#' @param which_countries A vector of abbreviations for countries whose energy conversion chain is to be analyzed,
+#'                        such as "c('GHA', 'ZAF')".
+#'                        Countries named in `which_countries` can also serve as exemplars for
+#'                        final-to-useful allocations and efficiencies.
 #' @param additional_exemplar_countries A vector of country abbreviations for which final-to-useful allocations
 #'                                      and efficiencies will be read.
 #'                                      An energy conversion chain will _not_ be constructed for these countries.
@@ -33,9 +33,9 @@
 #' @return A `targets` pipeline.
 #' 
 #' @export
-get_pipeline <- function(countries,
+get_pipeline <- function(which_countries = "all",
                          additional_exemplar_countries = NULL,
-                         years,
+                         which_years = "all",
                          how_far = "all_targets",
                          iea_data_path,
                          country_concordance_path,
@@ -56,10 +56,15 @@ get_pipeline <- function(countries,
     
     # Identify the countries for this analysis.
     # "all" means all countries.
-    targets::tar_target_raw(
-      name = "countries",
-      command = countries
-    )
+    targets::tar_target(
+      name = countries,
+      command = which_countries
+    )#,
+    
+    # targets::tar_target_raw(
+    #   name = "alloc_and_eff_couns",
+    #   command = expression(unique(c(countries, additional_exemplar_countries)))
+    # )
     
     
   )

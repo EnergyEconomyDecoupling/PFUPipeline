@@ -7,16 +7,16 @@ library(targets)
 
 
 # Custom parameters
-years <- 2019                         # The years to be analyzed
+yrs <- 1960:2019                         # The years to be analyzed
 
-# countries <- c("BRA", "CAN", "CHN", "DEU", "ESP", "GBR", "GHA", "GRC", "HKG", "HND", "IDN", "JPN", "IND", "JOR", "KOR", "MEX", "NOR", "RUS", "USA", "WMB", "WAB", "ZAF")
-# countries <- c("WMB")
-# countries <- c("USA")
-# countries <- c("FSU", "YGS")
-# countries <- c("SUN", "YUG")
-# countries <- c("YGS")
-# countries <- setdiff(PFUWorkflow::canonical_countries, c("FSU", "FYG", "CIV")) |> as.character()
-countries <- setdiff(PFUWorkflow::canonical_countries, c("WRLD")) |> as.character()
+# couns <- c("BRA", "CAN", "CHN", "DEU", "ESP", "GBR", "GHA", "GRC", "HKG", "HND", "IDN", "JPN", "IND", "JOR", "KOR", "MEX", "NOR", "RUS", "USA", "WMB", "WAB", "ZAF")
+# couns <- c("WMB")
+# couns <- c("USA")
+# couns <- c("FSU", "YGS")
+# couns <- c("SUN", "YUG")
+# couns <- c("YGS")
+# couns <- setdiff(PFUWorkflow::canonical_countries, c("FSU", "FYG", "CIV")) |> as.character()
+couns <- setdiff(PFUWorkflow::canonical_countries, c("WRLD")) |> as.character()
 
 additional_exemplars <- "WRLD"
 
@@ -32,7 +32,7 @@ num_cores <- 8
 # Set the target to debug.  Set to NULL to turn off debugging.
 # To debug, set appropriate breakpoints and use
 # tar_make(callr_function = NULL).
-# debug_target <- "PSUT_Re_all_St_fu"
+# debug_target <- "countries"
 debug_target <- NULL
 
 # Should we do a release of the results?
@@ -67,9 +67,19 @@ targets::tar_option_set(
 
 
 # Pull in the pipeline
-PFUDatabase::get_pipeline(countries = countries,
-                          years = years,
-                          aggregation_maps_path = PFUSetup::get_abs_paths()[["aggregation_mapping_path"]],
+PFUDatabase::get_pipeline(which_countries = couns,
+                          additional_exemplar_countries = additional_exemplars,
+                          which_years = yrs,
+                          how_far = "all_targets",
+                          iea_data_path = PFUSetup::get_abs_paths()[["iea_data_path"]],
+                          country_concordance_path = PFUSetup::get_abs_paths()[["country_concordance_path"]],
+                          phi_constants_path = PFUSetup::get_abs_paths()[["phi_constants_path"]],
+                          ceda_data_folder = PFUSetup::get_abs_paths()[["ceda_data_folder"]],
+                          machine_data_path = PFUSetup::get_abs_paths()[["machine_cata_folder"]],
+                          exemplar_table_path = PFUSetup::get_abs_paths()[["exemplar_table_path"]],
+                          fu_analysis_folder = PFUSetup::get_abs_paths()[["fu_analysis_folder"]],
+                          reports_source_folders = PFUSetup::get_abs_paths()[["reports_source_folders"]],
+                          reports_dest_folder = PFUSetup::get_abs_paths()[["reports_dest_folder"]],
                           pipeline_caches_folder = PFUSetup::get_abs_paths()[["pipeline_caches_folder"]],
-                          pipeline_releases_folder = PFUSetup::get_abs_paths()[["pipeline_releases_folder"]],
-                          release = release)
+                          pipeline_releases_folder = PFUSetup::get_abs_paths()[["pipeline_release_folder"]],
+                          release = FALSE)

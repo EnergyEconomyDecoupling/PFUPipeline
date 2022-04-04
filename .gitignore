@@ -32,3 +32,4 @@ vignettes/*.pdf
 .drake
 NEWS.html
 .Rproj.user
+_targets
