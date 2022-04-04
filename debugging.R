@@ -4,7 +4,7 @@
 # 
 # max_year <- 2019
 # countries <- c("WMB")
-# additional_exemplars <- "WLD"
+# additional_exemplars <- "WRLD"
 # 
 # # Create our drake plan
 # plan <- PFUWorkflow::get_plan(countries = countries,
