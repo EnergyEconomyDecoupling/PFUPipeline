@@ -33,6 +33,7 @@ num_cores <- 8
 # To debug, set appropriate breakpoints and use
 # tar_make(callr_function = NULL).
 # debug_target <- "countries"
+# debug_target <- "keep_countries"
 debug_target <- NULL
 
 # Should we do a release of the results?

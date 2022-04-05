@@ -26,7 +26,7 @@
 #' @param reports_dest_folder The path to a folder into which reports are written.
 #' @param pipeline_caches_folder The path to a folder where .zip files of the pipeline cache folders are stored.
 #' @param pipeline_releases_folder The path to a folder where releases of important targets are stored
-#'                                 for later retrieval as pinned items on a pinboard..
+#'                                 for later retrieval as pinned items on a pinboard.
 #' @param release A boolean that tells whether a new release of the `PSUT` target should be made.
 #'                Default is `FALSE`.
 #'
@@ -50,16 +50,24 @@ get_pipeline <- function(which_countries = "all",
                          pipeline_releases_folder,
                          release = FALSE) {
   
-  
+  # Eliminate R CMD CHECK warnings
+  countries <- NULL
+
   # Create the pipeline
   list(
     
+    # Identify the years for this analysis.
+    targets::tar_target(
+      name = years, 
+      command = which_years
+    )#, 
+    
     # Identify the countries for this analysis.
     # "all" means all countries.
-    targets::tar_target(
-      name = countries,
-      command = which_countries
-    )#,
+    # targets::tar_target_raw(
+    #   name = "keep_countries",
+    #   command = which_countries
+    # )#,
     
     # targets::tar_target_raw(
     #   name = "alloc_and_eff_couns",
