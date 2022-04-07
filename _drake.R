@@ -20,9 +20,9 @@ max_year <- 2019                         # The last year to be analyzed
 # countries <- c("SUN", "YUG")
 # countries <- c("YGS")
 # countries <- setdiff(PFUWorkflow::canonical_countries, c("FSU", "FYG", "CIV")) |> as.character()
-countries <- setdiff(PFUWorkflow::canonical_countries, c("WLD")) |> as.character()
+countries <- PFUWorkflow::canonical_countries |> as.character()
 
-additional_exemplars <- "WLD"
+additional_exemplars <- "WRLD"
 
 # Create our drake plan
 plan <- PFUWorkflow::get_plan(countries = countries, 
