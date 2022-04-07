@@ -13,9 +13,11 @@ library(PFUWorkflow)
 # Custom parameters
 max_year <- 2019                         # The last year to be analyzed
 
-# countries <- c("BRA", "CAN", "CHN", "DEU", "ESP", "GBR", "GHA", "GRC", "HKG", "HND", "IDN", "JPN", "IND", "JOR", "KOR", "MEX", "NOR", "RUS", "USA", "WMB", "WAB", "ZAF")
-countries <- c("WMBK")
+# countries <- c("BRA", "CAN", "CHNM", "DEU", "ESP", "GBR", "GHA", "GRC", "HKG", "HND", "IDN", "JPN", "IND", "JOR", "KOR", "MEX", "NOR", "RUS", "USA", "WMBK", "WABK", "ZAF")
+# countries <- c("WMBK")
+countries <- c("CHNM")
 # countries <- c("USA")
+# countries <- c("GBR", "USA", "WMBK", "WABK")
 # countries <- c("FSU", "YGS")
 # countries <- c("SUN", "YUG")
 # countries <- c("YGS")
@@ -51,5 +53,5 @@ drake::drake_config(
   plan, 
   # max_expand = 1 # Set the number of countries you want to analyze
   parallelism = "clustermq",
-  jobs = 8
+  jobs = 3
 )
