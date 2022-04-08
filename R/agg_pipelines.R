@@ -67,13 +67,12 @@ get_pipeline <- function(which_countries = "all",
     targets::tar_target_raw(
       name = "Years", 
       command = rlang::enexpr(which_years)
-    )#, 
+    ), 
     
-    
-    # targets::tar_target_raw(
-    #   name = "alloc_and_eff_couns",
-    #   command = expression(unique(c(countries, additional_exemplar_countries)))
-    # )
+    targets::tar_target_raw(
+      name = "AllocAndEffCountries",
+      command = unique(c(Countries, rlang::enexpr(additional_exemplar_countries)))
+    )
     
     
   )
