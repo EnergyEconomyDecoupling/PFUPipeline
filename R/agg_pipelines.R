@@ -56,18 +56,19 @@ get_pipeline <- function(which_countries = "all",
   # Create the pipeline
   list(
     
-    # Identify the years for this analysis.
-    targets::tar_target(
-      name = years, 
-      command = which_years
-    )#, 
-    
     # Identify the countries for this analysis.
     # "all" means all countries.
-    # targets::tar_target_raw(
-    #   name = "keep_countries",
-    #   command = which_countries
-    # )#,
+    targets::tar_target_raw(
+      name = "Countries",
+      command = rlang::enexpr(which_countries)
+    ),
+    
+    # Identify the years for this analysis.
+    targets::tar_target_raw(
+      name = "Years", 
+      command = rlang::enexpr(which_years)
+    )#, 
+    
     
     # targets::tar_target_raw(
     #   name = "alloc_and_eff_couns",

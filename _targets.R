@@ -16,7 +16,7 @@ yrs <- 1960:2019                         # The years to be analyzed
 # couns <- c("SUN", "YUG")
 # couns <- c("YGS")
 # couns <- setdiff(PFUWorkflow::canonical_countries, c("FSU", "FYG", "CIV")) |> as.character()
-couns <- setdiff(PFUWorkflow::canonical_countries, c("WRLD")) |> as.character()
+couns <- PFUWorkflow::canonical_countries %>% as.character()
 
 additional_exemplars <- "WRLD"
 
