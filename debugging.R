@@ -3,7 +3,8 @@ library(PFUWorkflow)
 
 
 max_year <- 2019
-countries <- c("WMBK")
+# countries <- c("WMBK")
+countries <- PFUWorkflow::canonical_countries |> as.character()
 additional_exemplars <- "WRLD"
 
 # Create our drake plan

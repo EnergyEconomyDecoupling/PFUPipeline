@@ -18,6 +18,7 @@ max_year <- 2019                         # The last year to be analyzed
 # countries <- c("CHNM")
 # countries <- c("USA")
 # countries <- c("GBR", "USA", "WMBK", "WABK")
+# countries <- c("OAFR", "OAMR", "OASI")
 # countries <- c("FSU", "YGS")
 # countries <- c("SUN", "YUG")
 # countries <- c("YGS")
