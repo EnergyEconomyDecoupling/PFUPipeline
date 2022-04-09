@@ -1,6 +1,8 @@
-#' Title
+#' Create an analysis pipeline
+#' 
+#' The pipeline a `targets` pipeline that creates the PFU database.
 #'
-#' @param which_countries A vector of abbreviations for countries whose energy conversion chain is to be analyzed,
+#' @param countries A vector of abbreviations for countries whose energy conversion chain is to be analyzed,
 #'                        such as "c('GHA', 'ZAF')".
 #'                        Countries named in `which_countries` can also serve as exemplars for
 #'                        final-to-useful allocations and efficiencies.
@@ -33,9 +35,9 @@
 #' @return A `targets` pipeline.
 #' 
 #' @export
-get_pipeline <- function(which_countries = "all",
+get_pipeline <- function(countries = "all",
                          additional_exemplar_countries = NULL,
-                         which_years = "all",
+                         years = "all",
                          how_far = "all_targets",
                          iea_data_path,
                          country_concordance_path,
@@ -50,28 +52,17 @@ get_pipeline <- function(which_countries = "all",
                          pipeline_releases_folder,
                          release = FALSE) {
   
-  # Eliminate R CMD CHECK warnings
-  countries <- NULL
-
   # Create the pipeline
   list(
-    
-    # Identify the countries for this analysis.
-    # "all" means all countries.
-    targets::tar_target_raw(
-      name = "Countries",
-      command = rlang::enexpr(which_countries)
-    ),
-    
-    # Identify the years for this analysis.
-    targets::tar_target_raw(
-      name = "Years", 
-      command = rlang::enexpr(which_years)
-    ), 
+
+    # Store the arguments in targets    
+    targets::tar_target_raw("Countries",rlang::enexpr(countries)),
+    targets::tar_target_raw("AdditionalExemplarCountries", rlang::enexpr(additional_exemplar_countries)), 
+    targets::tar_target_raw("Years", rlang::enexpr(which_years)), 
     
     targets::tar_target_raw(
       name = "AllocAndEffCountries",
-      command = unique(c(Countries, rlang::enexpr(additional_exemplar_countries)))
+      command = quote(PFUDatabase::combine_countries_exemplars(Countries, AdditionalExemplarCountries))
     )
     
     

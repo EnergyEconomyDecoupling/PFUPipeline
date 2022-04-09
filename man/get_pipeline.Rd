@@ -2,12 +2,12 @@
 % Please edit documentation in R/agg_pipelines.R
 \name{get_pipeline}
 \alias{get_pipeline}
-\title{Title}
+\title{Create an analysis pipeline}
 \usage{
 get_pipeline(
-  which_countries = "all",
+  countries = "all",
   additional_exemplar_countries = NULL,
-  which_years = "all",
+  years = "all",
   how_far = "all_targets",
   iea_data_path,
   country_concordance_path,
@@ -24,7 +24,7 @@ get_pipeline(
 )
 }
 \arguments{
-\item{which_countries}{A vector of abbreviations for countries whose energy conversion chain is to be analyzed,
+\item{countries}{A vector of abbreviations for countries whose energy conversion chain is to be analyzed,
 such as "c('GHA', 'ZAF')".
 Countries named in \code{which_countries} can also serve as exemplars for
 final-to-useful allocations and efficiencies.}
@@ -35,6 +35,8 @@ An energy conversion chain will \emph{not} be constructed for these countries.
 However, their final-to-useful allocations and efficiencies
 may be used as exemplar information for the countries in \code{countries}.
 Default is \code{NULL}, indicating no additional exemplars.}
+
+\item{years}{The years to be studied.}
 
 \item{how_far}{A string indicating the last target to include in the plan that is returned.
 Default is "all_targets" to indicate all targets of the plan should be returned.}
@@ -66,12 +68,10 @@ for later retrieval as pinned items on a pinboard.}
 
 \item{release}{A boolean that tells whether a new release of the \code{PSUT} target should be made.
 Default is \code{FALSE}.}
-
-\item{years}{The years to be studied.}
 }
 \value{
 A \code{targets} pipeline.
 }
 \description{
-Title
+The pipeline a \code{targets} pipeline that creates the PFU database.
 }

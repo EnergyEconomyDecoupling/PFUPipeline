@@ -6,4 +6,5 @@
 ^_drake\.R$
 ^_targets$
 ^_targets\.R$
-
+^debugging\.R$
+^reports$

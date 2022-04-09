@@ -70,7 +70,7 @@ targets::tar_option_set(
 # Pull in the pipeline
 PFUDatabase::get_pipeline(which_countries = couns,
                           additional_exemplar_countries = additional_exemplars,
-                          which_years = yrs,
+                          years = yrs,
                           how_far = "all_targets",
                           iea_data_path = PFUSetup::get_abs_paths()[["iea_data_path"]],
                           country_concordance_path = PFUSetup::get_abs_paths()[["country_concordance_path"]],
