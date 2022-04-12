@@ -10,8 +10,21 @@
 #' @examples
 #' fd_sectors <- get_fd_sectors()
 get_fd_sectors <- function(){
-  
-  fd_sectors <- IEATools::fd_sectors
-  
-  return(fd_sectors)
+  IEATools::fd_sectors
+}
+
+
+#' Retrieve primary industry prefixes
+#'
+#' Retrieve primary industry prefixes for use by `Recca::find_p_industry_names`.
+#' Contains "Resources", "Imports", and "Stock changes".
+#'
+#' @return A list of primary industry prefixes from `IEATools::prim_agg_flows`.
+#' 
+#' @export
+#'
+#' @examples
+#' p_industry_prefixes <- get_p_industry_prefixes()
+get_p_industry_prefixes <- function() {
+  IEATools::prim_agg_flows %>% unname() %>% unlist() %>% list()
 }

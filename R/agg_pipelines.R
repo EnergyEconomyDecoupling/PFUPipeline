@@ -77,7 +77,23 @@ get_pipeline <- function(countries = "all",
     tar_target_raw("CountryConcordanceTable", quote(load_country_concordance_table(country_concordance_path = CountryConcordancePath))),
     
     # Load the final demand sectors
-    tar_target_raw("FinalDemandSectors", quote(get_fd_sectors()))
+    tar_target_raw("FinalDemandSectors", quote(get_fd_sectors())), 
+    
+    # Load the primary industry prefixes
+    tar_target_raw("PrimaryIndustryPrefixes", quote(get_p_industry_prefixes())),
+    
+    # (1a) Grab all IEA data for ALL countries
+    tar_target_raw("AllIEAData", quote(IEATools::load_tidy_iea_df(IEADataPath, override_df = CountryConcordanceTable))),
+    tar_target_raw("FilteredAllIEAData", quote(filter_countries_years(AllIEAData, countries = AllocAndEffCountries, years = Years))),
+    tarchetypes::tar_group_by(IEAData, command = FilteredAllIEAData, Country), 
+    
+    # (1b) Grab CEDA data for ALL countries
+    tar_target_raw("CEDAData", quote(CEDATools::create_agg_cru_cy_df(agg_cru_cy_folder = CEDADataFolder,
+                                                               agg_cru_cy_metric = c("tmp", "tmn", "tmx"),
+                                                               agg_cru_cy_year = 2020)))
+    
+    
+
     
   )
 }

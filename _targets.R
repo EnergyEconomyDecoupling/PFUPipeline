@@ -54,6 +54,7 @@ targets::tar_option_set(
   
   # Set packages to be used.
   packages = c(
+    "CEDATools",
     "dplyr",
     "IEATools",
     "parsedate",
