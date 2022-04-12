@@ -1,5 +1,6 @@
 library(magrittr)
 library(targets)
+library(PFUDatabase)
 # targets::tar_make() to run the pipeline
 # targets::tar_make_clustermq(workers = 8) to execute across multiple cores.
 # targets::tar_read(<<target_name>>) to view the results.
@@ -7,7 +8,7 @@ library(targets)
 
 
 # Custom parameters
-yrs <- 1960:2019                         # The years to be analyzed
+years <- 1960:2019                         # The years to be analyzed
 
 # couns <- c("BRA", "CAN", "CHN", "DEU", "ESP", "GBR", "GHA", "GRC", "HKG", "HND", "IDN", "JPN", "IND", "JOR", "KOR", "MEX", "NOR", "RUS", "USA", "WMB", "WAB", "ZAF")
 # couns <- c("WMB")
@@ -16,7 +17,7 @@ yrs <- 1960:2019                         # The years to be analyzed
 # couns <- c("SUN", "YUG")
 # couns <- c("YGS")
 # couns <- setdiff(PFUWorkflow::canonical_countries, c("FSU", "FYG", "CIV")) |> as.character()
-couns <- PFUWorkflow::canonical_countries %>% as.character()
+countries <- PFUWorkflow::canonical_countries %>% as.character()
 
 additional_exemplars <- "WRLD"
 
@@ -58,6 +59,7 @@ targets::tar_option_set(
     "parsedate",
     "PFUAggDatabase",
     "pins",
+    "readxl",
     "tidyr"),
   
   # Set the number of cores for multiprocessing.
@@ -68,9 +70,9 @@ targets::tar_option_set(
 
 
 # Pull in the pipeline
-PFUDatabase::get_pipeline(which_countries = couns,
+PFUDatabase::get_pipeline(countries = countries,
                           additional_exemplar_countries = additional_exemplars,
-                          years = yrs,
+                          years = years,
                           how_far = "all_targets",
                           iea_data_path = PFUSetup::get_abs_paths()[["iea_data_path"]],
                           country_concordance_path = PFUSetup::get_abs_paths()[["country_concordance_path"]],

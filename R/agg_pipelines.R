@@ -56,15 +56,28 @@ get_pipeline <- function(countries = "all",
   list(
 
     # Store the arguments in targets    
-    targets::tar_target_raw("Countries",rlang::enexpr(countries)),
-    targets::tar_target_raw("AdditionalExemplarCountries", rlang::enexpr(additional_exemplar_countries)), 
-    targets::tar_target_raw("Years", rlang::enexpr(which_years)), 
+    tar_target_raw("Countries", rlang::enexpr(countries)),
+    tar_target_raw("AdditionalExemplarCountries", rlang::enexpr(additional_exemplar_countries)), 
+    tar_target_raw("AllocAndEffCountries", quote(combine_countries_exemplars(Countries, AdditionalExemplarCountries))),
+    tar_target_raw("Years", rlang::enexpr(years)), 
+    tar_target_raw("IEADataPath", iea_data_path), 
+    tar_target_raw("CountryConcordancePath", country_concordance_path), 
+    tar_target_raw("PhiConstantsPath", phi_constants_path), 
+    tar_target_raw("CEDADataFolder", ceda_data_folder), 
+    tar_target_raw("MachineDataPath", machine_data_path), 
+    tar_target_raw("ExemplarTablePath", exemplar_table_path), 
+    tar_target_raw("FUAnalysisFolder", fu_analysis_folder), 
+    tar_target_raw("ReportsSourceFolders", reports_source_folders), 
+    tar_target_raw("ReportsDestFolder", reports_dest_folder), 
+    tar_target_raw("PipelineCachesFolder", pipeline_caches_folder), 
+    tar_target_raw("PipelineReleasesFolder", pipeline_releases_folder), 
+    tar_target_raw("Release", release), 
     
-    targets::tar_target_raw(
-      name = "AllocAndEffCountries",
-      command = quote(PFUDatabase::combine_countries_exemplars(Countries, AdditionalExemplarCountries))
-    )
+    # Load country concordance table
+    tar_target_raw("CountryConcordanceTable", quote(load_country_concordance_table(country_concordance_path = CountryConcordancePath))),
     
+    # Load the final demand sectors
+    tar_target_raw("FinalDemandSectors", quote(get_fd_sectors()))
     
   )
 }

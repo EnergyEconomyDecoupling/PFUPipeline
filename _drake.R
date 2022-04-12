@@ -54,5 +54,5 @@ drake::drake_config(
   plan, 
   # max_expand = 1 # Set the number of countries you want to analyze
   parallelism = "clustermq",
-  jobs = 6
+  jobs = 8
 )
