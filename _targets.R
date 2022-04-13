@@ -7,7 +7,6 @@ library(targets)
 
 
 # Custom parameters
-yrs <- 1960:2019                         # The years to be analyzed
 
 # couns <- c("BRA", "CAN", "CHN", "DEU", "ESP", "GBR", "GHA", "GRC", "HKG", "HND", "IDN", "JPN", "IND", "JOR", "KOR", "MEX", "NOR", "RUS", "USA", "WMB", "WAB", "ZAF")
 # couns <- c("WMB")
@@ -19,6 +18,9 @@ yrs <- 1960:2019                         # The years to be analyzed
 couns <- PFUWorkflow::canonical_countries %>% as.character()
 
 additional_exemplars <- "WRLD"
+
+yrs <- 1960:2019                         # The years to be analyzed
+
 
 # Number of machine cores to use.
 # Set to less than available on your machine.
