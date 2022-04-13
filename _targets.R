@@ -1,5 +1,6 @@
 library(magrittr)
 library(targets)
+library(PFUDatabase)
 # targets::tar_make() to run the pipeline
 # targets::tar_make_clustermq(workers = 8) to execute across multiple cores.
 # targets::tar_read(<<target_name>>) to view the results.
@@ -7,6 +8,7 @@ library(targets)
 
 
 # Custom parameters
+years <- 1960:2019                         # The years to be analyzed
 
 # couns <- c("BRA", "CAN", "CHN", "DEU", "ESP", "GBR", "GHA", "GRC", "HKG", "HND", "IDN", "JPN", "IND", "JOR", "KOR", "MEX", "NOR", "RUS", "USA", "WMB", "WAB", "ZAF")
 # couns <- c("WMB")
@@ -15,12 +17,9 @@ library(targets)
 # couns <- c("SUN", "YUG")
 # couns <- c("YGS")
 # couns <- setdiff(PFUWorkflow::canonical_countries, c("FSU", "FYG", "CIV")) |> as.character()
-couns <- PFUWorkflow::canonical_countries %>% as.character()
+countries <- PFUWorkflow::canonical_countries %>% as.character()
 
 additional_exemplars <- "WRLD"
-
-yrs <- 1960:2019                         # The years to be analyzed
-
 
 # Number of machine cores to use.
 # Set to less than available on your machine.
@@ -55,11 +54,13 @@ targets::tar_option_set(
   
   # Set packages to be used.
   packages = c(
+    "CEDATools",
     "dplyr",
     "IEATools",
     "parsedate",
     "PFUAggDatabase",
     "pins",
+    "readxl",
     "tidyr"),
   
   # Set the number of cores for multiprocessing.
@@ -70,15 +71,15 @@ targets::tar_option_set(
 
 
 # Pull in the pipeline
-PFUDatabase::get_pipeline(which_countries = couns,
+PFUDatabase::get_pipeline(countries = countries,
                           additional_exemplar_countries = additional_exemplars,
-                          years = yrs,
+                          years = years,
                           how_far = "all_targets",
                           iea_data_path = PFUSetup::get_abs_paths()[["iea_data_path"]],
                           country_concordance_path = PFUSetup::get_abs_paths()[["country_concordance_path"]],
                           phi_constants_path = PFUSetup::get_abs_paths()[["phi_constants_path"]],
                           ceda_data_folder = PFUSetup::get_abs_paths()[["ceda_data_folder"]],
-                          machine_data_path = PFUSetup::get_abs_paths()[["machine_cata_folder"]],
+                          machine_data_path = PFUSetup::get_abs_paths()[["machine_data_folder"]],
                           exemplar_table_path = PFUSetup::get_abs_paths()[["exemplar_table_path"]],
                           fu_analysis_folder = PFUSetup::get_abs_paths()[["fu_analysis_folder"]],
                           reports_source_folders = PFUSetup::get_abs_paths()[["reports_source_folders"]],

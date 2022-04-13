@@ -56,15 +56,45 @@ get_pipeline <- function(countries = "all",
   list(
 
     # Store the arguments in targets    
-    targets::tar_target_raw("Countries",rlang::enexpr(countries)),
-    targets::tar_target_raw("AdditionalExemplarCountries", rlang::enexpr(additional_exemplar_countries)), 
-    targets::tar_target_raw("Years", rlang::enexpr(which_years)), 
+    tar_target_raw("Countries", rlang::enexpr(countries)),
+    tar_target_raw("AdditionalExemplarCountries", rlang::enexpr(additional_exemplar_countries)), 
+    tar_target_raw("AllocAndEffCountries", quote(combine_countries_exemplars(Countries, AdditionalExemplarCountries))),
+    tar_target_raw("Years", rlang::enexpr(years)), 
+    tar_target_raw("IEADataPath", iea_data_path), 
+    tar_target_raw("CountryConcordancePath", country_concordance_path), 
+    tar_target_raw("PhiConstantsPath", phi_constants_path), 
+    tar_target_raw("CEDADataFolder", ceda_data_folder), 
+    tar_target_raw("MachineDataPath", machine_data_path), 
+    tar_target_raw("ExemplarTablePath", exemplar_table_path), 
+    tar_target_raw("FUAnalysisFolder", fu_analysis_folder), 
+    tar_target_raw("ReportsSourceFolders", reports_source_folders), 
+    tar_target_raw("ReportsDestFolder", reports_dest_folder), 
+    tar_target_raw("PipelineCachesFolder", pipeline_caches_folder), 
+    tar_target_raw("PipelineReleasesFolder", pipeline_releases_folder), 
+    tar_target_raw("Release", release), 
     
-    targets::tar_target_raw(
-      name = "AllocAndEffCountries",
-      command = quote(PFUDatabase::combine_countries_exemplars(Countries, AdditionalExemplarCountries))
-    )
+    # Load country concordance table
+    tar_target_raw("CountryConcordanceTable", quote(load_country_concordance_table(country_concordance_path = CountryConcordancePath))),
     
+    # Load the final demand sectors
+    tar_target_raw("FinalDemandSectors", quote(get_fd_sectors())), 
     
-  )
+    # Load the primary industry prefixes
+    tar_target_raw("PrimaryIndustryPrefixes", quote(get_p_industry_prefixes())),
+    
+    # (1a) Grab all IEA data for ALL countries
+    tar_target_raw("AllIEAData", quote(IEATools::load_tidy_iea_df(IEADataPath, override_df = CountryConcordanceTable))),
+    tar_target_raw("FilteredAllIEAData", quote(filter_countries_years(AllIEAData, countries = AllocAndEffCountries, years = Years))),
+    tarchetypes::tar_group_by(IEAData, command = FilteredAllIEAData, Country), 
+    
+    # (1b) Grab CEDA data for ALL countries
+    tar_target_raw("CEDAData", quote(CEDATools::create_agg_cru_cy_df(agg_cru_cy_folder = CEDADataFolder,
+                                                                     agg_cru_cy_metric = c("tmp", "tmn", "tmx"),
+                                                                     agg_cru_cy_year = 2020))), 
+    
+    # (1c) Grab Machine data for ALL countries
+    tar_target_raw("AllMachineData", quote(read_all_eta_files(eta_fin_paths = get_eta_filepaths(MachineDataPath))))
+
+    
+  ) 
 }
