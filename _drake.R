@@ -16,7 +16,7 @@ max_year <- 2019                         # The last year to be analyzed
 # countries <- c("BRA", "CAN", "CHNM", "DEU", "ESP", "GBR", "GHA", "GRC", "HKG", "HND", "IDN", "JPN", "IND", "JOR", "KOR", "MEX", "NOR", "RUS", "USA", "WMBK", "WABK", "ZAF")
 # countries <- c("WMBK")
 # countries <- c("CHNM")
-countries <- c("USA")
+# countries <- c("USA")
 # countries <- c("ZAF")
 # countries <- c("GBR", "USA", "WMBK", "WABK")
 # countries <- c("OAFR", "OAMR", "OASI")
@@ -25,6 +25,8 @@ countries <- c("USA")
 # countries <- c("YGS")
 # countries <- setdiff(PFUWorkflow::canonical_countries, c("FSU", "FYG", "CIV")) |> as.character()
 # countries <- PFUWorkflow::canonical_countries |> as.character()
+# countries <- PFUWorkflow::canonical_countries[1:50]
+countries <- PFUWorkflow::canonical_countries[51:100]
 
 additional_exemplars <- "WRLD"
 
