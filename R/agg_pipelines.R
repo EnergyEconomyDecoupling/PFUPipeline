@@ -94,8 +94,10 @@ get_pipeline <- function(countries = "all",
     
     # (1c) Grab Machine data for ALL countries
     tar_target_raw("AllMachineData", quote(read_all_eta_files(eta_fin_paths = get_eta_filepaths(MachineDataPath)))), 
-    tar_target_raw("MachineData", quote(filter_countries_years(AllMachineData, countries = AllocAndEffCountries, years = Years)))
+    tar_target_raw("MachineData", quote(filter_countries_years(AllMachineData, countries = AllocAndEffCountries, years = Years))),
+    
+    # (1d) Grab Socioeconomic Data for selected countries
+    tar_target_raw("SocioEconData", quote(get_all_pwt_data(countries = Countries) %>% get_L_K_GDP_data())))
+    
   
-
-  ) 
 }

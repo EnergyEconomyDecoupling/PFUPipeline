@@ -2,6 +2,8 @@
 
 export(combine_countries_exemplars)
 export(filter_countries_years)
+export(get_L_K_GDP_data)
+export(get_all_pwt_data)
 export(get_eta_filepaths)
 export(get_fd_sectors)
 export(get_p_industry_prefixes)

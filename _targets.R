@@ -60,6 +60,7 @@ targets::tar_option_set(
     "parsedate",
     "PFUAggDatabase",
     "pins",
+    "pwt10",
     "readxl",
     "tidyr"),
   
