@@ -1,0 +1,11 @@
+^PFUDatabase\.Rproj$
+^\.Rproj\.user$
+^LICENSE\.md$
+^README\.Rmd$
+^\.drake$
+^_drake\.R$
+^_targets$
+^_targets\.R$
+^debugging\.R$
+^reports$
+^data-raw$

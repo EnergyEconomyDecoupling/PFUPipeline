@@ -1,0 +1,15 @@
+citHeader("To cite PFUDatabase in publications use:")
+
+citEntry(entry = "Manual",
+  title        = "PFUDatabase: Functions and Workflows for Primary-Final-Useful Societal Exergy Analysis Within the PSUT Framework",
+  author       = personList(as.person("Matthew Kuperus Heun"), as.person("Zeke Marshall")),
+  year         = "2022",
+  note         = "R package version 0.1.0",
+  url          = "https://github.com/EnergyEconomyDecoupling/PFUDatabase",
+
+  textVersion  =
+  paste("Matthew Kuperus Heun (2022).",
+        "Functions and Workflows for Primary-Final-Useful Societal Exergy Analysis Within the PSUT Framework.",
+        "R package version 0.1.0.",
+        "https://github.com/EnergyEconomyDecoupling/PFUDatabase")
+)

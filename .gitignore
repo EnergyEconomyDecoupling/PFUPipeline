@@ -31,3 +31,5 @@ vignettes/*.pdf
 # Drake files
 .drake
 NEWS.html
+.Rproj.user
+_targets
