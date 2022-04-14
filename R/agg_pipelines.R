@@ -55,7 +55,7 @@ get_pipeline <- function(countries = "all",
   # Create the pipeline
   list(
 
-    # Store the arguments in targets    
+    # (0) Set many arguments to be objects in the targets cache for later use
     tar_target_raw("Countries", rlang::enexpr(countries)),
     tar_target_raw("AdditionalExemplarCountries", rlang::enexpr(additional_exemplar_countries)), 
     tar_target_raw("AllocAndEffCountries", quote(combine_countries_exemplars(Countries, AdditionalExemplarCountries))),
@@ -73,30 +73,33 @@ get_pipeline <- function(countries = "all",
     tar_target_raw("PipelineReleasesFolder", pipeline_releases_folder), 
     tar_target_raw("Release", release), 
     
-    # Load country concordance table
+    
+    # (1) Load pipeline information
+    
+    # (1a) Country concordance table
     tar_target_raw("CountryConcordanceTable", quote(load_country_concordance_table(country_concordance_path = CountryConcordancePath))),
     
-    # Load the final demand sectors
+    # (1b) Final demand sectors
     tar_target_raw("FinalDemandSectors", quote(get_fd_sectors())), 
     
-    # Load the primary industry prefixes
+    # (1c) Primary industry prefixes
     tar_target_raw("PrimaryIndustryPrefixes", quote(get_p_industry_prefixes())),
     
-    # (1a) Grab all IEA data for ALL countries
+    # (1d) IEA data
     tar_target_raw("AllIEAData", quote(IEATools::load_tidy_iea_df(IEADataPath, override_df = CountryConcordanceTable))),
     tar_target_raw("FilteredAllIEAData", quote(filter_countries_years(AllIEAData, countries = AllocAndEffCountries, years = Years))),
     tarchetypes::tar_group_by(IEAData, command = FilteredAllIEAData, Country), 
     
-    # (1b) Grab CEDA data for ALL countries
+    # (1e) CEDA data for ALL countries
     tar_target_raw("CEDAData", quote(CEDATools::create_agg_cru_cy_df(agg_cru_cy_folder = CEDADataFolder,
                                                                      agg_cru_cy_metric = c("tmp", "tmn", "tmx"),
                                                                      agg_cru_cy_year = 2020))), 
     
-    # (1c) Grab Machine data for ALL countries
+    # (1f) Machine data 
     tar_target_raw("AllMachineData", quote(read_all_eta_files(eta_fin_paths = get_eta_filepaths(MachineDataPath)))), 
     tar_target_raw("MachineData", quote(filter_countries_years(AllMachineData, countries = AllocAndEffCountries, years = Years))),
     
-    # (1d) Grab Socioeconomic Data for selected countries
+    # (1g) Socioeconomic data
     tar_target_raw("SocioEconData", quote(get_all_pwt_data(countries = Countries) %>% get_L_K_GDP_data())))
     
   
