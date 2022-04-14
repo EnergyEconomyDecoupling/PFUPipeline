@@ -6,7 +6,7 @@ output: html_document
 
 # PFUDatabase 0.1.0 (2022-04-14) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6462165.svg)](https://doi.org/10.5281/zenodo.6462165)
 
-* Beginning to develop as a `targets` workflow.
+* Beginning to develop as a package and a `targets` workflow.
 * Several pieces of the targets pipeline are now in place.
 
 
