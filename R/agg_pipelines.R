@@ -106,6 +106,8 @@ get_pipeline <- function(countries = "all",
     # (2) Balance all final energy data.
     # First, check whether energy products are balanced. They're not.
     # FALSE indicates a country with at least one balance problem.
+    # 
+    # Not working yet. function "map" is unknown.
     tar_target_raw("BalancedBefore", quote(is_balanced(IEAData, countries = AllocAndEffCountries)),
                    pattern = map(IEAData), storage = "worker", retrieval = "worker")
     
