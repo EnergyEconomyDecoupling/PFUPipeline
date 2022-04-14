@@ -100,7 +100,18 @@ get_pipeline <- function(countries = "all",
     tar_target_raw("MachineData", quote(filter_countries_years(AllMachineData, countries = AllocAndEffCountries, years = Years))),
     
     # (1g) Socioeconomic data
-    tar_target_raw("SocioEconData", quote(get_all_pwt_data(countries = Countries) %>% get_L_K_GDP_data())))
+    tar_target_raw("SocioEconData", quote(get_all_pwt_data(countries = Countries) %>% get_L_K_GDP_data())), 
+
     
+    # (2) Balance all final energy data.
+    # First, check whether energy products are balanced. They're not.
+    # FALSE indicates a country with at least one balance problem.
+    tar_target_raw("BalancedBefore", quote(is_balanced(IEAData, countries = AllocAndEffCountries)),
+                   pattern = map(IEAData), storage = "worker", retrieval = "worker")
+    
+    
+    )
+  
+  
   
 }

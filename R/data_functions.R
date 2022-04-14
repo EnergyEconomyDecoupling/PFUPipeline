@@ -84,3 +84,39 @@ filter_countries_years <- function(.df,
   .df %>% 
     dplyr::filter(.data[[country]] %in% countries, .data[[year]] %in% years)
 }
+
+
+#' Tells whether IEA data are balanced
+#'
+#' Performs the the energy balance check in a way that is amenable to drake subtargets.
+#' Internally, this function uses [IEATools::calc_tidy_iea_df_balances()].
+#' Grouping is doing internal to this function using the value of `grp_vars`.
+#'
+#' @param IEAData a tidy IEA data frame
+#' @param countries the countries for which balancing should be checked as strings
+#' @param country The name of the country column in `IEAData`. Default is `r IEATools::iea_cols$country`.
+#' @param grp_vars the groups that should be checked. Default is
+#'                 `c(country, IEATools::iea_cols$method, IEATools::iea_cols$energy_type, IEATools::iea_cols$last_stage, IEATools::iea_cols$product)`.
+#'
+#' @return a logical stating whether all products are balanced for the country of interest
+#'
+#' @export
+#'
+#' @examples
+#' # These data are not balanced, because they are raw.
+#' IEATools::sample_iea_data_path() %>%
+#'   IEATools::load_tidy_iea_df() %>%
+#'   is_balanced(countries = "ZAF")
+is_balanced <- function(IEAData, countries,
+                        country = IEATools::iea_cols$country,
+                        grp_vars = c(country,
+                                     IEATools::iea_cols$method,
+                                     IEATools::iea_cols$energy_type,
+                                     IEATools::iea_cols$last_stage,
+                                     IEATools::iea_cols$year,
+                                     IEATools::iea_cols$product)) {
+  dplyr::filter(IEAData, .data[[country]] %in% countries) %>%
+    dplyr::group_by(!!as.name(grp_vars)) %>%
+    IEATools::calc_tidy_iea_df_balances() %>%
+    IEATools::tidy_iea_df_balanced()
+}
