@@ -93,8 +93,9 @@ get_pipeline <- function(countries = "all",
                                                                      agg_cru_cy_year = 2020))), 
     
     # (1c) Grab Machine data for ALL countries
-    tar_target_raw("AllMachineData", quote(read_all_eta_files(eta_fin_paths = get_eta_filepaths(MachineDataPath))))
+    tar_target_raw("AllMachineData", quote(read_all_eta_files(eta_fin_paths = get_eta_filepaths(MachineDataPath)))), 
+    tar_target_raw("MachineData", quote(filter_countries_years(AllMachineData, countries = AllocAndEffCountries, years = Years)))
+  
 
-    
   ) 
 }
