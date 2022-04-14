@@ -54,15 +54,20 @@ targets::tar_option_set(
   
   # Set packages to be used.
   packages = c(
+    "assertthat",
     "CEDATools",
     "dplyr",
     "IEATools",
     "parsedate",
     "PFUAggDatabase",
     "pins",
+    "purrr",
     "pwt10",
     "readxl",
-    "tidyr"),
+    "tarchetypes",
+    "tibble",
+    "tidyr", 
+    "tidyselect"),
   
   # Set the number of cores for multiprocessing.
   resources = targets::tar_resources(
