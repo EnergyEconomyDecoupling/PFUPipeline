@@ -115,8 +115,13 @@ get_pipeline <- function(countries = "all",
     # Balance all of the data by product and year.
     tar_target_raw("BalancedIEAData", quote(make_balanced(IEAData, countries = AllocAndEffCountries)), 
                    pattern = quote(map(IEAData)), iteration = "group",
-                   storage = "worker", retrieval = "worker")
+                   storage = "worker", retrieval = "worker"),
     
+    # Check that balancing was successful.
+    tar_target_raw("BalancedAfter", quote(is_balanced(BalancedIEAData, countries = AllocAndEffCountries)), 
+                   pattern = quote(map(BalancedIEAData)), iteration = "group",
+                   storage = "worker", retrieval = "worker")
+
     
     
     )
