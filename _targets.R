@@ -8,34 +8,20 @@ library(PFUDatabase)
 
 
 # Custom parameters
-years <- 1960:2019                         # The years to be analyzed
+# years <- 1960:2019                         # The years to be analyzed
+years <- 1971:1972                         # The years to be analyzed
 
-# couns <- c("BRA", "CAN", "CHN", "DEU", "ESP", "GBR", "GHA", "GRC", "HKG", "HND", "IDN", "JPN", "IND", "JOR", "KOR", "MEX", "NOR", "RUS", "USA", "WMB", "WAB", "ZAF")
-# couns <- c("WMB")
-# couns <- c("USA")
-# couns <- c("FSU", "YGS")
-# couns <- c("SUN", "YUG")
-# couns <- c("YGS")
-# couns <- setdiff(PFUWorkflow::canonical_countries, c("FSU", "FYG", "CIV")) |> as.character()
-countries <- PFUWorkflow::canonical_countries %>% as.character()
+# countries <- c("BRA", "CAN", "CHN", "DEU", "ESP", "GBR", "GHA", "GRC", "HKG", "HND", "IDN", "JPN", "IND", "JOR", "KOR", "MEX", "NOR", "RUS", "USA", "WMB", "WAB", "ZAF")
+# countries <- c("WMB")
+# countries <- c("USA")
+# countries <- c("FSU", "YGS")
+# countries <- c("SUN", "YUG")
+# countries <- c("YGS")
+# countries <- setdiff(PFUWorkflow::canonical_countries, c("FSU", "FYG", "CIV")) |> as.character()
+countries <- c("WMBK", "WABK", "ZAR")
+# countries <- PFUWorkflow::canonical_countries %>% as.character()
 
 additional_exemplars <- "WRLD"
-
-# Number of machine cores to use.
-# Set to less than available on your machine.
-# Applies only to tar_make_clustermq().
-# To parallelize the execution of this pipeline, say
-# targets::tar_make_clustermq(workers = X),
-# where X is the same as the number of cores.
-# num_cores <- 3
-num_cores <- 8
-
-# Set the target to debug.  Set to NULL to turn off debugging.
-# To debug, set appropriate breakpoints and use
-# tar_make(callr_function = NULL).
-# debug_target <- "countries"
-# debug_target <- "keep_countries"
-debug_target <- NULL
 
 # Should we do a release of the results?
 release <- FALSE
@@ -44,13 +30,10 @@ release <- FALSE
 
 
 # Set up for multithreaded work on the local machine.
-options(clustermq.scheduler = "multiprocess")
+future::plan(future.callr::callr)
 
 # Set options for the targets package.
 targets::tar_option_set(
-  
-  # Set the target to debug, if needed.
-  debug = debug_target,
   
   # Set packages to be used.
   packages = c(
@@ -58,16 +41,11 @@ targets::tar_option_set(
     "dplyr",
     "IEATools",
     "parsedate",
-    "PFUAggDatabase",
+    "PFUDatabase",
     "pins",
     "pwt10",
     "readxl",
     "tidyr"),
-  
-  # Set the number of cores for multiprocessing.
-  resources = targets::tar_resources(
-    clustermq = targets::tar_resources_clustermq(template = list(num_cores = num_cores))
-  )
 )
 
 

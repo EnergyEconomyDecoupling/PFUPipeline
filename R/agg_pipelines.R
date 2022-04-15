@@ -56,10 +56,10 @@ get_pipeline <- function(countries = "all",
   list(
 
     # (0) Set many arguments to be objects in the targets cache for later use
-    tar_target_raw("Countries", rlang::enexpr(countries)),
-    tar_target_raw("AdditionalExemplarCountries", rlang::enexpr(additional_exemplar_countries)), 
+    tar_target_raw("Countries", list(countries)),
+    tar_target_raw("AdditionalExemplarCountries", list(additional_exemplar_countries)), 
     tar_target_raw("AllocAndEffCountries", quote(combine_countries_exemplars(Countries, AdditionalExemplarCountries))),
-    tar_target_raw("Years", rlang::enexpr(years)), 
+    tar_target_raw("Years", list(years)), 
     tar_target_raw("IEADataPath", iea_data_path), 
     tar_target_raw("CountryConcordancePath", country_concordance_path), 
     tar_target_raw("PhiConstantsPath", phi_constants_path), 
@@ -86,14 +86,16 @@ get_pipeline <- function(countries = "all",
     tar_target_raw("PrimaryIndustryPrefixes", quote(get_p_industry_prefixes())),
     
     # (1d) IEA data
-    tar_target_raw("AllIEAData", quote(IEATools::load_tidy_iea_df(IEADataPath, override_df = CountryConcordanceTable))),
+    tar_target_raw("AllIEAData", quote(IEATools::load_tidy_iea_df(IEADataPath, override_df = CountryConcordanceTable)), 
+                   storage = "worker", retrieval = "worker"),
     tar_target_raw("FilteredAllIEAData", quote(filter_countries_years(AllIEAData, countries = AllocAndEffCountries, years = Years))),
     tarchetypes::tar_group_by(IEAData, command = FilteredAllIEAData, Country), 
     
     # (1e) CEDA data for ALL countries
     tar_target_raw("CEDAData", quote(CEDATools::create_agg_cru_cy_df(agg_cru_cy_folder = CEDADataFolder,
                                                                      agg_cru_cy_metric = c("tmp", "tmn", "tmx"),
-                                                                     agg_cru_cy_year = 2020))), 
+                                                                     agg_cru_cy_year = 2020)), 
+                   storage = "worker", retrieval = "worker"), 
     
     # (1f) Machine data 
     tar_target_raw("AllMachineData", quote(read_all_eta_files(eta_fin_paths = get_eta_filepaths(MachineDataPath)))), 
@@ -109,7 +111,8 @@ get_pipeline <- function(countries = "all",
     # 
     # Not working yet. function "map" is unknown.
     tar_target_raw("BalancedBefore", quote(is_balanced(IEAData, countries = AllocAndEffCountries)),
-                   pattern = map(IEAData), storage = "worker", retrieval = "worker")
+                   pattern = quote(map(IEAData)), 
+                   storage = "worker", retrieval = "worker")
     
     
     )
