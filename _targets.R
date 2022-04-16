@@ -66,3 +66,4 @@ PFUDatabase::get_pipeline(countries = countries,
                           pipeline_caches_folder = PFUSetup::get_abs_paths()[["pipeline_caches_folder"]],
                           pipeline_releases_folder = PFUSetup::get_abs_paths()[["pipeline_release_folder"]],
                           release = FALSE)
+

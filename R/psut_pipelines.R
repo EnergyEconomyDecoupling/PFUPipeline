@@ -54,77 +54,80 @@ get_pipeline <- function(countries = "all",
   
   # Create the pipeline
   list(
-
+    
     # (0) Set many arguments to be objects in the targets cache for later use
-    tar_target_raw("Countries", list(countries)),
-    tar_target_raw("AdditionalExemplarCountries", list(additional_exemplar_countries)), 
-    tar_target_raw("AllocAndEffCountries", quote(combine_countries_exemplars(Countries, AdditionalExemplarCountries))),
-    tar_target_raw("Years", list(years)), 
-    tar_target_raw("IEADataPath", iea_data_path), 
-    tar_target_raw("CountryConcordancePath", country_concordance_path), 
-    tar_target_raw("PhiConstantsPath", phi_constants_path), 
-    tar_target_raw("CEDADataFolder", ceda_data_folder), 
-    tar_target_raw("MachineDataPath", machine_data_path), 
-    tar_target_raw("ExemplarTablePath", exemplar_table_path), 
-    tar_target_raw("FUAnalysisFolder", fu_analysis_folder), 
-    tar_target_raw("ReportsSourceFolders", reports_source_folders), 
-    tar_target_raw("ReportsDestFolder", reports_dest_folder), 
-    tar_target_raw("PipelineCachesFolder", pipeline_caches_folder), 
-    tar_target_raw("PipelineReleasesFolder", pipeline_releases_folder), 
-    tar_target_raw("Release", release), 
+    targets::tar_target_raw("Countries", list(countries)),
+    targets::tar_target_raw("AdditionalExemplarCountries", list(additional_exemplar_countries)), 
+    targets::tar_target_raw("AllocAndEffCountries", quote(combine_countries_exemplars(Countries, AdditionalExemplarCountries))),
+    targets::tar_target_raw("Years", list(years)), 
+    targets::tar_target_raw("IEADataPath", iea_data_path), 
+    targets::tar_target_raw("CountryConcordancePath", country_concordance_path), 
+    targets::tar_target_raw("PhiConstantsPath", phi_constants_path), 
+    targets::tar_target_raw("CEDADataFolder", ceda_data_folder), 
+    targets::tar_target_raw("MachineDataPath", machine_data_path), 
+    targets::tar_target_raw("ExemplarTablePath", exemplar_table_path), 
+    targets::tar_target_raw("FUAnalysisFolder", fu_analysis_folder), 
+    targets::tar_target_raw("ReportsSourceFolders", reports_source_folders), 
+    targets::tar_target_raw("ReportsDestFolder", reports_dest_folder), 
+    targets::tar_target_raw("PipelineCachesFolder", pipeline_caches_folder), 
+    targets::tar_target_raw("PipelineReleasesFolder", pipeline_releases_folder), 
+    targets::tar_target_raw("Release", release), 
     
     
     # (1) Load pipeline information
     
     # (1a) Country concordance table
-    tar_target_raw("CountryConcordanceTable", quote(load_country_concordance_table(country_concordance_path = CountryConcordancePath))),
+    targets::tar_target_raw("CountryConcordanceTable", quote(load_country_concordance_table(country_concordance_path = CountryConcordancePath))),
     
     # (1b) Final demand sectors
-    tar_target_raw("FinalDemandSectors", quote(get_fd_sectors())), 
+    targets::tar_target_raw("FinalDemandSectors", quote(get_fd_sectors())), 
     
     # (1c) Primary industry prefixes
-    tar_target_raw("PrimaryIndustryPrefixes", quote(get_p_industry_prefixes())),
+    targets::tar_target_raw("PrimaryIndustryPrefixes", quote(get_p_industry_prefixes())),
     
     # (1d) IEA data
-    tar_target_raw("AllIEAData", quote(IEATools::load_tidy_iea_df(IEADataPath, override_df = CountryConcordanceTable)), 
-                   storage = "worker", retrieval = "worker"),
-    tar_target_raw("FilteredAllIEAData", quote(filter_countries_years(AllIEAData, countries = AllocAndEffCountries, years = Years))),
+    targets::tar_target_raw("AllIEAData", quote(IEATools::load_tidy_iea_df(IEADataPath, override_df = CountryConcordanceTable)), 
+                            storage = "worker", retrieval = "worker"),
+    targets::tar_target_raw("FilteredAllIEAData", quote(filter_countries_years(AllIEAData, countries = AllocAndEffCountries, years = Years))),
     tarchetypes::tar_group_by(IEAData, command = FilteredAllIEAData, Country), 
     
     # (1e) CEDA data for ALL countries
-    tar_target_raw("CEDAData", quote(CEDATools::create_agg_cru_cy_df(agg_cru_cy_folder = CEDADataFolder,
-                                                                     agg_cru_cy_metric = c("tmp", "tmn", "tmx"),
-                                                                     agg_cru_cy_year = 2020)), 
-                   storage = "worker", retrieval = "worker"), 
+    targets::tar_target_raw("CEDAData", quote(CEDATools::create_agg_cru_cy_df(agg_cru_cy_folder = CEDADataFolder,
+                                                                              agg_cru_cy_metric = c("tmp", "tmn", "tmx"),
+                                                                              agg_cru_cy_year = 2020)), 
+                            storage = "worker", retrieval = "worker"), 
     
     # (1f) Machine data 
-    tar_target_raw("AllMachineData", quote(read_all_eta_files(eta_fin_paths = get_eta_filepaths(MachineDataPath)))), 
-    tar_target_raw("MachineData", quote(filter_countries_years(AllMachineData, countries = AllocAndEffCountries, years = Years))),
+    targets::tar_target_raw("AllMachineData", quote(read_all_eta_files(eta_fin_paths = get_eta_filepaths(MachineDataPath)))), 
+    targets::tar_target_raw("MachineData", quote(filter_countries_years(AllMachineData, countries = AllocAndEffCountries, years = Years))),
     
     # (1g) Socioeconomic data
-    tar_target_raw("SocioEconData", quote(get_all_pwt_data(countries = Countries) %>% get_L_K_GDP_data())), 
-
+    targets::tar_target_raw("SocioEconData", quote(get_all_pwt_data(countries = Countries) %>% get_L_K_GDP_data())), 
+    
     
     # (2) Balance all final energy data.
     # First, check whether energy products are balanced. They're not.
     # FALSE indicates a country with at least one balance problem.
-    tar_target_raw("BalancedBefore", quote(is_balanced(IEAData, countries = AllocAndEffCountries)),
-                   pattern = quote(map(IEAData)), iteration = "group",
-                   storage = "worker", retrieval = "worker"), 
+    targets::tar_target_raw("BalancedBefore", quote(is_balanced(IEAData, countries = AllocAndEffCountries)),
+                            pattern = quote(map(IEAData)), iteration = "group",
+                            storage = "worker", retrieval = "worker"), 
     
     # Balance all of the data by product and year.
-    tar_target_raw("BalancedIEAData", quote(make_balanced(IEAData, countries = AllocAndEffCountries)), 
-                   pattern = quote(map(IEAData)), iteration = "group",
-                   storage = "worker", retrieval = "worker"),
+    targets::tar_target_raw("BalancedIEAData", quote(make_balanced(IEAData, countries = AllocAndEffCountries)), 
+                            pattern = quote(map(IEAData)), iteration = "group",
+                            storage = "worker", retrieval = "worker"),
     
     # Check that balancing was successful.
-    tar_target_raw("BalancedAfter", quote(is_balanced(BalancedIEAData, countries = AllocAndEffCountries)), 
-                   pattern = quote(map(BalancedIEAData)), iteration = "group",
-                   storage = "worker", retrieval = "worker")
-
+    targets::tar_target_raw("BalancedAfter", quote(is_balanced(BalancedIEAData, countries = AllocAndEffCountries)), 
+                            pattern = quote(map(BalancedIEAData)), iteration = "group",
+                            storage = "worker", retrieval = "worker"), 
+    
+    # Don't continue if there is a problem.
+    # stopifnot returns NULL if everything is OK.
+    targets::tar_target_raw("OKToProceed", quote(ifelse(is.null(stopifnot(all(BalancedAfter))), yes = TRUE, no = FALSE)))
     
     
-    )
+  )
   
   
   
