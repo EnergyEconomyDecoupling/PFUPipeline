@@ -136,7 +136,17 @@ get_pipeline <- function(countries = "all",
     # (4) Arrange all the data into PSUT matrices with final stage data.
     targets::tar_target_raw("PSUTFinal", quote(make_psut(Specified, countries = countries)), 
                             pattern = quote(map(Specified)), iteration = "group", 
+                            storage = "worker", retrieval = "worker"),
+    
+    # (5) Load exemplar table and make lists for each country and year from disk.
+    # These may be incomplete.
+    targets::tar_target_raw("ExemplarLists", quote(load_exemplar_table(ExemplarTablePath, 
+                                                                       countries = AllocAndEffCountries,
+                                                                       years = Years) %>%
+                                                     exemplar_lists(AllocAndEffCountries)), 
+                            pattern = quote(map(AllocAndEffCountries)), 
                             storage = "worker", retrieval = "worker")
+
 
   )
   
