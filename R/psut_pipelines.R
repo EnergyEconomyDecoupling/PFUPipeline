@@ -131,7 +131,13 @@ get_pipeline <- function(countries = "all",
     # (3) Specify the BalancedIEAData data frame by being more careful with names, etc.
     targets::tar_target_raw("Specified", quote(specify(BalancedIEAData, countries = AllocAndEffCountries)) ,
                             pattern = quote(map(BalancedIEAData)), iteration = "group", 
+                            storage = "worker", retrieval = "worker"),
+    
+    # (4) Arrange all the data into PSUT matrices with final stage data.
+    targets::tar_target_raw("PSUTFinal", quote(make_psut(Specified, countries = countries)), 
+                            pattern = quote(map(Specified)), iteration = "group", 
                             storage = "worker", retrieval = "worker")
+
   )
   
   

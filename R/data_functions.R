@@ -184,3 +184,30 @@ specify <- function(BalancedIEAData,
   dplyr::filter(BalancedIEAData, .data[[country]] %in% countries) %>%
     IEATools::specify_all()
 }
+
+
+#' Convert to PSUT matrices
+#'
+#' Converts tidy IEA data to PSUT matrices in a way that is amenable to drake subtargets.
+#' Internally, `IEATools::prep_psut()` does the conversion to matrices.
+#'
+#' @param SpecifiedIEAData A data frame that has already been specified via `specify()`.
+#' @param countries The countries you want to convert to PSUT matrices.
+#' @param country See `IEATools::iea_cols`.
+#'
+#' @return a `matsindf`-style data frame
+#'
+#' @export
+#'
+#' @examples
+#' IEATools::sample_iea_data_path() %>%
+#'   IEATools::load_tidy_iea_df() %>%
+#'   make_balanced(countries = c("GHA", "ZAF")) %>%
+#'   specify(countries = c("GHA", "ZAF")) %>%
+#'   make_psut(countries = c("GHA", "ZAF"))
+make_psut <- function(SpecifiedIEAData,
+                      countries,
+                      country = IEATools::iea_cols$country) {
+  dplyr::filter(SpecifiedIEAData, .data[[country]] %in% countries) %>%
+    IEATools::prep_psut()
+}
