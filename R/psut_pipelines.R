@@ -109,7 +109,7 @@ get_pipeline <- function(countries = "all",
     # First, check whether energy products are balanced. They're not.
     # FALSE indicates a country with at least one balance problem.
     targets::tar_target_raw("BalancedBefore", quote(is_balanced(IEAData, countries = AllocAndEffCountries)),
-                            pattern = quote(map(IEAData)), iteration = "group",
+                            pattern = quote(map(IEAData)),
                             storage = "worker", retrieval = "worker"), 
     
     # Balance all of the data by product and year.
@@ -119,7 +119,7 @@ get_pipeline <- function(countries = "all",
     
     # Check that balancing was successful.
     targets::tar_target_raw("BalancedAfter", quote(is_balanced(BalancedIEAData, countries = AllocAndEffCountries)), 
-                            pattern = quote(map(BalancedIEAData)), iteration = "group",
+                            pattern = quote(map(BalancedIEAData)),
                             storage = "worker", retrieval = "worker"), 
     
     # Don't continue if there is a problem.

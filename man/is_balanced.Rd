@@ -5,7 +5,7 @@
 \title{Tells whether IEA data are balanced}
 \usage{
 is_balanced(
-  IEAData,
+  .iea_data,
   countries,
   country = IEATools::iea_cols$country,
   grp_vars = c(country, IEATools::iea_cols$method, IEATools::iea_cols$energy_type,
@@ -13,7 +13,7 @@ is_balanced(
 )
 }
 \arguments{
-\item{IEAData}{a tidy IEA data frame}
+\item{.iea_data}{a tidy IEA data frame}
 
 \item{countries}{the countries for which balancing should be checked as strings}
 

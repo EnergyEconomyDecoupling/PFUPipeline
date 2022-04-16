@@ -92,7 +92,7 @@ filter_countries_years <- function(.df,
 #' Internally, this function uses [IEATools::calc_tidy_iea_df_balances()].
 #' Grouping is doing internal to this function using the value of `grp_vars`.
 #'
-#' @param IEAData a tidy IEA data frame
+#' @param .iea_data a tidy IEA data frame
 #' @param countries the countries for which balancing should be checked as strings
 #' @param country The name of the country column in `IEAData`. Default is `r IEATools::iea_cols$country`.
 #' @param grp_vars the groups that should be checked. Default is
@@ -107,7 +107,8 @@ filter_countries_years <- function(.df,
 #' IEATools::sample_iea_data_path() %>%
 #'   IEATools::load_tidy_iea_df() %>%
 #'   is_balanced(countries = "ZAF")
-is_balanced <- function(IEAData, countries,
+is_balanced <- function(.iea_data, 
+                        countries,
                         country = IEATools::iea_cols$country,
                         grp_vars = c(country,
                                      IEATools::iea_cols$method,
@@ -115,7 +116,7 @@ is_balanced <- function(IEAData, countries,
                                      IEATools::iea_cols$last_stage,
                                      IEATools::iea_cols$year,
                                      IEATools::iea_cols$product)) {
-  dplyr::filter(IEAData, .data[[country]] %in% countries) %>%
+  dplyr::filter(.iea_data, .data[[country]] %in% countries) %>%
     dplyr::group_by(!!as.name(grp_vars)) %>%
     IEATools::calc_tidy_iea_df_balances() %>%
     IEATools::tidy_iea_df_balanced()
@@ -128,7 +129,7 @@ is_balanced <- function(IEAData, countries,
 #' Internally, this function uses `IEATools::fix_tidy_iea_df_balances()`.
 #' Grouping is done internal to this function using the value of `grp_vars`.
 #'
-#' @param IEAData A tidy IEA data frame
+#' @param .iea_data A tidy IEA data frame
 #' @param countries The countries that should be balanced
 #' @param grp_vars the groups that should be checked. Default is
 #'                 `c(country, IEATools::iea_cols$method, IEATools::iea_cols$energy_type, IEATools::iea_cols$last_stage, IEATools::iea_cols$product)`.
@@ -143,7 +144,7 @@ is_balanced <- function(IEAData, countries,
 #'   IEATools::load_tidy_iea_df() %>%
 #'   make_balanced(countries = c("GHA", "ZAF")) %>%
 #'   is_balanced(countries = c("GHA", "ZAF"))
-make_balanced <- function(IEAData,
+make_balanced <- function(.iea_data,
                           countries,
                           country = IEATools::iea_cols$country,
                           grp_vars = c(country,
@@ -152,7 +153,7 @@ make_balanced <- function(IEAData,
                                        IEATools::iea_cols$last_stage,
                                        IEATools::iea_cols$year,
                                        IEATools::iea_cols$product)) {
-  dplyr::filter(IEAData, .data[[country]] %in% countries) %>%
+  dplyr::filter(.iea_data, .data[[country]] %in% countries) %>%
     dplyr::group_by(!!as.name(grp_vars)) %>%
     IEATools::fix_tidy_iea_df_balances() %>%
     dplyr::ungroup()

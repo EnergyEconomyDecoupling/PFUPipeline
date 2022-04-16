@@ -5,7 +5,7 @@
 \title{Balance IEA data}
 \usage{
 make_balanced(
-  IEAData,
+  .iea_data,
   countries,
   country = IEATools::iea_cols$country,
   grp_vars = c(country, IEATools::iea_cols$method, IEATools::iea_cols$energy_type,
@@ -13,7 +13,7 @@ make_balanced(
 )
 }
 \arguments{
-\item{IEAData}{A tidy IEA data frame}
+\item{.iea_data}{A tidy IEA data frame}
 
 \item{countries}{The countries that should be balanced}
 
