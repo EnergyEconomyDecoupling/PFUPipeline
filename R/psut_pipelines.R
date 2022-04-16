@@ -145,6 +145,16 @@ get_pipeline <- function(countries = "all",
                                                                        years = Years) %>%
                                                      exemplar_lists(AllocAndEffCountries)), 
                             pattern = quote(map(AllocAndEffCountries)), 
+                            storage = "worker", retrieval = "worker"),
+    
+    # (6) Load phi (exergy-to-energy ratio) constants
+    targets::tar_target_raw("PhiConstants", quote(IEATools::load_phi_constants_table(PhiConstantsPath))), 
+    
+    # (7) Load incomplete FU allocation tables
+    targets::tar_target_raw("IncompleteAllocationTables", quote(load_fu_allocation_tables(FUAnalysisFolder, 
+                                                                                          specified_iea_data = Specified,
+                                                                                          countries = AllocAndEffCountries)), 
+                            pattern = quote(map(AllocAndEffCountries)), 
                             storage = "worker", retrieval = "worker")
 
 
