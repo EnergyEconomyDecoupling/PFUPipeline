@@ -158,3 +158,29 @@ make_balanced <- function(.iea_data,
     IEATools::fix_tidy_iea_df_balances() %>%
     dplyr::ungroup()
 }
+
+
+#' Specify the IEA data
+#'
+#' Specifies the IEA data in a way that is amenable to drake subtargets.
+#' See `IEATools::specify_all()` for details.
+#'
+#' @param BalancedIEAData IEA data that have already been balanced
+#' @param countries the countries for which specification should occur
+#' @param country See `IEATools::iea_cols`.
+#'
+#' @return a data frame of specified IEA data
+#'
+#' @export
+#'
+#' @examples
+#' IEATools::sample_iea_data_path() %>%
+#'   IEATools::load_tidy_iea_df() %>%
+#'   make_balanced(countries = c("GHA", "ZAF")) %>%
+#'   specify(countries = c("GHA", "ZAF"))
+specify <- function(BalancedIEAData,
+                    countries,
+                    country = IEATools::iea_cols$country) {
+  dplyr::filter(BalancedIEAData, .data[[country]] %in% countries) %>%
+    IEATools::specify_all()
+}

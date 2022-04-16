@@ -109,6 +109,7 @@ get_pipeline <- function(countries = "all",
     # First, check whether energy products are balanced. They're not.
     # FALSE indicates a country with at least one balance problem.
     targets::tar_target_raw("BalancedBefore", quote(is_balanced(IEAData, countries = AllocAndEffCountries)),
+                            # No iteration argument relies on default "vector" to produce a vector of booleans.
                             pattern = quote(map(IEAData)),
                             storage = "worker", retrieval = "worker"), 
     
@@ -119,14 +120,18 @@ get_pipeline <- function(countries = "all",
     
     # Check that balancing was successful.
     targets::tar_target_raw("BalancedAfter", quote(is_balanced(BalancedIEAData, countries = AllocAndEffCountries)), 
+                            # No iteration argument relies on default "vector" to produce a vector of booleans.
                             pattern = quote(map(BalancedIEAData)),
                             storage = "worker", retrieval = "worker"), 
     
     # Don't continue if there is a problem.
     # stopifnot returns NULL if everything is OK.
-    targets::tar_target_raw("OKToProceed", quote(ifelse(is.null(stopifnot(all(BalancedAfter))), yes = TRUE, no = FALSE)))
+    targets::tar_target_raw("OKToProceed", quote(ifelse(is.null(stopifnot(all(BalancedAfter))), yes = TRUE, no = FALSE))),
     
-    
+    # (3) Specify the BalancedIEAData data frame by being more careful with names, etc.
+    targets::tar_target_raw("Specified", quote(specify(BalancedIEAData, countries = AllocAndEffCountries)) ,
+                            pattern = quote(map(BalancedIEAData)), iteration = "group", 
+                            storage = "worker", retrieval = "worker")
   )
   
   
