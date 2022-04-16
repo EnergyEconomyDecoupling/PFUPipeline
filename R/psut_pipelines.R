@@ -151,13 +151,19 @@ get_pipeline <- function(countries = "all",
     targets::tar_target_raw("PhiConstants", quote(IEATools::load_phi_constants_table(PhiConstantsPath))), 
     
     # (7) Load incomplete FU allocation tables
-    targets::tar_target_raw("IncompleteAllocationTables", quote(load_fu_allocation_tables(FUAnalysisFolder, 
+    targets::tar_target_raw("IncompleteAllocationTables", quote(load_fu_allocation_tables(FUAnalysisFolder,
                                                                                           specified_iea_data = Specified,
-                                                                                          countries = AllocAndEffCountries)), 
-                            pattern = quote(map(AllocAndEffCountries)), 
-                            storage = "worker", retrieval = "worker")
-
-
+                                                                                          countries = AllocAndEffCountries)),
+                            storage = "worker", retrieval = "worker"),
+    tarchetypes::tar_group_by(TidyIncompleteAllocationTables, 
+                              IEATools::tidy_fu_allocation_table(IncompleteAllocationTables), 
+                              Country, 
+                              storage = "worker", retrieval = "worker")
+    
+    
+    
+    
+    
   )
   
   
