@@ -3,6 +3,7 @@
 export("%>%")
 export(":=")
 export(.data)
+export(assemble_fu_allocation_tables)
 export(combine_countries_exemplars)
 export(exemplar_lists)
 export(filter_countries_years)

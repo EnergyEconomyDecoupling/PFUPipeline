@@ -158,7 +158,17 @@ get_pipeline <- function(countries = "all",
     tarchetypes::tar_group_by(TidyIncompleteAllocationTables, 
                               IEATools::tidy_fu_allocation_table(IncompleteAllocationTables), 
                               Country, 
-                              storage = "worker", retrieval = "worker")
+                              storage = "worker", retrieval = "worker"), 
+    
+    # (8) Complete FU allocation tables
+    targets::tar_target_raw("CompletedAllocationTables", quote(assemble_fu_allocation_tables(incomplete_allocation_tables = IncompleteAllocationTables,
+                                                                                             exemplar_lists = ExemplarLists,
+                                                                                             specified_iea_data = Specified,
+                                                                                             countries = countries,
+                                                                                             years = Years)), 
+                            pattern = quote(map(IncompleteAllocationTables)), iteration = "group", 
+                            storage = "worker", retrieval = "worker") 
+
     
     
     
