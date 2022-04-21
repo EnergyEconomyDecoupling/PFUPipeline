@@ -86,10 +86,18 @@ get_pipeline <- function(countries = "all",
     targets::tar_target_raw("PrimaryIndustryPrefixes", quote(get_p_industry_prefixes())),
     
     # (1d) IEA data
-    targets::tar_target_raw("AllIEAData", quote(IEATools::load_tidy_iea_df(IEADataPath, override_df = CountryConcordanceTable)), 
-                            storage = "worker", retrieval = "worker"),
-    targets::tar_target_raw("FilteredAllIEAData", quote(filter_countries_years(AllIEAData, countries = AllocAndEffCountries, years = Years))),
-    tarchetypes::tar_group_by(IEAData, command = FilteredAllIEAData, Country), 
+    # targets::tar_target_raw("AllIEAData", quote(IEATools::load_tidy_iea_df(IEADataPath, override_df = CountryConcordanceTable)), 
+    #                         storage = "worker", retrieval = "worker"),
+    # targets::tar_target_raw("FilteredAllIEAData", quote(filter_countries_years(AllIEAData, countries = AllocAndEffCountries, years = Years))),
+    # tarchetypes::tar_group_by(IEAData, command = FilteredAllIEAData, Country), 
+    
+    # targets::tar_target_raw("FilteredIEAData", quote(IEATools::load_tidy_iea_df(IEADataPath, override_df = CountryConcordanceTable) %>% 
+    #                             filter_countries_years(countries = AllocAndEffCountries, years = Years))), 
+    # tarchetypes::tar_group_by(IEAData, FilteredIEAData, Country),
+
+    tarchetypes::tar_group_by(IEAData, IEATools::load_tidy_iea_df(IEADataPath, override_df = CountryConcordanceTable) %>% 
+                                filter_countries_years(countries = AllocAndEffCountries, years = Years), 
+                              Country), 
     
     # (1e) CEDA data for ALL countries
     targets::tar_target_raw("CEDAData", quote(CEDATools::create_agg_cru_cy_df(agg_cru_cy_folder = CEDADataFolder,
@@ -98,12 +106,15 @@ get_pipeline <- function(countries = "all",
                             storage = "worker", retrieval = "worker"), 
     
     # (1f) Machine data 
-    targets::tar_target_raw("AllMachineData", quote(read_all_eta_files(eta_fin_paths = get_eta_filepaths(MachineDataPath)))), 
-    targets::tar_target_raw("MachineData", quote(filter_countries_years(AllMachineData, countries = AllocAndEffCountries, years = Years))),
+    # targets::tar_target_raw("AllMachineData", quote(read_all_eta_files(eta_fin_paths = get_eta_filepaths(MachineDataPath)))), 
+    tarchetypes::tar_group_by(AllMachineData, read_all_eta_files(eta_fin_paths = get_eta_filepaths(MachineDataPath)), 
+                              Country), 
+    targets::tar_target_raw("MachineData", quote(filter_countries_years(AllMachineData, countries = AllocAndEffCountries, years = Years)), 
+                            pattern = quote(map(AllMachineData)), 
+                            storage = "worker", retrieval = "worker"),
     
     # (1g) Socioeconomic data
     targets::tar_target_raw("SocioEconData", quote(get_all_pwt_data(countries = Countries) %>% get_L_K_GDP_data())), 
-    
     
     # (2) Balance all final energy data.
     # First, check whether energy products are balanced. They're not.
@@ -173,6 +184,14 @@ get_pipeline <- function(countries = "all",
                                                                                       countries = Countries,
                                                                                       years = Years,
                                                                                       which_quantity = IEATools::template_cols$eta_fu)))
+    # targets::tar_target_raw("CompletedEfficiencyTables", quote(assemble_eta_fu_tables(incomplete_eta_fu_tables = MachineData,
+    #                                                                                   exemplar_lists = ExemplarLists,
+    #                                                                                   completed_fu_allocation_tables = CompletedAllocationTables,
+    #                                                                                   countries = Countries,
+    #                                                                                   years = Years,
+    #                                                                                   which_quantity = IEATools::template_cols$eta_fu)), 
+    #                         pattern = quote(map(MachineData)), iteration = "group", 
+    #                         storage = "worker", retrieval = "worker")
     
 
 
