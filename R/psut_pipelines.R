@@ -134,7 +134,7 @@ get_pipeline <- function(countries = "all",
                             storage = "worker", retrieval = "worker"),
     
     # (4) Arrange all the data into PSUT matrices with final stage data.
-    targets::tar_target_raw("PSUTFinal", quote(make_psut(Specified, countries = countries)), 
+    targets::tar_target_raw("PSUTFinal", quote(make_psut(Specified, countries = Countries)), 
                             pattern = quote(map(Specified)), iteration = "group", 
                             storage = "worker", retrieval = "worker"),
     
@@ -163,8 +163,18 @@ get_pipeline <- function(countries = "all",
     targets::tar_target_raw("CompletedAllocationTables", quote(assemble_fu_allocation_tables(incomplete_allocation_tables = IncompleteAllocationTables,
                                                                                              exemplar_lists = ExemplarLists,
                                                                                              specified_iea_data = Specified %>% dplyr::mutate(tar_group = NULL),
-                                                                                             countries = countries,
-                                                                                             years = Years))) 
+                                                                                             countries = Countries,
+                                                                                             years = Years))), 
+    
+    # (9) Complete efficiency tables
+    targets::tar_target_raw("CompletedEfficiencyTables", quote(assemble_eta_fu_tables(incomplete_eta_fu_tables = MachineData,
+                                                                                      exemplar_lists = ExemplarLists,
+                                                                                      completed_fu_allocation_tables = CompletedAllocationTables,
+                                                                                      countries = Countries,
+                                                                                      years = Years,
+                                                                                      which_quantity = IEATools::template_cols$eta_fu)))
+    
+
 
     
     
