@@ -144,30 +144,27 @@ get_pipeline <- function(countries = "all",
                                                                        countries = AllocAndEffCountries,
                                                                        years = Years) %>%
                                                      exemplar_lists(AllocAndEffCountries)), 
-                            pattern = quote(map(AllocAndEffCountries)), 
+                            # pattern = quote(map(AllocAndEffCountries)), 
                             storage = "worker", retrieval = "worker"),
     
     # (6) Load phi (exergy-to-energy ratio) constants
-    targets::tar_target_raw("PhiConstants", quote(IEATools::load_phi_constants_table(PhiConstantsPath))), 
+    targets::tar_target_raw("PhiConstants", quote(IEATools::load_phi_constants_table(PhiConstantsPath)), 
+                            storage = "worker", retrieval = "worker"), 
     
     # (7) Load incomplete FU allocation tables
     targets::tar_target_raw("IncompleteAllocationTables", quote(load_fu_allocation_tables(FUAnalysisFolder,
                                                                                           specified_iea_data = Specified,
-                                                                                          countries = AllocAndEffCountries)),
-                            storage = "worker", retrieval = "worker"),
+                                                                                          countries = AllocAndEffCountries))),
     tarchetypes::tar_group_by(TidyIncompleteAllocationTables, 
                               IEATools::tidy_fu_allocation_table(IncompleteAllocationTables), 
-                              Country, 
-                              storage = "worker", retrieval = "worker"), 
+                              Country), 
     
     # (8) Complete FU allocation tables
     targets::tar_target_raw("CompletedAllocationTables", quote(assemble_fu_allocation_tables(incomplete_allocation_tables = IncompleteAllocationTables,
                                                                                              exemplar_lists = ExemplarLists,
-                                                                                             specified_iea_data = Specified,
+                                                                                             specified_iea_data = Specified %>% dplyr::mutate(tar_group = NULL),
                                                                                              countries = countries,
-                                                                                             years = Years)), 
-                            pattern = quote(map(IncompleteAllocationTables)), iteration = "group", 
-                            storage = "worker", retrieval = "worker") 
+                                                                                             years = Years))) 
 
     
     
