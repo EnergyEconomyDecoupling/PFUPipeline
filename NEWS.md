@@ -4,7 +4,7 @@ output: html_document
 ---
 
 
-
+* Cache is now stashed only when a release is requested.
 * Now ignore efficiency files that begin with "~$",
   thereby ignoring open Excel sheets.
 * We no longer skip the first row of `FIN_ETA` sheets.

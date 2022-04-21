@@ -4,7 +4,13 @@
 \alias{stash_cache}
 \title{Save the cache to a zip file, then to \code{pipeline_caches_folder}}
 \usage{
-stash_cache(pipeline_caches_folder, cache_folder, file_prefix, dependency)
+stash_cache(
+  pipeline_caches_folder,
+  cache_folder,
+  file_prefix,
+  dependency,
+  release = FALSE
+)
 }
 \arguments{
 \item{pipeline_caches_folder}{The folder into which the pipeline cache will be saved as a .zip file.}
@@ -16,9 +22,13 @@ This path is interpreted relative to the working directory.}
 
 \item{dependency}{The last target that should be executed before saving the cache.
 Not used internally.}
+
+\item{release}{A boolean telling whether to do a release. The cache is stored only for releases.
+Default is \code{FALSE}.}
 }
 \value{
 A logical saying whether the saving operation was successful.
+If \code{release = FALSE}, \code{FALSE} is returned
 }
 \description{
 Saves a pipeline cache to a zip file into the \code{pipeline_caches_folder}.

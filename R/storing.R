@@ -12,11 +12,17 @@
 #' @param file_prefix The prefix for the output file name.
 #' @param dependency The last target that should be executed before saving the cache.
 #'                   Not used internally.
+#' @param release A boolean telling whether to do a release. The cache is stored only for releases.
+#'                Default is `FALSE`.
 #'
 #' @return A logical saying whether the saving operation was successful.
+#'         If `release = FALSE`, `FALSE` is returned
 #'
 #' @export
-stash_cache <- function(pipeline_caches_folder, cache_folder, file_prefix, dependency) {
+stash_cache <- function(pipeline_caches_folder, cache_folder, file_prefix, dependency, release = FALSE) {
+  if (!release) {
+    return(FALSE)
+  }
   # Zip the drake cache
   zipped_cache_filename <- paste0(file_prefix, parsedate::format_iso_8601(Sys.time()), ".zip") %>%
     # Change file name format to be equivalent to the pins file format.
