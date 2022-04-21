@@ -5,6 +5,9 @@ output: html_document
 
 
 
+* Now ignore efficiency files that begin with "~$",
+  thereby ignoring open Excel sheets.
+* We no longer skip the first row of `FIN_ETA` sheets.
 * Beginning to develop the package as a `targets` workflow.
 
 
