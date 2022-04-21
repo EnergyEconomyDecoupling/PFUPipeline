@@ -98,7 +98,7 @@ read_all_eta_files <- function(eta_fin_paths,
       # go to the next one.
       next
     }
-    raw_etas <- readxl::read_excel(path = path, sheet = efficiency_tab_name, skip = 1)
+    raw_etas <- readxl::read_excel(path = path, sheet = efficiency_tab_name)
     
     # Figure out year columns.
     year_columns <- IEATools::year_cols(raw_etas, return_names = TRUE)
