@@ -5,13 +5,17 @@
 #'
 #' @param filepath A file path to the folder containing all machine folders.
 #' @param efficiency_tab_name See `PFUWorkflow::machine_constants`.
+#' @param hidden_excel_file_prefix The prefix for hidden Excel files.
+#'                                 These files appear when an Excel file is open
+#'                                 and should be ignored.
 #'
 #' @return A list of the file paths to machine excel files containing
 #'         FIN_ETA front sheets, and therefore usable data.
 #'         
 #' @export
 get_eta_filepaths <- function(filepath,
-                              efficiency_tab_name = PFUDatabase::machine_constants$efficiency_tab_name) {
+                              efficiency_tab_name = PFUDatabase::machine_constants$efficiency_tab_name,
+                              hidden_excel_file_prefix = "~$") {
   
   if (!file.exists(filepath)) {
     return(list())
@@ -27,6 +31,10 @@ get_eta_filepaths <- function(filepath,
   # Keep only those machine_filepaths that point to a file
   # that contains a FIN_ETA tab.
   lapply(machine_filepaths, FUN = function(fp) {
+    if (basename(fp) %>% startsWith(hidden_excel_file_prefix)) {
+      return(NULL)
+    }
+
     if(efficiency_tab_name %in% readxl::excel_sheets(fp)) {
       return(fp)
     } else {
