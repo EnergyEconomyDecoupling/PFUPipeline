@@ -165,34 +165,54 @@ get_pipeline <- function(countries = "all",
     # (7) Load incomplete FU allocation tables
     targets::tar_target_raw("IncompleteAllocationTables", quote(load_fu_allocation_tables(FUAnalysisFolder,
                                                                                           specified_iea_data = Specified,
-                                                                                          countries = AllocAndEffCountries))),
-    tarchetypes::tar_group_by(TidyIncompleteAllocationTables, 
-                              IEATools::tidy_fu_allocation_table(IncompleteAllocationTables), 
-                              Country), 
+                                                                                          countries = AllocAndEffCountries)),
+                            pattern = quote(map(AllocAndEffCountries)),
+                            storage = "worker", retrieval = "worker"),
+
+    # The next target is never used. So no need to calculate it.  
+    # Delete after 22 May 2022. ---MKH, 22 April 2022
+    # tarchetypes::tar_group_by(TidyIncompleteAllocationTables, 
+    #                           IEATools::tidy_fu_allocation_table(IncompleteAllocationTables), 
+    #                           Country), 
     
     # (8) Complete FU allocation tables
     targets::tar_target_raw("CompletedAllocationTables", quote(assemble_fu_allocation_tables(incomplete_allocation_tables = IncompleteAllocationTables,
                                                                                              exemplar_lists = ExemplarLists,
                                                                                              specified_iea_data = Specified %>% dplyr::mutate(tar_group = NULL),
                                                                                              countries = Countries,
-                                                                                             years = Years))), 
-    
+                                                                                             years = Years)), 
+                            pattern = quote(map(Countries))),
+
     # (9) Complete efficiency tables
     targets::tar_target_raw("CompletedEfficiencyTables", quote(assemble_eta_fu_tables(incomplete_eta_fu_tables = MachineData,
                                                                                       exemplar_lists = ExemplarLists,
                                                                                       completed_fu_allocation_tables = CompletedAllocationTables,
                                                                                       countries = Countries,
                                                                                       years = Years,
-                                                                                      which_quantity = IEATools::template_cols$eta_fu)))
-    # targets::tar_target_raw("CompletedEfficiencyTables", quote(assemble_eta_fu_tables(incomplete_eta_fu_tables = MachineData,
-    #                                                                                   exemplar_lists = ExemplarLists,
-    #                                                                                   completed_fu_allocation_tables = CompletedAllocationTables,
-    #                                                                                   countries = Countries,
-    #                                                                                   years = Years,
-    #                                                                                   which_quantity = IEATools::template_cols$eta_fu)), 
-    #                         pattern = quote(map(MachineData)), iteration = "group", 
-    #                         storage = "worker", retrieval = "worker")
+                                                                                      which_quantity = IEATools::template_cols$eta_fu)), 
+                            pattern = quote(map(Countries)), 
+                            storage = "worker", retrieval = "worker"), 
     
+    # (10) Complete phi_u tables
+    targets::tar_target_raw("CompletedPhiuTables", quote(assemble_phi_u_tables(incomplete_phi_u_table = MachineData,
+                                                                               phi_constants_table = PhiConstants,
+                                                                               completed_efficiency_table = CompletedEfficiencyTables,
+                                                                               countries = Countries,
+                                                                               years = Years)), 
+                            pattern = quote(map(Countries)), 
+                            storage = "worker", retrieval = "worker"), 
+    
+    # (11) Build matrices and vectors for extending to useful stage and exergy
+    targets::tar_target_raw("Cmats", quote(calc_C_mats(completed_allocation_tables = CompletedAllocationTables,
+                                                       countries = Countries)), 
+                            pattern = quote(map(Countries)), 
+                            storage = "worker", retrieval = "worker")
+
+    
+    
+    
+
+
 
 
     
