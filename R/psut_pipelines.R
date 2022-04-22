@@ -3,9 +3,9 @@
 #' The pipeline a `targets` pipeline that creates the PFU database.
 #'
 #' @param countries A vector of abbreviations for countries whose energy conversion chain is to be analyzed,
-#'                        such as "c('GHA', 'ZAF')".
-#'                        Countries named in `which_countries` can also serve as exemplars for
-#'                        final-to-useful allocations and efficiencies.
+#'                  such as "c('GHA', 'ZAF')".
+#'                  Countries named in `countries` can also serve as exemplars for
+#'                  final-to-useful allocations and efficiencies.
 #' @param additional_exemplar_countries A vector of country abbreviations for which final-to-useful allocations
 #'                                      and efficiencies will be read.
 #'                                      An energy conversion chain will _not_ be constructed for these countries.
@@ -95,9 +95,12 @@ get_pipeline <- function(countries = "all",
     #                             filter_countries_years(countries = AllocAndEffCountries, years = Years))), 
     # tarchetypes::tar_group_by(IEAData, FilteredIEAData, Country),
 
-    tarchetypes::tar_group_by(IEAData, IEATools::load_tidy_iea_df(IEADataPath, override_df = CountryConcordanceTable) %>% 
-                                filter_countries_years(countries = AllocAndEffCountries, years = Years), 
-                              Country), 
+    # tarchetypes::tar_group_by(IEAData, IEATools::load_tidy_iea_df(IEADataPath, override_df = CountryConcordanceTable) %>% 
+    #                             filter_countries_years(countries = AllocAndEffCountries, years = Years), 
+    #                           Country), 
+    targets::tar_target_raw("IEAData", quote(IEATools::load_tidy_iea_df(IEADataPath, override_df = CountryConcordanceTable) %>% 
+                                filter_countries_years(countries = AllocAndEffCountries, years = Years)),
+                            storage = "worker", retrieval = "worker"), 
     
     # (1e) CEDA data for ALL countries
     targets::tar_target_raw("CEDAData", quote(CEDATools::create_agg_cru_cy_df(agg_cru_cy_folder = CEDADataFolder,
@@ -106,11 +109,8 @@ get_pipeline <- function(countries = "all",
                             storage = "worker", retrieval = "worker"), 
     
     # (1f) Machine data 
-    # targets::tar_target_raw("AllMachineData", quote(read_all_eta_files(eta_fin_paths = get_eta_filepaths(MachineDataPath)))), 
-    tarchetypes::tar_group_by(AllMachineData, read_all_eta_files(eta_fin_paths = get_eta_filepaths(MachineDataPath)), 
-                              Country), 
-    targets::tar_target_raw("MachineData", quote(filter_countries_years(AllMachineData, countries = AllocAndEffCountries, years = Years)), 
-                            pattern = quote(map(AllMachineData)), 
+    targets::tar_target_raw("AllMachineData", quote(read_all_eta_files(eta_fin_paths = get_eta_filepaths(MachineDataPath)))),
+    targets::tar_target_raw("MachineData", quote(filter_countries_years(AllMachineData, countries = AllocAndEffCountries, years = Years)),
                             storage = "worker", retrieval = "worker"),
     
     # (1g) Socioeconomic data
@@ -120,19 +120,17 @@ get_pipeline <- function(countries = "all",
     # First, check whether energy products are balanced. They're not.
     # FALSE indicates a country with at least one balance problem.
     targets::tar_target_raw("BalancedBefore", quote(is_balanced(IEAData, countries = AllocAndEffCountries)),
-                            # No iteration argument relies on default "vector" to produce a vector of booleans.
-                            pattern = quote(map(IEAData)),
+                            pattern = quote(map(AllocAndEffCountries)),
                             storage = "worker", retrieval = "worker"), 
     
     # Balance all of the data by product and year.
     targets::tar_target_raw("BalancedIEAData", quote(make_balanced(IEAData, countries = AllocAndEffCountries)), 
-                            pattern = quote(map(IEAData)), iteration = "group",
+                            pattern = quote(map(AllocAndEffCountries)),
                             storage = "worker", retrieval = "worker"),
     
     # Check that balancing was successful.
     targets::tar_target_raw("BalancedAfter", quote(is_balanced(BalancedIEAData, countries = AllocAndEffCountries)), 
-                            # No iteration argument relies on default "vector" to produce a vector of booleans.
-                            pattern = quote(map(BalancedIEAData)),
+                            pattern = quote(map(AllocAndEffCountries)),
                             storage = "worker", retrieval = "worker"), 
     
     # Don't continue if there is a problem.
@@ -141,12 +139,12 @@ get_pipeline <- function(countries = "all",
     
     # (3) Specify the BalancedIEAData data frame by being more careful with names, etc.
     targets::tar_target_raw("Specified", quote(specify(BalancedIEAData, countries = AllocAndEffCountries)) ,
-                            pattern = quote(map(BalancedIEAData)), iteration = "group", 
+                            pattern = quote(map(AllocAndEffCountries)),
                             storage = "worker", retrieval = "worker"),
     
     # (4) Arrange all the data into PSUT matrices with final stage data.
     targets::tar_target_raw("PSUTFinal", quote(make_psut(Specified, countries = Countries)), 
-                            pattern = quote(map(Specified)), iteration = "group", 
+                            pattern = quote(map(Countries)), 
                             storage = "worker", retrieval = "worker"),
     
     # (5) Load exemplar table and make lists for each country and year from disk.
@@ -155,7 +153,7 @@ get_pipeline <- function(countries = "all",
                                                                        countries = AllocAndEffCountries,
                                                                        years = Years) %>%
                                                      exemplar_lists(AllocAndEffCountries)), 
-                            # pattern = quote(map(AllocAndEffCountries)), 
+                            pattern = quote(map(AllocAndEffCountries)),
                             storage = "worker", retrieval = "worker"),
     
     # (6) Load phi (exergy-to-energy ratio) constants
@@ -181,7 +179,8 @@ get_pipeline <- function(countries = "all",
                                                                                              specified_iea_data = Specified %>% dplyr::mutate(tar_group = NULL),
                                                                                              countries = Countries,
                                                                                              years = Years)), 
-                            pattern = quote(map(Countries))),
+                            pattern = quote(map(Countries)), 
+                            storage = "worker", retrieval = "worker"),
 
     # (9) Complete efficiency tables
     targets::tar_target_raw("CompletedEfficiencyTables", quote(assemble_eta_fu_tables(incomplete_eta_fu_tables = MachineData,

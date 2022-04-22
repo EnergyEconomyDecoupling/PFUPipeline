@@ -26,7 +26,7 @@ get_pipeline(
 \arguments{
 \item{countries}{A vector of abbreviations for countries whose energy conversion chain is to be analyzed,
 such as "c('GHA', 'ZAF')".
-Countries named in \code{which_countries} can also serve as exemplars for
+Countries named in \code{countries} can also serve as exemplars for
 final-to-useful allocations and efficiencies.}
 
 \item{additional_exemplar_countries}{A vector of country abbreviations for which final-to-useful allocations
