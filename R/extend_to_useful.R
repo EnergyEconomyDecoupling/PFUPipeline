@@ -88,3 +88,35 @@ calc_eta_fu_phi_u_vecs <- function(completed_efficiency_tables,
     # The function accepts a tidy data frame in addition to wide-by-year data frames.
     IEATools::form_eta_fu_phi_u_vecs(matvals = .values)
 }
+
+
+#' Choose eta.fu or phi.u columns from a data frame of eta.fu and phi.u vectors.
+#'
+#' @param eta_fu_phi_u_vecs A data frame containing metadata columns and columns for
+#'                          eta_fu (final to useful efficiency) and
+#'                          phi_u (exergy-to-energy efficiency ratios).
+#' @param keep Tells which column to keep, eta_fu or phi_u.
+#'             Must be one of `IEATools::template_cols$eta_fu` or `IEATools::template_cols$phi_u`.
+#' @param countries The countries to be analyzed.
+#' @param country See IEATools::iea_cols.
+#'
+#' @return A data frame of metadata and either an eta_fu column or a phi_u column
+#'
+#' @export
+sep_eta_fu_phi_u <- function(eta_fu_phi_u_vecs,
+                             keep = c(IEATools::template_cols$eta_fu, IEATools::template_cols$phi_u),
+                             countries,
+                             country = IEATools::iea_cols$country) {
+  keep = match.arg(keep, several.ok = FALSE)
+  out <- eta_fu_phi_u_vecs %>%
+    dplyr::filter(.data[[country]] %in% countries)
+  if (keep == IEATools::template_cols$eta_fu) {
+    col_to_delete = IEATools::template_cols$phi_u
+  } else {
+    col_to_delete = IEATools::template_cols$eta_fu
+  }
+  out %>%
+    dplyr::mutate(
+      "{col_to_delete}" := NULL
+    )
+}

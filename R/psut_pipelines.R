@@ -206,11 +206,19 @@ get_pipeline <- function(countries = "all",
                                                        countries = Countries)), 
                             pattern = quote(map(Countries)), 
                             storage = "worker", retrieval = "worker"), 
+
     targets::tar_target_raw("EtafuPhiuvecs", quote(calc_eta_fu_phi_u_vecs(completed_efficiency_tables = CompletedEfficiencyTables,
                                                                           completed_phi_tables = CompletedPhiuTables,
                                                                           countries = Countries)), 
                             pattern = quote(map(Countries)), 
+                            storage = "worker", retrieval = "worker"), 
+    
+    targets::tar_target_raw("Etafuvecs", quote(sep_eta_fu_phi_u(EtafuPhiuvecs,
+                                                                keep = IEATools::template_cols$eta_fu,
+                                                                countries = Countries)), 
+                            pattern = quote(map(Countries)), 
                             storage = "worker", retrieval = "worker")
+
     
 
 
