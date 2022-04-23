@@ -32,7 +32,7 @@ alloc_graph(
 \item{machine_eu_product}{The name of a combined \code{machine} and \code{eu_product} column.}
 }
 \value{
-A \code{ggplot2} graph object
+A \code{ggplot2} graph object.
 }
 \description{
 Creates an allocation graph from a completed allocation table,

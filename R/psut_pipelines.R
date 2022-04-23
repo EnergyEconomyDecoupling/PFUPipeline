@@ -83,22 +83,16 @@ get_pipeline <- function(countries = "all",
     # (1b) Country concordance table
     targets::tar_target_raw("CountryConcordanceTable", quote(load_country_concordance_table(country_concordance_path = CountryConcordancePath))),
     
-    # (1c) Final demand sectors
-    # targets::tar_target_raw("FinalDemandSectors", quote(get_fd_sectors())), 
-    
-    # (1d) Primary industry prefixes
-    # targets::tar_target_raw("PrimaryIndustryPrefixes", quote(get_p_industry_prefixes())),
-    
-    # (1e) CEDA data for ALL countries
+    # (1c) CEDA data for ALL countries
     targets::tar_target_raw("CEDAData", quote(CEDATools::create_agg_cru_cy_df(agg_cru_cy_folder = CEDADataFolder,
                                                                               agg_cru_cy_metric = c("tmp", "tmn", "tmx"),
                                                                               agg_cru_cy_year = 2020))), 
     
-    # (1f) Machine data 
+    # (1d) Machine data 
     targets::tar_target_raw("AllMachineData", quote(read_all_eta_files(eta_fin_paths = get_eta_filepaths(MachineDataPath)))),
     targets::tar_target_raw("MachineData", quote(filter_countries_years(AllMachineData, countries = AllocAndEffCountries, years = Years))),
     
-    # (1g) Socioeconomic data
+    # (1e) Socioeconomic data
     targets::tar_target_raw("SocioEconData", quote(get_all_pwt_data(countries = Countries) %>% get_L_K_GDP_data())), 
     
     # (2) Balance all final energy data.
@@ -176,30 +170,36 @@ get_pipeline <- function(countries = "all",
                             pattern = quote(map(Countries))), 
     
     # (11) Build matrices and vectors for extending to useful stage and exergy
+    # (11a) Allocation (C) matrices
     targets::tar_target_raw("Cmats", quote(calc_C_mats(completed_allocation_tables = CompletedAllocationTables,
                                                        countries = Countries)), 
                             pattern = quote(map(Countries))), 
 
+    # (11b) Final-to-useful efficiency (eta_fu) and exergy-to-energy ratio (phi_u) vectors at the useful stage
     targets::tar_target_raw("EtafuPhiuvecs", quote(calc_eta_fu_phi_u_vecs(completed_efficiency_tables = CompletedEfficiencyTables,
                                                                           completed_phi_tables = CompletedPhiuTables,
                                                                           countries = Countries)), 
                             pattern = quote(map(Countries))), 
     
+    # (11c) Final-to-useful efficiency (eta_fu) vectors
     targets::tar_target_raw("Etafuvecs", quote(sep_eta_fu_phi_u(EtafuPhiuvecs,
                                                                 keep = IEATools::template_cols$eta_fu,
                                                                 countries = Countries)), 
                             pattern = quote(map(Countries))), 
     
+    # (11d) Exergy-to-energy ratio (phi_u) vectors at the useful stage
     targets::tar_target_raw("Phiuvecs", quote(sep_eta_fu_phi_u(EtafuPhiuvecs,
                                                                keep = IEATools::template_cols$phi_u,
                                                                countries = Countries)), 
                             pattern = quote(map(Countries))), 
     
+    # (11e) Exergy-to-energy ratio (phi_pf) vectors at the primary and final stages
     targets::tar_target_raw("Phipfvecs", quote(calc_phi_pf_vecs(phi_u_vecs = Phiuvecs,
                                                                 phi_constants = PhiConstants,
                                                                 countries = Countries)), 
                             pattern = quote(map(Countries))), 
     
+    # (11f) Exergy-to-energy ratio (phi) vectors at all stages
     targets::tar_target_raw("Phivecs", quote(sum_phi_vecs(phi_pf_vecs = Phipfvecs,
                                                           phi_u_vecs = Phiuvecs,
                                                           countries = Countries)), 
@@ -212,10 +212,10 @@ get_pipeline <- function(countries = "all",
                                                                 countries = Countries)), 
                             pattern = quote(map(Countries))), 
     
-    # (14) Add other methods
+    # (13) Add other methods
     
     
-    # (15) Add exergy quantifications of energy
+    # (14) Add exergy quantifications of energy
     # Set PSUT as the last target. We'll use it for all further calculations.
     targets::tar_target_raw("PSUT", quote(move_to_exergy(psut_energy = PSUTUseful,
                                                          phi_vecs = Phivecs,
@@ -223,28 +223,28 @@ get_pipeline <- function(countries = "all",
                             pattern = quote(map(Countries))), 
     
     
-    # (16) Build reports
-    # Allocation Graphs
+    # (15) Build reports
+    # (15a) Allocation Graphs
     targets::tar_target_raw("AllocationGraphs", quote(alloc_plots_df(CompletedAllocationTables, countries = Countries)), 
                             pattern = quote(map(Countries))), 
-    # Non-Stationary Allocation Graphs
+    # (15b) Non-Stationary Allocation Graphs
     targets::tar_target_raw("NonStationaryAllocationGraphs", quote(nonstat_alloc_plots_df(CompletedAllocationTables, countries = Countries)), 
                             pattern = quote(map(Countries))), 
-    # Efficiency Graphs
+    # (15c) Efficiency Graphs
     targets::tar_target_raw("EfficiencyGraphs", quote(eta_fu_plots_df(CompletedEfficiencyTables, countries = Countries)), 
                             pattern = quote(map(Countries))), 
-    # Exergy-to-energy ratio graphs
+    # (15d) Exergy-to-energy ratio graphs
     targets::tar_target_raw("ExergyEnergyGraphs", quote(phi_u_plots_df(CompletedEfficiencyTables, countries = Countries)), 
                             pattern = quote(map(Countries))), 
     
-    # (17) Save results
-    # Store the PSUT target data frame in a pinboard inside the pipeline_releases_folder.
+    # (16) Save results
+    # (16a) Store the PSUT target data frame in a pinboard inside the pipeline_releases_folder.
     targets::tar_target_raw("ReleasePSUT", quote(release_target(pipeline_releases_folder = PipelineReleasesFolder,
                                                                 targ = PSUT,
                                                                 targ_name = "psut",
                                                                 release = Release))), 
     
-    # Zip the drake cache and store it in the pipeline_caches_folder
+    # (16b) Zip the targets cache and store it in the pipeline_caches_folder
     targets::tar_target_raw("StoreCache", quote(stash_cache(pipeline_caches_folder = PipelineCachesFolder,
                                                             cache_folder = "_targets",
                                                             file_prefix = "pfu_pipeline_cache_",

@@ -15,7 +15,7 @@
 #' @param .values,machine,eu_product See `IEATools::template_cols`.
 #' @param machine_eu_product The name of a combined `machine` and `eu_product` column.
 #'
-#' @return A `ggplot2` graph object
+#' @return A `ggplot2` graph object.
 #'
 #' @export
 #'
@@ -50,9 +50,8 @@ alloc_graph <- function(.df,
     ggplot2::scale_x_continuous(limits = c(1960, 2020), breaks = seq(1960, 2020, by = 10)) +
     ggplot2::scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.2)) +
     ggplot2::ylab("Allocation [-]") +
-    # ggplot2::ggtitle(paste0(c(country, ef_product, destination),collapse = "\n")) +
     ggplot2::ggtitle(paste0(c(country,
-                              paste(ef_product, "->", destination)),collapse = "\n")) +
+                              paste(ef_product, "->", destination)), collapse = "\n")) +
     MKHthemes::xy_theme() +
     ggplot2::theme(axis.title.x = ggplot2::element_blank(),
                    legend.title = ggplot2::element_blank(),
@@ -123,24 +122,12 @@ alloc_plots_df <- function(.df,
   
   .df %>%
     dplyr::filter(.data[[country]] %in% countries) %>%
-    # dplyr::group_by(.data[[country]],
-    #                 .data[[ef_product]],
-    #                 .data[[destination]]) %>%
-    # dplyr::group_by(.data[[country]],
-    #                 .data[["Method"]],
-    #                 .data[["Energy.type"]],
-    #                 # .data[["Last.stage"]],
-    #                 # .data[["Ledger.side"]],
-    #                 # .data[["Flow.aggregation.point"]],
-    #                 # .data[["Unit"]],
-    #                 .data[[ef_product]],
-  #                 .data[[destination]]) %>%
-  # Delete C.source column if it exists, because we don't need it for the graph,
-  # and if it doesn't exist, we don't want to halt execution when an error is
-  # thrown because we can't nest by a missing column.
-  dplyr::mutate(
-    "{c_source}" := NULL
-  ) %>%
+    # Delete C.source column if it exists, because we don't need it for the graph,
+    # and if it doesn't exist, we don't want to halt execution when an error is
+    # thrown because we can't nest by a missing column.
+    dplyr::mutate(
+      "{c_source}" := NULL
+    ) %>%
     matsindf::group_by_everything_except(machine, eu_product, quantity, year, .values) %>%
     tidyr::nest() %>%
     # The nest function creates a column called "data".
@@ -149,28 +136,13 @@ alloc_plots_df <- function(.df,
       "{data_col}" := data
     ) %>%
     
-    # Delete C.source column if it exists, because we don't need it for the graph,
-    # and if it doesn't exist, we don't want to halt execution when an error is
-    # thrown because we can't nest by a missing column.
-    # dplyr::mutate(
-    #   "{c_source}" := NULL
-    # ) %>%
-    # tidyr::nest("{data_col}" := c(machine, eu_product, quantity, year, .values)) %>%
     dplyr::mutate(
-      # "{plots}" := purrr::map(.x = data, .f = alloc_graph,
-      #                         country = .data[[country]], ef_product = .data[[ef_product]], destination = .data[[destination]],
-      #                         year = year, .values = .values, machine = machine, eu_product = eu_product)
       "{plots}" := purrr::map(.x = .data[[data_col]], .f = alloc_graph,
                               country = .data[[country]], ef_product = .data[[ef_product]], destination = .data[[destination]],
                               year = year, .values = .values, machine = machine, eu_product = eu_product)
-      # "{plots}" := purrr::map(.x = .data[[data_col]], .f = alloc_graph,
-      #                         country = .data[[country]], ef_product = ef_product, destination = destination,
-      #                         year = year, .values = .values, machine = machine, eu_product = eu_product)
-      
     )
 }
 
-####################################################################################################################################
 
 #' Generate an allocation graph which contains non-stationary allocations data only
 #'
