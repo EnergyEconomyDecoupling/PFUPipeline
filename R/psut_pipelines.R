@@ -235,14 +235,28 @@ get_pipeline <- function(countries = "all",
                                                           phi_u_vecs = Phiuvecs,
                                                           countries = Countries)), 
                             pattern = quote(map(Countries)), 
+                            storage = "worker", retrieval = "worker"), 
+    
+    # (12) Extend to useful stage
+    targets::tar_target_raw("PSUTUseful", quote(move_to_useful(psut_final = PSUTFinal,
+                                                                C_mats = Cmats,
+                                                                eta_phi_vecs = EtafuPhiuvecs,
+                                                                countries = Countries)), 
+                            pattern = quote(map(Countries)), 
+                            storage = "worker", retrieval = "worker"), 
+    
+    # (14) Add other methods
+    
+    
+    # (14) Add exergy quantifications of energy
+    # Set PSUT as the last target. We'll use it for all further calculations.
+    targets::tar_target_raw("PSUT", quote(move_to_exergy(psut_energy = PSUTUseful,
+                                                         phi_vecs = Phivecs,
+                                                         countries = Countries)), 
+                            pattern = quote(map(Countries)), 
                             storage = "worker", retrieval = "worker")
-    
-    
 
 
-
-
-    
     
     
     
