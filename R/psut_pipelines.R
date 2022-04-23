@@ -235,9 +235,20 @@ get_pipeline <- function(countries = "all",
                             pattern = quote(map(Countries))), 
     # Exergy-to-energy ratio graphs
     targets::tar_target_raw("ExergyEnergyGraphs", quote(phi_u_plots_df(CompletedEfficiencyTables, countries = Countries)), 
-                            pattern = quote(map(Countries)))
-
-
+                            pattern = quote(map(Countries))), 
+    
+    # (17) Save results
+    # Store the PSUT target data frame in a pinboard inside the pipeline_releases_folder.
+    targets::tar_target_raw("ReleasePSUT", quote(release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                                                                targ = PSUT,
+                                                                targ_name = "psut",
+                                                                release = release))), 
+    
+    # Zip the drake cache and store it in the pipeline_caches_folder
+    targets::tar_target_raw("StoreCache", quote(stash_cache(pipeline_caches_folder = PipelineCachesFolder,
+                                                            cache_folder = "_targets",
+                                                            file_prefix = "pfu_pipeline_cache_",
+                                                            dependency = PSUT)))
   )
   
   
