@@ -76,18 +76,18 @@ get_pipeline <- function(countries = "all",
     
     # (1) Load pipeline information
     
-    # (1a) Country concordance table
+    # (1a) IEA data
+    targets::tar_target_raw("IEAData", quote(IEATools::load_tidy_iea_df(IEADataPath, override_df = CountryConcordanceTable) %>% 
+                                               filter_countries_years(countries = AllocAndEffCountries, years = Years))), 
+    
+    # (1b) Country concordance table
     targets::tar_target_raw("CountryConcordanceTable", quote(load_country_concordance_table(country_concordance_path = CountryConcordancePath))),
     
-    # (1b) Final demand sectors
+    # (1c) Final demand sectors
     # targets::tar_target_raw("FinalDemandSectors", quote(get_fd_sectors())), 
     
-    # (1c) Primary industry prefixes
+    # (1d) Primary industry prefixes
     # targets::tar_target_raw("PrimaryIndustryPrefixes", quote(get_p_industry_prefixes())),
-    
-    # (1d) IEA data
-    targets::tar_target_raw("IEAData", quote(IEATools::load_tidy_iea_df(IEADataPath, override_df = CountryConcordanceTable) %>% 
-                                filter_countries_years(countries = AllocAndEffCountries, years = Years))), 
     
     # (1e) CEDA data for ALL countries
     targets::tar_target_raw("CEDAData", quote(CEDATools::create_agg_cru_cy_df(agg_cru_cy_folder = CEDADataFolder,

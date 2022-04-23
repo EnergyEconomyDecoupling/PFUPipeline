@@ -8,8 +8,8 @@ library(PFUDatabase)
 
 
 # Custom parameters
-years <- 1960:2019                         # The years to be analyzed
-# years <- 1971:1972                         # The years to be analyzed
+# years <- 1960:2019                         # The years to be analyzed
+years <- 1971:1972                         # The years to be analyzed
 
 # countries <- c("BRA", "CAN", "CHN", "DEU", "ESP", "GBR", "GHA", "GRC", "HKG", "HND", "IDN", "JPN", "IND", "JOR", "KOR", "MEX", "NOR", "RUS", "USA", "WMB", "WAB", "ZAF")
 # countries <- c("WMB")
@@ -18,8 +18,8 @@ years <- 1960:2019                         # The years to be analyzed
 # countries <- c("SUN", "YUG")
 # countries <- c("YGS")
 # countries <- setdiff(PFUWorkflow::canonical_countries, c("FSU", "FYG", "CIV")) |> as.character()
-# countries <- c("WMBK", "WABK", "ZAF")
-countries <- PFUWorkflow::canonical_countries %>% as.character()
+countries <- c("WMBK", "WABK", "ZAF")
+# countries <- PFUWorkflow::canonical_countries %>% as.character()
 
 additional_exemplar_countries <- "WRLD"
 
