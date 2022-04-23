@@ -21,10 +21,10 @@ Default is the value of \code{sample_exemplar_table_path()}.}
 \item{countries}{The countries for which exemplars are desired. If \code{NULL}, the default,
 all countries in the file at \code{exemplar_table_path} are returned.}
 
-\item{exemplar_table_tab_name, prev_names}{See \code{PFUWorkflow::exemplar_names}.}
-
-\item{year}{The years for which you want the exemplar table, an integer.
+\item{years}{The years for which you want the exemplar table, an integer.
 Default is \code{NULL}, meaning that all years from the file at \code{exemplar_table_path} are included.}
+
+\item{exemplar_table_tab_name, prev_names}{See \code{PFUWorkflow::exemplar_names}.}
 
 \item{year, country}{See \code{IEATools::iea_cols}.}
 }
@@ -38,7 +38,6 @@ including the exemplar country and any name changes through time.
 }
 \details{
 This function gathers (actually, \code{tidyr::pivot_longer()}) years into a Year column.
-It also
 }
 \examples{
 load_exemplar_table()

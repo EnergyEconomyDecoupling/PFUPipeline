@@ -19,14 +19,13 @@ sample_exemplar_table_path <- function() {
 #' including the exemplar country and any name changes through time.
 #'
 #' This function gathers (actually, `tidyr::pivot_longer()`) years into a Year column.
-#' It also
 #'
 #' @param exemplar_table_path The path to the Excel file containing an exemplar table.
 #'                            Default is the value of `sample_exemplar_table_path()`.
 #' @param countries The countries for which exemplars are desired. If `NULL`, the default,
 #'                  all countries in the file at `exemplar_table_path` are returned.
-#' @param year The years for which you want the exemplar table, an integer.
-#'             Default is `NULL`, meaning that all years from the file at `exemplar_table_path` are included.
+#' @param years The years for which you want the exemplar table, an integer.
+#'              Default is `NULL`, meaning that all years from the file at `exemplar_table_path` are included.
 #' @param exemplar_table_tab_name,prev_names See `PFUWorkflow::exemplar_names`.
 #' @param year,country See `IEATools::iea_cols`.
 #'

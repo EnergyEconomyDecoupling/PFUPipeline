@@ -29,11 +29,11 @@ assemble_eta_fu_tables(
   quantity = IEATools::template_cols$quantity,
   maximum_values = IEATools::template_cols$maximum_values,
   e_dot_perc = IEATools::template_cols$e_dot_perc,
-  exemplars = PFUWorkflow::exemplar_names$exemplars,
-  exemplar_tables = PFUWorkflow::exemplar_names$exemplar_tables,
-  alloc_data = PFUWorkflow::exemplar_names$alloc_data,
-  incomplete_eta_tables = PFUWorkflow::exemplar_names$incomplete_eta_table,
-  complete_eta_tables = PFUWorkflow::exemplar_names$complete_eta_table,
+  exemplars = PFUDatabase::exemplar_names$exemplars,
+  exemplar_tables = PFUDatabase::exemplar_names$exemplar_tables,
+  alloc_data = PFUDatabase::exemplar_names$alloc_data,
+  incomplete_eta_tables = PFUDatabase::exemplar_names$incomplete_eta_table,
+  complete_eta_tables = PFUDatabase::exemplar_names$complete_eta_table,
   .values = IEATools::template_cols$.values
 )
 }
@@ -58,7 +58,7 @@ Must be one or both of the default values.}
 
 \item{machine, eu_product, eta_fu, phi_u, c_source, eta_fu_source, e_dot_machine, e_dot_machine_perc, quantity, maximum_values, e_dot_perc, .values}{See \code{IEATools::template_cols}.}
 
-\item{exemplars, exemplar_tables, alloc_data, incomplete_eta_tables, complete_eta_tables}{See \code{PFUWorkflow::exemplar_names}.}
+\item{exemplars, exemplar_tables, alloc_data, incomplete_eta_tables, complete_eta_tables}{See \code{PFUDatabase::exemplar_names}.}
 }
 \value{
 A tidy data frame containing completed final-to-useful efficiency tables.
@@ -108,7 +108,7 @@ completed <- assemble_eta_fu_tables(incomplete_eta_fu_tables = incomplete_eta_fu
                                     exemplar_lists = el,
                                     completed_fu_allocation_tables = fu_allocation_data,
                                     countries = "GHA")
-# Show that the missing rows have been picked up from the exemplar country, ZAF.
+# The missing rows have been picked up from the exemplar country, ZAF.
 completed \%>\%
   dplyr::filter(Country == "GHA", Machine == "Wood cookstoves")
 }

@@ -17,17 +17,27 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 Imports:
+    assertthat,
     CEDATools,
     dplyr,
+    ggplot2,
     IEATools,
+    lubridate,
     magrittr,
+    matsbyname,
+    matsindf,
+    MKHthemes,
     parsedate,
     pins,
+    purrr,
     pwt10,
     readxl,
+    Recca,
     rlang,
     targets,
-    tidyr
+    tibble,
+    tidyr,
+    tidyselect
 Suggests: 
     knitr
 Remotes: 

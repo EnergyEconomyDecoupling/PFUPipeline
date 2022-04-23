@@ -234,7 +234,7 @@ get_pipeline <- function(countries = "all",
     targets::tar_target_raw("EfficiencyGraphs", quote(eta_fu_plots_df(CompletedEfficiencyTables, countries = Countries)), 
                             pattern = quote(map(Countries))), 
     # (15d) Exergy-to-energy ratio graphs
-    targets::tar_target_raw("ExergyEnergyGraphs", quote(phi_u_plots_df(CompletedEfficiencyTables, countries = Countries)), 
+    targets::tar_target_raw("PhiGraphs", quote(phi_u_plots_df(CompletedEfficiencyTables, countries = Countries)), 
                             pattern = quote(map(Countries))), 
     
     # (16) Save results
