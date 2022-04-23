@@ -80,10 +80,10 @@ get_pipeline <- function(countries = "all",
     targets::tar_target_raw("CountryConcordanceTable", quote(load_country_concordance_table(country_concordance_path = CountryConcordancePath))),
     
     # (1b) Final demand sectors
-    targets::tar_target_raw("FinalDemandSectors", quote(get_fd_sectors())), 
+    # targets::tar_target_raw("FinalDemandSectors", quote(get_fd_sectors())), 
     
     # (1c) Primary industry prefixes
-    targets::tar_target_raw("PrimaryIndustryPrefixes", quote(get_p_industry_prefixes())),
+    # targets::tar_target_raw("PrimaryIndustryPrefixes", quote(get_p_industry_prefixes())),
     
     # (1d) IEA data
     targets::tar_target_raw("IEAData", quote(IEATools::load_tidy_iea_df(IEADataPath, override_df = CountryConcordanceTable) %>% 
