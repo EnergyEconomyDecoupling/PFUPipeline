@@ -217,19 +217,16 @@ get_pipeline <- function(countries = "all",
                                                                 keep = IEATools::template_cols$eta_fu,
                                                                 countries = Countries)), 
                             pattern = quote(map(Countries)), 
+                            storage = "worker", retrieval = "worker"), 
+    
+    targets::tar_target_raw("Phiuvecs", quote(sep_eta_fu_phi_u(EtafuPhiuvecs,
+                                                               keep = IEATools::template_cols$phi_u,
+                                                               countries = countries)), 
+                            pattern = quote(map(Countries)), 
                             storage = "worker", retrieval = "worker")
 
-    
 
 
-    
-    
-    
-
-
-
-
-    
     
     
     
