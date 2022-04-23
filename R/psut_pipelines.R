@@ -205,7 +205,14 @@ get_pipeline <- function(countries = "all",
     targets::tar_target_raw("Cmats", quote(calc_C_mats(completed_allocation_tables = CompletedAllocationTables,
                                                        countries = Countries)), 
                             pattern = quote(map(Countries)), 
+                            storage = "worker", retrieval = "worker"), 
+    targets::tar_target_raw("EtafuPhiuvecs", quote(calc_eta_fu_phi_u_vecs(completed_efficiency_tables = CompletedEfficiencyTables,
+                                                                          completed_phi_tables = CompletedPhiuTables,
+                                                                          countries = Countries)), 
+                            pattern = quote(map(Countries)), 
                             storage = "worker", retrieval = "worker")
+    
+
 
     
     
