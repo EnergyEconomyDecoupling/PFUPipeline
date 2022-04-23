@@ -215,17 +215,29 @@ get_pipeline <- function(countries = "all",
     # (14) Add other methods
     
     
-    # (14) Add exergy quantifications of energy
+    # (15) Add exergy quantifications of energy
     # Set PSUT as the last target. We'll use it for all further calculations.
     targets::tar_target_raw("PSUT", quote(move_to_exergy(psut_energy = PSUTUseful,
                                                          phi_vecs = Phivecs,
                                                          countries = Countries)), 
+                            pattern = quote(map(Countries))), 
+    
+    
+    # (16) Build reports
+    # Allocation Graphs
+    targets::tar_target_raw("AllocationGraphs", quote(alloc_plots_df(CompletedAllocationTables, countries = Countries)), 
+                            pattern = quote(map(Countries))), 
+    # Non-Stationary Allocation Graphs
+    targets::tar_target_raw("NonStationaryAllocationGraphs", quote(nonstat_alloc_plots_df(CompletedAllocationTables, countries = Countries)), 
+                            pattern = quote(map(Countries))), 
+    # Efficiency Graphs
+    targets::tar_target_raw("EfficiencyGraphs", quote(eta_fu_plots_df(CompletedEfficiencyTables, countries = Countries)), 
+                            pattern = quote(map(Countries))), 
+    # Exergy-to-energy ratio graphs
+    targets::tar_target_raw("ExergyEnergyGraphs", quote(phi_u_plots_df(CompletedEfficiencyTables, countries = Countries)), 
                             pattern = quote(map(Countries)))
 
 
-    
-    
-    
   )
   
   
