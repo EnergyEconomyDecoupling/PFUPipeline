@@ -86,32 +86,17 @@ get_pipeline <- function(countries = "all",
     targets::tar_target_raw("PrimaryIndustryPrefixes", quote(get_p_industry_prefixes())),
     
     # (1d) IEA data
-    # targets::tar_target_raw("AllIEAData", quote(IEATools::load_tidy_iea_df(IEADataPath, override_df = CountryConcordanceTable)), 
-    #                         storage = "worker", retrieval = "worker"),
-    # targets::tar_target_raw("FilteredAllIEAData", quote(filter_countries_years(AllIEAData, countries = AllocAndEffCountries, years = Years))),
-    # tarchetypes::tar_group_by(IEAData, command = FilteredAllIEAData, Country), 
-    
-    # targets::tar_target_raw("FilteredIEAData", quote(IEATools::load_tidy_iea_df(IEADataPath, override_df = CountryConcordanceTable) %>% 
-    #                             filter_countries_years(countries = AllocAndEffCountries, years = Years))), 
-    # tarchetypes::tar_group_by(IEAData, FilteredIEAData, Country),
-
-    # tarchetypes::tar_group_by(IEAData, IEATools::load_tidy_iea_df(IEADataPath, override_df = CountryConcordanceTable) %>% 
-    #                             filter_countries_years(countries = AllocAndEffCountries, years = Years), 
-    #                           Country), 
     targets::tar_target_raw("IEAData", quote(IEATools::load_tidy_iea_df(IEADataPath, override_df = CountryConcordanceTable) %>% 
-                                filter_countries_years(countries = AllocAndEffCountries, years = Years)),
-                            storage = "worker", retrieval = "worker"), 
+                                filter_countries_years(countries = AllocAndEffCountries, years = Years))), 
     
     # (1e) CEDA data for ALL countries
     targets::tar_target_raw("CEDAData", quote(CEDATools::create_agg_cru_cy_df(agg_cru_cy_folder = CEDADataFolder,
                                                                               agg_cru_cy_metric = c("tmp", "tmn", "tmx"),
-                                                                              agg_cru_cy_year = 2020)), 
-                            storage = "worker", retrieval = "worker"), 
+                                                                              agg_cru_cy_year = 2020))), 
     
     # (1f) Machine data 
     targets::tar_target_raw("AllMachineData", quote(read_all_eta_files(eta_fin_paths = get_eta_filepaths(MachineDataPath)))),
-    targets::tar_target_raw("MachineData", quote(filter_countries_years(AllMachineData, countries = AllocAndEffCountries, years = Years)),
-                            storage = "worker", retrieval = "worker"),
+    targets::tar_target_raw("MachineData", quote(filter_countries_years(AllMachineData, countries = AllocAndEffCountries, years = Years))),
     
     # (1g) Socioeconomic data
     targets::tar_target_raw("SocioEconData", quote(get_all_pwt_data(countries = Countries) %>% get_L_K_GDP_data())), 
@@ -120,18 +105,15 @@ get_pipeline <- function(countries = "all",
     # First, check whether energy products are balanced. They're not.
     # FALSE indicates a country with at least one balance problem.
     targets::tar_target_raw("BalancedBefore", quote(is_balanced(IEAData, countries = AllocAndEffCountries)),
-                            pattern = quote(map(AllocAndEffCountries)),
-                            storage = "worker", retrieval = "worker"), 
+                            pattern = quote(map(AllocAndEffCountries))), 
     
     # Balance all of the data by product and year.
     targets::tar_target_raw("BalancedIEAData", quote(make_balanced(IEAData, countries = AllocAndEffCountries)), 
-                            pattern = quote(map(AllocAndEffCountries)),
-                            storage = "worker", retrieval = "worker"),
+                            pattern = quote(map(AllocAndEffCountries))),
     
     # Check that balancing was successful.
     targets::tar_target_raw("BalancedAfter", quote(is_balanced(BalancedIEAData, countries = AllocAndEffCountries)), 
-                            pattern = quote(map(AllocAndEffCountries)),
-                            storage = "worker", retrieval = "worker"), 
+                            pattern = quote(map(AllocAndEffCountries))), 
     
     # Don't continue if there is a problem.
     # stopifnot returns NULL if everything is OK.
@@ -139,13 +121,11 @@ get_pipeline <- function(countries = "all",
     
     # (3) Specify the BalancedIEAData data frame by being more careful with names, etc.
     targets::tar_target_raw("Specified", quote(specify(BalancedIEAData, countries = AllocAndEffCountries)) ,
-                            pattern = quote(map(AllocAndEffCountries)),
-                            storage = "worker", retrieval = "worker"),
+                            pattern = quote(map(AllocAndEffCountries))),
     
     # (4) Arrange all the data into PSUT matrices with final stage data.
     targets::tar_target_raw("PSUTFinal", quote(make_psut(Specified, countries = Countries)), 
-                            pattern = quote(map(Countries)), 
-                            storage = "worker", retrieval = "worker"),
+                            pattern = quote(map(Countries))),
     
     # (5) Load exemplar table and make lists for each country and year from disk.
     # These may be incomplete.
@@ -153,19 +133,16 @@ get_pipeline <- function(countries = "all",
                                                                        countries = AllocAndEffCountries,
                                                                        years = Years) %>%
                                                      exemplar_lists(AllocAndEffCountries)), 
-                            pattern = quote(map(AllocAndEffCountries)),
-                            storage = "worker", retrieval = "worker"),
+                            pattern = quote(map(AllocAndEffCountries))),
     
     # (6) Load phi (exergy-to-energy ratio) constants
-    targets::tar_target_raw("PhiConstants", quote(IEATools::load_phi_constants_table(PhiConstantsPath)), 
-                            storage = "worker", retrieval = "worker"), 
+    targets::tar_target_raw("PhiConstants", quote(IEATools::load_phi_constants_table(PhiConstantsPath))), 
     
     # (7) Load incomplete FU allocation tables
     targets::tar_target_raw("IncompleteAllocationTables", quote(load_fu_allocation_tables(FUAnalysisFolder,
                                                                                           specified_iea_data = Specified,
                                                                                           countries = AllocAndEffCountries)),
-                            pattern = quote(map(AllocAndEffCountries)),
-                            storage = "worker", retrieval = "worker"),
+                            pattern = quote(map(AllocAndEffCountries))),
 
     # The next target is never used. So no need to calculate it.  
     # Delete after 22 May 2022. ---MKH, 22 April 2022
@@ -179,8 +156,7 @@ get_pipeline <- function(countries = "all",
                                                                                              specified_iea_data = Specified %>% dplyr::mutate(tar_group = NULL),
                                                                                              countries = Countries,
                                                                                              years = Years)), 
-                            pattern = quote(map(Countries)), 
-                            storage = "worker", retrieval = "worker"),
+                            pattern = quote(map(Countries))),
 
     # (9) Complete efficiency tables
     targets::tar_target_raw("CompletedEfficiencyTables", quote(assemble_eta_fu_tables(incomplete_eta_fu_tables = MachineData,
@@ -189,8 +165,7 @@ get_pipeline <- function(countries = "all",
                                                                                       countries = Countries,
                                                                                       years = Years,
                                                                                       which_quantity = IEATools::template_cols$eta_fu)), 
-                            pattern = quote(map(Countries)), 
-                            storage = "worker", retrieval = "worker"), 
+                            pattern = quote(map(Countries))), 
     
     # (10) Complete phi_u tables
     targets::tar_target_raw("CompletedPhiuTables", quote(assemble_phi_u_tables(incomplete_phi_u_table = MachineData,
@@ -198,52 +173,44 @@ get_pipeline <- function(countries = "all",
                                                                                completed_efficiency_table = CompletedEfficiencyTables,
                                                                                countries = Countries,
                                                                                years = Years)), 
-                            pattern = quote(map(Countries)), 
-                            storage = "worker", retrieval = "worker"), 
+                            pattern = quote(map(Countries))), 
     
     # (11) Build matrices and vectors for extending to useful stage and exergy
     targets::tar_target_raw("Cmats", quote(calc_C_mats(completed_allocation_tables = CompletedAllocationTables,
                                                        countries = Countries)), 
-                            pattern = quote(map(Countries)), 
-                            storage = "worker", retrieval = "worker"), 
+                            pattern = quote(map(Countries))), 
 
     targets::tar_target_raw("EtafuPhiuvecs", quote(calc_eta_fu_phi_u_vecs(completed_efficiency_tables = CompletedEfficiencyTables,
                                                                           completed_phi_tables = CompletedPhiuTables,
                                                                           countries = Countries)), 
-                            pattern = quote(map(Countries)), 
-                            storage = "worker", retrieval = "worker"), 
+                            pattern = quote(map(Countries))), 
     
     targets::tar_target_raw("Etafuvecs", quote(sep_eta_fu_phi_u(EtafuPhiuvecs,
                                                                 keep = IEATools::template_cols$eta_fu,
                                                                 countries = Countries)), 
-                            pattern = quote(map(Countries)), 
-                            storage = "worker", retrieval = "worker"), 
+                            pattern = quote(map(Countries))), 
     
     targets::tar_target_raw("Phiuvecs", quote(sep_eta_fu_phi_u(EtafuPhiuvecs,
                                                                keep = IEATools::template_cols$phi_u,
                                                                countries = Countries)), 
-                            pattern = quote(map(Countries)), 
-                            storage = "worker", retrieval = "worker"), 
+                            pattern = quote(map(Countries))), 
     
     targets::tar_target_raw("Phipfvecs", quote(calc_phi_pf_vecs(phi_u_vecs = Phiuvecs,
                                                                 phi_constants = PhiConstants,
                                                                 countries = Countries)), 
-                            pattern = quote(map(Countries)), 
-                            storage = "worker", retrieval = "worker"), 
+                            pattern = quote(map(Countries))), 
     
     targets::tar_target_raw("Phivecs", quote(sum_phi_vecs(phi_pf_vecs = Phipfvecs,
                                                           phi_u_vecs = Phiuvecs,
                                                           countries = Countries)), 
-                            pattern = quote(map(Countries)), 
-                            storage = "worker", retrieval = "worker"), 
+                            pattern = quote(map(Countries))), 
     
     # (12) Extend to useful stage
     targets::tar_target_raw("PSUTUseful", quote(move_to_useful(psut_final = PSUTFinal,
                                                                 C_mats = Cmats,
                                                                 eta_phi_vecs = EtafuPhiuvecs,
                                                                 countries = Countries)), 
-                            pattern = quote(map(Countries)), 
-                            storage = "worker", retrieval = "worker"), 
+                            pattern = quote(map(Countries))), 
     
     # (14) Add other methods
     
@@ -253,8 +220,7 @@ get_pipeline <- function(countries = "all",
     targets::tar_target_raw("PSUT", quote(move_to_exergy(psut_energy = PSUTUseful,
                                                          phi_vecs = Phivecs,
                                                          countries = Countries)), 
-                            pattern = quote(map(Countries)), 
-                            storage = "worker", retrieval = "worker")
+                            pattern = quote(map(Countries)))
 
 
     

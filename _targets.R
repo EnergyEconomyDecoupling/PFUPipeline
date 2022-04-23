@@ -29,25 +29,18 @@ release <- FALSE
 # End user-adjustable parameters.
 
 
+
+
+
+
 # Set up for multithreaded work on the local machine.
 future::plan(future.callr::callr)
 
-# Set options for the targets package.
+# Set options for all targets.
 targets::tar_option_set(
-  
-  # Set packages to be used.
-  packages = c(
-    "CEDATools",
-    "dplyr",
-    "IEATools",
-    "parsedate",
-    "PFUDatabase",
-    "pins",
-    "pwt10",
-    "readxl",
-    "tidyr"),
+  storage = "worker", 
+  retrieval = "worker"
 )
-
 
 # Pull in the pipeline
 PFUDatabase::get_pipeline(countries = countries,
