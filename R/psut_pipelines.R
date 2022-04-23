@@ -221,9 +221,24 @@ get_pipeline <- function(countries = "all",
     
     targets::tar_target_raw("Phiuvecs", quote(sep_eta_fu_phi_u(EtafuPhiuvecs,
                                                                keep = IEATools::template_cols$phi_u,
-                                                               countries = countries)), 
+                                                               countries = Countries)), 
+                            pattern = quote(map(Countries)), 
+                            storage = "worker", retrieval = "worker"), 
+    
+    targets::tar_target_raw("Phipfvecs", quote(calc_phi_pf_vecs(phi_u_vecs = Phiuvecs,
+                                                                phi_constants = PhiConstants,
+                                                                countries = Countries)), 
+                            pattern = quote(map(Countries)), 
+                            storage = "worker", retrieval = "worker"), 
+    
+    targets::tar_target_raw("Phivecs", quote(sum_phi_vecs(phi_pf_vecs = Phipfvecs,
+                                                          phi_u_vecs = Phiuvecs,
+                                                          countries = Countries)), 
                             pattern = quote(map(Countries)), 
                             storage = "worker", retrieval = "worker")
+    
+    
+
 
 
 
