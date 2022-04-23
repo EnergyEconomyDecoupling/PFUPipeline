@@ -24,7 +24,7 @@ countries <- c("WMBK", "WABK", "ZAF")
 additional_exemplars <- "WRLD"
 
 # Should we do a release of the results?
-release <- TRUE
+release <- FALSE
 
 # End user-adjustable parameters.
 
@@ -58,5 +58,5 @@ PFUDatabase::get_pipeline(countries = countries,
                           reports_dest_folder = PFUSetup::get_abs_paths()[["reports_dest_folder"]],
                           pipeline_caches_folder = PFUSetup::get_abs_paths()[["pipeline_caches_folder"]],
                           pipeline_releases_folder = PFUSetup::get_abs_paths()[["pipeline_releases_folder"]],
-                          release = FALSE)
+                          release = release)
 

@@ -21,7 +21,7 @@
 #' @export
 stash_cache <- function(pipeline_caches_folder, cache_folder, file_prefix, dependency, release = FALSE) {
   if (!release) {
-    return(FALSE)
+    return("Release not requested.")
   }
   # Zip the drake cache
   zipped_cache_filename <- paste0(file_prefix, parsedate::format_iso_8601(Sys.time()), ".zip") %>%
@@ -52,7 +52,7 @@ stash_cache <- function(pipeline_caches_folder, cache_folder, file_prefix, depen
     # To keep things clean
     file.remove(zipped_cache_filename)
   }
-  return(copy_successful)
+  return(file_prefix)
 }
 
 
