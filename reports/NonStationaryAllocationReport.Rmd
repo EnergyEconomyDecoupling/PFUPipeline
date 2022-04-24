@@ -33,7 +33,7 @@ cache_path <- root$find_file("_targets")
 
 This report shows graphs of all final energy allocations to final-to-useful machines.
 
-Note that numbers following "##" are the row number in the `AllocationGraphs` data frame.
+Note that numbers following "##" are the row number in the `NonStationaryAllocationGraphs` data frame.
 
 
 ```{r, echo = FALSE}
