@@ -433,7 +433,7 @@ assemble_eta_fu_tables <- function(incomplete_eta_fu_tables,
 #' @param country,year,product See `IEATools::iea_cols`.
 #' @param machine,quantity,phi_u,.values,eu_product,eta_fu_source See `IEATools::template_cols`.
 #' @param phi_colname,phi_source_colname,is_useful See `IEATools::phi_constants_names`.
-#' @param eta_fu_tables,phi_constants See `PFUWorkflow::phi_sources`.
+#' @param eta_fu_tables,phi_constants See `PFUDatabase::phi_sources`.
 #'
 #' @return A data frame of phi values for every combination of country, year, machine, destination, etc.
 #'
@@ -490,8 +490,8 @@ assemble_phi_u_tables <- function(incomplete_phi_u_table,
                                   phi_colname = IEATools::phi_constants_names$phi_colname,
                                   phi_source_colname = IEATools::phi_constants_names$phi_source_colname,
                                   is_useful = IEATools::phi_constants_names$is_useful_colname,
-                                  eta_fu_tables = PFUWorkflow::phi_sources$eta_fu_tables,
-                                  phi_constants = PFUWorkflow::phi_sources$phi_constants) {
+                                  eta_fu_tables = PFUDatabase::phi_sources$eta_fu_tables,
+                                  phi_constants = PFUDatabase::phi_sources$phi_constants) {
   
   if (!is.null(years)) {
     incomplete_phi_u_table <- incomplete_phi_u_table %>%

@@ -4,7 +4,7 @@
 #' that stores all efficiencies..
 #'
 #' @param filepath A file path to the folder containing all machine folders.
-#' @param efficiency_tab_name See `PFUWorkflow::machine_constants`.
+#' @param efficiency_tab_name See `PFUDatabase::machine_constants`.
 #' @param hidden_excel_file_prefix The prefix for hidden Excel files.
 #'                                 These files appear when an Excel file is open
 #'                                 and should be ignored.
@@ -65,7 +65,7 @@ get_eta_filepaths <- function(filepath,
 #' @param eta_fin_paths A list of the file paths to machine excel files containing
 #'                      FIN_ETA front sheets, and therefore usable data.
 #'                      Created by calling the `get_eta_filepaths()` function.
-#' @param efficiency_tab_name See `PFUWorkflow::machine_constants`.
+#' @param efficiency_tab_name See `PFUDatabase::machine_constants`.
 #' @param year See `IEATools::iea_cols`.
 #' @param .values See `IEATools::template_cols`.
 #' @param hidden_excel_file_prefix The prefix for hidden Excel files.
@@ -80,7 +80,7 @@ get_eta_filepaths <- function(filepath,
 #'
 #' @export
 read_all_eta_files <- function(eta_fin_paths,
-                               efficiency_tab_name = PFUWorkflow::machine_constants$efficiency_tab_name,
+                               efficiency_tab_name = PFUDatabase::machine_constants$efficiency_tab_name,
                                year = IEATools::iea_cols$year,
                                .values = IEATools::template_cols$.values, 
                                hidden_excel_file_prefix = "~$") {

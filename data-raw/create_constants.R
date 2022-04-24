@@ -73,7 +73,7 @@ usethis::use_data(machine_constants, overwrite = TRUE)
 #
 
 socioecon_cols <- list(isocode_colname = "isocode",
-                       year_colname = "Year",
+                       year_colname = "year",
                        rgdpe_colname = "rgdpe",
                        rgdpo_colname = "rgdpo",
                        rgdpna_colname = "rgdpna",
@@ -336,3 +336,13 @@ exemplar_names <- list(exemplar_tab_name = "exemplar_table",
                        country_name = "Country.name",
                        world = "WRLD")
 usethis::use_data(exemplar_names, overwrite = TRUE)
+
+
+#
+# phi.sources
+#
+
+phi_sources <- list(eta_fu_tables = "eta_fu.tables",
+                    temperature_data = "temperature.data",
+                    phi_constants = "phi.constants")
+usethis::use_data(phi_sources, overwrite = TRUE)

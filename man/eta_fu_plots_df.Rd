@@ -17,7 +17,7 @@ eta_fu_plots_df(
 )
 }
 \arguments{
-\item{.df}{The completed final-to useful efficiency tables data frame. Which contains both eta.fu and phi.u values. Default is \code{drake::readd(PFUWorkflow::target_names$CompletedEfficiencyTables, path = cache_path, character_only = TRUE)}.}
+\item{.df}{The completed final-to useful efficiency tables data frame. Which contains both eta.fu and phi.u values. Default is \code{drake::readd(PFUDatabase::target_names$completed_efficiency_tables, path = cache_path, character_only = TRUE)}.}
 
 \item{countries}{The countries for which final-to useful efficiency plots are to be created.}
 

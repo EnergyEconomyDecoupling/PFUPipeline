@@ -22,8 +22,8 @@ assemble_phi_u_tables(
   phi_colname = IEATools::phi_constants_names$phi_colname,
   phi_source_colname = IEATools::phi_constants_names$phi_source_colname,
   is_useful = IEATools::phi_constants_names$is_useful_colname,
-  eta_fu_tables = PFUWorkflow::phi_sources$eta_fu_tables,
-  phi_constants = PFUWorkflow::phi_sources$phi_constants
+  eta_fu_tables = PFUDatabase::phi_sources$eta_fu_tables,
+  phi_constants = PFUDatabase::phi_sources$phi_constants
 )
 }
 \arguments{
@@ -50,7 +50,7 @@ should be completed.}
 
 \item{phi_colname, phi_source_colname, is_useful}{See \code{IEATools::phi_constants_names}.}
 
-\item{eta_fu_tables, phi_constants}{See \code{PFUWorkflow::phi_sources}.}
+\item{eta_fu_tables, phi_constants}{See \code{PFUDatabase::phi_sources}.}
 }
 \value{
 A data frame of phi values for every combination of country, year, machine, destination, etc.
