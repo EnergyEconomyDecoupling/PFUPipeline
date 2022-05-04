@@ -105,7 +105,10 @@ get_pipeline <- function(countries = "all",
     # (1e) Muscle work data
     targets::tar_target_raw("AMWPFUData", quote(readr::read_rds(file = FAODataPath) %>% 
                                                   MWTools::calc_amw_pfu(concordance_path = MWConcordancePath,
-                                                                        amw_analysis_path = AMWAnalysisDataPath))),
+                                                                        amw_analysis_data_path = AMWAnalysisDataPath))),
+    targets::tar_target_raw("HMWPFUData", quote(readr::read_rds(file = ILODataPath) %>% 
+                                                  MWTools::calc_hmw_pfu(concordance_path = MWConcordancePath,
+                                                                        hmw_analysis_data_path = HMWAnalysisDataPath))),
 
     # (1f) Socioeconomic data
     targets::tar_target_raw("SocioEconData", quote(get_all_pwt_data(countries = Countries) %>% get_L_K_GDP_data())), 
