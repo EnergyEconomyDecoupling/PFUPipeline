@@ -41,8 +41,13 @@ get_pipeline <- function(countries = "all",
                          how_far = "all_targets",
                          iea_data_path,
                          country_concordance_path,
+                         mw_concordance_path,
+                         amw_analysis_data_path, 
+                         hmw_analysis_data_path,
                          phi_constants_path,
                          ceda_data_folder,
+                         fao_data_path,
+                         ilo_data_path,
                          machine_data_path,
                          exemplar_table_path,
                          fu_analysis_folder,
@@ -62,8 +67,13 @@ get_pipeline <- function(countries = "all",
     targets::tar_target_raw("Years", list(years)), 
     targets::tar_target_raw("IEADataPath", iea_data_path), 
     targets::tar_target_raw("CountryConcordancePath", country_concordance_path), 
+    targets::tar_target_raw("MWConcordancePath", mw_concordance_path),
+    targets::tar_target_raw("AMWAnalysisDataPath", amw_analysis_data_path),
+    targets::tar_target_raw("HMWAnalysisDataPath", hmw_analysis_data_path),
     targets::tar_target_raw("PhiConstantsPath", phi_constants_path), 
     targets::tar_target_raw("CEDADataFolder", ceda_data_folder), 
+    targets::tar_target_raw("FAODataPath", fao_data_path),
+    targets::tar_target_raw("ILODataPath", ilo_data_path),
     targets::tar_target_raw("MachineDataPath", machine_data_path), 
     targets::tar_target_raw("ExemplarTablePath", exemplar_table_path), 
     targets::tar_target_raw("FUAnalysisFolder", fu_analysis_folder), 
@@ -92,7 +102,12 @@ get_pipeline <- function(countries = "all",
     targets::tar_target_raw("AllMachineData", quote(read_all_eta_files(eta_fin_paths = get_eta_filepaths(MachineDataPath)))),
     targets::tar_target_raw("MachineData", quote(filter_countries_years(AllMachineData, countries = AllocAndEffCountries, years = Years))),
     
-    # (1e) Socioeconomic data
+    # (1e) Muscle work data
+    targets::tar_target_raw("AMWPFUData", quote(readr::read_rds(file = FAODataPath) %>% 
+                                                  MWTools::calc_amw_pfu(concordance_path = MWConcordancePath,
+                                                                        amw_analysis_path = AMWAnalysisDataPath))),
+
+    # (1f) Socioeconomic data
     targets::tar_target_raw("SocioEconData", quote(get_all_pwt_data(countries = Countries) %>% get_L_K_GDP_data())), 
     
     # (2) Balance all final energy data.
