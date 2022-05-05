@@ -17,6 +17,7 @@ max_year <- 2019                         # The last year to be analyzed
 # countries <- c("WMBK")
 # countries <- c("CHNM")
 # countries <- c("USA")
+countries <- c("USA", "GBR")
 # countries <- c("ZAF")
 # countries <- c("GBR", "USA", "WMBK", "WABK")
 # countries <- c("OAFR", "OAMR", "OASI")
@@ -24,9 +25,18 @@ max_year <- 2019                         # The last year to be analyzed
 # countries <- c("SUN", "YUG")
 # countries <- c("YGS")
 # countries <- setdiff(PFUDatabase::canonical_countries, c("FSU", "FYG", "CIV")) |> as.character()
-countries <- PFUDatabase::canonical_countries |> as.character()
+# countries <- PFUDatabase::canonical_countries |> as.character()
 
-additional_exemplars <- "WRLD"
+additional_exemplars <- c("WRLD", # World
+                          "AFRI", # Africa 
+                          "ASIA", # Asia
+                          "EURP", # Europe 
+                          "MIDE", # Middle East
+                          "NAMR", # North America
+                          "OCEN", # Oceania 
+                          "SAMR", # South America 
+                          "BUNK"  # Bunkers
+)
 
 # Create our drake plan
 plan <- PFUWorkflow::get_plan(countries = countries, 
