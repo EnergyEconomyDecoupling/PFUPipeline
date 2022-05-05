@@ -4,6 +4,9 @@ output: html_document
 ---
 
 
+* `targets` pipeline now allows additional exemplar countries 
+  without IEA data by skipping writing allocations templates
+  when no IEA data exists.
 * New `targets` pipeline matches the previous `drake` workflow
   in extent.
 * Cache is now stashed only when a release is requested.
