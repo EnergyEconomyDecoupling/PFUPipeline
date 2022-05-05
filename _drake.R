@@ -24,7 +24,7 @@ countries <- c("GBR", "USA")
 # countries <- c("SUN", "YUG")
 # countries <- c("YGS")
 # countries <- setdiff(PFUWorkflow::canonical_countries, c("FSU", "FYG", "CIV")) |> as.character()
-countries <- PFUWorkflow::canonical_countries |> as.character()
+# countries <- PFUWorkflow::canonical_countries |> as.character()
 
 # Additional exemplar countries are countries which aren't included in the workflow
 # as individual countries, but from which allocation or efficiency data may be 
