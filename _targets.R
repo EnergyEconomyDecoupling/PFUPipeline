@@ -19,7 +19,19 @@ years <- 1960:2019                         # The years to be analyzed
 # couns <- setdiff(PFUWorkflow::canonical_countries, c("FSU", "FYG", "CIV")) |> as.character()
 countries <- PFUWorkflow::canonical_countries %>% as.character()
 
-additional_exemplars <- "WRLD"
+# Additional exemplar countries are countries which aren't included in the workflow
+# as individual countries, but from which allocation or efficiency data may be 
+# obtained and assigned to countries in the workflow using the exemplar system.
+additional_exemplars <- c("WRLD", # World
+                          "AFRI", # Africa 
+                          "ASIA", # Asia
+                          "EURP", # Europe 
+                          "MIDE", # Middle East
+                          "NAMR", # North America
+                          "OCEN", # Oceania 
+                          "SAMR", # South America 
+                          "BUNK"  # Bunkers
+                          )
 
 # Number of machine cores to use.
 # Set to less than available on your machine.

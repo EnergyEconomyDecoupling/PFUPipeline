@@ -16,7 +16,7 @@ max_year <- 2019                         # The last year to be analyzed
 # countries <- c("BRA", "CAN", "CHNM", "DEU", "ESP", "GBR", "GHA", "GRC", "HKG", "HND", "IDN", "JPN", "IND", "JOR", "KOR", "MEX", "NOR", "RUS", "USA", "WMBK", "WABK", "ZAF")
 # countries <- c("WMBK")
 # countries <- c("CHNM")
-# countries <- c("USA")
+countries <- c("GBR", "USA")
 # countries <- c("ZAF")
 # countries <- c("GBR", "USA", "WMBK", "WABK")
 # countries <- c("OAFR", "OAMR", "OASI")
@@ -26,7 +26,19 @@ max_year <- 2019                         # The last year to be analyzed
 # countries <- setdiff(PFUWorkflow::canonical_countries, c("FSU", "FYG", "CIV")) |> as.character()
 countries <- PFUWorkflow::canonical_countries |> as.character()
 
-additional_exemplars <- "WRLD"
+# Additional exemplar countries are countries which aren't included in the workflow
+# as individual countries, but from which allocation or efficiency data may be 
+# obtained and assigned to countries in the workflow using the exemplar system.
+additional_exemplars <- c("WRLD", # World
+                          "AFRI", # Africa 
+                          "ASIA", # Asia
+                          "EURP", # Europe 
+                          "MIDE", # Middle East
+                          "NAMR", # North America
+                          "OCEN", # Oceania 
+                          "SAMR", # South America 
+                          "BUNK"  # Bunkers
+                          )
 
 # Create our drake plan
 plan <- PFUWorkflow::get_plan(countries = countries, 
@@ -50,10 +62,10 @@ plan <- PFUWorkflow::get_plan(countries = countries,
 
 # _drake.R must end with a call to drake_config().
 # The arguments to drake_config() are basically the same as those to make().
-options(clustermq.scheduler = "multicore") # For parallel computing.
+# options(clustermq.scheduler = "multicore") # For parallel computing.
 drake::drake_config(
   plan, 
   # max_expand = 1 # Set the number of countries you want to analyze
-  parallelism = "clustermq",
-  jobs = 8
+  # parallelism = "clustermq",
+  # jobs = 8
 )
