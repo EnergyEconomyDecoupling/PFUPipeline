@@ -2,9 +2,10 @@ library(magrittr)
 library(targets)
 library(PFUDatabase)
 # targets::tar_make() to run the pipeline
-# targets::tar_make_clustermq(workers = 8) to execute across multiple cores.
+# targets::tar_make_future(workers = 8) to execute across multiple cores.
 # targets::tar_read(<<target_name>>) to view the results.
-# targets::tar_destroy() to start over with everything,
+# targets::tar_destroy() to start over with everything.
+# targets::tar_make(callr_function = NULL) to debug.
 
 
 # Custom parameters
