@@ -14,14 +14,27 @@ years <- 1960:2019                         # The years to be analyzed
 # countries <- c("BRA", "CAN", "CHN", "DEU", "ESP", "GBR", "GHA", "GRC", "HKG", "HND", "IDN", "JPN", "IND", "JOR", "KOR", "MEX", "NOR", "RUS", "USA", "WMB", "WAB", "ZAF")
 # countries <- c("WMB")
 # countries <- c("USA")
+countries <- c("USA", "GBR")
 # countries <- c("FSU", "YGS")
 # countries <- c("SUN", "YUG")
 # countries <- c("YGS")
 # countries <- setdiff(PFUDatabase::canonical_countries, c("FSU", "FYG", "CIV")) |> as.character()
-countries <- c("WMBK", "WABK", "ZAF")
+# countries <- c("WMBK", "WABK", "ZAF")
 # countries <- PFUDatabase::canonical_countries %>% as.character()
 
-additional_exemplar_countries <- "WRLD"
+# Additional exemplar countries are countries which aren't included in the workflow
+# as individual countries, but from which allocation or efficiency data may be 
+# obtained and assigned to countries in the workflow using the exemplar system.
+additional_exemplar_countries <- c("WRLD", # World
+                                   "AFRI", # Africa 
+                                   "ASIA", # Asia
+                                   "EURP", # Europe 
+                                   "MIDE", # Middle East
+                                   "NAMR", # North America
+                                   "OCEN", # Oceania 
+                                   "SAMR", # South America 
+                                   "BUNK"  # Bunkers
+)
 
 # Should we do a release of the results?
 release <- FALSE
