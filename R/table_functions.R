@@ -43,16 +43,28 @@ load_fu_allocation_tables <- function(fu_analysis_folder,
       return(NULL)
     }
     if (!fexists & generate_missing_fu_allocation_template) {
-      # Make sure we have the folder we need
-      dir.create(folder, showWarnings = FALSE)
       # Create and write the template
       iea_data <- specified_iea_data %>%
         dplyr::filter(.data[[IEATools::iea_cols$country]] == coun)
-      IEATools::fu_allocation_template(iea_data) %>%
-        IEATools::write_fu_allocation_template(fpath)
+      # Writing the allocation table is pointless if we don't have any IEA 
+      # data for that country.
+      # So only write a template file if we have a non-zero number
+      # of rows in the IEA data.
+      if (nrow(iea_data) > 0) {
+        # Make sure we have the folder we need
+        dir.create(folder, showWarnings = FALSE)
+        # Now write the template
+        IEATools::fu_allocation_template(iea_data) %>%
+          IEATools::write_fu_allocation_template(fpath)
+      }
     }
-    # Read the FU allocation data from fpath.
-    IEATools::load_fu_allocation_data(fpath, fu_allocations_tab_name = fu_allocations_tab_name)
+    # Read the FU allocation data from fpath, if it exists.
+    fexists <- file.exists(fpath)
+    if (fexists) {
+      return(IEATools::load_fu_allocation_data(fpath, fu_allocations_tab_name = fu_allocations_tab_name))
+    } else {
+      return(NULL)
+    }
   }) %>%
     dplyr::bind_rows()
   if (nrow(out) == 0) {
