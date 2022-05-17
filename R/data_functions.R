@@ -41,12 +41,12 @@ load_country_concordance_table <- function(country_concordance_path,
 
 #' Extract specific country and year data
 #'
-#' Data is extracted according to the `countries` oand `years` objects
+#' Data is extracted according to the `countries` ond `years` objects
 #' in a way that is amenable to drake subtargets.
 #' `dplyr::filter()` does the subsetting.
 #'
 #' @param .df A data frame containing cleaned data with lots of countries and years.
-#' @param countries A list of 3- or 4-letter country codes for countries to be analyzed. 
+#' @param countries A list of country codes for countries to be analyzed. 
 #'                  "all" means return all countries.
 #' @param years A vector of years. "all" means return all years. 
 #' @param country,year See `IEATools::iea_cols`.
