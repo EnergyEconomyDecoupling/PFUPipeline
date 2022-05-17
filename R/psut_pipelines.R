@@ -229,24 +229,24 @@ get_pipeline <- function(countries = "all",
     
     # (14) Add exergy quantifications of energy
     # Set PSUT as the last target. We'll use it for all further calculations.
-    targets::tar_target_raw("PSUT", quote(move_to_exergy(psut_energy = PSUTUsefulIEA,
+    targets::tar_target_raw("PSUTIEA", quote(move_to_exergy(psut_energy = PSUTUsefulIEA,
                                                          phi_vecs = Phivecs,
                                                          countries = Countries)), 
                             pattern = quote(map(Countries))), 
     
     
     # (15) Make PSUT matrices from muscle work data
-    targets::tar_target_raw("MWPSUT", quote(make_mw_psut(.hmw_df = HMWPFUData, 
+    targets::tar_target_raw("PSUTMW", quote(make_mw_psut(.hmw_df = HMWPFUData, 
                                                          .amw_df = AMWPFUData, 
                                                          countries = Countries, 
                                                          years = Years)), 
                             pattern = quote(map(Countries))),
     # Ensure that the MW data are balanced
-    targets::tar_target_raw("BalancedMWPSUT", quote(verify_mw_energy_balance(MWPSUT, countries = Countries)), 
+    targets::tar_target_raw("BalancedPSUTMW", quote(verify_mw_energy_balance(PSUTMW, countries = Countries)), 
                             pattern = quote(map(Countries))),
     # Don't continue if there is a problem with the MW data.
     # stopifnot returns NULL if everything is OK.
-    targets::tar_target_raw("OKToProceedMW", quote(ifelse(is.null(stopifnot(BalancedMWPSUT)), yes = TRUE, no = FALSE))),
+    targets::tar_target_raw("OKToProceedMW", quote(ifelse(is.null(stopifnot(BalancedPSUTMW)), yes = TRUE, no = FALSE))),
     
     
     
@@ -272,12 +272,22 @@ get_pipeline <- function(countries = "all",
                             pattern = quote(map(Countries))), 
     
     # (18) Save results
-    # (18a) Store the PSUT target data frame in a pinboard inside the pipeline_releases_folder.
-    targets::tar_target_raw("ReleasePSUT", quote(release_target(pipeline_releases_folder = PipelineReleasesFolder,
-                                                                targ = PSUT,
-                                                                targ_name = "psut",
-                                                                release = Release))), 
-    
+    # (18a) Store the PSUTIEA target data frame in a pinboard inside the pipeline_releases_folder.
+    targets::tar_target_raw("ReleasePSUTIEA", quote(release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                                                                   targ = PSUTIEA,
+                                                                   targ_name = "psut_iea",
+                                                                   release = Release))), 
+    # (18b) Store the PSUTMW target data frame in a pinboard inside the pipeline_releases_folder.
+    targets::tar_target_raw("ReleasePSUTMW", quote(release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                                                                  targ = PSUTMW,
+                                                                  targ_name = "psut_mw",
+                                                                  release = Release))), 
+    # (18c) Store the PSUT target data frame in a pinboard inside the pipeline_releases_folder.
+    # targets::tar_target_raw("ReleasePSUT", quote(release_target(pipeline_releases_folder = PipelineReleasesFolder,
+    #                                                             targ = PSUT,
+    #                                                             targ_name = "psut_",
+    #                                                             release = Release))), 
+
     # (18b) Zip the targets cache and store it in the pipeline_caches_folder
     targets::tar_target_raw("StoreCache", quote(stash_cache(pipeline_caches_folder = PipelineCachesFolder,
                                                             cache_folder = "_targets",
