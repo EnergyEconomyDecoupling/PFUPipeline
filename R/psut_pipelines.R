@@ -136,7 +136,7 @@ get_pipeline <- function(countries = "all",
                             pattern = quote(map(AllocAndEffCountries))),
     
     # (4) Arrange all the data into PSUT matrices with final stage data.
-    targets::tar_target_raw("PSUTFinal", quote(make_iea_psut(SpecifiedIEA, countries = Countries)), 
+    targets::tar_target_raw("PSUTFinalIEA", quote(make_iea_psut(SpecifiedIEA, countries = Countries)), 
                             pattern = quote(map(Countries))),
     
     # (5) Load exemplar table and make lists for each country and year from disk.
@@ -156,12 +156,6 @@ get_pipeline <- function(countries = "all",
                                                                                           countries = AllocAndEffCountries)),
                             pattern = quote(map(AllocAndEffCountries))),
 
-    # The next target is never used. So no need to calculate it.  
-    # Delete after 22 May 2022. ---MKH, 22 April 2022
-    # tarchetypes::tar_group_by(TidyIncompleteAllocationTables, 
-    #                           IEATools::tidy_fu_allocation_table(IncompleteAllocationTables), 
-    #                           Country), 
-    
     # (8) Complete FU allocation tables
     targets::tar_target_raw("CompletedAllocationTables", quote(assemble_fu_allocation_tables(incomplete_allocation_tables = IncompleteAllocationTables,
                                                                                              exemplar_lists = ExemplarLists,
@@ -224,7 +218,7 @@ get_pipeline <- function(countries = "all",
                             pattern = quote(map(Countries))), 
     
     # (12) Extend to useful stage
-    targets::tar_target_raw("PSUTUseful", quote(move_to_useful(psut_final = PSUTFinal,
+    targets::tar_target_raw("PSUTUsefulIEA", quote(move_to_useful(psut_final = PSUTFinalIEA,
                                                                 C_mats = Cmats,
                                                                 eta_phi_vecs = EtafuPhiuvecs,
                                                                 countries = Countries)), 
@@ -235,7 +229,7 @@ get_pipeline <- function(countries = "all",
     
     # (14) Add exergy quantifications of energy
     # Set PSUT as the last target. We'll use it for all further calculations.
-    targets::tar_target_raw("PSUT", quote(move_to_exergy(psut_energy = PSUTUseful,
+    targets::tar_target_raw("PSUT", quote(move_to_exergy(psut_energy = PSUTUsefulIEA,
                                                          phi_vecs = Phivecs,
                                                          countries = Countries)), 
                             pattern = quote(map(Countries))), 
