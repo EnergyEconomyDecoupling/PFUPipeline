@@ -132,11 +132,11 @@ get_pipeline <- function(countries = "all",
     targets::tar_target_raw("OKToProceedIEA", quote(ifelse(is.null(stopifnot(all(BalancedAfterIEA))), yes = TRUE, no = FALSE))),
     
     # (3) Specify the BalancedIEAData data frame by being more careful with names, etc.
-    targets::tar_target_raw("Specified", quote(specify(BalancedIEAData, countries = AllocAndEffCountries)) ,
+    targets::tar_target_raw("SpecifiedIEA", quote(specify(BalancedIEAData, countries = AllocAndEffCountries)) ,
                             pattern = quote(map(AllocAndEffCountries))),
     
     # (4) Arrange all the data into PSUT matrices with final stage data.
-    targets::tar_target_raw("PSUTFinal", quote(make_iea_psut(Specified, countries = Countries)), 
+    targets::tar_target_raw("PSUTFinal", quote(make_iea_psut(SpecifiedIEA, countries = Countries)), 
                             pattern = quote(map(Countries))),
     
     # (5) Load exemplar table and make lists for each country and year from disk.
@@ -152,7 +152,7 @@ get_pipeline <- function(countries = "all",
     
     # (7) Load incomplete FU allocation tables
     targets::tar_target_raw("IncompleteAllocationTables", quote(load_fu_allocation_tables(FUAnalysisFolder,
-                                                                                          specified_iea_data = Specified,
+                                                                                          specified_iea_data = SpecifiedIEA,
                                                                                           countries = AllocAndEffCountries)),
                             pattern = quote(map(AllocAndEffCountries))),
 
@@ -165,7 +165,7 @@ get_pipeline <- function(countries = "all",
     # (8) Complete FU allocation tables
     targets::tar_target_raw("CompletedAllocationTables", quote(assemble_fu_allocation_tables(incomplete_allocation_tables = IncompleteAllocationTables,
                                                                                              exemplar_lists = ExemplarLists,
-                                                                                             specified_iea_data = Specified %>% dplyr::mutate(tar_group = NULL),
+                                                                                             specified_iea_data = SpecifiedIEA %>% dplyr::mutate(tar_group = NULL),
                                                                                              countries = Countries,
                                                                                              years = Years)), 
                             pattern = quote(map(Countries))),
