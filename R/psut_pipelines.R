@@ -109,14 +109,28 @@ get_pipeline <- function(countries = "all",
     targets::tar_target_raw("HMWPFUData", quote(readr::read_rds(file = ILODataPath) %>% 
                                                   MWTools::calc_hmw_pfu(concordance_path = MWConcordancePath,
                                                                         hmw_analysis_data_path = HMWAnalysisDataPath))),
+    targets::tar_target_raw("MWPSUT", quote(make_mw_psut(.hmw_df = HMWPFUData, 
+                                                         .amw_df = AMWPFUData, 
+                                                         countries = Countries, 
+                                                         years = Years)), 
+                            pattern = quote(map(Countries))),
+    # Ensure that the MW data are balanced
+    targets::tar_target_raw("BalancedMWPSUT", quote(verify_mw_energy_balance(MWPSUT, countries = Countries)), 
+                            pattern = quote(map(Countries))),
+    # Don't continue if there is a problem with the MW data.
+    # stopifnot returns NULL if everything is OK.
+    targets::tar_target_raw("OKToProceedMW", quote(ifelse(is.null(stopifnot(BalancedMWPSUT)), yes = TRUE, no = FALSE))),
+    
+    
+    
 
     # (1f) Socioeconomic data
     targets::tar_target_raw("SocioEconData", quote(get_all_pwt_data(countries = Countries) %>% get_L_K_GDP_data())), 
     
-    # (2) Balance all final energy data.
+    # (2) Balance all IEA final energy data.
     # First, check whether energy products are balanced. They're not.
     # FALSE indicates a country with at least one balance problem.
-    targets::tar_target_raw("BalancedBefore", quote(is_balanced(IEAData, countries = AllocAndEffCountries)),
+    targets::tar_target_raw("BalancedBeforeIEA", quote(is_balanced(IEAData, countries = AllocAndEffCountries)),
                             pattern = quote(map(AllocAndEffCountries))), 
     
     # Balance all of the data by product and year.
@@ -124,19 +138,19 @@ get_pipeline <- function(countries = "all",
                             pattern = quote(map(AllocAndEffCountries))),
     
     # Check that balancing was successful.
-    targets::tar_target_raw("BalancedAfter", quote(is_balanced(BalancedIEAData, countries = AllocAndEffCountries)), 
+    targets::tar_target_raw("BalancedAfterIEA", quote(is_balanced(BalancedIEAData, countries = AllocAndEffCountries)), 
                             pattern = quote(map(AllocAndEffCountries))), 
     
     # Don't continue if there is a problem.
     # stopifnot returns NULL if everything is OK.
-    targets::tar_target_raw("OKToProceed", quote(ifelse(is.null(stopifnot(all(BalancedAfter))), yes = TRUE, no = FALSE))),
+    targets::tar_target_raw("OKToProceedIEA", quote(ifelse(is.null(stopifnot(all(BalancedAfterIEA))), yes = TRUE, no = FALSE))),
     
     # (3) Specify the BalancedIEAData data frame by being more careful with names, etc.
     targets::tar_target_raw("Specified", quote(specify(BalancedIEAData, countries = AllocAndEffCountries)) ,
                             pattern = quote(map(AllocAndEffCountries))),
     
     # (4) Arrange all the data into PSUT matrices with final stage data.
-    targets::tar_target_raw("PSUTFinal", quote(make_psut(Specified, countries = Countries)), 
+    targets::tar_target_raw("PSUTFinal", quote(make_iea_psut(Specified, countries = Countries)), 
                             pattern = quote(map(Countries))),
     
     # (5) Load exemplar table and make lists for each country and year from disk.

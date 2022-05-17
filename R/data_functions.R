@@ -205,7 +205,7 @@ specify <- function(BalancedIEAData,
 #'   make_balanced(countries = c("GHA", "ZAF")) %>%
 #'   specify(countries = c("GHA", "ZAF")) %>%
 #'   make_psut(countries = c("GHA", "ZAF"))
-make_psut <- function(SpecifiedIEAData,
+make_iea_psut <- function(SpecifiedIEAData,
                       countries,
                       country = IEATools::iea_cols$country) {
   dplyr::filter(SpecifiedIEAData, .data[[country]] %in% countries) %>%

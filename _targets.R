@@ -11,11 +11,12 @@ library(PFUDatabase)
 # Custom parameters
 years <- 1960:2019                         # The years to be analyzed
 # years <- 1971:1972                         # The years to be analyzed
+# years <- 1983
 
 # countries <- c("BRA", "CAN", "CHN", "DEU", "ESP", "GBR", "GHA", "GRC", "HKG", "HND", "IDN", "JPN", "IND", "JOR", "KOR", "MEX", "NOR", "RUS", "USA", "WMB", "WAB", "ZAF")
 # countries <- c("WMB")
-# countries <- c("USA")
-countries <- c("USA", "GBR")
+countries <- c("USA")
+# countries <- c("USA", "GBR")
 # countries <- c("FSU", "YGS")
 # countries <- c("SUN", "YUG")
 # countries <- c("YGS")
@@ -34,8 +35,7 @@ additional_exemplar_countries <- c("WRLD", # World
                                    "NAMR", # North America
                                    "OCEN", # Oceania 
                                    "SAMR", # South America 
-                                   "BUNK"  # Bunkers
-)
+                                   "BUNK") # Bunkers
 
 # Should we do a release of the results?
 release <- FALSE
