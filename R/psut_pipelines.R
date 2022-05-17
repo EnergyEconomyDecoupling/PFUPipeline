@@ -109,20 +109,6 @@ get_pipeline <- function(countries = "all",
     targets::tar_target_raw("HMWPFUData", quote(readr::read_rds(file = ILODataPath) %>% 
                                                   MWTools::calc_hmw_pfu(concordance_path = MWConcordancePath,
                                                                         hmw_analysis_data_path = HMWAnalysisDataPath))),
-    targets::tar_target_raw("MWPSUT", quote(make_mw_psut(.hmw_df = HMWPFUData, 
-                                                         .amw_df = AMWPFUData, 
-                                                         countries = Countries, 
-                                                         years = Years)), 
-                            pattern = quote(map(Countries))),
-    # Ensure that the MW data are balanced
-    targets::tar_target_raw("BalancedMWPSUT", quote(verify_mw_energy_balance(MWPSUT, countries = Countries)), 
-                            pattern = quote(map(Countries))),
-    # Don't continue if there is a problem with the MW data.
-    # stopifnot returns NULL if everything is OK.
-    targets::tar_target_raw("OKToProceedMW", quote(ifelse(is.null(stopifnot(BalancedMWPSUT)), yes = TRUE, no = FALSE))),
-    
-    
-    
 
     # (1f) Socioeconomic data
     targets::tar_target_raw("SocioEconData", quote(get_all_pwt_data(countries = Countries) %>% get_L_K_GDP_data())), 
@@ -255,28 +241,50 @@ get_pipeline <- function(countries = "all",
                             pattern = quote(map(Countries))), 
     
     
-    # (15) Build reports
-    # (15a) Allocation Graphs
+    # (15) Make PSUT matrices from muscle work data
+    targets::tar_target_raw("MWPSUT", quote(make_mw_psut(.hmw_df = HMWPFUData, 
+                                                         .amw_df = AMWPFUData, 
+                                                         countries = Countries, 
+                                                         years = Years)), 
+                            pattern = quote(map(Countries))),
+    # Ensure that the MW data are balanced
+    targets::tar_target_raw("BalancedMWPSUT", quote(verify_mw_energy_balance(MWPSUT, countries = Countries)), 
+                            pattern = quote(map(Countries))),
+    # Don't continue if there is a problem with the MW data.
+    # stopifnot returns NULL if everything is OK.
+    targets::tar_target_raw("OKToProceedMW", quote(ifelse(is.null(stopifnot(BalancedMWPSUT)), yes = TRUE, no = FALSE))),
+    
+    
+    
+    
+    # (16) Combine IEA and MW data by summing PSUT matrices
+    
+    
+    
+    
+    
+    # (17) Build reports
+    # (17a) Allocation Graphs
     targets::tar_target_raw("AllocationGraphs", quote(alloc_plots_df(CompletedAllocationTables, countries = Countries)), 
                             pattern = quote(map(Countries))), 
-    # (15b) Non-Stationary Allocation Graphs
+    # (17b) Non-Stationary Allocation Graphs
     targets::tar_target_raw("NonStationaryAllocationGraphs", quote(nonstat_alloc_plots_df(CompletedAllocationTables, countries = Countries)), 
                             pattern = quote(map(Countries))), 
-    # (15c) Efficiency Graphs
+    # (17c) Efficiency Graphs
     targets::tar_target_raw("EfficiencyGraphs", quote(eta_fu_plots_df(CompletedEfficiencyTables, countries = Countries)), 
                             pattern = quote(map(Countries))), 
-    # (15d) Exergy-to-energy ratio graphs
+    # (17d) Exergy-to-energy ratio graphs
     targets::tar_target_raw("PhiGraphs", quote(phi_u_plots_df(CompletedEfficiencyTables, countries = Countries)), 
                             pattern = quote(map(Countries))), 
     
-    # (16) Save results
-    # (16a) Store the PSUT target data frame in a pinboard inside the pipeline_releases_folder.
+    # (18) Save results
+    # (18a) Store the PSUT target data frame in a pinboard inside the pipeline_releases_folder.
     targets::tar_target_raw("ReleasePSUT", quote(release_target(pipeline_releases_folder = PipelineReleasesFolder,
                                                                 targ = PSUT,
                                                                 targ_name = "psut",
                                                                 release = Release))), 
     
-    # (16b) Zip the targets cache and store it in the pipeline_caches_folder
+    # (18b) Zip the targets cache and store it in the pipeline_caches_folder
     targets::tar_target_raw("StoreCache", quote(stash_cache(pipeline_caches_folder = PipelineCachesFolder,
                                                             cache_folder = "_targets",
                                                             file_prefix = "pfu_pipeline_cache_",
