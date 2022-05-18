@@ -20,6 +20,7 @@ add_iea_mw_psut <- function(iea_psut, mw_psut,
                             Y = IEATools::psut_cols$Y,
                             U_feed = IEATools::psut_cols$U_feed,
                             U_eiou = IEATools::psut_cols$U_eiou,
+                            s_units = IEATools::psut_cols$s_units,
                             # Metadata column names
                             country = IEATools::iea_cols$country,
                             year = IEATools::iea_cols$year,
@@ -37,6 +38,7 @@ add_iea_mw_psut <- function(iea_psut, mw_psut,
   U_eiou_iea <- paste0(U_eiou, iea)
   V_iea <- paste0(V, iea)
   Y_iea <- paste0(Y, iea)
+  S_units_iea <- paste0(s_units, iea)
   mw <- "_mw"
   R_mw <- paste0(R, mw)
   U_mw <- paste0(U, mw)
@@ -44,6 +46,8 @@ add_iea_mw_psut <- function(iea_psut, mw_psut,
   Y_mw <- paste0(Y, mw)
   U_feed_mw <- paste0(U_feed, mw)
   U_eiou_mw <- paste0(U_eiou, mw)
+  S_units_mw <- paste0(s_units, mw)
+  
   # Rename columns and delete the r_eiou column, as we will recalculate later.
   iea_specific <- iea_psut %>% 
     dplyr::filter(.data[[country]] %in% countries) %>% 
@@ -53,7 +57,8 @@ add_iea_mw_psut <- function(iea_psut, mw_psut,
       "{V_iea}" := .data[[V]],
       "{Y_iea}" := .data[[Y]], 
       "{U_feed_iea}" := .data[[U_feed]],
-      "{U_eiou_iea}" := .data[[U_eiou]]
+      "{U_eiou_iea}" := .data[[U_eiou]], 
+      "{S_units_iea}" := .data[[s_units]]
     ) %>% 
     dplyr::mutate(
       "{r_eiou}" := NULL
@@ -66,14 +71,15 @@ add_iea_mw_psut <- function(iea_psut, mw_psut,
       "{V_mw}" := .data[[V]],
       "{Y_mw}" := .data[[Y]],
       "{U_feed_mw}" := .data[[U_feed]],
-      "{U_eiou_mw}" := .data[[U_eiou]]
+      "{U_eiou_mw}" := .data[[U_eiou]], 
+      "{S_units_mw}" := .data[[s_units]]
     ) %>% 
     dplyr::mutate(
       "{r_eiou}" := NULL
     )
   
   # Join the data frames.
-  dplyr::bind_cols(iea_specific, mw_specific, 
+  dplyr::full_join(iea_specific, mw_specific, 
                    by = c(country, year, method, energy_type, last_stage)) %>% 
     dplyr::mutate(
       # Calculate new columns by summing matrices

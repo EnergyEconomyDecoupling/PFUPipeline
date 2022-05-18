@@ -14,6 +14,7 @@ add_iea_mw_psut(
   Y = IEATools::psut_cols$Y,
   U_feed = IEATools::psut_cols$U_feed,
   U_eiou = IEATools::psut_cols$U_eiou,
+  s_units = IEATools::psut_cols$s_units,
   country = IEATools::iea_cols$country,
   year = IEATools::iea_cols$year,
   method = IEATools::iea_cols$method,
