@@ -236,25 +236,39 @@ get_pipeline <- function(countries = "all",
     
     
     # (15) Make PSUT matrices from muscle work data
-    targets::tar_target_raw("PSUTMW", quote(make_mw_psut(.hmw_df = HMWPFUData, 
+    targets::tar_target_raw("PSUTMW_energy", quote(make_mw_psut(.hmw_df = HMWPFUData, 
                                                          .amw_df = AMWPFUData, 
                                                          countries = Countries, 
                                                          years = Years)), 
                             pattern = quote(map(Countries))),
     # Ensure that the MW data are balanced
-    targets::tar_target_raw("BalancedPSUTMW", quote(verify_mw_energy_balance(PSUTMW, countries = Countries)), 
+    targets::tar_target_raw("BalancedPSUTMW", quote(verify_mw_energy_balance(PSUTMW_energy, countries = Countries)), 
                             pattern = quote(map(Countries))),
     # Don't continue if there is a problem with the MW data.
     # stopifnot returns NULL if everything is OK.
     targets::tar_target_raw("OKToProceedMW", quote(ifelse(is.null(stopifnot(BalancedPSUTMW)), yes = TRUE, no = FALSE))),
     
+    # (16) Move from energy to exergy for muscle work
+    # Create a single phi vector applicable to all years.
+    targets::tar_target_raw("PhivecMW", quote(MWTools::phi_vec_mw(.phi_table = PhiConstants,
+                                                                   mw_energy_carriers = MWTools::mw_products))),
+    # This target has a phi vector for every Country-Year combination.
+    # Note the plural spelling.
+    targets::tar_target_raw("PhivecsMW", quote(calc_phi_vecs_mw(psut_energy_mw = PSUTMW_energy, 
+                                                                phi_vec_mw = PhivecMW, 
+                                                                countries = Countries)), 
+                            pattern = quote(map(Countries))),
+    targets::tar_target_raw("PSUTMW", quote(move_to_exergy(psut_energy = PSUTMW_energy, 
+                                                                  phi_vecs = PhivecsMW, 
+                                                                  countries = Countries)), 
+                            patter = quote(map(Countries))),
     
     
     
     # (16) Combine IEA and MW data by summing PSUT matrices
-    targets::tar_target_raw("PSUT", quote(add_iea_mw_psut(PSUTIEA, PSUTMW, 
-                                                          countries = Countries)), 
-                            pattern = quote(map(Countries))),
+    # targets::tar_target_raw("PSUT", quote(add_iea_mw_psut(PSUTIEA, PSUTMW,
+    #                                                       countries = Countries)),
+    #                         pattern = quote(map(Countries))),
     
     
     

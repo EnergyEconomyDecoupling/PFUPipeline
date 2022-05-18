@@ -227,6 +227,42 @@ sum_phi_vecs <- function(phi_pf_vecs,
 }
 
 
+#' Create a data frame of phi vectors for muscle work
+#' 
+#' The `phi_vecs` argument of `move_to_exergy()` is a data frame with 
+#' "Country", "Year", and "phi" columns, 
+#' where the "phi" column contains phi vectors of the type created by 
+#' `MWTools::phi_vec_mw()`.
+#' This function creates the required data frame from its parts.
+#'
+#' @param psut_energy_mw A PSUT data frame containing `country` and `year` columns.
+#' @param phi_vec_mw A single vector of muscle work phi values. See `MWTools::phi_vec_mw()`.
+#' @param countries The countries to be analyzed. Internally, `psut_energy_mw` is filtered for `countries`.
+#' @param country,year Column names. See `MWTools::mw_cols`. 
+#' @param phi The name of the phi column. Default is "phi".
+#'
+#' @return A data frame of muscle work phi vectors, suitable for `move_to_exergy()`.
+#' 
+#' @export
+calc_phi_vecs_mw <- function(psut_energy_mw, 
+                             phi_vec_mw, 
+                             countries, 
+                             country = MWTools::mw_cols$country, 
+                             year = MWTools::mw_cols$year, 
+                             phi = "phi") {
+  country_year <- psut_energy_mw %>% 
+    dplyr::filter(.data[[country]] %in% countries) %>% 
+    dplyr::select(dplyr::all_of(c(country, year))) %>% 
+    unique()
+  # Create the outgoing data frame from phi_vec_mw
+  country_year %>% 
+    dplyr::mutate(
+      "{phi}" := list(phi_vec_mw)
+    )
+  
+}
+
+
 #' Move from all exergy quantities to all energy quantities in energy conversion chains
 #'
 #' Converts energy conversion chains represented by the matrices

@@ -4,6 +4,8 @@ output: html_document
 ---
 
 
+* `targets` pipeline now includes muscle work
+  on its own and combined with the IEA data.
 * `targets` pipeline now allows additional exemplar countries 
   without IEA data by skipping writing allocations templates
   when no IEA data exists.
