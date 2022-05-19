@@ -2,11 +2,11 @@
 % Please edit documentation in R/combine_iea_mw.R
 \name{add_iea_mw_psut}
 \alias{add_iea_mw_psut}
-\title{Title}
+\title{Sum IEA and muscle work ECC matrices}
 \usage{
 add_iea_mw_psut(
-  iea_psut,
-  mw_psut,
+  .iea_psut,
+  .mw_psut,
   countries,
   R = IEATools::psut_cols$R,
   U = IEATools::psut_cols$U,
@@ -24,10 +24,6 @@ add_iea_mw_psut(
 )
 }
 \arguments{
-\item{iea_psut}{An IEA PSUT data frame.}
-
-\item{mw_psut}{A muscle work PSUT data frame.}
-
 \item{R}{The name of the column of \code{R} matrices. Default is \code{IEATools::psut_cols$R}.}
 
 \item{U}{The name of the column of \code{U} matrices. Default is \code{IEATools::psut_cols$U}.}
@@ -35,10 +31,18 @@ add_iea_mw_psut(
 \item{V}{The name of the column of \code{V} matrices. Default is \code{IEATools::psut_cols$V}.}
 
 \item{Y}{The name of the column of \code{Y} matrices. Default is \code{IEATools::psut_cols$Y}.}
+
+\item{iea_psut}{An IEA PSUT data frame.}
+
+\item{mw_psut}{A muscle work PSUT data frame.}
 }
 \value{
 A data frame of summed matrices.
 }
 \description{
-Title
+To create a combined energy conversion chain (ECC)
+containing both IEA and muscle work data,
+PSUT matrices for each ECC are summed.
+This function sums \code{R}, \code{U}, \code{V}, \code{Y}, \code{U_feed}, and \code{U_eiou} matrices directly.
+It also re-calculates the \code{r_eiou} matrix.
 }

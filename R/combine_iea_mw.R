@@ -1,4 +1,10 @@
-#' Title
+#' Sum IEA and muscle work ECC matrices
+#' 
+#' To create a combined energy conversion chain (ECC)
+#' containing both IEA and muscle work data, 
+#' PSUT matrices for each ECC are summed.
+#' This function sums `R`, `U`, `V`, `Y`, `U_feed`, and `U_eiou` matrices directly.
+#' It also re-calculates the `r_eiou` matrix.
 #'
 #' @param iea_psut An IEA PSUT data frame. 
 #' @param mw_psut A muscle work PSUT data frame.
@@ -8,10 +14,9 @@
 #' @param Y The name of the column of `Y` matrices. Default is `IEATools::psut_cols$Y`.
 #'
 #' @return A data frame of summed matrices.
+#' 
 #' @export
-#'
-#' @examples
-add_iea_mw_psut <- function(iea_psut, mw_psut, 
+add_iea_mw_psut <- function(.iea_psut, .mw_psut, 
                             countries,
                             # Input columns
                             R = IEATools::psut_cols$R, 
@@ -49,7 +54,7 @@ add_iea_mw_psut <- function(iea_psut, mw_psut,
   s_units_mw <- paste0(s_units, mw)
   
   # Rename columns and delete the r_eiou column, as we will recalculate later.
-  iea_specific <- iea_psut %>% 
+  iea_specific <- .iea_psut %>% 
     dplyr::filter(.data[[country]] %in% countries) %>% 
     dplyr::rename(
       "{R_iea}" := .data[[R]], 
@@ -63,7 +68,7 @@ add_iea_mw_psut <- function(iea_psut, mw_psut,
     dplyr::mutate(
       "{r_eiou}" := NULL
     )
-  mw_specific <- mw_psut %>% 
+  mw_specific <- .mw_psut %>% 
     dplyr::filter(.data[[country]] %in% countries) %>% 
     dplyr::rename(
       "{R_mw}" := .data[[R]], 
