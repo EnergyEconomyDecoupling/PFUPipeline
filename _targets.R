@@ -38,7 +38,7 @@ additional_exemplar_countries <- c("WRLD", # World
                                    "BUNK") # Bunkers
 
 # Should we do a release of the results?
-release <- TRUE
+release <- FALSE
 
 # End user-adjustable parameters.
 
