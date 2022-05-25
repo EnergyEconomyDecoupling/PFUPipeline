@@ -4,6 +4,8 @@ output: html_document
 ---
 
 
+* `targets` pipeline now longer saves the cache.
+  We never looked at it, anyway.
 * `targets` pipeline now includes muscle work
   on its own and combined with the IEA data.
 * `targets` pipeline now allows additional exemplar countries 
