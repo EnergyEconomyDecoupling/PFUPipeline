@@ -248,6 +248,7 @@ get_pipeline <- function(countries = "all",
     # stopifnot returns NULL if everything is OK.
     targets::tar_target_raw("OKToProceedMW", quote(ifelse(is.null(stopifnot(BalancedPSUTMW)), yes = TRUE, no = FALSE))),
     
+    
     # (16) Move from energy to exergy for muscle work
     # Create a single phi vector applicable to all years.
     targets::tar_target_raw("PhivecMW", quote(MWTools::phi_vec_mw(.phi_table = PhiConstants,
@@ -264,54 +265,41 @@ get_pipeline <- function(countries = "all",
                             patter = quote(map(Countries))),
     
     
-    
-    # (16) Combine IEA and MW data by summing PSUT matrices
+    # (17) Combine IEA and MW data by summing PSUT matrices
     targets::tar_target_raw("PSUT", quote(add_iea_mw_psut(PSUTIEA, PSUTMW,
                                                           countries = Countries)),
                             pattern = quote(map(Countries))),
+
     
-    
-    
-    
-    # (17) Build reports
-    # (17a) Allocation Graphs
+    # (18) Build reports
+    # (18a) Allocation Graphs
     targets::tar_target_raw("AllocationGraphs", quote(alloc_plots_df(CompletedAllocationTables, countries = Countries)), 
                             pattern = quote(map(Countries))), 
-    # (17b) Non-Stationary Allocation Graphs
+    # (18b) Non-Stationary Allocation Graphs
     targets::tar_target_raw("NonStationaryAllocationGraphs", quote(nonstat_alloc_plots_df(CompletedAllocationTables, countries = Countries)), 
                             pattern = quote(map(Countries))), 
-    # (17c) Efficiency Graphs
+    # (18c) Efficiency Graphs
     targets::tar_target_raw("EfficiencyGraphs", quote(eta_fu_plots_df(CompletedEfficiencyTables, countries = Countries)), 
                             pattern = quote(map(Countries))), 
-    # (17d) Exergy-to-energy ratio graphs
+    # (18d) Exergy-to-energy ratio graphs
     targets::tar_target_raw("PhiGraphs", quote(phi_u_plots_df(CompletedEfficiencyTables, countries = Countries)), 
                             pattern = quote(map(Countries))), 
     
-    # (18) Save results
-    # (18a) Store the PSUTIEA target data frame in a pinboard inside the pipeline_releases_folder.
+    # (19) Save results
+    # (19a) Store the PSUTIEA target data frame in a pinboard inside the pipeline_releases_folder.
     targets::tar_target_raw("ReleasePSUTIEA", quote(release_target(pipeline_releases_folder = PipelineReleasesFolder,
                                                                    targ = PSUTIEA,
                                                                    targ_name = "psut_iea",
                                                                    release = Release))), 
-    # (18b) Store the PSUTMW target data frame in a pinboard inside the pipeline_releases_folder.
+    # (19b) Store the PSUTMW target data frame in a pinboard inside the pipeline_releases_folder.
     targets::tar_target_raw("ReleasePSUTMW", quote(release_target(pipeline_releases_folder = PipelineReleasesFolder,
                                                                   targ = PSUTMW,
                                                                   targ_name = "psut_mw",
                                                                   release = Release))), 
-    # (18c) Store the PSUT target data frame in a pinboard inside the pipeline_releases_folder.
+    # (19c) Store the PSUT target data frame in a pinboard inside the pipeline_releases_folder.
     targets::tar_target_raw("ReleasePSUT", quote(release_target(pipeline_releases_folder = PipelineReleasesFolder,
                                                                 targ = PSUT,
                                                                 targ_name = "psut",
-                                                                release = Release))),
-
-    # (18b) Zip the targets cache and store it in the pipeline_caches_folder
-    targets::tar_target_raw("StoreCache", quote(stash_cache(pipeline_caches_folder = PipelineCachesFolder,
-                                                            cache_folder = "_targets",
-                                                            file_prefix = "pfu_pipeline_cache_",
-                                                            dependency = PSUT, 
-                                                            release = Release)))
+                                                                release = Release)))
   )
-  
-  
-  
 }

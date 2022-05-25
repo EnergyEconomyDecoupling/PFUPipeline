@@ -259,7 +259,6 @@ calc_phi_vecs_mw <- function(psut_energy_mw,
     dplyr::mutate(
       "{phi}" := list(phi_vec_mw)
     )
-  
 }
 
 
