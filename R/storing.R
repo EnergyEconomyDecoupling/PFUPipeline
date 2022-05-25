@@ -16,7 +16,7 @@
 #'                Default is `FALSE`.
 #'
 #' @return A logical saying whether the saving operation was successful.
-#'         If `release = FALSE`, `FALSE` is returned
+#'         If `release = FALSE`, `FALSE` is returned.
 #'
 #' @export
 stash_cache <- function(pipeline_caches_folder, cache_folder, file_prefix, dependency, release = FALSE) {
