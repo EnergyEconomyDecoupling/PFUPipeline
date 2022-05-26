@@ -35,3 +35,13 @@ uses slightly different final demand sector names compared to the IEA
 and the \code{IEATools} package..
 This function converts the \code{MWTools} sector names to appropriate IEA sector names.
 }
+\examples{
+df <- tibble::tribble(~Sector, ~value, 
+                MWTools::mw_sectors$transport_sector,         10, 
+                MWTools::mw_sectors$agriculture_broad.sector, 11,
+                MWTools::mw_sectors$services_broad.sector,    12,
+                MWTools::mw_sectors$industry_broad.sector,    13, 
+                "bogus",                                      14)
+df
+rename_mw_sectors(df)
+}
