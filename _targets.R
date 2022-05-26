@@ -14,12 +14,12 @@ years <- 1960:2019                         # The years to be analyzed
 # years <- 1983
 
 # Countries with unique allocations data.
-countries <- c("BRA", "CAN", "CHNM", "DEU", "DNK", "ESP", "FRA", "GBR", "GHA",
-               "GRC", "HKG", "HND", "IDN", "IND", "JOR", "JPN", "KOR", "MEX",
-               "NOR", "PRT", "RUS", "USA", "WABK", "WMBK", "ZAF")
+# countries <- c("BRA", "CAN", "CHNM", "DEU", "DNK", "ESP", "FRA", "GBR", "GHA",
+#                "GRC", "HKG", "HND", "IDN", "IND", "JOR", "JPN", "KOR", "MEX",
+#                "NOR", "PRT", "RUS", "USA", "WABK", "WMBK", "ZAF")
 
 
-# countries <- c("GBR")
+countries <- c("GBR")
 
 # countries <- setdiff(PFUDatabase::canonical_countries, c("FSU", "FYG", "CIV")) |> as.character()
 
