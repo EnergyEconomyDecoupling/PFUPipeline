@@ -53,3 +53,36 @@ verify_mw_energy_balance <- function(.psut_df,
     unlist() %>% 
     all()
 }
+
+
+#' Rename muscle work sectors to comport with IEA sectors.
+#' 
+#' The muscle work methodology in the `MWTools` package
+#' uses slightly different final demand sector names compared to the IEA
+#' and the `IEATools` package..
+#' This function converts the `MWTools` sector names to appropriate IEA sector names.
+#'
+#' @param .df A data frame of muscle work data.
+#' @param sector_colname The name of the sector column. 
+#'                       Default is `MWTools::mw_constants$sector_col`.
+#' @param original_sector_names A vector of string sector names that will be replaced.
+#' @param new_sector_names A vector of string sector names that will appear in output.
+#'
+#' @return A data frame with renamed sectors.
+#' 
+#' @export
+#'
+#' @examples
+rename_mw_sectors <- function(.df, 
+                              sector_colname = MWTools::mw_constants$sector_col, 
+                              original_sector_names = c(MWTools::mw_sectors$agriculture_broad.sector, 
+                                                        MWTools::mw_sectors$transport_sector, 
+                                                        MWTools::mw_sectors$services_broad.sector, 
+                                                        MWTools::mw_sectors$industry_broad.sector), 
+                              new_sector_names = c(IEATools::other_flows$agriculture_forestry, 
+                                                   IEATools::transport_flows$transport_not_elsewhere_specified, 
+                                                   IEATools::other_flows$commercial_and_public_services, 
+                                                   IEATools::industry_flows$industry_not_elsewhere_specified)) {
+  
+  
+}
