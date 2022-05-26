@@ -4,6 +4,10 @@ output: html_document
 ---
 
 
+* New functions `load_amw_pfu_data()`, `load_hmw_pfu_data()`, 
+  and `rename_mw_sectors()` ensure
+  muscle work final demand sectors comport with
+  IEA final demand sectors.
 * `targets` pipeline now longer saves the cache.
   We never looked at it, anyway.
 * `targets` pipeline now includes muscle work
