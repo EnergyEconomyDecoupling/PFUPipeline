@@ -84,5 +84,11 @@ rename_mw_sectors <- function(.df,
                                                    IEATools::other_flows$commercial_and_public_services, 
                                                    IEATools::industry_flows$industry_not_elsewhere_specified)) {
   
-  
+  # Create a named vector to assist with refactoring.
+  refactor_vector <- new_sector_names %>% 
+    magrittr::set_names(original_sector_names)
+  .df %>% 
+    dplyr::mutate(
+      "{sector_colname}" := dplyr::recode(.data[[sector_colname]], !!!refactor_vector)
+    )
 }
