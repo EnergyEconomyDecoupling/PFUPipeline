@@ -46,3 +46,7 @@ PSUT matrices for each ECC are summed.
 This function sums \code{R}, \code{U}, \code{V}, \code{Y}, \code{U_feed}, and \code{U_eiou} matrices directly.
 It also re-calculates the \code{r_eiou} matrix.
 }
+\details{
+If either of \code{iea_psut} or \code{.mw_psut} are \code{NULL},
+the other is returned.
+}

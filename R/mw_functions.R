@@ -13,10 +13,10 @@
 #' 
 #' @export
 make_mw_psut <- function(.hmw_df, .amw_df,
-                       countries,
-                       years,
-                       country = MWTools::mw_cols$country, 
-                       year = MWTools::mw_cols$year) {
+                         countries,
+                         years,
+                         country = MWTools::mw_cols$country, 
+                         year = MWTools::mw_cols$year) {
   
   hmw_data <- .hmw_df %>% 
     dplyr::filter(.data[[country]] %in% countries, 
@@ -34,6 +34,10 @@ make_mw_psut <- function(.hmw_df, .amw_df,
 #' energy balance should be verified. 
 #' Internally, this function uses `Recca::verify_SUT_energy_balance()`
 #' to ensure that everything is balanced.
+#' 
+#' If `.psut_df` has zero rows, 
+#' `TRUE` is returned, enabling the pipeline to continue,
+#' even if there are some years where there is no muscle work data available.
 #'
 #' @param .psut_df A data frame of muscle work PSUT matrices.
 #' @param countries The countries to be analyzed. 
@@ -46,8 +50,18 @@ make_mw_psut <- function(.hmw_df, .amw_df,
 verify_mw_energy_balance <- function(.psut_df, 
                                      countries, 
                                      country = MWTools::mw_cols$country) {
-  .psut_df %>% 
-    dplyr::filter(.data[[country]] %in% countries) %>% 
+  if (nrow(.psut_df) == 0) {
+    return(TRUE)
+  }
+  filtered_df <- .psut_df %>% 
+    dplyr::filter(.data[[country]] %in% countries) 
+  # Check that we have some rows.
+  if (nrow(filtered_df) == 0) {
+    # If we have not rows, still return true.
+    return(TRUE)
+  }
+  # We have some rows. Perform the check.
+  filtered_df %>% 
     Recca::verify_SUT_energy_balance(SUT_energy_balance = ".balanced") %>% 
     magrittr::extract2(".balanced") %>% 
     unlist() %>% 
@@ -74,11 +88,11 @@ verify_mw_energy_balance <- function(.psut_df,
 #'
 #' @examples
 #' df <- tibble::tribble(~Sector, ~value, 
-#'                 MWTools::mw_sectors$transport_sector,         10, 
-#'                 MWTools::mw_sectors$agriculture_broad.sector, 11,
-#'                 MWTools::mw_sectors$services_broad.sector,    12,
-#'                 MWTools::mw_sectors$industry_broad.sector,    13, 
-#'                 "bogus",                                      14)
+#'                       MWTools::mw_sectors$transport_sector,         10, 
+#'                       MWTools::mw_sectors$agriculture_broad.sector, 11,
+#'                       MWTools::mw_sectors$services_broad.sector,    12,
+#'                       MWTools::mw_sectors$industry_broad.sector,    13, 
+#'                       "bogus",                                      14)
 #' df
 #' rename_mw_sectors(df)
 rename_mw_sectors <- function(.df, 

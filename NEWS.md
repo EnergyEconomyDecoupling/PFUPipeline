@@ -4,6 +4,15 @@ output: html_document
 ---
 
 
+* `add_iea_mw_psut()` now returns one of 
+  the IEA data frame or the muscle work data frame
+  when the other is `NULL`, thereby enabling
+  the pipeline to complete when 
+  data are missing in a year.
+* `verify_mw_energy_balance()` now returns `TRUE` when a 
+  zero-row data frame is supplied. 
+  This change enables analysis of years when 
+  no muscle work data are available.
 * New functions `load_amw_pfu_data()`, `load_hmw_pfu_data()`, 
   and `rename_mw_sectors()` ensure
   muscle work final demand sectors comport with
