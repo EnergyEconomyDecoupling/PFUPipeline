@@ -23,7 +23,6 @@ get_pipeline(
   fu_analysis_folder,
   reports_source_folders,
   reports_dest_folder,
-  pipeline_caches_folder,
   pipeline_releases_folder,
   release = FALSE
 )
@@ -50,9 +49,19 @@ Default is "all_targets" to indicate all targets of the plan should be returned.
 
 \item{country_concordance_path}{The path to the country concordance Excel file.}
 
+\item{mw_concordance_path}{The path to the muscle work concordance file.}
+
+\item{amw_analysis_data_path}{The path to the animal muscle work data file.}
+
+\item{hmw_analysis_data_path}{The path to the human muscle work data file.}
+
 \item{phi_constants_path}{The path to a phi (exergy-to-energy ratio) Excel file.}
 
 \item{ceda_data_folder}{The path to the CEDA data in text file, .per, format.}
+
+\item{fao_data_path}{The path to Food and Agriculture Organization (FAO) data.}
+
+\item{ilo_data_path}{The path to International Labor Organization (ILO) data.}
 
 \item{machine_data_path}{The path to the machine data in .xlsx format.}
 
@@ -65,8 +74,6 @@ Sub-folders named with 3-letter country abbreviations are assumed.}
 \code{.Rnw} or \code{.Rmd} files.}
 
 \item{reports_dest_folder}{The path to a folder into which reports are written.}
-
-\item{pipeline_caches_folder}{The path to a folder where .zip files of the pipeline cache folders are stored.}
 
 \item{pipeline_releases_folder}{The path to a folder where releases of important targets are stored
 for later retrieval as pinned items on a pinboard.}

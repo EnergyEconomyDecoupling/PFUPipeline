@@ -28,6 +28,8 @@ add_iea_mw_psut(
 
 \item{.mw_psut}{A muscle work PSUT data frame.}
 
+\item{countries}{The countries to be analyzed.}
+
 \item{R}{The name of the column of \code{R} matrices. Default is \code{IEATools::psut_cols$R}.}
 
 \item{U}{The name of the column of \code{U} matrices. Default is \code{IEATools::psut_cols$U}.}

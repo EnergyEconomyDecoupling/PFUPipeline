@@ -29,5 +29,5 @@ IEATools::sample_iea_data_path() \%>\%
   IEATools::load_tidy_iea_df() \%>\%
   make_balanced(countries = c("GHA", "ZAF")) \%>\%
   specify(countries = c("GHA", "ZAF")) \%>\%
-  make_psut(countries = c("GHA", "ZAF"))
+  make_iea_psut(countries = c("GHA", "ZAF"))
 }

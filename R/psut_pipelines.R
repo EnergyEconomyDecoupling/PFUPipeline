@@ -17,8 +17,13 @@
 #'                Default is "all_targets" to indicate all targets of the plan should be returned.
 #' @param iea_data_path The path to IEA extended energy balance data in .csv format.
 #' @param country_concordance_path The path to the country concordance Excel file.
+#' @param mw_concordance_path The path to the muscle work concordance file.
+#' @param amw_analysis_data_path The path to the animal muscle work data file.
+#' @param hmw_analysis_data_path The path to the human muscle work data file.
 #' @param phi_constants_path The path to a phi (exergy-to-energy ratio) Excel file.
 #' @param ceda_data_folder The path to the CEDA data in text file, .per, format.
+#' @param fao_data_path The path to Food and Agriculture Organization (FAO) data.
+#' @param ilo_data_path The path to International Labor Organization (ILO) data.
 #' @param machine_data_path The path to the machine data in .xlsx format.
 #' @param exemplar_table_path The path to an exemplar table.
 #' @param fu_analysis_folder The path to a folder containing final-to-useful analyses.
@@ -26,7 +31,6 @@
 #' @param reports_source_folders A string vector containing paths to folders of report sources, usually
 #'                               `.Rnw` or `.Rmd` files.
 #' @param reports_dest_folder The path to a folder into which reports are written.
-#' @param pipeline_caches_folder The path to a folder where .zip files of the pipeline cache folders are stored.
 #' @param pipeline_releases_folder The path to a folder where releases of important targets are stored
 #'                                 for later retrieval as pinned items on a pinboard.
 #' @param release A boolean that tells whether a new release of the `PSUT` target should be made.
@@ -53,7 +57,6 @@ get_pipeline <- function(countries = "all",
                          fu_analysis_folder,
                          reports_source_folders,
                          reports_dest_folder,
-                         pipeline_caches_folder,
                          pipeline_releases_folder,
                          release = FALSE) {
   
@@ -79,7 +82,6 @@ get_pipeline <- function(countries = "all",
     targets::tar_target_raw("FUAnalysisFolder", fu_analysis_folder), 
     targets::tar_target_raw("ReportsSourceFolders", reports_source_folders), 
     targets::tar_target_raw("ReportsDestFolder", reports_dest_folder), 
-    targets::tar_target_raw("PipelineCachesFolder", pipeline_caches_folder), 
     targets::tar_target_raw("PipelineReleasesFolder", pipeline_releases_folder), 
     targets::tar_target_raw("Release", release), 
     

@@ -135,7 +135,7 @@ is_balanced <- function(.iea_data,
 #'                 `c(country, IEATools::iea_cols$method, IEATools::iea_cols$energy_type, IEATools::iea_cols$last_stage, IEATools::iea_cols$product)`.
 #' @param country See `IEATools::iea_cols`
 #'
-#' @return balanced IEA data
+#' @return A data frame of balanced IEA data.
 #'
 #' @export
 #'
@@ -195,7 +195,7 @@ specify <- function(BalancedIEAData,
 #' @param countries The countries you want to convert to PSUT matrices.
 #' @param country See `IEATools::iea_cols`.
 #'
-#' @return a `matsindf`-style data frame
+#' @return A `matsindf`-style data frame.
 #'
 #' @export
 #'
@@ -204,10 +204,10 @@ specify <- function(BalancedIEAData,
 #'   IEATools::load_tidy_iea_df() %>%
 #'   make_balanced(countries = c("GHA", "ZAF")) %>%
 #'   specify(countries = c("GHA", "ZAF")) %>%
-#'   make_psut(countries = c("GHA", "ZAF"))
+#'   make_iea_psut(countries = c("GHA", "ZAF"))
 make_iea_psut <- function(SpecifiedIEAData,
-                      countries,
-                      country = IEATools::iea_cols$country) {
+                          countries,
+                          country = IEATools::iea_cols$country) {
   dplyr::filter(SpecifiedIEAData, .data[[country]] %in% countries) %>%
     IEATools::prep_psut()
 }
