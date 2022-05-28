@@ -11,6 +11,7 @@
 #'
 #' @param .iea_psut An IEA PSUT data frame. 
 #' @param .mw_psut A muscle work PSUT data frame.
+#' @param countries The countries to be analyzed.
 #' @param R The name of the column of `R` matrices. Default is `IEATools::psut_cols$R`.
 #' @param U The name of the column of `U` matrices. Default is `IEATools::psut_cols$U`.
 #' @param V The name of the column of `V` matrices. Default is `IEATools::psut_cols$V`.
