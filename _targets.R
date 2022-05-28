@@ -19,6 +19,11 @@ countries <- c("BRA", "CAN", "CHNM", "DEU", "DNK", "ESP", "FRA", "GBR", "GHA",
                "GRC", "HKG", "HND", "IDN", "IND", "JOR", "JPN", "KOR", "MEX",
                "NOR", "PRT", "RUS", "USA", "WABK", "WMBK", "ZAF")
 
+# countries <- c("BRA", "CAN", "CHNM", "DEU", "DNK", "ESP", "FRA", "GBR", "GHA",
+#                "GRC", "HKG", "HND", "IDN", "IND", "JOR", "JPN", "KOR", "MEX",
+#                "NOR", "PRT", "RUS", "USA", "ZAF")
+
+# countries <- c("WABK", "GBR")
 
 # countries <- c("GBR")
 

@@ -5,6 +5,9 @@
 #' PSUT matrices for each ECC are summed.
 #' This function sums `R`, `U`, `V`, `Y`, `U_feed`, and `U_eiou` matrices directly.
 #' It also re-calculates the `r_eiou` matrix.
+#' 
+#' If either of `iea_psut` or `.mw_psut` are `NULL`, 
+#' the other is returned.
 #'
 #' @param iea_psut An IEA PSUT data frame. 
 #' @param mw_psut A muscle work PSUT data frame.
@@ -35,6 +38,12 @@ add_iea_mw_psut <- function(.iea_psut, .mw_psut,
                             # Output column names
                             r_eiou = IEATools::psut_cols$r_eiou) {
 
+  if (is.null(.mw_psut)) {
+    return(.iea_psut)
+  }
+  if (is.null(.iea_psut)) {
+    return(.mw_psut)
+  }
   # Define new column names.
   iea <- "_iea"
   R_iea <- paste0(R, iea)

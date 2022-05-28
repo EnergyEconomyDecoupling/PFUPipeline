@@ -27,3 +27,8 @@ energy balance should be verified.
 Internally, this function uses \code{Recca::verify_SUT_energy_balance()}
 to ensure that everything is balanced.
 }
+\details{
+If \code{.psut_df} has zero rows,
+\code{TRUE} is returned, enabling the pipeline to continue,
+even if there are some years where there is no muscle work data available.
+}
