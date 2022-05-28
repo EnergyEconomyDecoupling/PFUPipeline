@@ -9,12 +9,21 @@
 #' If either of `iea_psut` or `.mw_psut` are `NULL`, 
 #' the other is returned.
 #'
-#' @param iea_psut An IEA PSUT data frame. 
-#' @param mw_psut A muscle work PSUT data frame.
+#' @param .iea_psut An IEA PSUT data frame. 
+#' @param .mw_psut A muscle work PSUT data frame.
 #' @param R The name of the column of `R` matrices. Default is `IEATools::psut_cols$R`.
 #' @param U The name of the column of `U` matrices. Default is `IEATools::psut_cols$U`.
 #' @param V The name of the column of `V` matrices. Default is `IEATools::psut_cols$V`.
 #' @param Y The name of the column of `Y` matrices. Default is `IEATools::psut_cols$Y`.
+#' @param U_feed The name of the column of `U_feed` matrices. Default is `IEATools::psut_cols$U_feed`.
+#' @param U_eiou The name of the column of `U_eiou` matrices. Default is `IEATools::psut_cols$U_eiou`.
+#' @param s_units The name of the column of `s_units` matrices. Default is `IEATools::psut_cols$s_units`.
+#' @param country The name of the country column. Default is `IEATools$iea_cols$country`.
+#' @param year The name of the year column. Default is `IEATools$iea_cols$year`.
+#' @param method The name of the method column. Default is `IEATools$iea_cols$method`.
+#' @param energy_type The name of the energy type column. Default is `IEATools$iea_cols$energy_type`.
+#' @param last_stage The name of the last_stage column. Default is `IEATools$iea_cols$last_stage`.
+#' @param r_eiou The name of the r_eiou column. Default is `IEATools$iea_cols$r_eiou`.
 #'
 #' @return A data frame of summed matrices.
 #' 

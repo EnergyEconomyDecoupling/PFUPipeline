@@ -24,6 +24,10 @@ add_iea_mw_psut(
 )
 }
 \arguments{
+\item{.iea_psut}{An IEA PSUT data frame.}
+
+\item{.mw_psut}{A muscle work PSUT data frame.}
+
 \item{R}{The name of the column of \code{R} matrices. Default is \code{IEATools::psut_cols$R}.}
 
 \item{U}{The name of the column of \code{U} matrices. Default is \code{IEATools::psut_cols$U}.}
@@ -32,9 +36,23 @@ add_iea_mw_psut(
 
 \item{Y}{The name of the column of \code{Y} matrices. Default is \code{IEATools::psut_cols$Y}.}
 
-\item{iea_psut}{An IEA PSUT data frame.}
+\item{U_feed}{The name of the column of \code{U_feed} matrices. Default is \code{IEATools::psut_cols$U_feed}.}
 
-\item{mw_psut}{A muscle work PSUT data frame.}
+\item{U_eiou}{The name of the column of \code{U_eiou} matrices. Default is \code{IEATools::psut_cols$U_eiou}.}
+
+\item{s_units}{The name of the column of \code{s_units} matrices. Default is \code{IEATools::psut_cols$s_units}.}
+
+\item{country}{The name of the country column. Default is \code{IEATools$iea_cols$country}.}
+
+\item{year}{The name of the year column. Default is \code{IEATools$iea_cols$year}.}
+
+\item{method}{The name of the method column. Default is \code{IEATools$iea_cols$method}.}
+
+\item{energy_type}{The name of the energy type column. Default is \code{IEATools$iea_cols$energy_type}.}
+
+\item{last_stage}{The name of the last_stage column. Default is \code{IEATools$iea_cols$last_stage}.}
+
+\item{r_eiou}{The name of the r_eiou column. Default is \code{IEATools$iea_cols$r_eiou}.}
 }
 \value{
 A data frame of summed matrices.

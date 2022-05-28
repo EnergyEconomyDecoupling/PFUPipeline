@@ -164,3 +164,19 @@
 #' @examples
 #' exemplar_names
 "exemplar_names"
+
+
+#' Sources for phi values
+#'
+#' A string list containing named sources of phi (exergy-to-energy ratio) values.
+#'
+#' @format A string list with `r length(phi_sources)` entries.
+#' \describe{
+#' \item{eta_fu_tables}{Tables of final-to-useful efficiency values.}
+#' \item{temperature_data}{Country-average yearly temperature data.}
+#' \item{phi_constants}{Tables of constant phi values.}
+#' }
+#'
+#' @examples
+#' phi_sources
+"phi_sources"
