@@ -113,7 +113,7 @@ read_all_eta_files <- function(eta_fin_paths,
     
     # Pivots year columns into a "Year" column and a "Value" column
     raw_etas <- raw_etas %>%
-      tidyr::pivot_longer(cols = tidyselect::all_of(year_columns),
+      tidyr::pivot_longer(cols = dplyr::all_of(year_columns),
                           names_to = year,
                           values_to = .values)
     # Sets column classes
