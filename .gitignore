@@ -33,3 +33,4 @@ vignettes/*.pdf
 NEWS.html
 .Rproj.user
 _targets
+docs

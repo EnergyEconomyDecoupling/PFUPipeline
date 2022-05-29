@@ -4,6 +4,35 @@ output: html_document
 ---
 
 
+* `add_iea_mw_psut()` now returns one of 
+  the IEA data frame or the muscle work data frame
+  when the other is `NULL`, thereby enabling
+  the pipeline to complete when 
+  data are missing in a year.
+* `verify_mw_energy_balance()` now returns `TRUE` when a 
+  zero-row data frame is supplied. 
+  This change enables analysis of years when 
+  no muscle work data are available.
+* New functions `load_amw_pfu_data()`, `load_hmw_pfu_data()`, 
+  and `rename_mw_sectors()` ensure
+  muscle work final demand sectors comport with
+  IEA final demand sectors.
+* `targets` pipeline now longer saves the cache.
+  We never looked at it, anyway.
+* `targets` pipeline now includes muscle work
+  on its own and combined with the IEA data.
+* `targets` pipeline now allows additional exemplar countries 
+  without IEA data by skipping writing allocations templates
+  when no IEA data exists.
+* New `targets` pipeline matches the previous `drake` workflow
+  in extent.
+* Cache is now stashed only when a release is requested.
+* Now ignore efficiency files that begin with "~$",
+  thereby ignoring open Excel sheets.
+* We no longer skip the first row of `FIN_ETA` sheets.
+  The first line formerly held a modification date.
+
+
 # PFUDatabase 0.1.0 (2022-04-14) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6462165.svg)](https://doi.org/10.5281/zenodo.6462165)
 
 * Beginning to develop as a package and a `targets` workflow.

@@ -14,19 +14,19 @@ knit: (function(inputFile, encoding)
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-library(drake)
 library(ggplot2)
 library(knitr)
 library(magrittr)
 library(MKHthemes)
 library(parsedate)
 library(rprojroot)
-library(PFUWorkflow)
+library(PFUDatabase)
+library(targets)
 
 # Set up the root directory
 root <- rprojroot::is_rstudio_project
 # And the cache
-cache_path <- root$find_file(".drake")
+cache_path <- root$find_file("_targets")
 ```
 
 ## Introduction
@@ -37,9 +37,7 @@ Note that numbers following "##" are the row number in the `EfficiencyGraphs` da
 
 
 ```{r, echo = FALSE}
-eta_fu_plots <- drake::readd(PFUWorkflow::target_names$EfficiencyGraphs, 
-                            path = cache_path, 
-                            character_only = TRUE) %>% 
+eta_fu_plots <- targets::tar_read_raw(PFUDatabase::target_names$efficiency_graphs, store = cache_path) %>% 
   magrittr::extract2("Plots")
 ```
 

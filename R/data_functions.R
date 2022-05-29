@@ -41,12 +41,12 @@ load_country_concordance_table <- function(country_concordance_path,
 
 #' Extract specific country and year data
 #'
-#' Data is extracted according to the `countries` oand `years` objects
+#' Data is extracted according to the `countries` and `years` objects
 #' in a way that is amenable to drake subtargets.
 #' `dplyr::filter()` does the subsetting.
 #'
 #' @param .df A data frame containing cleaned data with lots of countries and years.
-#' @param countries A list of 3- or 4-letter country codes for countries to be analyzed. 
+#' @param countries A list of country codes for countries to be analyzed. 
 #'                  "all" means return all countries.
 #' @param years A vector of years. "all" means return all years. 
 #' @param country,year See `IEATools::iea_cols`.
@@ -92,7 +92,7 @@ filter_countries_years <- function(.df,
 #' Internally, this function uses [IEATools::calc_tidy_iea_df_balances()].
 #' Grouping is doing internal to this function using the value of `grp_vars`.
 #'
-#' @param IEAData a tidy IEA data frame
+#' @param .iea_data a tidy IEA data frame
 #' @param countries the countries for which balancing should be checked as strings
 #' @param country The name of the country column in `IEAData`. Default is `r IEATools::iea_cols$country`.
 #' @param grp_vars the groups that should be checked. Default is
@@ -107,7 +107,8 @@ filter_countries_years <- function(.df,
 #' IEATools::sample_iea_data_path() %>%
 #'   IEATools::load_tidy_iea_df() %>%
 #'   is_balanced(countries = "ZAF")
-is_balanced <- function(IEAData, countries,
+is_balanced <- function(.iea_data, 
+                        countries,
                         country = IEATools::iea_cols$country,
                         grp_vars = c(country,
                                      IEATools::iea_cols$method,
@@ -115,8 +116,98 @@ is_balanced <- function(IEAData, countries,
                                      IEATools::iea_cols$last_stage,
                                      IEATools::iea_cols$year,
                                      IEATools::iea_cols$product)) {
-  dplyr::filter(IEAData, .data[[country]] %in% countries) %>%
+  dplyr::filter(.iea_data, .data[[country]] %in% countries) %>%
     dplyr::group_by(!!as.name(grp_vars)) %>%
     IEATools::calc_tidy_iea_df_balances() %>%
     IEATools::tidy_iea_df_balanced()
+}
+
+
+#' Balance IEA data
+#'
+#' Balances the IEA data in a way that is amenable to drake subtargets.
+#' Internally, this function uses `IEATools::fix_tidy_iea_df_balances()`.
+#' Grouping is done internal to this function using the value of `grp_vars`.
+#'
+#' @param .iea_data A tidy IEA data frame
+#' @param countries The countries that should be balanced
+#' @param grp_vars the groups that should be checked. Default is
+#'                 `c(country, IEATools::iea_cols$method, IEATools::iea_cols$energy_type, IEATools::iea_cols$last_stage, IEATools::iea_cols$product)`.
+#' @param country See `IEATools::iea_cols`
+#'
+#' @return A data frame of balanced IEA data.
+#'
+#' @export
+#'
+#' @examples
+#' IEATools::sample_iea_data_path() %>%
+#'   IEATools::load_tidy_iea_df() %>%
+#'   make_balanced(countries = c("GHA", "ZAF")) %>%
+#'   is_balanced(countries = c("GHA", "ZAF"))
+make_balanced <- function(.iea_data,
+                          countries,
+                          country = IEATools::iea_cols$country,
+                          grp_vars = c(country,
+                                       IEATools::iea_cols$method,
+                                       IEATools::iea_cols$energy_type,
+                                       IEATools::iea_cols$last_stage,
+                                       IEATools::iea_cols$year,
+                                       IEATools::iea_cols$product)) {
+  dplyr::filter(.iea_data, .data[[country]] %in% countries) %>%
+    dplyr::group_by(!!as.name(grp_vars)) %>%
+    IEATools::fix_tidy_iea_df_balances() %>%
+    dplyr::ungroup()
+}
+
+
+#' Specify the IEA data
+#'
+#' Specifies the IEA data in a way that is amenable to drake subtargets.
+#' See `IEATools::specify_all()` for details.
+#'
+#' @param BalancedIEAData IEA data that have already been balanced
+#' @param countries the countries for which specification should occur
+#' @param country See `IEATools::iea_cols`.
+#'
+#' @return a data frame of specified IEA data
+#'
+#' @export
+#'
+#' @examples
+#' IEATools::sample_iea_data_path() %>%
+#'   IEATools::load_tidy_iea_df() %>%
+#'   make_balanced(countries = c("GHA", "ZAF")) %>%
+#'   specify(countries = c("GHA", "ZAF"))
+specify <- function(BalancedIEAData,
+                    countries,
+                    country = IEATools::iea_cols$country) {
+  dplyr::filter(BalancedIEAData, .data[[country]] %in% countries) %>%
+    IEATools::specify_all()
+}
+
+
+#' Convert to PSUT matrices
+#'
+#' Converts tidy IEA data to PSUT matrices in a way that is amenable to drake subtargets.
+#' Internally, `IEATools::prep_psut()` does the conversion to matrices.
+#'
+#' @param SpecifiedIEAData A data frame that has already been specified via `specify()`.
+#' @param countries The countries you want to convert to PSUT matrices.
+#' @param country See `IEATools::iea_cols`.
+#'
+#' @return A `matsindf`-style data frame.
+#'
+#' @export
+#'
+#' @examples
+#' IEATools::sample_iea_data_path() %>%
+#'   IEATools::load_tidy_iea_df() %>%
+#'   make_balanced(countries = c("GHA", "ZAF")) %>%
+#'   specify(countries = c("GHA", "ZAF")) %>%
+#'   make_iea_psut(countries = c("GHA", "ZAF"))
+make_iea_psut <- function(SpecifiedIEAData,
+                          countries,
+                          country = IEATools::iea_cols$country) {
+  dplyr::filter(SpecifiedIEAData, .data[[country]] %in% countries) %>%
+    IEATools::prep_psut()
 }

@@ -15,7 +15,7 @@ filter_countries_years(
 \arguments{
 \item{.df}{A data frame containing cleaned data with lots of countries and years.}
 
-\item{countries}{A list of 3- or 4-letter country codes for countries to be analyzed.
+\item{countries}{A list of country codes for countries to be analyzed.
 "all" means return all countries.}
 
 \item{years}{A vector of years. "all" means return all years.}
@@ -26,7 +26,7 @@ filter_countries_years(
 A data frame with the desired IEA data only.
 }
 \description{
-Data is extracted according to the \code{countries} oand \code{years} objects
+Data is extracted according to the \code{countries} and \code{years} objects
 in a way that is amenable to drake subtargets.
 \code{dplyr::filter()} does the subsetting.
 }

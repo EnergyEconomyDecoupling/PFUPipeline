@@ -15,24 +15,32 @@ Description: This package functions and workflows for primary-final-useful socie
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
 Imports:
     assertthat,
     CEDATools,
     dplyr,
+    ggplot2,
     IEATools,
     magrittr,
+    matsbyname,
+    matsindf,
+    MKHthemes,
+    MWTools,
+    pins,
     purrr,
     pwt10,
+    readr,
     readxl,
+    Recca,
     rlang,
-    tarchetypes,
     targets,
     tibble,
-    tidyr,
-    tidyselect
+    tidyr
 Suggests: 
-    knitr
+    knitr,
+    spelling,
+    testthat (>= 3.0.0)
 Remotes: 
     github::EnergyEconomyDecoupling/CEDATools,
     github::MatthewHeun/IEATools,
@@ -42,3 +50,5 @@ Depends:
     R (>= 2.10)
 VignetteBuilder: knitr
 LazyData: true
+Config/testthat/edition: 3
+Language: en-US

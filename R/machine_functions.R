@@ -4,14 +4,18 @@
 #' that stores all efficiencies..
 #'
 #' @param filepath A file path to the folder containing all machine folders.
-#' @param efficiency_tab_name See `PFUWorkflow::machine_constants`.
+#' @param efficiency_tab_name See `PFUDatabase::machine_constants`.
+#' @param hidden_excel_file_prefix The prefix for hidden Excel files.
+#'                                 These files appear when an Excel file is open
+#'                                 and should be ignored.
 #'
 #' @return A list of the file paths to machine excel files containing
 #'         FIN_ETA front sheets, and therefore usable data.
 #'         
 #' @export
 get_eta_filepaths <- function(filepath,
-                              efficiency_tab_name = PFUDatabase::machine_constants$efficiency_tab_name) {
+                              efficiency_tab_name = PFUDatabase::machine_constants$efficiency_tab_name,
+                              hidden_excel_file_prefix = "~$") {
   
   if (!file.exists(filepath)) {
     return(list())
@@ -27,6 +31,10 @@ get_eta_filepaths <- function(filepath,
   # Keep only those machine_filepaths that point to a file
   # that contains a FIN_ETA tab.
   lapply(machine_filepaths, FUN = function(fp) {
+    if (basename(fp) %>% startsWith(hidden_excel_file_prefix)) {
+      return(NULL)
+    }
+
     if(efficiency_tab_name %in% readxl::excel_sheets(fp)) {
       return(fp)
     } else {
@@ -57,9 +65,13 @@ get_eta_filepaths <- function(filepath,
 #' @param eta_fin_paths A list of the file paths to machine excel files containing
 #'                      FIN_ETA front sheets, and therefore usable data.
 #'                      Created by calling the `get_eta_filepaths()` function.
-#' @param efficiency_tab_name See `PFUWorkflow::machine_constants`.
+#' @param efficiency_tab_name See `PFUDatabase::machine_constants`.
 #' @param year See `IEATools::iea_cols`.
 #' @param .values See `IEATools::template_cols`.
+#' @param hidden_excel_file_prefix The prefix for hidden Excel files.
+#'                                 These files appear when an Excel file is open
+#'                                 and should be ignored.
+#'                                 Default is "~$".
 #'
 #' @return A data frame containing all Eta.fu and Phi.u values present
 #'         in all Machine excel files, with the following column names:
@@ -68,9 +80,10 @@ get_eta_filepaths <- function(filepath,
 #'
 #' @export
 read_all_eta_files <- function(eta_fin_paths,
-                               efficiency_tab_name = PFUWorkflow::machine_constants$efficiency_tab_name,
+                               efficiency_tab_name = PFUDatabase::machine_constants$efficiency_tab_name,
                                year = IEATools::iea_cols$year,
-                               .values = IEATools::template_cols$.values) {
+                               .values = IEATools::template_cols$.values, 
+                               hidden_excel_file_prefix = "~$") {
   
   # Check if eta_fin_paths is a directory. If so, call get_eta_filepaths() before loading the files.
   if (!is.list(eta_fin_paths)) {
@@ -86,15 +99,21 @@ read_all_eta_files <- function(eta_fin_paths,
   # to etas tibble
   for (path in eta_fin_paths) {
     
-    # Reads raw data
-    raw_etas <- readxl::read_excel(path = path, sheet = efficiency_tab_name, skip = 1)
+    # Reads raw data, but not if the file starts with hidden_file_prefix
+    if (basename(path) %>% startsWith(hidden_excel_file_prefix)) {
+      # Break out of this iteration of the for loop.
+      # Effectively, "next" means that we skip this "path" and
+      # go to the next one.
+      next
+    }
+    raw_etas <- readxl::read_excel(path = path, sheet = efficiency_tab_name)
     
     # Figure out year columns.
     year_columns <- IEATools::year_cols(raw_etas, return_names = TRUE)
     
     # Pivots year columns into a "Year" column and a "Value" column
     raw_etas <- raw_etas %>%
-      tidyr::pivot_longer(cols = tidyselect::all_of(year_columns),
+      tidyr::pivot_longer(cols = dplyr::all_of(year_columns),
                           names_to = year,
                           values_to = .values)
     # Sets column classes
