@@ -18,7 +18,7 @@ make_iea_psut(
 \item{country}{See \code{IEATools::iea_cols}.}
 }
 \value{
-a \code{matsindf}-style data frame
+A \code{matsindf}-style data frame.
 }
 \description{
 Converts tidy IEA data to PSUT matrices in a way that is amenable to drake subtargets.

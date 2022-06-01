@@ -15,9 +15,9 @@ years <- 1960:2019                         # The years to be analyzed
 # years <- 1961
 
 # Countries with unique allocations data.
-countries <- c("BRA", "CAN", "CHNM", "DEU", "DNK", "ESP", "FRA", "GBR", "GHA",
-               "GRC", "HKG", "HND", "IDN", "IND", "JOR", "JPN", "KOR", "MEX",
-               "NOR", "PRT", "RUS", "USA", "WABK", "WMBK", "ZAF")
+# countries <- c("BRA", "CAN", "CHNM", "DEU", "DNK", "ESP", "FRA", "GBR", "GHA",
+#                "GRC", "HKG", "HND", "IDN", "IND", "JOR", "JPN", "KOR", "MEX",
+#                "NOR", "PRT", "RUS", "USA", "WABK", "WMBK", "ZAF")
 
 # countries <- c("BRA", "CAN", "CHNM", "DEU", "DNK", "ESP", "FRA", "GBR", "GHA",
 #                "GRC", "HKG", "HND", "IDN", "IND", "JOR", "JPN", "KOR", "MEX",
@@ -29,7 +29,7 @@ countries <- c("BRA", "CAN", "CHNM", "DEU", "DNK", "ESP", "FRA", "GBR", "GHA",
 
 # countries <- setdiff(PFUDatabase::canonical_countries, c("FSU", "FYG", "CIV")) |> as.character()
 
-# countries <- PFUDatabase::canonical_countries %>% as.character()
+countries <- PFUDatabase::canonical_countries %>% as.character()
 
 # Additional exemplar countries are countries which aren't included in the workflow
 # as individual countries, but from which allocation or efficiency data may be 

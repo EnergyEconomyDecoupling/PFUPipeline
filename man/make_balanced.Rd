@@ -23,7 +23,7 @@ make_balanced(
 \code{c(country, IEATools::iea_cols$method, IEATools::iea_cols$energy_type, IEATools::iea_cols$last_stage, IEATools::iea_cols$product)}.}
 }
 \value{
-balanced IEA data
+A data frame of balanced IEA data.
 }
 \description{
 Balances the IEA data in a way that is amenable to drake subtargets.
