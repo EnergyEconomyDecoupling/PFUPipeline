@@ -33,7 +33,7 @@
 #' @param reports_dest_folder The path to a folder into which reports are written.
 #' @param pipeline_releases_folder The path to a folder where releases of important targets are stored
 #'                                 for later retrieval as pinned items on a pinboard.
-#' @param release A boolean that tells whether a new release of the `PSUT` target should be made.
+#' @param release A boolean that tells whether a new release of the `PSUT` targets should be made.
 #'                Default is `FALSE`.
 #'
 #' @return A `targets` pipeline.
