@@ -106,12 +106,20 @@ get_pipeline <- function(countries = "all",
     
     # (1e) Muscle work data
     targets::tar_target_raw("AMWPFUData", quote(load_amw_pfu_data(fao_data_path = FAODataPath, 
-                                                                  mw_concordance_path = MWConcordancePath,
-                                                                  amw_analysis_data_path = AMWAnalysisDataPath))),
+                                                                     mw_concordance_path = MWConcordancePath,
+                                                                     amw_analysis_data_path = AMWAnalysisDataPath))),
     
     targets::tar_target_raw("HMWPFUData", quote(load_hmw_pfu_data(ilo_data_path = ILODataPath, 
-                                                                  mw_concordance_path = MWConcordancePath,
-                                                                  hmw_analysis_data_path = HMWAnalysisDataPath))),
+                                                                     mw_concordance_path = MWConcordancePath,
+                                                                     hmw_analysis_data_path = HMWAnalysisDataPath))),
+    
+    # targets::tar_target_raw("AMWPFUData", quote(load_amw_pfu_data(fao_data_path = FAODataPath, 
+    #                                                               mw_concordance_path = MWConcordancePath,
+    #                                                               amw_analysis_data_path = AMWAnalysisDataPath))),
+    # 
+    # targets::tar_target_raw("HMWPFUData", quote(load_hmw_pfu_data(ilo_data_path = ILODataPath, 
+    #                                                               mw_concordance_path = MWConcordancePath,
+    #                                                               hmw_analysis_data_path = HMWAnalysisDataPath))),
     
     # (1f) Socioeconomic data
     targets::tar_target_raw("SocioEconData", quote(get_all_pwt_data(countries = Countries) %>% get_L_K_GDP_data())), 

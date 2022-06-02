@@ -25,11 +25,11 @@ years <- 1960:2019                         # The years to be analyzed
 
 # countries <- c("WABK", "GBR")
 
-# countries <- c("GBR")
+countries <- c("GBR")
 
 # countries <- setdiff(PFUDatabase::canonical_countries, c("FSU", "FYG", "CIV")) |> as.character()
 
-countries <- PFUDatabase::canonical_countries %>% as.character()
+# countries <- PFUDatabase::canonical_countries %>% as.character()
 
 # Additional exemplar countries are countries which aren't included in the workflow
 # as individual countries, but from which allocation or efficiency data may be 
@@ -59,6 +59,7 @@ future::plan(future.callr::callr)
 
 # Set options for all targets.
 targets::tar_option_set(
+  # debug = "",
   storage = "worker", 
   retrieval = "worker"
 )

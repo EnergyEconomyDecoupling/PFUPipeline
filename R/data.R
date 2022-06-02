@@ -158,6 +158,7 @@
 #' \item{complete_eta_table}{The name of a column containing completed final-to-useful efficiency tables.}
 #' \item{region_code}{The name of the region code column.}
 #' \item{country_name}{The name of the column containing the long name of a country.}
+#' \item{agg_code_col}{The metadata column "Agg.Code", representing the country, or country group code for individual country level data to be aggreagted in to.}
 #' \item{world}{The name of the world region.}
 #' }
 #'
