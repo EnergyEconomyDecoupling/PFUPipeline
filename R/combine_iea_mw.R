@@ -135,13 +135,25 @@ add_iea_mw_psut <- function(.iea_psut, .mw_psut,
     )
 }
 
-# This function reads an exemplar table containing a countries country code and
-# the country code associated with the territory that the IEA data was recorded
-# in for the years 1960 - 2020. A country as defined by it's territorial
-# boundaries in 2020 may have had it's energy statistics recorded in any number
-# of regions, over any number of years.
-# ...
 
+#' Aggregate ILO and FAO country data into IEA country groupings
+#'
+#' This function reads an exemplar table containing a countries country code and
+#' the country code associated with the territory that the IEA data was recorded
+#' in for the years 1960 - 2020. A country as defined by it's territorial
+#' boundaries in 2020 may have had it's energy statistics recorded in any number
+#' of regions, over any number of years.
+#'
+#' @param mw_df A data frame countaining raw animal muscle work or human muscle
+#'              work data. Usually retrieved from the `AMWPFUDataRaw` and
+#'              `HMWPFUDataRaw` targets.
+#'              
+#' @param exemplar_table_path See `PFUSetup::get_abs_paths()`.
+#' @param country,year,unit,e_dot See `IEATools::iea_cols`.
+#' @param agg_code_col,region_code,exemplar_country See `PFUDatabase::exemplar_names`.
+#' @param species,stage_col,sector_col See `MWTools::mw_constants`.
+#'
+#' @export
 aggcountries_mw_to_iea <- function(mw_df,
                                    exemplar_table_path = PFUSetup::get_abs_paths()$exemplar_table_path,
                                    country = IEATools::iea_cols$country,
@@ -161,7 +173,7 @@ aggcountries_mw_to_iea <- function(mw_df,
     tidyr::pivot_longer(cols = -dplyr::all_of(c(country)),
                         names_to = year, 
                         values_to = agg_code_col) %>%
-    dplyr::mutate(Year = as.numeric(Year))
+    dplyr::mutate("{year}" = as.numeric(.data[[year]]))
   
   agg_mw_df <- mw_df %>%
     dplyr::left_join(exemplar_table, by = dplyr::all_of(c(country, year))) %>%

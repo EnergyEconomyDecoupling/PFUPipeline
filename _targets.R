@@ -59,7 +59,7 @@ future::plan(future.callr::callr)
 
 # Set options for all targets.
 targets::tar_option_set(
-  # debug = "",
+  # debug = "HMWPFUData",
   storage = "worker", 
   retrieval = "worker"
 )
