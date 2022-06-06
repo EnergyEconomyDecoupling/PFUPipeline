@@ -5,7 +5,7 @@
 \alias{exemplar_names}
 \title{Exemplar table names}
 \format{
-A string list with 15 entries.
+A string list with 16 entries.
 \describe{
 \item{exemplar_tab_name}{The string name of the tab in the Excel file containing the exemplar table.}
 \item{prev_names}{The name of a column of previous names used for the country.}
@@ -21,6 +21,7 @@ A string list with 15 entries.
 \item{complete_eta_table}{The name of a column containing completed final-to-useful efficiency tables.}
 \item{region_code}{The name of the region code column.}
 \item{country_name}{The name of the column containing the long name of a country.}
+\item{agg_code_col}{The metadata column "Agg.Code", representing the country, or country group code for individual country level data to be aggreagted in to.}
 \item{world}{The name of the world region.}
 }
 }

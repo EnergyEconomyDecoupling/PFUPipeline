@@ -334,6 +334,7 @@ exemplar_names <- list(exemplar_tab_name = "exemplar_table",
                        complete_eta_table = "Complete.eta.table",
                        region_code = "Region.code",
                        country_name = "Country.name",
+                       agg_code_col = "Agg.Code",
                        world = "WRLD")
 usethis::use_data(exemplar_names, overwrite = TRUE)
 
