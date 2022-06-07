@@ -144,7 +144,7 @@ add_iea_mw_psut <- function(.iea_psut, .mw_psut,
 #' boundaries in 2020 may have had it's energy statistics recorded in any number
 #' of regions, over any number of years.
 #'
-#' @param mw_df A data frame countaining raw animal muscle work or human muscle
+#' @param mw_df A data frame containing raw animal muscle work or human muscle
 #'              work data. Usually retrieved from the `AMWPFUDataRaw` and
 #'              `HMWPFUDataRaw` targets.
 #'              

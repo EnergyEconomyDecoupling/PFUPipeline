@@ -20,7 +20,7 @@ aggcountries_mw_to_iea(
 )
 }
 \arguments{
-\item{mw_df}{A data frame countaining raw animal muscle work or human muscle
+\item{mw_df}{A data frame containing raw animal muscle work or human muscle
 work data. Usually retrieved from the \code{AMWPFUDataRaw} and
 \code{HMWPFUDataRaw} targets.}
 
