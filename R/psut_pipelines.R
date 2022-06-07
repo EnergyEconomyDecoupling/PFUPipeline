@@ -74,7 +74,8 @@ get_pipeline <- function(countries = "all",
     targets::tar_target_raw("AMWAnalysisDataPath", amw_analysis_data_path),
     targets::tar_target_raw("HMWAnalysisDataPath", hmw_analysis_data_path),
     targets::tar_target_raw("PhiConstantsPath", phi_constants_path), 
-    targets::tar_target_raw("CEDADataFolder", ceda_data_folder), 
+    # Temperature data not required for V1
+    # targets::tar_target_raw("CEDADataFolder", ceda_data_folder),
     targets::tar_target_raw("FAODataPath", fao_data_path),
     targets::tar_target_raw("ILODataPath", ilo_data_path),
     targets::tar_target_raw("MachineDataPath", machine_data_path), 
@@ -95,10 +96,11 @@ get_pipeline <- function(countries = "all",
     # (1b) Country concordance table
     targets::tar_target_raw("CountryConcordanceTable", quote(load_country_concordance_table(country_concordance_path = CountryConcordancePath))),
     
+    # Temperature data not required for V1
     # (1c) CEDA data for ALL countries
-    targets::tar_target_raw("CEDAData", quote(CEDATools::create_agg_cru_cy_df(agg_cru_cy_folder = CEDADataFolder,
-                                                                              agg_cru_cy_metric = c("tmp", "tmn", "tmx"),
-                                                                              agg_cru_cy_year = 2020))), 
+    # targets::tar_target_raw("CEDAData", quote(CEDATools::create_agg_cru_cy_df(agg_cru_cy_folder = CEDADataFolder,
+    #                                                                           agg_cru_cy_metric = c("tmp", "tmn", "tmx"),
+    #                                                                           agg_cru_cy_year = 2020))), 
     
     # (1d) Machine data 
     targets::tar_target_raw("AllMachineData", quote(read_all_eta_files(eta_fin_paths = get_eta_filepaths(MachineDataPath)))),

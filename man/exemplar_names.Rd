@@ -5,7 +5,7 @@
 \alias{exemplar_names}
 \title{Exemplar table names}
 \format{
-A string list with 15 entries.
+A string list with 16 entries.
 \describe{
 \item{exemplar_tab_name}{The string name of the tab in the Excel file containing the exemplar table.}
 \item{prev_names}{The name of a column of previous names used for the country.}
