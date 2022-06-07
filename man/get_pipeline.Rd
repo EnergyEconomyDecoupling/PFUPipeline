@@ -78,7 +78,7 @@ Sub-folders named with 3-letter country abbreviations are assumed.}
 \item{pipeline_releases_folder}{The path to a folder where releases of important targets are stored
 for later retrieval as pinned items on a pinboard.}
 
-\item{release}{A boolean that tells whether a new release of the \code{PSUT} target should be made.
+\item{release}{A boolean that tells whether a new release of the \code{PSUT} targets should be made.
 Default is \code{FALSE}.}
 }
 \value{
