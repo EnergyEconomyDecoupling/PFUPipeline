@@ -10,20 +10,13 @@ library(PFUDatabase)
 
 # Custom parameters
 years <- 1960:2019                         # The years to be analyzed
-# years <- 1971:1972                         # The years to be analyzed
-# years <- 1983
-# years <- 1961
 
 # Countries with unique allocations data.
 # countries <- c("BRA", "CAN", "CHNM", "DEU", "DNK", "ESP", "FRA", "GBR", "GHA",
 #                "GRC", "HKG", "HND", "IDN", "IND", "JOR", "JPN", "KOR", "MEX",
 #                "NOR", "PRT", "RUS", "USA", "WABK", "WMBK", "ZAF")
 
-# countries <- c("WABK", "GBR")
-
 countries <- c("GBR")
-
-# countries <- setdiff(PFUDatabase::canonical_countries, c("FSU", "FYG", "CIV")) |> as.character()
 
 # countries <- PFUDatabase::canonical_countries %>% as.character()
 
@@ -47,15 +40,11 @@ release <- FALSE
 
 
 
-
-
-
 # Set up for multithreaded work on the local machine.
 future::plan(future.callr::callr)
 
 # Set options for all targets.
 targets::tar_option_set(
-  debug = "HMWPFUData",
   storage = "worker", 
   retrieval = "worker"
 )
