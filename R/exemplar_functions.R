@@ -56,11 +56,7 @@ load_exemplar_table <- function(exemplar_table_path = sample_exemplar_table_path
     max_year <- max(years)
   }
   
-  # Set the Country column from the most recent year available.
   out <- raw %>%
-    dplyr::mutate(
-      "{country}" := .data[[as.character(max_yr_in_exemplar_table)]]
-    ) %>%
     # Gather columns of alternative names
     tidyr::pivot_longer(cols = dplyr::all_of(year_columns), names_to = year, values_to = prev_names)
   if (!is.null(countries)) {
