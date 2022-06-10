@@ -9,9 +9,10 @@ library(PFUDatabase)
 
 
 # Custom parameters
-years <- 1960:2019                         # The years to be analyzed
+# years <- 1960:2019                         # The years to be analyzed
+years <- 1971
 
-countries <- PFUDatabase::canonical_countries %>% as.character()
+# countries <- PFUDatabase::canonical_countries %>% as.character()
 
 # Countries with unique allocations data.
 # countries <- c("BRA", "CAN", "CHNM", "DEU", "DNK", "ESP", "FRA", "GBR", "GHA",
@@ -30,27 +31,25 @@ countries <- PFUDatabase::canonical_countries %>% as.character()
 #                "NOR", "PRT", "RUS", "USA", "WABK", "WMBK", "ZAF")
 
 # Try first half of countries.  
-# This also fails.
+# This works.
 # countries <- c("BRA", "CAN", "CHNM", "DEU", "DNK", "ESP", "FRA", "GBR", "GHA",
 #                "GRC", "HKG", "HND", "IDN")
 
-# Try first quarter of countries. 
-# This also fails.
-# countries <- c("BRA", "CAN", "CHNM", "DEU", "DNK", "ESP")
+# Fails
+# countries <- c("IND", "JOR", "JPN", "KOR", "MEX",
+#                "NOR", "PRT", "RUS", "USA", "WABK", "WMBK", "ZAF")
 
-# This worked!
-# countries <- c("BRA", "CAN", "CHNM")
+# Works
+# countries <- c("IND", "JOR", "JPN", "KOR", "MEX", "NOR")
 
-# This fails.
-# countries <- c("DEU", "DNK", "ESP")
+# Fails
+# countries <- c("PRT", "RUS", "USA", "WABK", "WMBK", "ZAF")
 
-# Narrow down among DEU, DNK, ESP
-# DEU works
-# countries <- c("DEU")
-
-# countries <- c("DNK")
+# Fails
+# countries <- c("PRT", "RUS", "USA")
 
 
+countries <- c("RUS")
 
 
 # Additional exemplar countries are countries which aren't included in the workflow

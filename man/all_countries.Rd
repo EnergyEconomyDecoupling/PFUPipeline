@@ -5,7 +5,7 @@
 \alias{all_countries}
 \title{All countries and selected country groups}
 \format{
-A string list with 175 entries.
+A string list with 173 entries.
 }
 \usage{
 all_countries

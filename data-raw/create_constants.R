@@ -144,8 +144,6 @@ all_countries <- list(
   eurp = "EURP",
   fin = "FIN",
   fra = "FRA",
-  fsov = "FSOV",
-  fyug = "FYUG",
   gab = "GAB",
   gbr = "GBR",
   geo = "GEO",
