@@ -294,10 +294,8 @@ double_counted_countries <- list(
   rwa = "RWA",
   ocen = "OCEN",
   samr = "SAMR",
-  sun = "SUN",
   tcd = "TCD",
   uga = "UGA",
-  yug = "YUG",
   wrld = "WRLD"
 )
 
