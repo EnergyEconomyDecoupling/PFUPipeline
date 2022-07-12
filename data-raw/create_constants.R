@@ -96,7 +96,7 @@ usethis::use_data(socioecon_cols, overwrite = TRUE)
 ieamw_cols <- list(ieamw = "IEAMW", 
                    iea = "IEA", 
                    mw = "MW", 
-                   both = "both")
+                   both = "Both")
 usethis::use_data(ieamw_cols, overwrite = TRUE)
 
 
