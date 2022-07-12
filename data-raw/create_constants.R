@@ -89,6 +89,17 @@ socioecon_cols <- list(isocode_colname = "isocode",
 usethis::use_data(socioecon_cols, overwrite = TRUE)
 
 
+# 
+# Column name in PSUT data frame
+# 
+
+ieamw_cols <- list(ieamw = "IEAMW", 
+                   iea = "IEA", 
+                   mw = "MW", 
+                   both = "Both")
+usethis::use_data(ieamw_cols, overwrite = TRUE)
+
+
 #
 # All countries to run in the workflow
 #

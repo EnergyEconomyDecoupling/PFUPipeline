@@ -102,6 +102,24 @@
 "socioecon_cols"
 
 
+#' Constants for data frames containing IEA and MW data frames
+#'
+#' A string list containing both the column name and column values
+#' for energy conversion chains (ECCs) in PSUT format.
+#'
+#' @format A string list with `r length(ieamw_cols)` entries.
+#' \describe{
+#' \item{ieamw}{The name of the column containing metadata on ECC sources. "IEAMW"}
+#' \item{iea}{A string identifying that ECC data are from the IEA exclusively. "IEA"}
+#' \item{mw}{A string identifying that ECC data are for muscle work (MW) exclusively. "MW"}
+#' \item{both}{A string identifying that ECC data include both IEA and muscel work. "Both"}
+#' }
+#'
+#' @examples
+#' ieamw_cols
+"ieamw_cols"
+
+
 #' All countries and selected country groups
 #'
 #' All individual countries and selected country groups from the IEA's World Extended
