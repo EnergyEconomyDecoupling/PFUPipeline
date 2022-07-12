@@ -14,11 +14,11 @@ years <- 2000
 
 # countries <- PFUDatabase::canonical_countries %>% as.character()
 
-# Countries with unique allocations data.
+# Countries with unique allocation data.
 # countries <- c("BRA", "CAN", "CHNM", "DEU", "DNK", "ESP", "FRA", "GBR", "GHA",
 #                "GRC", "HKG", "HND", "IDN", "IND", "JOR", "JPN", "KOR", "MEX",
 #                "NOR", "PRT", "RUS", "USA", "WABK", "WMBK", "ZAF")
-countries <- "USA"
+countries <- c("USA", "MEX", "GBR")
 
 # Additional exemplar countries are countries which aren't included in the workflow
 # as individual countries, but from which allocation or efficiency data may be 
