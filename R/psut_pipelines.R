@@ -269,8 +269,8 @@ get_pipeline <- function(countries = "all",
                                                                 countries = Countries)), 
                             pattern = quote(map(Countries))),
     targets::tar_target_raw("PSUTMW", quote(move_to_exergy(psut_energy = PSUTMW_energy, 
-                                                                  phi_vecs = PhivecsMW, 
-                                                                  countries = Countries)), 
+                                                           phi_vecs = PhivecsMW, 
+                                                           countries = Countries)), 
                             patter = quote(map(Countries))),
     
     

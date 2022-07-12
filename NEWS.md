@@ -4,6 +4,8 @@ output: html_document
 ---
 
 
+* React to name change: 
+    - matsbyname::make_list() --> RCLabels::make_list()
 * `add_iea_mw_psut()` now returns one of 
   the IEA data frame or the muscle work data frame
   when the other is `NULL`, thereby enabling

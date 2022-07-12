@@ -72,9 +72,9 @@ calc_phi_pf_vecs <- function(phi_constants,
   trimmed_phi_u_vecs %>%
     dplyr::mutate(
       # Add a column of phi_pf vectors
-      "{phi_pf_colname}" := matsbyname::make_list(phi_pf_vec,
-                                                  n = nrows_trimmed_phi_u_vecs,
-                                                  lenx = 1)
+      "{phi_pf_colname}" := RCLabels::make_list(phi_pf_vec,
+                                                n = nrows_trimmed_phi_u_vecs,
+                                                lenx = 1)
     )
 }
 
