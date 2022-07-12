@@ -62,103 +62,103 @@ get_pipeline <- function(countries = "all",
   
   # Create the pipeline
   list(
-    
+
     # (0) Set many arguments to be objects in the targets cache for later use
     targets::tar_target_raw("Countries", list(countries)),
-    targets::tar_target_raw("AdditionalExemplarCountries", list(additional_exemplar_countries)), 
+    targets::tar_target_raw("AdditionalExemplarCountries", list(additional_exemplar_countries)),
     targets::tar_target_raw("AllocAndEffCountries", quote(combine_countries_exemplars(Countries, AdditionalExemplarCountries))),
-    targets::tar_target_raw("Years", list(years)), 
-    targets::tar_target_raw("IEADataPath", iea_data_path), 
-    targets::tar_target_raw("CountryConcordancePath", country_concordance_path), 
+    targets::tar_target_raw("Years", list(years)),
+    targets::tar_target_raw("IEADataPath", iea_data_path),
+    targets::tar_target_raw("CountryConcordancePath", country_concordance_path),
     targets::tar_target_raw("MWConcordancePath", mw_concordance_path),
     targets::tar_target_raw("AMWAnalysisDataPath", amw_analysis_data_path),
     targets::tar_target_raw("HMWAnalysisDataPath", hmw_analysis_data_path),
-    targets::tar_target_raw("PhiConstantsPath", phi_constants_path), 
+    targets::tar_target_raw("PhiConstantsPath", phi_constants_path),
     # Temperature data not required for V1
     # targets::tar_target_raw("CEDADataFolder", ceda_data_folder),
     targets::tar_target_raw("FAODataPath", fao_data_path),
     targets::tar_target_raw("ILODataPath", ilo_data_path),
-    targets::tar_target_raw("MachineDataPath", machine_data_path), 
-    targets::tar_target_raw("ExemplarTablePath", exemplar_table_path), 
-    targets::tar_target_raw("FUAnalysisFolder", fu_analysis_folder), 
-    targets::tar_target_raw("ReportsSourceFolders", reports_source_folders), 
-    targets::tar_target_raw("ReportsDestFolder", reports_dest_folder), 
-    targets::tar_target_raw("PipelineReleasesFolder", pipeline_releases_folder), 
-    targets::tar_target_raw("Release", release), 
+    targets::tar_target_raw("MachineDataPath", machine_data_path),
+    targets::tar_target_raw("ExemplarTablePath", exemplar_table_path),
+    targets::tar_target_raw("FUAnalysisFolder", fu_analysis_folder),
+    targets::tar_target_raw("ReportsSourceFolders", reports_source_folders),
+    targets::tar_target_raw("ReportsDestFolder", reports_dest_folder),
+    targets::tar_target_raw("PipelineReleasesFolder", pipeline_releases_folder),
+    targets::tar_target_raw("Release", release),
     
     
     # (1) Load pipeline information
-    
+
     # (1a) IEA data
-    targets::tar_target_raw("IEAData", quote(IEATools::load_tidy_iea_df(IEADataPath, override_df = CountryConcordanceTable) %>% 
-                                               filter_countries_years(countries = AllocAndEffCountries, years = Years))), 
-    
+    targets::tar_target_raw("IEAData", quote(IEATools::load_tidy_iea_df(IEADataPath, override_df = CountryConcordanceTable) %>%
+                                               filter_countries_years(countries = AllocAndEffCountries, years = Years))),
+
     # (1b) Country concordance table
     targets::tar_target_raw("CountryConcordanceTable", quote(load_country_concordance_table(country_concordance_path = CountryConcordancePath))),
-    
+
     # Temperature data not required for V1
     # (1c) CEDA data for ALL countries
     # targets::tar_target_raw("CEDAData", quote(CEDATools::create_agg_cru_cy_df(agg_cru_cy_folder = CEDADataFolder,
     #                                                                           agg_cru_cy_metric = c("tmp", "tmn", "tmx"),
-    #                                                                           agg_cru_cy_year = 2020))), 
-    
-    # (1d) Machine data 
+    #                                                                           agg_cru_cy_year = 2020))),
+
+    # (1d) Machine data
     targets::tar_target_raw("AllMachineData", quote(read_all_eta_files(eta_fin_paths = get_eta_filepaths(MachineDataPath)))),
     targets::tar_target_raw("MachineData", quote(filter_countries_years(AllMachineData, countries = AllocAndEffCountries, years = Years))),
-    
+
     # (1e) Muscle work data
-    targets::tar_target_raw("AMWPFUDataRaw", quote(load_amw_pfu_data(fao_data_path = FAODataPath, 
+    targets::tar_target_raw("AMWPFUDataRaw", quote(load_amw_pfu_data(fao_data_path = FAODataPath,
                                                                      mw_concordance_path = MWConcordancePath,
                                                                      amw_analysis_data_path = AMWAnalysisDataPath))),
-    
-    targets::tar_target_raw("HMWPFUDataRaw", quote(load_hmw_pfu_data(ilo_data_path = ILODataPath, 
+
+    targets::tar_target_raw("HMWPFUDataRaw", quote(load_hmw_pfu_data(ilo_data_path = ILODataPath,
                                                                      mw_concordance_path = MWConcordancePath,
                                                                      hmw_analysis_data_path = HMWAnalysisDataPath))),
-    
+
     targets::tar_target_raw("AMWPFUData", quote(aggcountries_mw_to_iea(mw_df = AMWPFUDataRaw))),
 
     targets::tar_target_raw("HMWPFUData", quote(aggcountries_mw_to_iea(mw_df = HMWPFUDataRaw))),
-    
+
     # (1f) Socioeconomic data
-    targets::tar_target_raw("SocioEconData", quote(get_all_pwt_data(countries = Countries) %>% get_L_K_GDP_data())), 
-    
+    targets::tar_target_raw("SocioEconData", quote(get_all_pwt_data(countries = Countries) %>% get_L_K_GDP_data())),
+
     # (2) Balance all IEA final energy data.
     # First, check whether energy products are balanced. They're not.
     # FALSE indicates a country with at least one balance problem.
     targets::tar_target_raw("BalancedBeforeIEA", quote(is_balanced(IEAData, countries = AllocAndEffCountries)),
-                            pattern = quote(map(AllocAndEffCountries))), 
-    
-    # Balance all of the data by product and year.
-    targets::tar_target_raw("BalancedIEAData", quote(make_balanced(IEAData, countries = AllocAndEffCountries)), 
                             pattern = quote(map(AllocAndEffCountries))),
-    
+
+    # Balance all of the data by product and year.
+    targets::tar_target_raw("BalancedIEAData", quote(make_balanced(IEAData, countries = AllocAndEffCountries)),
+                            pattern = quote(map(AllocAndEffCountries))),
+
     # Check that balancing was successful.
-    targets::tar_target_raw("BalancedAfterIEA", quote(is_balanced(BalancedIEAData, countries = AllocAndEffCountries)), 
-                            pattern = quote(map(AllocAndEffCountries))), 
-    
+    targets::tar_target_raw("BalancedAfterIEA", quote(is_balanced(BalancedIEAData, countries = AllocAndEffCountries)),
+                            pattern = quote(map(AllocAndEffCountries))),
+
     # Don't continue if there is a problem.
     # stopifnot returns NULL if everything is OK.
     targets::tar_target_raw("OKToProceedIEA", quote(ifelse(is.null(stopifnot(all(BalancedAfterIEA))), yes = TRUE, no = FALSE))),
-    
+
     # (3) Specify the BalancedIEAData data frame by being more careful with names, etc.
     targets::tar_target_raw("SpecifiedIEA", quote(specify(BalancedIEAData, countries = AllocAndEffCountries)) ,
                             pattern = quote(map(AllocAndEffCountries))),
-    
+
     # (4) Arrange all the data into PSUT matrices with final stage data.
-    targets::tar_target_raw("PSUTFinalIEA", quote(make_iea_psut(SpecifiedIEA, countries = Countries)), 
+    targets::tar_target_raw("PSUTFinalIEA", quote(make_iea_psut(SpecifiedIEA, countries = Countries)),
                             pattern = quote(map(Countries))),
-    
+
     # (5) Load exemplar table and make lists for each country and year from disk.
     # These may be incomplete.
-    targets::tar_target_raw("ExemplarLists", quote(load_exemplar_table(ExemplarTablePath, 
+    targets::tar_target_raw("ExemplarLists", quote(load_exemplar_table(ExemplarTablePath,
                                                                        countries = AllocAndEffCountries,
                                                                        years = Years) %>%
-                                                     exemplar_lists(AllocAndEffCountries)), 
+                                                     exemplar_lists(AllocAndEffCountries)),
                             pattern = quote(map(AllocAndEffCountries))),
-    
+
     # (6) Load phi (exergy-to-energy ratio) constants
-    targets::tar_target_raw("PhiConstants", quote(IEATools::load_phi_constants_table(PhiConstantsPath))), 
-    
+    targets::tar_target_raw("PhiConstants", quote(IEATools::load_phi_constants_table(PhiConstantsPath))),
+
     # (7) Load incomplete FU allocation tables
     targets::tar_target_raw("IncompleteAllocationTables", quote(load_fu_allocation_tables(FUAnalysisFolder,
                                                                                           specified_iea_data = SpecifiedIEA,
@@ -170,7 +170,7 @@ get_pipeline <- function(countries = "all",
                                                                                              exemplar_lists = ExemplarLists,
                                                                                              specified_iea_data = SpecifiedIEA %>% dplyr::mutate(tar_group = NULL),
                                                                                              countries = Countries,
-                                                                                             years = Years)), 
+                                                                                             years = Years)),
                             pattern = quote(map(Countries))),
 
     # (9) Complete efficiency tables
@@ -179,133 +179,126 @@ get_pipeline <- function(countries = "all",
                                                                                       completed_fu_allocation_tables = CompletedAllocationTables,
                                                                                       countries = Countries,
                                                                                       years = Years,
-                                                                                      which_quantity = IEATools::template_cols$eta_fu)), 
-                            pattern = quote(map(Countries))), 
-    
+                                                                                      which_quantity = IEATools::template_cols$eta_fu)),
+                            pattern = quote(map(Countries))),
+
     # (10) Complete phi_u tables
     targets::tar_target_raw("CompletedPhiuTables", quote(assemble_phi_u_tables(incomplete_phi_u_table = MachineData,
                                                                                phi_constants_table = PhiConstants,
                                                                                completed_efficiency_table = CompletedEfficiencyTables,
                                                                                countries = Countries,
-                                                                               years = Years)), 
-                            pattern = quote(map(Countries))), 
-    
+                                                                               years = Years)),
+                            pattern = quote(map(Countries))),
+
     # (11) Build matrices and vectors for extending to useful stage and exergy
     # (11a) Allocation (C) matrices
     targets::tar_target_raw("Cmats", quote(calc_C_mats(completed_allocation_tables = CompletedAllocationTables,
-                                                       countries = Countries)), 
-                            pattern = quote(map(Countries))), 
+                                                       countries = Countries)),
+                            pattern = quote(map(Countries))),
 
     # (11b) Final-to-useful efficiency (eta_fu) and exergy-to-energy ratio (phi_u) vectors at the useful stage
     targets::tar_target_raw("EtafuPhiuvecs", quote(calc_eta_fu_phi_u_vecs(completed_efficiency_tables = CompletedEfficiencyTables,
                                                                           completed_phi_tables = CompletedPhiuTables,
-                                                                          countries = Countries)), 
-                            pattern = quote(map(Countries))), 
-    
+                                                                          countries = Countries)),
+                            pattern = quote(map(Countries))),
+
     # (11c) Final-to-useful efficiency (eta_fu) vectors
     targets::tar_target_raw("Etafuvecs", quote(sep_eta_fu_phi_u(EtafuPhiuvecs,
                                                                 keep = IEATools::template_cols$eta_fu,
-                                                                countries = Countries)), 
-                            pattern = quote(map(Countries))), 
-    
+                                                                countries = Countries)),
+                            pattern = quote(map(Countries))),
+
     # (11d) Exergy-to-energy ratio (phi_u) vectors at the useful stage
     targets::tar_target_raw("Phiuvecs", quote(sep_eta_fu_phi_u(EtafuPhiuvecs,
                                                                keep = IEATools::template_cols$phi_u,
-                                                               countries = Countries)), 
-                            pattern = quote(map(Countries))), 
-    
+                                                               countries = Countries)),
+                            pattern = quote(map(Countries))),
+
     # (11e) Exergy-to-energy ratio (phi_pf) vectors at the primary and final stages
     targets::tar_target_raw("Phipfvecs", quote(calc_phi_pf_vecs(phi_u_vecs = Phiuvecs,
                                                                 phi_constants = PhiConstants,
-                                                                countries = Countries)), 
-                            pattern = quote(map(Countries))), 
-    
+                                                                countries = Countries)),
+                            pattern = quote(map(Countries))),
+
     # (11f) Exergy-to-energy ratio (phi) vectors at all stages
     targets::tar_target_raw("Phivecs", quote(sum_phi_vecs(phi_pf_vecs = Phipfvecs,
                                                           phi_u_vecs = Phiuvecs,
-                                                          countries = Countries)), 
-                            pattern = quote(map(Countries))), 
-    
+                                                          countries = Countries)),
+                            pattern = quote(map(Countries))),
+
     # (12) Extend to useful stage
     targets::tar_target_raw("PSUTUsefulIEA", quote(move_to_useful(psut_final = PSUTFinalIEA,
                                                                 C_mats = Cmats,
                                                                 eta_phi_vecs = EtafuPhiuvecs,
-                                                                countries = Countries)), 
-                            pattern = quote(map(Countries))), 
-    
+                                                                countries = Countries)),
+                            pattern = quote(map(Countries))),
+
     # (13) Add other methods
-    
-    
+
+
     # (14) Add exergy quantifications of energy
     # Set PSUT as the last target. We'll use it for all further calculations.
     targets::tar_target_raw("PSUTIEA", quote(move_to_exergy(psut_energy = PSUTUsefulIEA,
                                                          phi_vecs = Phivecs,
-                                                         countries = Countries)), 
-                            pattern = quote(map(Countries))), 
-    
-    
+                                                         countries = Countries)),
+                            pattern = quote(map(Countries))),
+
+
     # (15) Make PSUT matrices from muscle work data
-    targets::tar_target_raw("PSUTMW_energy", quote(make_mw_psut(.hmw_df = HMWPFUData, 
-                                                                .amw_df = AMWPFUData, 
-                                                                countries = Countries, 
-                                                                years = Years)), 
+    targets::tar_target_raw("PSUTMW_energy", quote(make_mw_psut(.hmw_df = HMWPFUData,
+                                                                .amw_df = AMWPFUData,
+                                                                countries = Countries,
+                                                                years = Years)),
                             pattern = quote(map(Countries))),
     # Ensure that the MW data are balanced
-    targets::tar_target_raw("BalancedPSUTMW", quote(verify_mw_energy_balance(PSUTMW_energy, countries = Countries)), 
+    targets::tar_target_raw("BalancedPSUTMW", quote(verify_mw_energy_balance(PSUTMW_energy, countries = Countries)),
                             pattern = quote(map(Countries))),
     # Don't continue if there is a problem with the MW data.
     # stopifnot returns NULL if everything is OK.
     targets::tar_target_raw("OKToProceedMW", quote(ifelse(is.null(stopifnot(BalancedPSUTMW)), yes = TRUE, no = FALSE))),
-    
-    
+
+
     # (16) Move from energy to exergy for muscle work
     # Create a single phi vector applicable to all years.
     targets::tar_target_raw("PhivecMW", quote(MWTools::phi_vec_mw(.phi_table = PhiConstants,
                                                                    mw_energy_carriers = MWTools::mw_products))),
     # This target has a phi vector for every Country-Year combination.
     # Note the plural spelling.
-    targets::tar_target_raw("PhivecsMW", quote(calc_phi_vecs_mw(psut_energy_mw = PSUTMW_energy, 
-                                                                phi_vec_mw = PhivecMW, 
-                                                                countries = Countries)), 
+    targets::tar_target_raw("PhivecsMW", quote(calc_phi_vecs_mw(psut_energy_mw = PSUTMW_energy,
+                                                                phi_vec_mw = PhivecMW,
+                                                                countries = Countries)),
                             pattern = quote(map(Countries))),
-    targets::tar_target_raw("PSUTMW", quote(move_to_exergy(psut_energy = PSUTMW_energy, 
-                                                           phi_vecs = PhivecsMW, 
-                                                           countries = Countries)), 
-                            pattern = quote(map(Countries))),
-    
-    
-    # (17) Combine IEA and MW data by summing PSUT matrices
-    targets::tar_target_raw("PSUT", quote(add_iea_mw_psut(PSUTIEA, PSUTMW,
-                                                          countries = Countries)),
+    targets::tar_target_raw("PSUTMW", quote(move_to_exergy(psut_energy = PSUTMW_energy,
+                                                           phi_vecs = PhivecsMW,
+                                                           countries = Countries)),
                             pattern = quote(map(Countries))),
 
-    
-    # (18) Build reports
-    # (18a) Allocation Graphs
-    targets::tar_target_raw("AllocationGraphs", quote(alloc_plots_df(CompletedAllocationTables, countries = Countries)), 
-                            pattern = quote(map(Countries))), 
-    # (18b) Non-Stationary Allocation Graphs
-    targets::tar_target_raw("NonStationaryAllocationGraphs", quote(nonstat_alloc_plots_df(CompletedAllocationTables, countries = Countries)), 
-                            pattern = quote(map(Countries))), 
-    # (18c) Efficiency Graphs
-    targets::tar_target_raw("EfficiencyGraphs", quote(eta_fu_plots_df(CompletedEfficiencyTables, countries = Countries)), 
-                            pattern = quote(map(Countries))), 
-    # (18d) Exergy-to-energy ratio graphs
-    targets::tar_target_raw("PhiGraphs", quote(phi_u_plots_df(CompletedEfficiencyTables, countries = Countries)), 
-                            pattern = quote(map(Countries))), 
-    
-    # (19) Save results
-    # (19a) Store the PSUTIEA target data frame in a pinboard inside the pipeline_releases_folder.
-    targets::tar_target_raw("ReleasePSUTIEA", quote(release_target(pipeline_releases_folder = PipelineReleasesFolder,
-                                                                   targ = PSUTIEA,
-                                                                   targ_name = "psut_iea",
-                                                                   release = Release))), 
-    # (19b) Store the PSUTMW target data frame in a pinboard inside the pipeline_releases_folder.
-    targets::tar_target_raw("ReleasePSUTMW", quote(release_target(pipeline_releases_folder = PipelineReleasesFolder,
-                                                                  targ = PSUTMW,
-                                                                  targ_name = "psut_mw",
-                                                                  release = Release))), 
-    # (19c) Store the PSUT target data frame in a pinboard inside the pipeline_releases_folder.
+
+    # (17) Combine IEA and MW data by summing PSUT matrices
+    targets::tar_target_raw("PSUTIEAMW", quote(add_iea_mw_psut(PSUTIEA, PSUTMW,
+                                                               countries = Countries)),
+                            pattern = quote(map(Countries))),
+
+
+    # (18) Build final data frame
+    targets::tar_target_raw("PSUT", quote(build_psut_dataframe(PSUTIEA, PSUTMW, PSUTIEAMW))),
+
+
+    # (19) Build reports
+    # (19a) Allocation Graphs
+    targets::tar_target_raw("AllocationGraphs", quote(alloc_plots_df(CompletedAllocationTables, countries = Countries)),
+                            pattern = quote(map(Countries))),
+    # (19b) Non-Stationary Allocation Graphs
+    targets::tar_target_raw("NonStationaryAllocationGraphs", quote(nonstat_alloc_plots_df(CompletedAllocationTables, countries = Countries)),
+                            pattern = quote(map(Countries))),
+    # (19c) Efficiency Graphs
+    targets::tar_target_raw("EfficiencyGraphs", quote(eta_fu_plots_df(CompletedEfficiencyTables, countries = Countries)),
+                            pattern = quote(map(Countries))),
+    # (19d) Exergy-to-energy ratio graphs
+    targets::tar_target_raw("PhiGraphs", quote(phi_u_plots_df(CompletedEfficiencyTables, countries = Countries)),
+                            pattern = quote(map(Countries))),
+
+    # (20) Save results
     targets::tar_target_raw("ReleasePSUT", quote(release_target(pipeline_releases_folder = PipelineReleasesFolder,
                                                                 targ = PSUT,
                                                                 targ_name = "psut",

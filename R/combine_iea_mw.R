@@ -192,3 +192,48 @@ aggcountries_mw_to_iea <- function(mw_df,
   
 }
 
+
+#' Build the final PSUT data frame
+#' 
+#' Combines PSUT descriptions based on IEA data exclusively, muscle work data exclusively,
+#' and summed IEA and MW data.
+#'
+#' @param PSUTIEA A PSUT data frame of IEA data.
+#' @param PSUTMW A PSUT data frame of muscle work data.
+#' @param PSUTIEAMW A PSUT data frame of combined IEA and MW data.
+#' @param IEAMW_colname The name of the column that identifies data source (IEA, MW, or both).
+#'                      Default is `PFUDatabase::ieamw_cols$ieamw`.
+#' @param iea The string that identifies ECC data are from the IEA only.
+#'            Default is `PFUDatabase::ieamw_cols$iea`.
+#' @param mw The string that identifies ECC data are for muscle work only.
+#'           Default is `PFUDatabase::ieamw_cols$mw`.
+#' @param both The string that identifies ECC data are for both IEA and muscle work.
+#'             Default is `PFUDatabase::ieamw_cols$both`.
+#'
+#' @return A data frame with `PSUTIEA`, `PSUTMW`, and `PSUTIEAMW` `rbind()`ed together, 
+#'         and a new column (`IEAMW_colname`) that distinguishes among them.
+#' 
+#' @export
+build_psut_dataframe <- function(PSUTIEA, PSUTMW, PSUTIEAMW, 
+                                 IEAMW_colname = PFUDatabase::ieamw_cols$ieamw, 
+                                 iea = PFUDatabase::ieamw_cols$iea, 
+                                 mw = PFUDatabase::ieamw_cols$mw, 
+                                 both = PFUDatabase::ieamw_cols$both, 
+                                 year = IEATools::iea_cols$year) {
+  # Bind the data frames, with each one having the new IEAMW column.
+  dplyr::bind_rows(PSUTIEA %>% 
+                     dplyr::mutate(
+                       "{IEAMW_colname}" := iea
+                     ), 
+                   PSUTMW %>% 
+                     dplyr::mutate(
+                      "{IEAMW_colname}" := mw
+                     ), 
+                   PSUTIEAMW %>% 
+                     dplyr::mutate(
+                       "{IEAMW_colname}" := both
+                     )
+                   ) %>% 
+    dplyr::relocate(.data[[IEAMW_colname]], .after = year)
+}
+
