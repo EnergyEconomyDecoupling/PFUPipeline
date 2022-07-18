@@ -119,8 +119,9 @@ get_pipeline <- function(countries = "all",
 
     targets::tar_target_raw("HMWPFUData", quote(aggcountries_mw_to_iea(mw_df = HMWPFUDataRaw))),
 
+    # Socio-economic data not required for V1
     # (1f) Socioeconomic data
-    targets::tar_target_raw("SocioEconData", quote(get_all_pwt_data(countries = Countries) %>% get_L_K_GDP_data())),
+    # targets::tar_target_raw("SocioEconData", quote(get_all_pwt_data(countries = Countries) %>% get_L_K_GDP_data())),
 
     # (2) Balance all IEA final energy data.
     # First, check whether energy products are balanced. They're not.
