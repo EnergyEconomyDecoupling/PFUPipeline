@@ -9,16 +9,49 @@ library(PFUDatabase)
 
 
 # Custom parameters
-# years <- 1960:2019                         # The years to be analyzed
-years <- 2000
+years <- 1960:2019                         # The years to be analyzed
+
+# years <- 2000
 
 # countries <- PFUDatabase::canonical_countries %>% as.character()
+
+# countries <- "USA"
+# countries <- c("USA", "MEX", "GBR")
+
+
+# First half of countries works!
+# countries <- c("BRA", "CAN", "CHNM", "DEU", "DNK", "ESP", "FRA", "GBR", "GHA",
+#                "GRC", "HKG", "HND", "IDN")
+
+# Second half of countries errors on PSUTMW_energy
+# countries <- c("IND", "JOR", "JPN", "KOR", "MEX",
+#                "NOR", "PRT", "RUS", "USA", "WABK", "WMBK", "ZAF")
+
+# 3rd quarter of countries works!
+# countries <- c("IND", "JOR", "JPN", "KOR", "MEX", "NOR")
+
+# Last quarter of countries fails!
+# countries <- c("PRT", "RUS", "USA", "WABK", "WMBK", "ZAF")
+
+# Works!
+# countries <- c("PRT", "RUS", "USA")
+
+# Fails
+# countries <- c("WABK", "WMBK", "ZAF")
+
+# Fails
+countries <- c("WABK")
+
+# Fails
+# countries <- c("WMBK")
+
+# Works
+# countries <- c("ZAF")
 
 # Countries with unique allocation data.
 # countries <- c("BRA", "CAN", "CHNM", "DEU", "DNK", "ESP", "FRA", "GBR", "GHA",
 #                "GRC", "HKG", "HND", "IDN", "IND", "JOR", "JPN", "KOR", "MEX",
 #                "NOR", "PRT", "RUS", "USA", "WABK", "WMBK", "ZAF")
-countries <- c("USA", "MEX", "GBR")
 
 # Additional exemplar countries are countries which aren't included in the workflow
 # as individual countries, but from which allocation or efficiency data may be 
