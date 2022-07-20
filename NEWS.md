@@ -5,7 +5,8 @@ output: html_document
 
 
 * No longer tracking 3 separate pinned outputs.
-  Now only one pin (PSUT), and it has all data in it, 
+  Now only one pin (PSUT) contains all data
+  with IEA and MW
   identified by the IEAMW column.
 * React to name change: 
     - matsbyname::make_list() --> RCLabels::make_list()
