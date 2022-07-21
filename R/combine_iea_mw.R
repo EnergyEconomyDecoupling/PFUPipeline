@@ -209,6 +209,8 @@ aggcountries_mw_to_iea <- function(mw_df,
 #'           Default is `PFUDatabase::ieamw_cols$mw`.
 #' @param both The string that identifies ECC data are for both IEA and muscle work.
 #'             Default is `PFUDatabase::ieamw_cols$both`.
+#' @param year The string name of the year column. 
+#'             Default is `IEATools::iea_cols$year`.
 #'
 #' @return A data frame with `PSUTIEA`, `PSUTMW`, and `PSUTIEAMW` `rbind()`ed together, 
 #'         and a new column (`IEAMW_colname`) that distinguishes among them.

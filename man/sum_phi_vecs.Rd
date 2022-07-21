@@ -51,14 +51,14 @@ phi_pf_vec <- matrix(c(1.1,
                        1.05), nrow = 2, ncol = 1,
                      dimnames = list(c("Coal", "Oil"), "phi"))
 # Make a data frame of phi_pf vectors
-phi_pf <- tibble::tibble(phi.pf = matsbyname::make_list(phi_pf_vec, n = 2, lenx = 1),
+phi_pf <- tibble::tibble(phi.pf = RCLabels::make_list(phi_pf_vec, n = 2, lenx = 1),
                          Country = "GHA",
                          Year = c(1971, 2000))
 phi_u_vec <- matrix(c(0.8,
                       0.9,
                       0.7), nrow = 3, ncol = 1,
                     dimnames = list(c("Light", "MD", "Propulsion"), "phi"))
-phi_u <- tibble::tibble(phi.u = matsbyname::make_list(phi_u_vec, n = 2, lenx = 1),
+phi_u <- tibble::tibble(phi.u = RCLabels::make_list(phi_u_vec, n = 2, lenx = 1),
                         Country = "GHA",
                         Year = c(1971, 2000))
 sum_phi_vecs(phi_pf, phi_u, countries = "GHA")

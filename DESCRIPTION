@@ -32,6 +32,7 @@ Imports:
     readr,
     readxl,
     Recca,
+    RCLabels,
     rlang,
     targets,
     tibble,

@@ -33,6 +33,9 @@ Default is \code{PFUDatabase::ieamw_cols$mw}.}
 
 \item{both}{The string that identifies ECC data are for both IEA and muscle work.
 Default is \code{PFUDatabase::ieamw_cols$both}.}
+
+\item{year}{The string name of the year column.
+Default is \code{IEATools::iea_cols$year}.}
 }
 \value{
 A data frame with \code{PSUTIEA}, \code{PSUTMW}, and \code{PSUTIEAMW} \code{rbind()}ed together,
