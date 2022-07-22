@@ -24,6 +24,7 @@ get_pipeline(
   reports_source_folders,
   reports_dest_folder,
   pipeline_releases_folder,
+  pipeline_caches_folder,
   release = FALSE
 )
 }
@@ -77,6 +78,9 @@ Sub-folders named with 3-letter country abbreviations are assumed.}
 
 \item{pipeline_releases_folder}{The path to a folder where releases of important targets are stored
 for later retrieval as pinned items on a pinboard.}
+
+\item{pipeline_caches_folder}{The path to a folder where .zipped versions of the pipeline
+cache are stored.}
 
 \item{release}{A boolean that tells whether a new release of the \code{PSUT} targets should be made.
 Default is \code{FALSE}.}
