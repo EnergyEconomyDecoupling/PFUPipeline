@@ -11,9 +11,9 @@ library(PFUDatabase)
 # Custom parameters
 years <- 1960:2019                         # The years to be analyzed
 
-# years <- 2000
+# countries <- PFUDatabase::canonical_countries %>% as.character()
 
-countries <- PFUDatabase::canonical_countries %>% as.character()
+countries <- c("HND")
 
 # Countries with unique allocation data.
 # countries <- c("BRA", "CAN", "CHNM", "DEU", "DNK", "ESP", "FRA", "GBR", "GHA",
@@ -34,7 +34,7 @@ additional_exemplar_countries <- c("WRLD", # World
                                    "BUNK") # Bunkers
 
 # Should we do a release of the results?
-release <- FALSE
+release <- TRUE
 
 # End user-adjustable parameters.
 
@@ -70,5 +70,6 @@ PFUDatabase::get_pipeline(countries = countries,
                           reports_source_folders = PFUSetup::get_abs_paths()[["reports_source_folders"]],
                           reports_dest_folder = PFUSetup::get_abs_paths()[["reports_dest_folder"]],
                           pipeline_releases_folder = PFUSetup::get_abs_paths()[["pipeline_releases_folder"]],
+                          pipeline_caches_folder = PFUSetup::get_abs_paths()[["pipeline_caches_folder"]],
                           release = release)
 

@@ -48,3 +48,61 @@ release_target <- function(pipeline_releases_folder, targ, targ_name, type = "rd
   }
   return(out)
 }
+
+
+#' Save the cache to a zip file, then to `pipeline_caches_folder`
+#'
+#' Saves a pipeline cache to a zip file into the `pipeline_caches_folder`.
+#'
+#' Note that the `dependency` argument is not used internally.
+#' Rather, `dependency` exists to ensure that the pipeline
+#' executes the right targets before saving the cache.
+#'
+#' @param pipeline_caches_folder The folder into which the pipeline cache will be saved as a .zip file.
+#' @param cache_folder The cache folder that is to be zipped and saved.
+#'                     This path is interpreted relative to the working directory.
+#' @param file_prefix The prefix for the output file name.
+#' @param dependency The last target that should be executed before saving the cache.
+#'                   Not used internally.
+#' @param release A boolean telling whether to do a release. The cache is stored only for releases.
+#'                Default is `FALSE`.
+#'
+#' @return If the cache was saved, the file name is returned.
+#'         If `release = FALSE`, the string "Release not requested." is returned.
+#'
+#' @export
+stash_cache <- function(pipeline_caches_folder, cache_folder, file_prefix, dependency, release = FALSE) {
+  if (!release) {
+    return("Release not requested.")
+  }
+  # Zip the drake cache
+  zipped_cache_filename <- paste0(file_prefix, parsedate::format_iso_8601(Sys.time()), ".zip") %>%
+    # Change file name format to be equivalent to the pins file format.
+    # Eliminate "-" characters
+    gsub(pattern = "-", replacement = "") %>%
+    # Eliminate ":" characters, because they cause problems on some OSes.
+    gsub(pattern = ":", replacement = "") %>%
+    # Change "+0000" to "Z", where "Z" means Zulu time (GMT offset of 00:00)
+    gsub(pattern = "\\+0000", replacement = "Z")
+  invisible(utils::zip(zipfile = zipped_cache_filename, files = cache_folder, extras = "-q"))
+  # Calculate the folder structure for the output
+  year <- lubridate::year(Sys.Date())
+  month <- lubridate::month(Sys.Date())
+  month <- sprintf("%02d", month)
+  output_year_dir <- file.path(pipeline_caches_folder, year)
+  dir.create(output_year_dir, showWarnings = FALSE)
+  output_month_dir <- file.path(output_year_dir, month)
+  dir.create(output_month_dir, showWarnings = FALSE)
+  # Copy the file to the workflow output folder
+  copy_successful <- file.copy(from = zipped_cache_filename,
+                               to = output_month_dir)
+  if (!copy_successful) {
+    stop(paste("copying of pipeline cache unsuccessful in stach_cache():",
+               zipped_cache_filename))
+  }
+  if (file.exists(zipped_cache_filename)) {
+    # To keep things clean
+    file.remove(zipped_cache_filename)
+  }
+  return(file_prefix)
+}
