@@ -4,6 +4,15 @@ output: html_document
 ---
 
 
+* Now filtering the muscle work data to only those
+  countries, years, methods, energy types, and last stages
+  also present in the IEA data.
+  Effectively, this change eliminates MW data 
+  in 1960-1970 for developing nations whose IEA data starts in 1971.
+  The target `PSUTMW_all_years` retains all of the muscle work data, but
+  the target `PSUTMW` is filtered.
+* Back to saving the cache upon release.
+  The cache is needed for the Shiny app.
 * No longer tracking 3 separate pinned outputs.
   Now only one pin (PSUT) contains all data
   with IEA and MW
