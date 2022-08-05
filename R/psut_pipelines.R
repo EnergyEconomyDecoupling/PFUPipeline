@@ -284,7 +284,7 @@ get_pipeline <- function(countries = "all",
                             pattern = quote(map(Countries))),
 
     # (18) Combine IEA and MW data by summing PSUT matrices
-    targets::tar_target_raw("PSUTIEAMW", quote(add_iea_mw_psut(PSUTMW, PSUTMW,
+    targets::tar_target_raw("PSUTIEAMW", quote(add_iea_mw_psut(PSUTIEA, PSUTMW,
                                                                countries = Countries)),
                             pattern = quote(map(Countries))),
 
