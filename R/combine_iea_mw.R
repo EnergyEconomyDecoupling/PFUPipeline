@@ -64,7 +64,7 @@ filter_mw_to_iea_years <- function(.psut_mw,
 #' @return A data frame of summed matrices.
 #' 
 #' @export
-add_iea_mw_psut <- function(.iea_psut, .mw_psut, 
+add_iea_mw_psut <- function(.iea_psut = NULL, .mw_psut = NULL, 
                             countries,
                             # Input columns
                             R = IEATools::psut_cols$R, 
@@ -233,10 +233,10 @@ aggcountries_mw_to_iea <- function(mw_df,
 #' Combines PSUT descriptions based on IEA data exclusively, muscle work data exclusively,
 #' and summed IEA and MW data.
 #'
-#' @param PSUTIEA A PSUT data frame of IEA data.
-#' @param PSUTMW A PSUT data frame of muscle work data.
-#' @param PSUTIEAMW A PSUT data frame of combined IEA and MW data.
-#' @param IEAMW_colname The name of the column that identifies data source (IEA, MW, or both).
+#' @param psutiea A PSUT data frame of IEA data. Default is `NULL.`
+#' @param psutmw A PSUT data frame of muscle work data. Default is `NULL.`
+#' @param psutieamw A PSUT data frame of combined IEA and MW data. Default is `NULL.`
+#' @param ieamw_colname The name of the column that identifies data source (IEA, MW, or both).
 #'                      Default is `PFUDatabase::ieamw_cols$ieamw`.
 #' @param iea The string that identifies ECC data are from the IEA only.
 #'            Default is `PFUDatabase::ieamw_cols$iea`.
@@ -251,27 +251,33 @@ aggcountries_mw_to_iea <- function(mw_df,
 #'         and a new column (`IEAMW_colname`) that distinguishes among them.
 #' 
 #' @export
-build_psut_dataframe <- function(PSUTIEA, PSUTMW, PSUTIEAMW, 
-                                 IEAMW_colname = PFUDatabase::ieamw_cols$ieamw, 
+build_psut_dataframe <- function(psutiea = NULL, psutmw = NULL, psutieamw = NULL, 
+                                 ieamw_colname = PFUDatabase::ieamw_cols$ieamw, 
                                  iea = PFUDatabase::ieamw_cols$iea, 
                                  mw = PFUDatabase::ieamw_cols$mw, 
                                  both = PFUDatabase::ieamw_cols$both, 
                                  year = IEATools::iea_cols$year) {
   # Bind the data frames, with each one having the new IEAMW column.
-  dplyr::bind_rows(PSUTIEA %>% 
-                     dplyr::mutate(
-                       "{IEAMW_colname}" := iea
-                     ), 
-                   PSUTMW %>% 
-                     dplyr::mutate(
-                      "{IEAMW_colname}" := mw
-                     ), 
-                   PSUTIEAMW %>% 
-                     dplyr::mutate(
-                       "{IEAMW_colname}" := both
-                     )
-                   ) %>% 
-    dplyr::relocate(.data[[IEAMW_colname]], .after = year)
+  if (!is.null(psutiea)) {
+    psutiea <- psutiea %>%
+      dplyr::mutate(
+        "{ieamw_colname}" := iea
+      )
+  }
+  if (!is.null(psutmw)) {
+    psutmw <- psutmw %>%
+      dplyr::mutate(
+        "{ieamw_colname}" := mw
+      )
+  }
+  if (!is.null(psutieamw)) {
+    psutieamw <- psutieamw %>%
+      dplyr::mutate(
+        "{ieamw_colname}" := both
+      )
+  }
+  dplyr::bind_rows(psutiea, psutmw, psutieamw) %>%
+    dplyr::relocate(.data[[ieamw_colname]], .after = year)
 }
 
 

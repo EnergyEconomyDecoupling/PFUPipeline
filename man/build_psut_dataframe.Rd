@@ -5,10 +5,10 @@
 \title{Build the final PSUT data frame}
 \usage{
 build_psut_dataframe(
-  PSUTIEA,
-  PSUTMW,
-  PSUTIEAMW,
-  IEAMW_colname = PFUDatabase::ieamw_cols$ieamw,
+  psutiea = NULL,
+  psutmw = NULL,
+  psutieamw = NULL,
+  ieamw_colname = PFUDatabase::ieamw_cols$ieamw,
   iea = PFUDatabase::ieamw_cols$iea,
   mw = PFUDatabase::ieamw_cols$mw,
   both = PFUDatabase::ieamw_cols$both,
@@ -16,13 +16,13 @@ build_psut_dataframe(
 )
 }
 \arguments{
-\item{PSUTIEA}{A PSUT data frame of IEA data.}
+\item{psutiea}{A PSUT data frame of IEA data. Default is \code{NULL.}}
 
-\item{PSUTMW}{A PSUT data frame of muscle work data.}
+\item{psutmw}{A PSUT data frame of muscle work data. Default is \code{NULL.}}
 
-\item{PSUTIEAMW}{A PSUT data frame of combined IEA and MW data.}
+\item{psutieamw}{A PSUT data frame of combined IEA and MW data. Default is \code{NULL.}}
 
-\item{IEAMW_colname}{The name of the column that identifies data source (IEA, MW, or both).
+\item{ieamw_colname}{The name of the column that identifies data source (IEA, MW, or both).
 Default is \code{PFUDatabase::ieamw_cols$ieamw}.}
 
 \item{iea}{The string that identifies ECC data are from the IEA only.

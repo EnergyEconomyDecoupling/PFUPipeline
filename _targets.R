@@ -14,7 +14,7 @@ years <- 1971
 
 # countries <- PFUDatabase::canonical_countries %>% as.character()
 
-countries <- c("GHA")
+countries <- c("USA")
 
 # Countries with unique allocation data.
 # countries <- c("BRA", "CAN", "CHNM", "DEU", "DNK", "ESP", "FRA", "GBR", "GHA",

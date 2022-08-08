@@ -5,8 +5,8 @@
 \title{Sum IEA and muscle work ECC matrices}
 \usage{
 add_iea_mw_psut(
-  .iea_psut,
-  .mw_psut,
+  .iea_psut = NULL,
+  .mw_psut = NULL,
   countries,
   R = IEATools::psut_cols$R,
   U = IEATools::psut_cols$U,

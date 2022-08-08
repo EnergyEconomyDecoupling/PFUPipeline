@@ -290,8 +290,11 @@ get_pipeline <- function(countries = "all",
 
 
     # (19) Build final data frame
-    targets::tar_target_raw("PSUT", quote(build_psut_dataframe(PSUTIEA, PSUTMW, PSUTIEAMW))),
-
+    # targets::tar_target_raw("PSUT", quote(build_psut_dataframe(psutiea = PSUTIEA,
+    #                                                            psutmw = PSUTMW,
+    #                                                            psutieamw = PSUTIEAMW))),
+    targets::tar_target_raw("PSUT", quote(build_psut_dataframe(psutiea = PSUTIEA))),
+    
 
     # (20) Build reports
     # (20a) Allocation Graphs
