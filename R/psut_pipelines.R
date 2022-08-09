@@ -290,10 +290,10 @@ get_pipeline <- function(countries = "all",
 
 
     # (19) Build final data frame
-    # targets::tar_target_raw("PSUT", quote(build_psut_dataframe(psutiea = PSUTIEA,
-    #                                                            psutmw = PSUTMW,
-    #                                                            psutieamw = PSUTIEAMW))),
-    targets::tar_target_raw("PSUT", quote(build_psut_dataframe(psutiea = PSUTIEA))),
+    targets::tar_target_raw("PSUT", quote(build_psut_dataframe(psutiea = PSUTIEA,
+                                                               psutmw = PSUTMW,
+                                                               psutieamw = PSUTIEAMW))),
+    # targets::tar_target_raw("PSUT", quote(build_psut_dataframe(psutmw = PSUTMW))),
     
 
     # (20) Build reports
