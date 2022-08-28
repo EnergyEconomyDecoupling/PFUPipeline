@@ -9,12 +9,12 @@ library(PFUDatabase)
 
 
 # Custom parameters
-# years <- 1960:2019                         # The years to be analyzed
-years <- 1971
+years <- 1960:2019                         # The years to be analyzed
+# years <- 1971
 
-# countries <- PFUDatabase::canonical_countries %>% as.character()
+countries <- PFUDatabase::canonical_countries %>% as.character()
 
-countries <- c("USA")
+# countries <- c("USA")
 
 # Countries with unique allocation data.
 # countries <- c("BRA", "CAN", "CHNM", "DEU", "DNK", "ESP", "FRA", "GBR", "GHA",
