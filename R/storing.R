@@ -10,8 +10,8 @@
 #'
 #' @param pipeline_releases_folder The folder that contains the pinboard for releases from the pipeline.
 #' @param targ The target R object to be saved to the pinboard.
-#' @param targ_name The name of the target object. `targ_name` is the key to retrieving `targ`.
-#' @param type The type of the target, routed to `pins::pin_write()`. Default is "rds".
+#' @param pin_name The name of the pin in the pinboard. `pin_name` is the key to retrieving `targ`.
+#' @param type The type of the target, routed to `pins::pin_write()`. Default is "rds". "csv" in another option.
 #' @param release A boolean telling whether to do a release.
 #'                Default is `FALSE`.
 #'
@@ -37,12 +37,12 @@
 #' # Retrieve a previous version of the `PSUT` target.
 #' my_old_psut <- pinboard %>%
 #'   pins::pin_read(name = "psut", version = "20220218T023112Z-1d9e1")}
-release_target <- function(pipeline_releases_folder, targ, targ_name, type = "rds", release = FALSE) {
+release_target <- function(pipeline_releases_folder, targ, pin_name, type = "rds", release = FALSE) {
   if (release) {
     # Establish the pinboard
     out <- pins::board_folder(pipeline_releases_folder, versioned = TRUE) %>%
       # Returns the fully-qualified name of the file written to the pinboard.
-      pins::pin_write(targ, name = targ_name, type = type, versioned = TRUE)
+      pins::pin_write(targ, name = pin_name, type = type, versioned = TRUE)
   } else {
     out <- "Release not requested."
   }

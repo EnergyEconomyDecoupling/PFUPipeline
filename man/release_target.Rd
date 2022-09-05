@@ -7,7 +7,7 @@
 release_target(
   pipeline_releases_folder,
   targ,
-  targ_name,
+  pin_name,
   type = "rds",
   release = FALSE
 )
@@ -17,9 +17,9 @@ release_target(
 
 \item{targ}{The target R object to be saved to the pinboard.}
 
-\item{targ_name}{The name of the target object. \code{targ_name} is the key to retrieving \code{targ}.}
+\item{pin_name}{The name of the pin in the pinboard. \code{pin_name} is the key to retrieving \code{targ}.}
 
-\item{type}{The type of the target, routed to \code{pins::pin_write()}. Default is "rds".}
+\item{type}{The type of the target, routed to \code{pins::pin_write()}. Default is "rds". "csv" in another option.}
 
 \item{release}{A boolean telling whether to do a release.
 Default is \code{FALSE}.}

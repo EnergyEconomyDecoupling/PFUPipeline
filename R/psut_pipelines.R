@@ -313,7 +313,7 @@ get_pipeline <- function(countries = "all",
     # (21a) Pin the PSUT data frame
     targets::tar_target_raw("ReleasePSUT", quote(release_target(pipeline_releases_folder = PipelineReleasesFolder,
                                                                 targ = PSUT,
-                                                                targ_name = "psut",
+                                                                pin_name = "psut",
                                                                 release = Release))), 
     
     # (21b) Zip the targets cache and store it in the pipeline_caches_folder
