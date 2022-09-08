@@ -17,6 +17,8 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(dplyr)
 library(PFUDatabase)
+library(pins)
+library(Recca)
 library(tibble)
 ```
 
@@ -31,7 +33,7 @@ To retrieve data, one need
 * Access to the Dropbox folder containing pipeline releases.
 * A valid pin name.
 
-One valid pin name is "psut" and a valie pin release is "20220828T174526Z-60a07".
+One valid pin name is "psut" and a valid pin release is "20220828T174526Z-60a07".
 "20220828T174526Z-60a07" contains data for all countries (155) and all years (1960--2019).
 
 ```{r}
@@ -57,11 +59,11 @@ The metadata columns contain the following values.
 
 ```{r}
 psut_mats$Country %>% unique()
-psut_mats$Year %>% min()
-psut_mats$Year %>% max()
 psut_mats$Method %>% unique()
 psut_mats$Energy.type %>% unique()
 psut_mats$Last.stage %>% unique()
+psut_mats$Year %>% min()
+psut_mats$Year %>% max()
 psut_mats$IEAMW %>% unique()
 ```
 
@@ -89,6 +91,14 @@ Recca::write_ecc_to_excel(GHA1971_MW, path = gha_mw_file, overwrite_file = TRUE)
 ```
 
 
+Or a Sankey diagram can be created.
+
+```{r}
+Recca::make_sankey(R = GHA1971_MW$R, U = GHA1971_MW$U, 
+                   V = GHA1971_MW$V, Y = GHA1971_MW$Y)$Sankey[[1]]
+```
+
+
 More complicated matrices can be seen in the IEA data.
 This one is final energy only.
 
@@ -99,14 +109,28 @@ gha_iea_file <- file.path("~", "GHA1971_IEA_final.xlsx")
 Recca::write_ecc_to_excel(GHA1971_IEA, path = gha_iea_file, overwrite_file = TRUE)
 ```
 
-When we push to useful energy, the matrices become more complex.
 
 ```{r}
-GHA1971_IEA <- psut_mats %>% 
-  dplyr::filter(Country == "GHA", Year == 1971, Energy.type == "E", Last.stage == "Useful", IEAMW == "IEA")
-gha_iea_file <- file.path("~", "GHA1971_IEA_useful.xlsx")
-Recca::write_ecc_to_excel(GHA1971_IEA, path = gha_iea_file, overwrite_file = TRUE)
-
+Recca::make_sankey(R = GHA1971_IEA$R, U = GHA1971_IEA$U, 
+                   V = GHA1971_IEA$V, Y = GHA1971_IEA$Y)$Sankey[[1]]
 ```
 
 
+
+When we push to useful energy, the matrices become more complex.
+
+```{r}
+GHA1971_IEA_useful <- psut_mats %>% 
+  dplyr::filter(Country == "GHA", Year == 1971, Energy.type == "E", Last.stage == "Useful", IEAMW == "IEA")
+gha_iea_file <- file.path("~", "GHA1971_IEA_useful.xlsx")
+Recca::write_ecc_to_excel(GHA1971_IEA_useful, path = gha_iea_file, overwrite_file = TRUE)
+```
+
+
+And the Sankey diagram is busier,
+but the matrices keep everything straight for us.
+
+```{r}
+Recca::make_sankey(R = GHA1971_IEA_useful$R, U = GHA1971_IEA_useful$U, 
+                   V = GHA1971_IEA_useful$V, Y = GHA1971_IEA_useful$Y)$Sankey[[1]]
+```
