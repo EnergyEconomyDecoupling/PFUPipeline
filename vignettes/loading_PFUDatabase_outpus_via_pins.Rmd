@@ -46,7 +46,7 @@ psut_mats <- folder %>%
 
 ## Data structure
 
-`psut_mats` is a data frame. 
+`psut_mats` is an `R` data frame. 
 Let's look at its contents.
 
 ```{r}
