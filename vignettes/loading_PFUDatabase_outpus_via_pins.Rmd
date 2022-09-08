@@ -159,6 +159,13 @@ W <- matsbyname::transpose_byname(GHA1971_IEA$V) %>%
 Let's say we wanted to find the energy required to provide additions to the stock of Crude oil in the country
 using an input-output ``upstream swim.''
 
+First, we calculate all the input-ouput matrices.
+
+```{r}
+io_mats <- GHA1971_IEA %>% 
+  Recca::calc_io_mats()
+```
+
 ```{r}
 Y_prime <- GHA1971_IEA$Y[[1]] %>%
   matsbyname::select_cols_byname("^Stock changes")
