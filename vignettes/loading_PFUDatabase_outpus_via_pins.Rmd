@@ -28,7 +28,7 @@ library(tibble)
 `PFUDatabase` is a package that runs a `targets` pipeline
 and stores data in Dropbox using the `pins` package.
 
-To retrieve data, one need
+To retrieve data, one needs
 
 * Access to the Dropbox folder containing pipeline releases.
 * A valid pin name.
@@ -128,9 +128,41 @@ Recca::write_ecc_to_excel(GHA1971_IEA_useful, path = gha_iea_file, overwrite_fil
 
 
 And the Sankey diagram is busier,
-but the matrices keep everything straight for us.
+but the matrices keep everything organized.
 
 ```{r}
 Recca::make_sankey(R = GHA1971_IEA_useful$R, U = GHA1971_IEA_useful$U, 
                    V = GHA1971_IEA_useful$V, Y = GHA1971_IEA_useful$Y)$Sankey[[1]]
 ```
+
+
+
+
+## Example calculations
+
+
+### Matrix math
+
+```{r}
+W <- matsbyname::transpose_byname(GHA1971_IEA$V) %>%
+  matsbyname::difference_byname(GHA1971_IEA$U)
+# View(W[[1]])
+```
+
+
+### Upstream swim
+
+```{r}
+# View(GHA1971_IEA$Y[[1]])
+```
+
+Let's say we wanted to find the energy required to provide stock changes of Crude oil.
+
+```{r}
+Y_prime <- GHA1971_IEA$Y[[1]] %>%
+  matsbyname::select_cols_byname("Stock changes [of Crude oil]")
+Y_prime
+```
+
+
+
