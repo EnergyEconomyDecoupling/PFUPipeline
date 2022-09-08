@@ -156,11 +156,12 @@ W <- matsbyname::transpose_byname(GHA1971_IEA$V) %>%
 # View(GHA1971_IEA$Y[[1]])
 ```
 
-Let's say we wanted to find the energy required to provide stock changes of Crude oil.
+Let's say we wanted to find the energy required to provide additions to the stock of Crude oil in the country
+using an input-output ``upstream swim.''
 
 ```{r}
 Y_prime <- GHA1971_IEA$Y[[1]] %>%
-  matsbyname::select_cols_byname("Stock changes [of Crude oil]")
+  matsbyname::select_cols_byname("^Stock changes")
 Y_prime
 ```
 
