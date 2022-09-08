@@ -1,0 +1,112 @@
+---
+title: "Loading PFUDatabase Outputs Via pins"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Loading PFUDatabase Outputs Via pins}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(dplyr)
+library(PFUDatabase)
+library(tibble)
+```
+
+
+## Introduction
+
+`PFUDatabase` is a package that runs a `targets` pipeline
+and stores data in Dropbox using the `pins` package.
+
+To retrieve data, one need
+
+* Access to the Dropbox folder containing pipeline releases.
+* A valid pin name.
+
+One valid pin name is "psut" and a valie pin release is "20220828T174526Z-60a07".
+"20220828T174526Z-60a07" contains data for all countries (155) and all years (1960--2019).
+
+```{r}
+folder <- PFUSetup::get_abs_paths()[["pipeline_releases_folder"]]
+folder
+version <- "20220828T174526Z-60a07"
+psut_mats <- folder %>% 
+  pins::board_folder(versioned = TRUE) %>% 
+  pins::pin_read("psut", version = version)
+```
+
+
+## Data structure
+
+`psut_mats` is a data frame. 
+Let's look at its contents.
+
+```{r}
+tibble::glimpse(psut_mats)
+```
+
+The metadata columns contain the following values.
+
+```{r}
+psut_mats$Country %>% unique()
+psut_mats$Year %>% min()
+psut_mats$Year %>% max()
+psut_mats$Method %>% unique()
+psut_mats$Energy.type %>% unique()
+psut_mats$Last.stage %>% unique()
+psut_mats$IEAMW %>% unique()
+```
+
+
+## Example ECC matrices
+
+Let's look at a few of matrices using Ghana 1971 as an example.
+Simple matrices can be found in the muscle work data frames.
+
+```{r}
+GHA1971_MW <- psut_mats %>% 
+  dplyr::filter(Country == "GHA", Year == 1971, Energy.type == "E", Last.stage == "Final", IEAMW == "MW")
+tibble::glimpse(GHA1971_MW)
+GHA1971_MW$R[[1]]
+GHA1971_MW$U[[1]]
+GHA1971_MW$V[[1]]
+GHA1971_MW$Y[[1]]
+```
+
+These matrices can be dumped to an Excel file for easier browsing.
+
+```{r}
+gha_mw_file <- file.path("~", "GHA1971_MW.xlsx")
+Recca::write_ecc_to_excel(GHA1971_MW, path = gha_mw_file, overwrite_file = TRUE)
+```
+
+
+More complicated matrices can be seen in the IEA data.
+This one is final energy only.
+
+```{r}
+GHA1971_IEA <- psut_mats %>% 
+  dplyr::filter(Country == "GHA", Year == 1971, Energy.type == "E", Last.stage == "Final", IEAMW == "IEA")
+gha_iea_file <- file.path("~", "GHA1971_IEA_final.xlsx")
+Recca::write_ecc_to_excel(GHA1971_IEA, path = gha_iea_file, overwrite_file = TRUE)
+```
+
+When we push to useful energy, the matrices become more complex.
+
+```{r}
+GHA1971_IEA <- psut_mats %>% 
+  dplyr::filter(Country == "GHA", Year == 1971, Energy.type == "E", Last.stage == "Useful", IEAMW == "IEA")
+gha_iea_file <- file.path("~", "GHA1971_IEA_useful.xlsx")
+Recca::write_ecc_to_excel(GHA1971_IEA, path = gha_iea_file, overwrite_file = TRUE)
+
+```
+
+
