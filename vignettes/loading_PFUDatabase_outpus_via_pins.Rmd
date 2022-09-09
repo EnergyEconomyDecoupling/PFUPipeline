@@ -19,7 +19,6 @@ library(dplyr)
 library(PFUDatabase)
 library(pins)
 library(Recca)
-library(tibble)
 ```
 
 
@@ -62,8 +61,7 @@ psut_mats$Country %>% unique()
 psut_mats$Method %>% unique()
 psut_mats$Energy.type %>% unique()
 psut_mats$Last.stage %>% unique()
-psut_mats$Year %>% min()
-psut_mats$Year %>% max()
+c(psut_mats$Year %>% min(), psut_mats$Year %>% max())
 psut_mats$IEAMW %>% unique()
 ```
 
@@ -75,7 +73,8 @@ Simple matrices can be found in the muscle work data frames.
 
 ```{r}
 GHA1971_MW <- psut_mats %>% 
-  dplyr::filter(Country == "GHA", Year == 1971, Energy.type == "E", Last.stage == "Final", IEAMW == "MW")
+  dplyr::filter(Country == "GHA", Year == 1971, Energy.type == "E", 
+                Last.stage == "Final", IEAMW == "MW")
 dplyr::glimpse(GHA1971_MW)
 GHA1971_MW$R[[1]]
 GHA1971_MW$U[[1]]
@@ -104,7 +103,8 @@ This one is has the last stage being final energy.
 
 ```{r}
 GHA1971_IEA <- psut_mats %>% 
-  dplyr::filter(Country == "GHA", Year == 1971, Energy.type == "E", Last.stage == "Final", IEAMW == "IEA")
+  dplyr::filter(Country == "GHA", Year == 1971, Energy.type == "E", 
+                Last.stage == "Final", IEAMW == "IEA")
 gha_iea_file <- file.path("~", "GHA1971_IEA_final.xlsx")
 Recca::write_ecc_to_excel(GHA1971_IEA, path = gha_iea_file, overwrite_file = TRUE)
 ```
@@ -121,7 +121,8 @@ When we push to useful energy, the matrices become more complex.
 
 ```{r}
 GHA1971_IEA_useful <- psut_mats %>% 
-  dplyr::filter(Country == "GHA", Year == 1971, Energy.type == "E", Last.stage == "Useful", IEAMW == "IEA")
+  dplyr::filter(Country == "GHA", Year == 1971, Energy.type == "E", 
+                Last.stage == "Useful", IEAMW == "IEA")
 gha_iea_file <- file.path("~", "GHA1971_IEA_useful.xlsx")
 Recca::write_ecc_to_excel(GHA1971_IEA_useful, path = gha_iea_file, overwrite_file = TRUE)
 ```
@@ -139,10 +140,13 @@ GHA1971_IEA_useful %>%
 
 ## Example calculations
 
+The following subsections illustrate example calculations.
+
 
 ### Matrix math
 
-Here we calculate the value added matrix (**W**).
+Here we calculate the value added matrix (**W**)
+within in the data frame using `dplyr::mutate()`.
 
 ```{r}
 with_W <- GHA1971_MW %>% 
@@ -150,11 +154,14 @@ with_W <- GHA1971_MW %>%
     W = matsbyname::transpose_byname(GHA1971_MW$V) %>%
       matsbyname::difference_byname(GHA1971_IEA$U)
   )
+dplyr::glimpse(with_W)
 with_W$W[[1]]
 ```
 
 
 ### Upstream swim
+
+The PSUT framework allows upstream and downstream "swims."
 
 Here is the final demand matrix for the IEA data.
 
@@ -171,6 +178,7 @@ First, we calculate all the input-output matrices.
 ```{r}
 with_io_mats <- GHA1971_IEA %>% 
   Recca::calc_io_mats()
+dplyr::glimpse(with_io_mats)
 ```
 
 Next, we define a `Y_prime` matrix that contains only final demand from residences.
@@ -233,9 +241,23 @@ dplyr::glimpse(with_efficiencies)
 ```
 
 
+## Pipelines
+
+Another package (`PFUAggDatabase`) 
+does the above calculations (and more!) for
+all countries; 
+all years;
+energy and exergy;
+last stage final and useful;
+IEA, MW, and both;
+etc.
+The calculations are parallelized across countries.
+Despite parallelization, the calculations take several hours on a 10-core laptop, 
+We will (eventually) generating the `PFUAggDatabase` on a supercomputer.
+
 
 ## Conclusion
 
-
-
-
+In combination, the PSUT framework and the `R` packages
+`matsbyname`, `matsindf`, and `Recca`
+provide powerful analysis tools for energy conversion chains.
