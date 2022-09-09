@@ -13,7 +13,7 @@ years <- 1960:2019                         # The years to be analyzed
 # years <- 1971
 
 countries <- PFUDatabase::canonical_countries %>% as.character()
-
+# countries <- c("GHA")
 # countries <- c("USA")
 
 # Countries with unique allocation data.
