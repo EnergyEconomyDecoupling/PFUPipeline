@@ -52,7 +52,7 @@ psut_mats <- folder %>%
 Let's look at its contents.
 
 ```{r}
-tibble::glimpse(psut_mats)
+dplyr::glimpse(psut_mats)
 ```
 
 The metadata columns contain the following values.
@@ -76,7 +76,7 @@ Simple matrices can be found in the muscle work data frames.
 ```{r}
 GHA1971_MW <- psut_mats %>% 
   dplyr::filter(Country == "GHA", Year == 1971, Energy.type == "E", Last.stage == "Final", IEAMW == "MW")
-tibble::glimpse(GHA1971_MW)
+dplyr::glimpse(GHA1971_MW)
 GHA1971_MW$R[[1]]
 GHA1971_MW$U[[1]]
 GHA1971_MW$V[[1]]
@@ -90,17 +90,17 @@ gha_mw_file <- file.path("~", "GHA1971_MW.xlsx")
 Recca::write_ecc_to_excel(GHA1971_MW, path = gha_mw_file, overwrite_file = TRUE)
 ```
 
-
 Or a Sankey diagram can be created.
 
 ```{r}
-Recca::make_sankey(R = GHA1971_MW$R, U = GHA1971_MW$U, 
-                   V = GHA1971_MW$V, Y = GHA1971_MW$Y)$Sankey[[1]]
+GHA1971_MW %>% 
+  Recca::make_sankey() %>% 
+  magrittr::extract2("Sankey") %>% 
+  magrittr::extract2(1)
 ```
 
-
-More complicated matrices can be seen in the IEA data.
-This one is final energy only.
+The IEA data give rise to more complicated matrices.
+This one is has the last stage being final energy.
 
 ```{r}
 GHA1971_IEA <- psut_mats %>% 
@@ -111,11 +111,11 @@ Recca::write_ecc_to_excel(GHA1971_IEA, path = gha_iea_file, overwrite_file = TRU
 
 
 ```{r}
-Recca::make_sankey(R = GHA1971_IEA$R, U = GHA1971_IEA$U, 
-                   V = GHA1971_IEA$V, Y = GHA1971_IEA$Y)$Sankey[[1]]
+GHA1971_IEA %>% 
+  Recca::make_sankey() %>% 
+  magrittr::extract2("Sankey") %>% 
+  magrittr::extract2(1)
 ```
-
-
 
 When we push to useful energy, the matrices become more complex.
 
@@ -126,16 +126,15 @@ gha_iea_file <- file.path("~", "GHA1971_IEA_useful.xlsx")
 Recca::write_ecc_to_excel(GHA1971_IEA_useful, path = gha_iea_file, overwrite_file = TRUE)
 ```
 
-
-And the Sankey diagram is busier,
+And the Sankey diagram is unsurprisingly busier,
 but the matrices keep everything organized.
 
 ```{r}
-Recca::make_sankey(R = GHA1971_IEA_useful$R, U = GHA1971_IEA_useful$U, 
-                   V = GHA1971_IEA_useful$V, Y = GHA1971_IEA_useful$Y)$Sankey[[1]]
+GHA1971_IEA_useful %>% 
+  Recca::make_sankey() %>% 
+  magrittr::extract2("Sankey") %>% 
+  magrittr::extract2(1)
 ```
-
-
 
 
 ## Example calculations
@@ -143,34 +142,100 @@ Recca::make_sankey(R = GHA1971_IEA_useful$R, U = GHA1971_IEA_useful$U,
 
 ### Matrix math
 
+Here we calculate the value added matrix (**W**).
+
 ```{r}
-W <- matsbyname::transpose_byname(GHA1971_IEA$V) %>%
-  matsbyname::difference_byname(GHA1971_IEA$U)
-# View(W[[1]])
+with_W <- GHA1971_MW %>% 
+  dplyr::mutate(
+    W = matsbyname::transpose_byname(GHA1971_MW$V) %>%
+      matsbyname::difference_byname(GHA1971_IEA$U)
+  )
+with_W$W[[1]]
 ```
 
 
 ### Upstream swim
 
+Here is the final demand matrix for the IEA data.
+
 ```{r}
 # View(GHA1971_IEA$Y[[1]])
 ```
 
-Let's say we wanted to find the energy required to provide additions to the stock of Crude oil in the country
-using an input-output ``upstream swim.''
+Let's say we wanted to know the energy (at all stages)
+required to provide residential energy in the country.
+We can use an input-output ``upstream swim'' for that analysis.
 
-First, we calculate all the input-ouput matrices.
+First, we calculate all the input-output matrices.
 
 ```{r}
-io_mats <- GHA1971_IEA %>% 
+with_io_mats <- GHA1971_IEA %>% 
   Recca::calc_io_mats()
 ```
 
+Next, we define a `Y_prime` matrix that contains only final demand from residences.
+
 ```{r}
-Y_prime <- GHA1971_IEA$Y[[1]] %>%
-  matsbyname::select_cols_byname("^Stock changes")
-Y_prime
+with_Y_prime <- with_io_mats %>% 
+  dplyr::mutate(
+    Y_prime = Y %>% 
+      matsbyname::select_cols_byname("Residential")
+  )
+with_Y_prime$Y_prime[[1]]
 ```
+
+Now let's swim upstream from the `Y_prime` matrix to see what upstream energy 
+is needed to supply Residential final demand.
+
+```{r}
+residential_ecc <- with_Y_prime %>% 
+  Recca::new_Y()
+dplyr::glimpse(residential_ecc)
+```
+
+The `_prime` matrices are what we want.
+So we keep those and make a new Sankey diagram.
+
+```{r}
+residential_ecc %>% 
+  dplyr::select(R_prime, U_prime, V_prime, Y_prime) %>% 
+  dplyr::rename(
+    R = R_prime, 
+    U = U_prime, 
+    V = V_prime, 
+    Y = Y_prime
+  ) %>% 
+  Recca::make_sankey() %>% 
+  magrittr::extract2("Sankey") %>% 
+  magrittr::extract2(1)
+```
+
+From the Sankey diagram, we can see all the ways in which Ghanaian residences used final energy in 1971.
+
+
+### Efficiencies
+
+With the Residential sector isolated, we can calculate the efficiency of energy use in residences.
+
+```{r}
+primary_industries <- IEATools::tpes_flows
+primary_industries
+finaldemand_sectors <- IEATools::fd_sectors
+finaldemand_sectors
+with_efficiencies <- residential_ecc %>% 
+  Recca::primary_aggregates(p_industries = primary_industries, pattern_type = "leading") %>% 
+  Recca::finaldemand_aggregates(fd_sectors = finaldemand_sectors) %>%
+  dplyr::mutate(
+    eta_pf_net = as.numeric(EX.fd_net) / as.numeric(EX.p),
+    eta_pf_gross = as.numeric(EX.fd_gross) / as.numeric(EX.p)
+  )
+dplyr::glimpse(with_efficiencies)
+```
+
+
+
+## Conclusion
+
 
 
 
