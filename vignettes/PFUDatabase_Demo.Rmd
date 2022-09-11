@@ -206,14 +206,23 @@ The `_prime` matrices are what we want.
 So we keep those and make a new Sankey diagram.
 
 ```{r}
-residential_ecc %>% 
-  dplyr::select(R_prime, U_prime, V_prime, Y_prime) %>% 
+residential_ecc_trimmed <- residential_ecc %>% 
+  dplyr::select(Country, Method, Energy.type, Last.stage, Year, IEAMW,
+                R_prime, U_prime, V_prime, Y_prime) %>% 
   dplyr::rename(
     R = R_prime, 
     U = U_prime, 
     V = V_prime, 
     Y = Y_prime
   ) %>% 
+  dplyr::mutate(Sector = "Residential")
+dplyr::glimpse(residential_ecc_trimmed)
+```
+
+Make a Sankey diagram of energy required to supply Residential demand only.
+
+```{r}
+residential_ecc_trimmed %>% 
   Recca::make_sankey() %>% 
   magrittr::extract2("Sankey") %>% 
   magrittr::extract2(1)
@@ -231,7 +240,7 @@ primary_industries <- IEATools::tpes_flows
 primary_industries
 finaldemand_sectors <- IEATools::fd_sectors
 finaldemand_sectors
-with_efficiencies <- residential_ecc %>% 
+with_efficiencies <- residential_ecc_trimmed %>% 
   Recca::primary_aggregates(p_industries = primary_industries, pattern_type = "leading") %>% 
   Recca::finaldemand_aggregates(fd_sectors = finaldemand_sectors) %>%
   dplyr::mutate(
