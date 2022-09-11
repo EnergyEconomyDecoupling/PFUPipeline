@@ -103,16 +103,16 @@ The IEA data give rise to more complicated matrices.
 This one is has the last stage being final energy.
 
 ```{r}
-GHA1971_IEA <- psut_mats %>% 
+GHA1971_IEA_final <- psut_mats %>% 
   dplyr::filter(Country == "GHA", Year == 1971, Energy.type == "E", 
                 Last.stage == "Final", IEAMW == "IEA")
 gha_iea_file <- file.path("~", "GHA1971_IEA_final.xlsx")
-Recca::write_ecc_to_excel(GHA1971_IEA, path = gha_iea_file, overwrite_file = TRUE)
+Recca::write_ecc_to_excel(GHA1971_IEA_final, path = gha_iea_file, overwrite_file = TRUE)
 ```
 
 
 ```{r}
-GHA1971_IEA %>% 
+GHA1971_IEA_final %>% 
   Recca::make_sankey() %>% 
   magrittr::extract2("Sankey") %>% 
   magrittr::extract2(1)
@@ -153,7 +153,7 @@ within the data frame using `dplyr::mutate()`.
 with_W <- GHA1971_MW %>% 
   dplyr::mutate(
     W = matsbyname::transpose_byname(GHA1971_MW$V) %>%
-      matsbyname::difference_byname(GHA1971_IEA$U)
+      matsbyname::difference_byname(GHA1971_MW$U)
   )
 dplyr::glimpse(with_W)
 with_W$W[[1]]
@@ -177,7 +177,7 @@ We can use an input-output ``upstream swim'' for that analysis.
 First, we calculate all the input-output matrices.
 
 ```{r}
-with_io_mats <- GHA1971_IEA %>% 
+with_io_mats <- GHA1971_IEA_final %>% 
   Recca::calc_io_mats()
 dplyr::glimpse(with_io_mats)
 ```
@@ -208,10 +208,14 @@ So we keep those and make a new Sankey diagram.
 ```{r}
 residential_ecc_trimmed <- residential_ecc %>% 
   dplyr::select(Country, Method, Energy.type, Last.stage, Year, IEAMW,
-                R_prime, U_prime, V_prime, Y_prime) %>% 
+                R_prime, U_prime, U_feed_prime, U_EIOU_prime, 
+                r_EIOU_prime, V_prime, Y_prime, S_units) %>% 
   dplyr::rename(
     R = R_prime, 
     U = U_prime, 
+    U_feed = U_feed_prime,
+    U_EIOU = U_EIOU_prime,
+    r_EIOU = r_EIOU_prime,
     V = V_prime, 
     Y = Y_prime
   ) %>% 
