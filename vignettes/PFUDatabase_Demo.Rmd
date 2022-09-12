@@ -73,31 +73,46 @@ Let's look at a few of matrices using Ghana 1971 as an example.
 Simple matrices can be found in the muscle work data frames.
 
 ```{r}
-GHA1971_MW <- psut_mats %>% 
+GHA1971_MW_final <- psut_mats %>% 
   dplyr::filter(Country == "GHA", Year == 1971, Energy.type == "E", 
                 Last.stage == "Final", IEAMW == "MW")
-dplyr::glimpse(GHA1971_MW)
-GHA1971_MW$R[[1]]
-GHA1971_MW$U[[1]]
-GHA1971_MW$V[[1]]
-GHA1971_MW$Y[[1]]
+dplyr::glimpse(GHA1971_MW_final)
+GHA1971_MW_final$R[[1]]
+GHA1971_MW_final$U[[1]]
+GHA1971_MW_final$V[[1]]
+GHA1971_MW_final$Y[[1]]
 ```
 
 These matrices can be dumped to an Excel file for easier browsing.
 
 ```{r}
-gha_mw_file <- file.path("~", "GHA1971_MW.xlsx")
-Recca::write_ecc_to_excel(GHA1971_MW, path = gha_mw_file, overwrite_file = TRUE)
+gha_mw_file <- file.path("~", "GHA1971_MW_final.xlsx")
+Recca::write_ecc_to_excel(GHA1971_MW_final, path = gha_mw_file, overwrite_file = TRUE)
 ```
 
 Or a Sankey diagram can be created.
 
 ```{r}
-GHA1971_MW %>% 
+GHA1971_MW_final %>% 
   Recca::make_sankey() %>% 
   magrittr::extract2("Sankey") %>% 
   magrittr::extract2(1)
 ```
+
+
+When useful energy is the last stage, 
+we see the food and feed creating muscle work.
+
+```{r}
+GHA1971_MW_useful <- psut_mats %>% 
+  dplyr::filter(Country == "GHA", Year == 1971, Energy.type == "E", 
+                Last.stage == "Useful", IEAMW == "MW")
+GHA1971_MW_useful %>% 
+  Recca::make_sankey() %>% 
+  magrittr::extract2("Sankey") %>% 
+  magrittr::extract2(1)
+```
+
 
 The IEA data give rise to more complicated matrices.
 This one is has the last stage being final energy.
