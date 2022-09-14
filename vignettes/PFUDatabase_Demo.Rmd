@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup, include = FALSE}
 library(dplyr)
 library(PFUDatabase)
 library(pins)
@@ -23,6 +23,11 @@ library(Recca)
 
 
 ## Introduction
+
+This vignette demonstrates the World PFU Database.
+
+
+## Load `PFUDatabase`
 
 `PFUDatabase` is a package that runs a `targets` pipeline
 and stores data in Dropbox using the `pins` package.
@@ -165,10 +170,10 @@ Here we calculate the value added matrix (**W**)
 within the data frame using `dplyr::mutate()`.
 
 ```{r}
-with_W <- GHA1971_MW %>% 
+with_W <- GHA1971_MW_final %>% 
   dplyr::mutate(
-    W = matsbyname::transpose_byname(GHA1971_MW$V) %>%
-      matsbyname::difference_byname(GHA1971_MW$U)
+    W = matsbyname::transpose_byname(GHA1971_MW_final$V) %>%
+      matsbyname::difference_byname(GHA1971_MW_final$U)
   )
 dplyr::glimpse(with_W)
 with_W$W[[1]]
