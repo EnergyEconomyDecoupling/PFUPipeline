@@ -43,8 +43,8 @@ One valid pin name is "psut" and a valid pin release is "20220828T174526Z-60a07"
 ```{r}
 folder <- PFUSetup::get_abs_paths()[["pipeline_releases_folder"]]
 folder
-version <- "20220828T174526Z-60a07" # All countries
-# version <- "20220909T125050Z-e5a95" # Only GHA
+# version <- "20220828T174526Z-60a07" # All countries
+version <- "20220909T125050Z-e5a95" # Only GHA
 psut_mats <- folder %>% 
   pins::board_folder(versioned = TRUE) %>% 
   pins::pin_read("psut", version = version)
