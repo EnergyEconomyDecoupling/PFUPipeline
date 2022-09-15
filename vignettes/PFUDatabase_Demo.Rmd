@@ -182,7 +182,7 @@ The PSUT framework allows upstream and downstream "swims."
 Here is the final demand matrix for the IEA data.
 
 ```{r}
-# View(GHA1971_IEA$Y[[1]])
+# View(GHA1971_IEA_final$Y[[1]])
 ```
 
 Let's say we wanted to know the energy (at all stages)
