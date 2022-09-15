@@ -24,13 +24,18 @@ library(Recca)
 
 ## Introduction
 
+This vignette demonstrates the features of the PFU Database.
+
+
+## Load `PFUDatabase`
+
 `PFUDatabase` is a package that runs a `targets` pipeline
 and stores data in Dropbox using the `pins` package.
 
 To retrieve data, one needs
 
-* Access to the Dropbox folder containing pipeline releases.
-* A valid pin name.
+* access to the Dropbox folder containing pipeline releases and
+* a valid pin name.
 
 One valid pin name is "psut" and a valid pin release is "20220828T174526Z-60a07".
 "20220828T174526Z-60a07" contains data for all countries (155) and all years (1960--2019).
@@ -38,8 +43,8 @@ One valid pin name is "psut" and a valid pin release is "20220828T174526Z-60a07"
 ```{r}
 folder <- PFUSetup::get_abs_paths()[["pipeline_releases_folder"]]
 folder
-# version <- "20220828T174526Z-60a07" # All countries
-version <- "20220909T125050Z-e5a95" # Only GHA
+version <- "20220828T174526Z-60a07" # All countries
+# version <- "20220909T125050Z-e5a95" # Only GHA
 psut_mats <- folder %>% 
   pins::board_folder(versioned = TRUE) %>% 
   pins::pin_read("psut", version = version)
@@ -247,7 +252,7 @@ residential_ecc_trimmed %>%
   magrittr::extract2(1)
 ```
 
-From the Sankey diagram, we can see all the ways in which Ghanaian residences used final energy in 1971.
+From the Sankey diagram, we can see all the ways in which Ghanaian residences demanded upstream primary energy in 1971.
 
 
 ### Efficiencies
@@ -272,7 +277,7 @@ dplyr::glimpse(with_efficiencies)
 
 ## Pipelines
 
-Another package (`PFUAggDatabase`) 
+A different `R` package (`PFUAggDatabase`) 
 does the above calculations (and more!) for
 all countries; 
 all years;
