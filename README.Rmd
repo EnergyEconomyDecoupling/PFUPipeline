@@ -7,6 +7,9 @@ output: github_document
 <!-- Be sure to edit README.Rmd and generate the README.md file by Cmd/Ctl-shift-K -->
 <!-- *********** -->
 
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/EnergyEconomyDecoupling/PFUDatabase/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/EnergyEconomyDecoupling/PFUDatabase/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
 
 # PFUDatabase [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5228375.svg)](https://doi.org/10.5281/zenodo.5228375)
 
