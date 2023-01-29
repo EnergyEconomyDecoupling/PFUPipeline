@@ -2,9 +2,12 @@
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 on:
   push:
-    branches: [main, master]
+    branches: [main, master, develop, release-*]
   pull_request:
     branches: [main, master]
+  schedule:
+    # Build main branch daily at 7 AM UTC, 2 AM EST, 3 AM EDT.
+    - cron: "0 7 * * *"
 
 name: R-CMD-check
 
@@ -41,7 +44,7 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck
+          extra-packages: any::rcmdcheck, github::MatthewHeun/IEATools, github::MatthewHeun/MKHthemes, github::EnergyEconomyDecoupling/MWTools, github::MatthewHeun/Recca, github::EnergyEconomyDecoupling/CEDATools
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2

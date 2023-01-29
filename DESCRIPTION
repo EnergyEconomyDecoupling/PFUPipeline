@@ -44,11 +44,6 @@ Suggests:
     rmarkdown,
     spelling,
     testthat (>= 3.0.0)
-Remotes: 
-    github::EnergyEconomyDecoupling/CEDATools,
-    github::MatthewHeun/IEATools,
-    github::MatthewHeun/MKHthemes,
-    github::MatthewHeun/Recca
 Depends: 
     R (>= 2.10)
 VignetteBuilder: knitr
