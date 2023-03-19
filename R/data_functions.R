@@ -208,6 +208,7 @@ specify <- function(BalancedIEAData,
 make_iea_psut <- function(SpecifiedIEAData,
                           countries,
                           country = IEATools::iea_cols$country) {
-  dplyr::filter(SpecifiedIEAData, .data[[country]] %in% countries) %>%
+  SpecifiedIEAData |> 
+    dplyr::filter(.data[[country]] %in% countries) |> 
     IEATools::prep_psut()
 }

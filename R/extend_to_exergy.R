@@ -69,13 +69,23 @@ calc_phi_pf_vecs <- function(phi_constants,
     )
   nrows_trimmed_phi_u_vecs <- nrow(trimmed_phi_u_vecs)
   
-  trimmed_phi_u_vecs %>%
-    dplyr::mutate(
-      # Add a column of phi_pf vectors
-      "{phi_pf_colname}" := RCLabels::make_list(phi_pf_vec,
-                                                n = nrows_trimmed_phi_u_vecs,
-                                                lenx = 1)
-    )
+  if (nrows_trimmed_phi_u_vecs == 0) {
+    # If we have no rows, add the column that would have been created, and
+    # return the zero-row data frame.
+    out <- trimmed_phi_u_vecs |> 
+      dplyr::mutate(
+        "{phi_pf_colname}" := numeric()
+      )
+  } else {
+    out <- trimmed_phi_u_vecs %>%
+      dplyr::mutate(
+        # Add a column of phi_pf vectors
+        "{phi_pf_colname}" := RCLabels::make_list(phi_pf_vec,
+                                                  n = nrows_trimmed_phi_u_vecs,
+                                                  lenx = 1)
+      )
+  }
+  return(out)
 }
 
 

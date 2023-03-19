@@ -9,15 +9,16 @@ library(PFUDatabase)
 
 
 # Version
-version <- "v1.0"
+version <- "v1.1"
 
 # Custom parameters
-years <- 1960:2019                         # The years to be analyzed
-# years <- 1971
+# years <- 1960:2019                         # The years to be analyzed
+years <- 1971
 
-countries <- PFUDatabase::canonical_countries %>% as.character()
+# countries <- PFUDatabase::canonical_countries %>% as.character()
 # countries <- c("GHA")
 # countries <- c("USA")
+countries <- c("GRL")
 
 # Countries with unique allocation data.
 # countries <- c("BRA", "CAN", "CHNM", "DEU", "DNK", "ESP", "FRA", "GBR", "GHA",
@@ -38,7 +39,7 @@ additional_exemplar_countries <- c("WRLD", # World
                                    "BUNK") # Bunkers
 
 # Should we do a release of the results?
-release <- TRUE
+release <- FALSE
 
 # End user-adjustable parameters.
 

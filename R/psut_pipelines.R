@@ -221,8 +221,8 @@ get_pipeline <- function(countries = "all",
                             pattern = quote(map(Countries))),
 
     # (11e) Exergy-to-energy ratio (phi_pf) vectors at the primary and final stages
-    targets::tar_target_raw("Phipfvecs", quote(calc_phi_pf_vecs(phi_u_vecs = Phiuvecs,
-                                                                phi_constants = PhiConstants,
+    targets::tar_target_raw("Phipfvecs", quote(calc_phi_pf_vecs(phi_constants = PhiConstants,
+                                                                phi_u_vecs = Phiuvecs,
                                                                 countries = Countries)),
                             pattern = quote(map(Countries))),
 
