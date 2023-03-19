@@ -138,21 +138,41 @@ add_iea_mw_psut <- function(.iea_psut = NULL, .mw_psut = NULL,
     )
   
   # Join the data frames.
-  dplyr::full_join(iea_specific, mw_specific, 
-                   by = c(country, year, method, energy_type, last_stage)) %>% 
+  joined <- dplyr::full_join(iea_specific, mw_specific, 
+                             by = c(country, year, method, energy_type, last_stage))
+  if (nrow(joined) == 0) {
+    # We zero-row data frames.  
+    # Make the columns, but don't do the math (which fails)
+    out <- joined |> 
+      dplyr::mutate(
+        "{R}" := double(), 
+        "{U}" := double(), 
+        "{V}" := double(), 
+        "{Y}" := double(), 
+        "{U_feed}" := double(), 
+        "{U_eiou}" := double(), 
+        "{s_units}" := double(), 
+        "{r_eiou}" := double() 
+      )
+  } else {
+    out <- joined |> 
+      dplyr::mutate(
+        # Calculate new columns by summing matrices
+        "{R}" := matsbyname::sum_byname(.data[[R_iea]], .data[[R_mw]]), 
+        "{U}" := matsbyname::sum_byname(.data[[U_iea]], .data[[U_mw]]), 
+        "{V}" := matsbyname::sum_byname(.data[[V_iea]], .data[[V_mw]]), 
+        "{Y}" := matsbyname::sum_byname(.data[[Y_iea]], .data[[Y_mw]]), 
+        "{U_feed}" := matsbyname::sum_byname(.data[[U_feed_iea]], .data[[U_feed_mw]]), 
+        "{U_eiou}" := matsbyname::sum_byname(.data[[U_eiou_iea]], .data[[U_eiou_mw]]), 
+        "{s_units}" := matsbyname::sum_byname(.data[[s_units_iea]], .data[[s_units_mw]]), 
+        "{r_eiou}" := matsbyname::quotient_byname(.data[[U_eiou]], .data[[U]]) %>% 
+          # For cases where U is 0, will get 0/0 = NaN.  Convert to zero.
+          matsbyname::replaceNaN_byname(val = 0), 
+      )
+  }
+  # Get rid of unneeded columns and return
+  out |> 
     dplyr::mutate(
-      # Calculate new columns by summing matrices
-      "{R}" := matsbyname::sum_byname(.data[[R_iea]], .data[[R_mw]]), 
-      "{U}" := matsbyname::sum_byname(.data[[U_iea]], .data[[U_mw]]), 
-      "{V}" := matsbyname::sum_byname(.data[[V_iea]], .data[[V_mw]]), 
-      "{Y}" := matsbyname::sum_byname(.data[[Y_iea]], .data[[Y_mw]]), 
-      "{U_feed}" := matsbyname::sum_byname(.data[[U_feed_iea]], .data[[U_feed_mw]]), 
-      "{U_eiou}" := matsbyname::sum_byname(.data[[U_eiou_iea]], .data[[U_eiou_mw]]), 
-      "{s_units}" := matsbyname::sum_byname(.data[[s_units_iea]], .data[[s_units_mw]]), 
-      "{r_eiou}" := matsbyname::quotient_byname(.data[[U_eiou]], .data[[U]]) %>% 
-        # For cases where U is 0, will get 0/0 = NaN.  Convert to zero.
-        matsbyname::replaceNaN_byname(val = 0), 
-      # Delete unneeded columns
       "{R_iea}" := NULL,
       "{R_mw}" := NULL,
       "{U_iea}" := NULL,
