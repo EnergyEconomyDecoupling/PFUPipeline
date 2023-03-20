@@ -47,6 +47,10 @@ filter_mw_to_iea_years <- function(.psut_mw,
 #' @param .iea_psut An IEA PSUT data frame. 
 #' @param .mw_psut A muscle work PSUT data frame.
 #' @param countries The countries to be analyzed.
+#' @param iea_suffix A suffix for IEA columns, used internally. 
+#'                   Default is "_iea".
+#' @param mw_suffix A suffix for muscle work columns, used internally. 
+#'                  Default is "_mw".
 #' @param R The name of the column of `R` matrices. Default is `IEATools::psut_cols$R`.
 #' @param U The name of the column of `U` matrices. Default is `IEATools::psut_cols$U`.
 #' @param V The name of the column of `V` matrices. Default is `IEATools::psut_cols$V`.
@@ -66,6 +70,8 @@ filter_mw_to_iea_years <- function(.psut_mw,
 #' @export
 add_iea_mw_psut <- function(.iea_psut = NULL, .mw_psut = NULL, 
                             countries,
+                            iea_suffix = "_iea",
+                            mw_suffix = "_mw",
                             # Input columns
                             R = IEATools::psut_cols$R, 
                             U = IEATools::psut_cols$U,
@@ -90,22 +96,20 @@ add_iea_mw_psut <- function(.iea_psut = NULL, .mw_psut = NULL,
     return(.mw_psut)
   }
   # Define new column names.
-  iea <- "_iea"
-  R_iea <- paste0(R, iea)
-  U_iea <- paste0(U, iea)
-  U_feed_iea <- paste0(U_feed, iea)
-  U_eiou_iea <- paste0(U_eiou, iea)
-  V_iea <- paste0(V, iea)
-  Y_iea <- paste0(Y, iea)
-  s_units_iea <- paste0(s_units, iea)
-  mw <- "_mw"
-  R_mw <- paste0(R, mw)
-  U_mw <- paste0(U, mw)
-  V_mw <- paste0(V, mw)
-  Y_mw <- paste0(Y, mw)
-  U_feed_mw <- paste0(U_feed, mw)
-  U_eiou_mw <- paste0(U_eiou, mw)
-  s_units_mw <- paste0(s_units, mw)
+  R_iea <- paste0(R, iea_suffix)
+  U_iea <- paste0(U, iea_suffix)
+  U_feed_iea <- paste0(U_feed, iea_suffix)
+  U_eiou_iea <- paste0(U_eiou, iea_suffix)
+  V_iea <- paste0(V, iea_suffix)
+  Y_iea <- paste0(Y, iea_suffix)
+  s_units_iea <- paste0(s_units, iea_suffix)
+  R_mw <- paste0(R, mw_suffix)
+  U_mw <- paste0(U, mw_suffix)
+  V_mw <- paste0(V, mw_suffix)
+  Y_mw <- paste0(Y, mw_suffix)
+  U_feed_mw <- paste0(U_feed, mw_suffix)
+  U_eiou_mw <- paste0(U_eiou, mw_suffix)
+  s_units_mw <- paste0(s_units, mw_suffix)
   
   # Rename columns and delete the r_eiou column, as we will recalculate later.
   iea_specific <- .iea_psut %>% 
@@ -145,14 +149,14 @@ add_iea_mw_psut <- function(.iea_psut = NULL, .mw_psut = NULL,
     # Make the columns, but don't do the math (which fails)
     out <- joined |> 
       dplyr::mutate(
-        "{R}" := double(), 
-        "{U}" := double(), 
-        "{V}" := double(), 
-        "{Y}" := double(), 
-        "{U_feed}" := double(), 
-        "{U_eiou}" := double(), 
-        "{s_units}" := double(), 
-        "{r_eiou}" := double() 
+        "{R}" := list(), 
+        "{U}" := list(), 
+        "{V}" := list(), 
+        "{Y}" := list(), 
+        "{U_feed}" := list(), 
+        "{U_eiou}" := list(), 
+        "{s_units}" := list(), 
+        "{r_eiou}" := list() 
       )
   } else {
     out <- joined |> 

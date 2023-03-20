@@ -8,6 +8,8 @@ add_iea_mw_psut(
   .iea_psut = NULL,
   .mw_psut = NULL,
   countries,
+  iea_suffix = "_iea",
+  mw_suffix = "_mw",
   R = IEATools::psut_cols$R,
   U = IEATools::psut_cols$U,
   V = IEATools::psut_cols$V,
@@ -29,6 +31,12 @@ add_iea_mw_psut(
 \item{.mw_psut}{A muscle work PSUT data frame.}
 
 \item{countries}{The countries to be analyzed.}
+
+\item{iea_suffix}{A suffix for IEA columns, used internally.
+Default is "_iea".}
+
+\item{mw_suffix}{A suffix for muscle work columns, used internally.
+Default is "_mw".}
 
 \item{R}{The name of the column of \code{R} matrices. Default is \code{IEATools::psut_cols$R}.}
 

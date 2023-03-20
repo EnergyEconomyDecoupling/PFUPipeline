@@ -74,7 +74,7 @@ calc_phi_pf_vecs <- function(phi_constants,
     # return the zero-row data frame.
     out <- trimmed_phi_u_vecs |> 
       dplyr::mutate(
-        "{phi_pf_colname}" := numeric()
+        "{phi_pf_colname}" := list()
       )
   } else {
     out <- trimmed_phi_u_vecs %>%
@@ -140,79 +140,105 @@ sum_phi_vecs <- function(phi_pf_vecs,
                          .phi_pf_colnames = ".phi_pf_colnames",
                          .phi_u_colnames = ".phi_u_colnames") {
   
-  phi_df <- dplyr::full_join(phi_pf_vecs,
-                             phi_u_vecs,
-                             by = matsindf::everything_except(phi_pf_vecs, phi_pf_colname) %>% as.character()) %>%
-    dplyr::filter(.data[[country]] %in% countries) %>%
-    dplyr::mutate(
-      # Check that all phi vectors have 1 column.
-      "{.phi_shape_OK}" := (matsbyname::ncol_byname(.data[[phi_pf_colname]]) == 1) &
-        (matsbyname::ncol_byname(.data[[phi_u_colname]]) == 1)
-    )
-  if (! all(phi_df[[.phi_shape_OK]])) {
-    # Prepare an error message.
-    bad_rows <- phi_df %>%
-      dplyr::filter(!.data[[.phi_shape_OK]])
-    err_msg <- paste("In sum_phi_vecs(), need phi vectors with one column only. These vectors are bad:", matsindf::df_to_msg(bad_rows))
-    stop(err_msg)
-  }
+  # phi_df <- dplyr::full_join(phi_pf_vecs,
+  #                            phi_u_vecs,
+  #                            by = matsindf::everything_except(phi_pf_vecs, phi_pf_colname) %>% as.character()) %>%
+  #   dplyr::filter(.data[[country]] %in% countries) %>%
+  #   dplyr::mutate(
+  #     # Check that all phi vectors have 1 column.
+  #     "{.phi_shape_OK}" := (matsbyname::ncol_byname(.data[[phi_pf_colname]]) == 1) &
+  #       (matsbyname::ncol_byname(.data[[phi_u_colname]]) == 1)
+  #   )
+  # if (! all(phi_df[[.phi_shape_OK]])) {
+  #   # Prepare an error message.
+  #   bad_rows <- phi_df %>%
+  #     dplyr::filter(!.data[[.phi_shape_OK]])
+  #   err_msg <- paste("In sum_phi_vecs(), need phi vectors with one column only. These vectors are bad:", matsindf::df_to_msg(bad_rows))
+  #   stop(err_msg)
+  # }
   
-  out <- phi_df %>%
-    dplyr::mutate(
-      "{phi_colname}" := matsbyname::sum_byname(.data[[phi_pf_colname]], .data[[phi_u_colname]]),
-      "{.phi_shape_OK}" := NULL
-    )
-  
-  # Check that the length of each phi vector is the sum of the lengths of the phi_pf and phi_u vectors.
-  # If not, there are duplicate rows in the vectors, which should be an error.
-  # There should be no primary-final energy carriers that are also useful energy carriers.
-  # Also check that the result of the sum is a single column.
-  # If we get 2 or more columns, it means that the column names were different for phi_pf and phi_u,
-  # which is an error.
-  
-  err_check <- out %>%
-    dplyr::mutate(
-      "{.nrow_diffs}" := matsbyname::nrow_byname(.data[[phi_pf_colname]]) %>% as.numeric() +
-        matsbyname::nrow_byname(.data[[phi_u_colname]]) %>% as.numeric() -
-        matsbyname::nrow_byname(.data[[phi_colname]]) %>% as.numeric(),
-      "{.phi_sum_OK}" := matsbyname::iszero_byname(.data[[.nrow_diffs]]),
-      "{.phi_cols_OK}" := matsbyname::ncol_byname(.data[[phi_colname]]) == 1
-    )
-  
-  if (!all(err_check[[.phi_sum_OK]])) {
-    # There is a problem.
-    problem_rows <- err_check %>%
-      dplyr::filter(!.data[[.phi_sum_OK]]) %>%
+
+  temp <- dplyr::full_join(phi_pf_vecs,
+                           phi_u_vecs,
+                           by = matsindf::everything_except(phi_pf_vecs, phi_pf_colname) %>% as.character()) %>%
+    dplyr::filter(.data[[country]] %in% countries)
+  if (nrow(temp) == 0) {
+    out <- temp |> 
+      # Add an empty list column that would otherwise contain vectors.
       dplyr::mutate(
-        "{.nrow_diffs}" := NULL,
-        "{.phi_sum_OK}" := NULL,
-        "{.phi_cols_OK}" := NULL,
-        "{phi_pf_colname}" := NULL,
-        "{phi_u_colname}" := NULL,
-        "{phi_colname}" := NULL
+        "{phi_colname}" := list()
+      )
+  } else {
+    phi_df <- temp |> 
+      dplyr::mutate(
+        # Check that all phi vectors have 1 column.
+        "{.phi_shape_OK}" := (matsbyname::ncol_byname(.data[[phi_pf_colname]]) == 1) &
+          (matsbyname::ncol_byname(.data[[phi_u_colname]]) == 1)
+      )
+    if (! all(phi_df[[.phi_shape_OK]])) {
+      # Prepare an error message.
+      bad_rows <- phi_df %>%
+        dplyr::filter(!.data[[.phi_shape_OK]])
+      err_msg <- paste("In sum_phi_vecs(), need phi vectors with one column only. These vectors are bad:", matsindf::df_to_msg(bad_rows))
+      stop(err_msg)
+    }
+    out <- phi_df %>%
+      dplyr::mutate(
+        "{phi_colname}" := matsbyname::sum_byname(.data[[phi_pf_colname]], .data[[phi_u_colname]]),
+        "{.phi_shape_OK}" := NULL
       )
     
-    err_msg <- paste("In PFUDatabase::sum_phi_vecs(), the length of the sum of phi_pf and phi_u vectors",
-                     "was not the same as the sum of vector lengths. The rows that failed the test are",
-                     matsindf::df_to_msg(problem_rows))
-    stop(err_msg)
-  }
-  if (!all(err_check[[.phi_cols_OK]])) {
-    # There is a problem.
-    problem_rows <- err_check %>%
-      dplyr::filter(!.data[[.phi_cols_OK]]) %>%
+    # Check that the length of each phi vector is the sum of the lengths of the phi_pf and phi_u vectors.
+    # If not, there are duplicate rows in the vectors, which should be an error.
+    # There should be no primary-final energy carriers that are also useful energy carriers.
+    # Also check that the result of the sum is a single column.
+    # If we get 2 or more columns, it means that the column names were different for phi_pf and phi_u,
+    # which is an error.
+    
+    err_check <- out %>%
       dplyr::mutate(
-        "{phi_pf_colname}" := paste(phi_pf_colname, "=", matsbyname::getcolnames_byname(.data[[phi_pf_colname]])),
-        "{phi_u_colname}" := paste(phi_u_colname, "=", matsbyname::getcolnames_byname(.data[[phi_u_colname]])),
-        "{.nrow_diffs}" := NULL,
-        "{.phi_sum_OK}" := NULL,
-        "{.phi_cols_OK}" := NULL,
-        "{phi_colname}" := NULL
+        "{.nrow_diffs}" := matsbyname::nrow_byname(.data[[phi_pf_colname]]) %>% as.numeric() +
+          matsbyname::nrow_byname(.data[[phi_u_colname]]) %>% as.numeric() -
+          matsbyname::nrow_byname(.data[[phi_colname]]) %>% as.numeric(),
+        "{.phi_sum_OK}" := matsbyname::iszero_byname(.data[[.nrow_diffs]]),
+        "{.phi_cols_OK}" := matsbyname::ncol_byname(.data[[phi_colname]]) == 1
       )
-    err_msg <- paste("In PFUDatabase::sum_phi_vecs(), the names of the phi.pf and phi.u columns should be the same.",
-                     "Rows that failed the test are",
-                     matsindf::df_to_msg(problem_rows))
-    stop(err_msg)
+    
+    if (!all(err_check[[.phi_sum_OK]])) {
+      # There is a problem.
+      problem_rows <- err_check %>%
+        dplyr::filter(!.data[[.phi_sum_OK]]) %>%
+        dplyr::mutate(
+          "{.nrow_diffs}" := NULL,
+          "{.phi_sum_OK}" := NULL,
+          "{.phi_cols_OK}" := NULL,
+          "{phi_pf_colname}" := NULL,
+          "{phi_u_colname}" := NULL,
+          "{phi_colname}" := NULL
+        )
+      
+      err_msg <- paste("In PFUDatabase::sum_phi_vecs(), the length of the sum of phi_pf and phi_u vectors",
+                       "was not the same as the sum of vector lengths. The rows that failed the test are",
+                       matsindf::df_to_msg(problem_rows))
+      stop(err_msg)
+    }
+    if (!all(err_check[[.phi_cols_OK]])) {
+      # There is a problem.
+      problem_rows <- err_check %>%
+        dplyr::filter(!.data[[.phi_cols_OK]]) %>%
+        dplyr::mutate(
+          "{phi_pf_colname}" := paste(phi_pf_colname, "=", matsbyname::getcolnames_byname(.data[[phi_pf_colname]])),
+          "{phi_u_colname}" := paste(phi_u_colname, "=", matsbyname::getcolnames_byname(.data[[phi_u_colname]])),
+          "{.nrow_diffs}" := NULL,
+          "{.phi_sum_OK}" := NULL,
+          "{.phi_cols_OK}" := NULL,
+          "{phi_colname}" := NULL
+        )
+      err_msg <- paste("In PFUDatabase::sum_phi_vecs(), the names of the phi.pf and phi.u columns should be the same.",
+                       "Rows that failed the test are",
+                       matsindf::df_to_msg(problem_rows))
+      stop(err_msg)
+    }
   }
   
   out %>%
