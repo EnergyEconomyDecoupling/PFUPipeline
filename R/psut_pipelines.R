@@ -221,8 +221,8 @@ get_pipeline <- function(countries = "all",
                             pattern = quote(map(Countries))),
 
     # (11e) Exergy-to-energy ratio (phi_pf) vectors at the primary and final stages
-    targets::tar_target_raw("Phipfvecs", quote(calc_phi_pf_vecs(phi_u_vecs = Phiuvecs,
-                                                                phi_constants = PhiConstants,
+    targets::tar_target_raw("Phipfvecs", quote(calc_phi_pf_vecs(phi_constants = PhiConstants,
+                                                                phi_u_vecs = Phiuvecs,
                                                                 countries = Countries)),
                             pattern = quote(map(Countries))),
 
@@ -234,9 +234,9 @@ get_pipeline <- function(countries = "all",
 
     # (12) Extend to useful stage
     targets::tar_target_raw("PSUTUsefulIEA", quote(move_to_useful(psut_final = PSUTFinalIEA,
-                                                                C_mats = Cmats,
-                                                                eta_phi_vecs = EtafuPhiuvecs,
-                                                                countries = Countries)),
+                                                                  C_mats = Cmats,
+                                                                  eta_phi_vecs = EtafuPhiuvecs,
+                                                                  countries = Countries)),
                             pattern = quote(map(Countries))),
 
     # (13) Add other methods
@@ -244,8 +244,8 @@ get_pipeline <- function(countries = "all",
 
     # (14) Add exergy quantifications of energy
     targets::tar_target_raw("PSUTIEA", quote(move_to_exergy(psut_energy = PSUTUsefulIEA,
-                                                         phi_vecs = Phivecs,
-                                                         countries = Countries)),
+                                                            phi_vecs = Phivecs,
+                                                            countries = Countries)),
                             pattern = quote(map(Countries))),
 
 

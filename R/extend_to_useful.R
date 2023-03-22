@@ -153,7 +153,7 @@ move_to_useful <- function(psut_final,
     IEATools::meta_cols(return_names = TRUE,
                         years_to_keep = year,
                         not_meta = c(C_Y, C_eiou))
-  psut_final %>%
+  out <- psut_final %>%
     dplyr::filter(.data[[country]] %in% countries) %>%
     # Join the matrices and vectors to the psut_final data frame.
     dplyr::full_join(C_mats %>% dplyr::filter(.data[[country]] %in% countries), by = m_cols) %>%

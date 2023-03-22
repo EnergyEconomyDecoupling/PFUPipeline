@@ -13,13 +13,10 @@ version <- "v1.1"
 
 # Custom parameters
 years <- 1960:2020                        # The years to be analyzed
-# years <- 1971
 
+countries <- "WRLD"
 # countries <- PFUDatabase::canonical_countries %>% as.character()
 # countries <- c(PFUDatabase::canonical_countries, "WRLD") %>% as.character()
-countries <- "WRLD"
-# countries <- c("GHA")
-# countries <- c("USA")
 
 # Countries with unique allocation data.
 # countries <- c("BRA", "CAN", "CHNM", "DEU", "DNK", "ESP", "FRA", "GBR", "GHA",
