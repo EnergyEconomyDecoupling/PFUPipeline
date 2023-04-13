@@ -6,6 +6,7 @@
 \usage{
 make_balanced(
   .iea_data,
+  max_fix = 3,
   countries,
   country = IEATools::iea_cols$country,
   grp_vars = c(country, IEATools::iea_cols$method, IEATools::iea_cols$energy_type,
@@ -13,13 +14,17 @@ make_balanced(
 )
 }
 \arguments{
-\item{.iea_data}{A tidy IEA data frame}
+\item{.iea_data}{A tidy IEA data frame.}
 
-\item{countries}{The countries that should be balanced}
+\item{max_fix}{The maximum allowable energy imbalance to fix.
+Default is \code{3}.}
+
+\item{countries}{The countries that should be balanced.}
 
 \item{country}{See \code{IEATools::iea_cols}}
 
-\item{grp_vars}{the groups that should be checked. Default is
+\item{grp_vars}{the groups that should be checked.
+Default is
 \code{c(country, IEATools::iea_cols$method, IEATools::iea_cols$energy_type, IEATools::iea_cols$last_stage, IEATools::iea_cols$product)}.}
 }
 \value{

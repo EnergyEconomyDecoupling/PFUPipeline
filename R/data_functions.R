@@ -129,9 +129,12 @@ is_balanced <- function(.iea_data,
 #' Internally, this function uses `IEATools::fix_tidy_iea_df_balances()`.
 #' Grouping is done internal to this function using the value of `grp_vars`.
 #'
-#' @param .iea_data A tidy IEA data frame
-#' @param countries The countries that should be balanced
-#' @param grp_vars the groups that should be checked. Default is
+#' @param .iea_data A tidy IEA data frame.
+#' @param max_fix The maximum allowable energy imbalance to fix.
+#'                Default is `3`.
+#' @param countries The countries that should be balanced.
+#' @param grp_vars the groups that should be checked. 
+#'                 Default is
 #'                 `c(country, IEATools::iea_cols$method, IEATools::iea_cols$energy_type, IEATools::iea_cols$last_stage, IEATools::iea_cols$product)`.
 #' @param country See `IEATools::iea_cols`
 #'
@@ -145,6 +148,7 @@ is_balanced <- function(.iea_data,
 #'   make_balanced(countries = c("GHA", "ZAF")) %>%
 #'   is_balanced(countries = c("GHA", "ZAF"))
 make_balanced <- function(.iea_data,
+                          max_fix = 3,
                           countries,
                           country = IEATools::iea_cols$country,
                           grp_vars = c(country,
@@ -155,7 +159,7 @@ make_balanced <- function(.iea_data,
                                        IEATools::iea_cols$product)) {
   dplyr::filter(.iea_data, .data[[country]] %in% countries) %>%
     dplyr::group_by(!!as.name(grp_vars)) %>%
-    IEATools::fix_tidy_iea_df_balances() %>%
+    IEATools::fix_tidy_iea_df_balances(max_fix = max_fix) %>%
     dplyr::ungroup()
 }
 
