@@ -12,10 +12,14 @@ library(PFUDatabase)
 version <- "v1.1"
 
 # Custom parameters
-years <- 1960:2020                        # The years to be analyzed
+# years <- 1960:2020                        # The years to be analyzed
+# years <- 1971
+years <- 1971:1980
 
-countries <- "WRLD"
-# countries <- PFUDatabase::canonical_countries %>% as.character()
+# countries <- "USA"
+# countries <- "COL"
+# countries <- "WRLD"
+countries <- c(PFUDatabase::canonical_countries |> as.character(), "WRLD")
 # countries <- c(PFUDatabase::canonical_countries, "WRLD") %>% as.character()
 
 # Countries with unique allocation data.
@@ -36,6 +40,9 @@ additional_exemplar_countries <- c("WRLD", # World
                                    "SAMR", # South America 
                                    "BUNK") # Bunkers
 
+# Should we specify non-energy flows?
+specify_non_energy_flows <- FALSE
+
 # Should we do a release of the results?
 release <- FALSE
 
@@ -55,6 +62,7 @@ targets::tar_option_set(
 # Pull in the pipeline
 PFUDatabase::get_pipeline(countries = countries,
                           additional_exemplar_countries = additional_exemplar_countries,
+                          specify_non_energy_flows = specify_non_energy_flows,
                           years = years,
                           how_far = "all_targets",
                           iea_data_path = PFUSetup::get_abs_paths(version = version)[["iea_data_path"]],

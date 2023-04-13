@@ -12,6 +12,9 @@
 #'                                      However, their final-to-useful allocations and efficiencies
 #'                                      may be used as exemplar information for the countries in `countries`.
 #'                                      Default is `NULL`, indicating no additional exemplars.
+#' @param specify_non_energy_flows A boolean that tells whether to provide additional
+#'                                 specificity to non-energy flows, when available.
+#'                                 Default is `FALSE`.
 #' @param years The years to be studied.
 #' @param how_far A string indicating the last target to include in the plan that is returned.
 #'                Default is "all_targets" to indicate all targets of the plan should be returned.
@@ -43,6 +46,7 @@
 #' @export
 get_pipeline <- function(countries = "all",
                          additional_exemplar_countries = NULL,
+                         specify_non_energy_flows = FALSE,
                          years = "all",
                          how_far = "all_targets",
                          iea_data_path,
@@ -69,6 +73,7 @@ get_pipeline <- function(countries = "all",
     # (0) Set many arguments to be objects in the targets cache for later use
     targets::tar_target_raw("Countries", list(countries)),
     targets::tar_target_raw("AdditionalExemplarCountries", list(additional_exemplar_countries)),
+    targets::tar_target_raw("SpecifyNonEnergyFlows", list(specify_non_energy_flows)),
     targets::tar_target_raw("AllocAndEffCountries", quote(combine_countries_exemplars(Countries, AdditionalExemplarCountries))),
     targets::tar_target_raw("Years", list(years)),
     targets::tar_target_raw("IEADataPath", iea_data_path),
@@ -94,7 +99,9 @@ get_pipeline <- function(countries = "all",
     # (1) Load pipeline information
 
     # (1a) IEA data
-    targets::tar_target_raw("AllIEAData", quote(IEATools::load_tidy_iea_df(IEADataPath, override_df = CountryConcordanceTable))),
+    targets::tar_target_raw("AllIEAData", quote(IEATools::load_tidy_iea_df(IEADataPath, 
+                                                                           override_df = CountryConcordanceTable, 
+                                                                           specify_non_energy_flows = SpecifyNonEnergyFlows))),
     targets::tar_target_raw("IEAData", quote(AllIEAData %>%
                                                filter_countries_years(countries = AllocAndEffCountries, years = Years))),
 

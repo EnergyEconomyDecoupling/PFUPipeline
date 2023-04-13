@@ -7,6 +7,7 @@
 get_pipeline(
   countries = "all",
   additional_exemplar_countries = NULL,
+  specify_non_energy_flows = FALSE,
   years = "all",
   how_far = "all_targets",
   iea_data_path,
@@ -40,6 +41,10 @@ An energy conversion chain will \emph{not} be constructed for these countries.
 However, their final-to-useful allocations and efficiencies
 may be used as exemplar information for the countries in \code{countries}.
 Default is \code{NULL}, indicating no additional exemplars.}
+
+\item{specify_non_energy_flows}{A boolean that tells whether to provide additional
+specificity to non-energy flows, when available.
+Default is \code{FALSE}.}
 
 \item{years}{The years to be studied.}
 
