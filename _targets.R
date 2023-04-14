@@ -45,6 +45,9 @@ additional_exemplar_countries <- c(# "WRLD", # World
 # Should we specify non-energy flows?
 specify_non_energy_flows <- TRUE
 
+# Should we apply fixes to the IEA data?
+apply_fixes <- TRUE
+
 # Should we do a release of the results?
 release <- FALSE
 
@@ -65,6 +68,7 @@ targets::tar_option_set(
 PFUDatabase::get_pipeline(countries = countries,
                           additional_exemplar_countries = additional_exemplar_countries,
                           specify_non_energy_flows = specify_non_energy_flows,
+                          apply_fixes = apply_fixes,
                           years = years,
                           how_far = "all_targets",
                           iea_data_path = PFUSetup::get_abs_paths(version = version)[["iea_data_path"]],
