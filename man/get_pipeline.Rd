@@ -8,6 +8,7 @@ get_pipeline(
   countries = "all",
   additional_exemplar_countries = NULL,
   specify_non_energy_flows = FALSE,
+  apply_fixes = FALSE,
   years = "all",
   how_far = "all_targets",
   iea_data_path,
@@ -44,6 +45,10 @@ Default is \code{NULL}, indicating no additional exemplars.}
 
 \item{specify_non_energy_flows}{A boolean that tells whether to provide additional
 specificity to non-energy flows, when available.
+Default is \code{FALSE}.}
+
+\item{apply_fixes}{A boolean that tells whether to fix some of the IEA WEEB data,
+where possible.
 Default is \code{FALSE}.}
 
 \item{years}{The years to be studied.}
