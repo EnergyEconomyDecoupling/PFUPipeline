@@ -32,7 +32,7 @@ countries <- c(PFUDatabase::canonical_countries |> as.character(), "WRLD")
 # Additional exemplar countries are countries which aren't included in the workflow
 # as individual countries, but from which allocation or efficiency data may be 
 # obtained and assigned to countries in the workflow using the exemplar system.
-additional_exemplar_countries <- c("WRLD", # World
+additional_exemplar_countries <- c(# "WRLD", # World
                                    "AFRI", # Africa 
                                    "ASIA", # Asia
                                    "EURP", # Europe 
