@@ -13,7 +13,6 @@ version <- "v1.1"
 
 # Custom parameters
 years <- 1960:2020                        # The years to be analyzed
-years <- 2019:2020
 # years <- 1971
 # years <- 1971:1980
 
