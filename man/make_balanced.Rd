@@ -6,7 +6,7 @@
 \usage{
 make_balanced(
   .iea_data,
-  max_fix = 3,
+  max_fix = 6,
   countries,
   country = IEATools::iea_cols$country,
   grp_vars = c(country, IEATools::iea_cols$method, IEATools::iea_cols$energy_type,

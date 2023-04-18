@@ -148,7 +148,7 @@ is_balanced <- function(.iea_data,
 #'   make_balanced(countries = c("GHA", "ZAF")) %>%
 #'   is_balanced(countries = c("GHA", "ZAF"))
 make_balanced <- function(.iea_data,
-                          max_fix = 3,
+                          max_fix = 6,
                           countries,
                           country = IEATools::iea_cols$country,
                           grp_vars = c(country,
