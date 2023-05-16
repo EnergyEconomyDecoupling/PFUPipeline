@@ -5,7 +5,7 @@
 \alias{double_counted_countries}
 \title{Double-counted countries}
 \format{
-A string list with 18 entries.
+A string list with 17 entries.
 }
 \usage{
 double_counted_countries

@@ -198,9 +198,16 @@ assemble_fu_allocation_tables <- function(incomplete_allocation_tables,
   # The only information we need to return is the completed allocation tables.
   # Expand (unnest) only the completed allocation table column to give one data frame of all the FU allocations
   # for all years and all countries.
-  completed_tables_by_year %>%
+  # completed_tables_by_year %>%
+  #   dplyr::select(complete_alloc_tables) %>%
+  #   tidyr::unnest(cols = .data[[complete_alloc_tables]])
+  out <- completed_tables_by_year %>%
     dplyr::select(complete_alloc_tables) %>%
     tidyr::unnest(cols = .data[[complete_alloc_tables]])
+  assertthat::assert_that(!(complete_alloc_tables %in% names(out)), 
+                          msg = paste(paste0(countries, collapse = ", "), 
+                                      "do (does) not have allocation information in PFUDatabase::assemble_fu_allocation_tables()"))
+  return(out)
 }
 
 
