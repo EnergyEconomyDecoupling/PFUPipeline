@@ -5,7 +5,7 @@
 \alias{canonical_countries}
 \title{Canonical countries}
 \format{
-A string list with 160 entries.
+A string list with 159 entries.
 }
 \usage{
 canonical_countries
