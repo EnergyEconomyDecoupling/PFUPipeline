@@ -209,7 +209,7 @@ all_countries <- list(
   moz = "MOZ",
   # mrt = "MRT",
   mus = "MUS",
-  myu = "MYU",
+  # myu = "MYU",
   mys = "MYS",
   nam = "NAM",
   namr = "NAMR",
