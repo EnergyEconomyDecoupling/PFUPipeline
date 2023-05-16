@@ -271,6 +271,7 @@ get_pipeline <- function(countries = "all",
     # (15) Make PSUT matrices from muscle work data
     targets::tar_target_raw("PSUTMW_energy", quote(make_mw_psut(.hmw_df = HMWPFUData,
                                                                 .amw_df = AMWPFUData,
+                                                                matrix_class = matrix_class,
                                                                 countries = Countries,
                                                                 years = Years)),
                             pattern = quote(map(Countries))),
