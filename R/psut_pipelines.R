@@ -170,7 +170,7 @@ get_pipeline <- function(countries = "all",
                             pattern = quote(map(AllocAndEffCountries))),
 
     # (4) Arrange all the data into PSUT matrices with final stage data.
-    targets::tar_target_raw("PSUTFinalIEA", quote(make_iea_psut(SpecifiedIEA, countries = Countries)),
+    targets::tar_target_raw("PSUTFinalIEA", quote(make_iea_psut(SpecifiedIEA, countries = Countries, matrix_class = matrix_class)),
                             pattern = quote(map(Countries))),
 
     # (5) Load exemplar table and make lists for each country and year from disk.
