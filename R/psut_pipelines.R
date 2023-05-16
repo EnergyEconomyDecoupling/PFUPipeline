@@ -50,6 +50,7 @@
 get_pipeline <- function(countries = "all",
                          additional_exemplar_countries = NULL,
                          specify_non_energy_flows = FALSE,
+                         matrix_class = c("matrix", "Matrix"), 
                          apply_fixes = FALSE, 
                          years = "all",
                          how_far = "all_targets",

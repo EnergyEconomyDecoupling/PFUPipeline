@@ -44,6 +44,12 @@ additional_exemplar_countries <- c(# "WRLD", # World
                                    "SAMR", # South America 
                                    "BUNK") # Bunkers
 
+# Which type of matrix objects should be created?
+# "matrix" is the built-in matrix object in R.
+# "Matrix" will provide sparse matrices.
+# matrix_class <- "matrix"
+matrix_class <- "matrix"
+
 # Should we specify non-energy flows?
 specify_non_energy_flows <- TRUE
 
@@ -69,6 +75,7 @@ targets::tar_option_set(
 # Pull in the pipeline
 PFUDatabase::get_pipeline(countries = countries,
                           additional_exemplar_countries = additional_exemplar_countries,
+                          matrix_class = matrix_class,
                           specify_non_energy_flows = specify_non_energy_flows,
                           apply_fixes = apply_fixes,
                           years = years,
