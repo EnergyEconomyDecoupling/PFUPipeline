@@ -286,7 +286,8 @@ get_pipeline <- function(countries = "all",
     # (16) Move from energy to exergy for muscle work
     # Create a single phi vector applicable to all years.
     targets::tar_target_raw("PhivecMW", quote(MWTools::phi_vec_mw(.phi_table = PhiConstants,
-                                                                   mw_energy_carriers = MWTools::mw_products))),
+                                                                  mw_energy_carriers = MWTools::mw_products, 
+                                                                  matrix_class = matrix_class))),
     # This target has a phi vector for every Country-Year combination.
     # Note the plural spelling.
     targets::tar_target_raw("PhivecsMW", quote(calc_phi_vecs_mw(psut_energy_mw = PSUTMW_energy,
