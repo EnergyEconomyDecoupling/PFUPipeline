@@ -12,6 +12,9 @@
 #'                                      However, their final-to-useful allocations and efficiencies
 #'                                      may be used as exemplar information for the countries in `countries`.
 #'                                      Default is `NULL`, indicating no additional exemplars.
+#' @param matrix_class One of "matrix" or "Matrix", specifying which kind of matrix 
+#'                     objects are to be created.
+#'                     Default is "matrix".
 #' @param specify_non_energy_flows A boolean that tells whether to provide additional
 #'                                 specificity to non-energy flows, when available.
 #'                                 Default is `FALSE`.
