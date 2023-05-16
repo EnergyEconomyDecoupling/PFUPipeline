@@ -72,6 +72,8 @@ get_pipeline <- function(countries = "all",
                          pipeline_caches_folder,
                          release = FALSE) {
   
+  matrix_class <- match.arg(matrix_class)
+  
   # Create the pipeline
   list(
 
