@@ -219,5 +219,5 @@ make_iea_psut <- function(SpecifiedIEAData,
   matrix_class <- match.arg(matrix_class)
   SpecifiedIEAData |> 
     dplyr::filter(.data[[country]] %in% countries) |> 
-    IEATools::prep_psut()
+    IEATools::prep_psut(matrix_class = matrix_class)
 }
