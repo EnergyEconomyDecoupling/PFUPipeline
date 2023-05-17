@@ -12,19 +12,19 @@ library(PFUDatabase)
 version <- "v1.1"
 
 # Custom parameters
-years <- 1960:2020                        # The years to be analyzed
-# years <- 1971
+# years <- 1960:2020                        # The years to be analyzed
+years <- 1971
 # years <- 1971:1980
 
 # countries <- c("ARM", "COL", "WRLD")
-# countries <- "USA"
+countries <- "USA"
 # countries <- "GHA"
 # countries <- "COL"
 # countries <- "AGO"
 # countries <- "WMBK"
 # countries <- c("AGO", "COL")
 # countries <- "WRLD"
-countries <- c(PFUDatabase::canonical_countries, "WRLD") |> as.character()
+# countries <- c(PFUDatabase::canonical_countries, "WRLD") |> as.character()
 
 # Countries with unique allocation data.
 # countries <- c("WRLD", "BRA", "CAN", "CHNM", "DEU", "DNK", "ESP", "FRA", "GBR", "GHA",
@@ -34,7 +34,7 @@ countries <- c(PFUDatabase::canonical_countries, "WRLD") |> as.character()
 # Additional exemplar countries are countries which aren't included in the workflow
 # as individual countries, but from which allocation or efficiency data may be 
 # obtained and assigned to countries in the workflow using the exemplar system.
-additional_exemplar_countries <- c(# "WRLD", # World
+additional_exemplar_countries <- c("WRLD", # World
                                    "AFRI", # Africa 
                                    "ASIA", # Asia
                                    "EURP", # Europe 
