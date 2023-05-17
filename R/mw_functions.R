@@ -6,6 +6,9 @@
 #' @param .hmw_df,.amw_df Data frames of primary-final-useful muscle work data.
 #' @param countries The countries to be analyzed. 
 #' @param years The years to be analyzed.
+#' @param matrix_class The type of matrix to be created. 
+#'                     One of "matrix" (the base class) or 
+#'                     "Matrix" (for sparse matrices).
 #' @param country The name of the country column in `.hmw_df` and `.amw_df`. Default is `MWTools::mw_cols$country`.
 #' @param year The name of the year column in `.hmw_df` and `.amw_df`.Default is `MWTools::mw_cols$year`.
 #'
@@ -15,8 +18,11 @@
 make_mw_psut <- function(.hmw_df, .amw_df,
                          countries,
                          years,
+                         matrix_class = c("matrix", "Matrix"),
                          country = MWTools::mw_cols$country, 
                          year = MWTools::mw_cols$year) {
+  
+  matrix_class <- match.arg(matrix_class)
   
   hmw_data <- .hmw_df %>% 
     dplyr::filter(.data[[country]] %in% countries, 
@@ -24,7 +30,7 @@ make_mw_psut <- function(.hmw_df, .amw_df,
   amw_data <- .amw_df %>% 
     dplyr::filter(.data[[country]] %in% countries, 
                   .data[[year]] %in% years)
-  MWTools::prep_psut(.hmw_df = hmw_data, .amw_df = amw_data)
+  MWTools::prep_psut(.hmw_df = hmw_data, .amw_df = amw_data, matrix_class = matrix_class)
 }
 
 

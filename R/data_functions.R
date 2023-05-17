@@ -197,6 +197,9 @@ specify <- function(BalancedIEAData,
 #'
 #' @param SpecifiedIEAData A data frame that has already been specified via `specify()`.
 #' @param countries The countries you want to convert to PSUT matrices.
+#' @param matrix_class The type of matrix to be created. 
+#'                     One of "matrix" (the base class) or 
+#'                     "Matrix" (for sparse matrices).
 #' @param country See `IEATools::iea_cols`.
 #'
 #' @return A `matsindf`-style data frame.
@@ -211,7 +214,9 @@ specify <- function(BalancedIEAData,
 #'   make_iea_psut(countries = c("GHA", "ZAF"))
 make_iea_psut <- function(SpecifiedIEAData,
                           countries,
+                          matrix_class = c("matrix", "Matrix"),
                           country = IEATools::iea_cols$country) {
+  matrix_class <- match.arg(matrix_class)
   SpecifiedIEAData |> 
     dplyr::filter(.data[[country]] %in% countries) |> 
     IEATools::prep_psut()

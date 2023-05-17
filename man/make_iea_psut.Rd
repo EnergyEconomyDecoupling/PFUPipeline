@@ -7,6 +7,7 @@
 make_iea_psut(
   SpecifiedIEAData,
   countries,
+  matrix_class = c("matrix", "Matrix"),
   country = IEATools::iea_cols$country
 )
 }
@@ -14,6 +15,10 @@ make_iea_psut(
 \item{SpecifiedIEAData}{A data frame that has already been specified via \code{specify()}.}
 
 \item{countries}{The countries you want to convert to PSUT matrices.}
+
+\item{matrix_class}{The type of matrix to be created.
+One of "matrix" (the base class) or
+"Matrix" (for sparse matrices).}
 
 \item{country}{See \code{IEATools::iea_cols}.}
 }

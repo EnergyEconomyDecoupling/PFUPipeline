@@ -9,6 +9,7 @@ make_mw_psut(
   .amw_df,
   countries,
   years,
+  matrix_class = c("matrix", "Matrix"),
   country = MWTools::mw_cols$country,
   year = MWTools::mw_cols$year
 )
@@ -19,6 +20,10 @@ make_mw_psut(
 \item{countries}{The countries to be analyzed.}
 
 \item{years}{The years to be analyzed.}
+
+\item{matrix_class}{The type of matrix to be created.
+One of "matrix" (the base class) or
+"Matrix" (for sparse matrices).}
 
 \item{country}{The name of the country column in \code{.hmw_df} and \code{.amw_df}. Default is \code{MWTools::mw_cols$country}.}
 
