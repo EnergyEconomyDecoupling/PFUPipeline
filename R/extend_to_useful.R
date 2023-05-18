@@ -153,12 +153,14 @@ move_to_useful <- function(psut_final,
     IEATools::meta_cols(return_names = TRUE,
                         years_to_keep = year,
                         not_meta = c(C_Y, C_eiou))
-  psut_final %>%
-    dplyr::filter(.data[[country]] %in% countries) %>%
+  psut_final_filtered <- psut_final |> 
+    dplyr::filter(.data[[country]] %in% countries)
+    
+  psut_final_filtered %>%
     # Join the matrices and vectors to the psut_final data frame.
     dplyr::full_join(C_mats %>% dplyr::filter(.data[[country]] %in% countries), by = m_cols) %>%
     dplyr::full_join(eta_phi_vecs %>% dplyr::filter(.data[[country]] %in% countries), by = m_cols) %>%
     # And, finally, extend to the useful stage.
     IEATools::extend_to_useful() |> 
-    IEATools::stack_final_useful_df(psut_final)
+    IEATools::stack_final_useful_df(psut_final_filtered)
 }
