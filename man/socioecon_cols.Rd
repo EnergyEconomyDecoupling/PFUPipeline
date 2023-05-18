@@ -3,31 +3,31 @@
 \docType{data}
 \name{socioecon_cols}
 \alias{socioecon_cols}
-\title{Socioeconomic data column names}
+\title{Constants for socioeconomic data files}
 \format{
 A string list with 14 entries.
 \describe{
-\item{isocode_colname}{The name of a metadata column containing the 3-letter isocodes of countries.}
-\item{year_colname}{The name of a metadata column containing values for the year of the observation. Lower case.}
-\item{rgdpe_colname}{The name of the column containing data for Expenditure-side real GDP at chained PPPs (in million 2017 USD).}
-\item{rgdpo_colname}{The name of the column containing data for Output-side real GDP at chained PPPs (in million 2017 USD).}
-\item{rgdpna_colname}{The name of the column containing data for Real GDP at constant 2017 national prices (in million 2017 USD).}
-\item{emp_colname}{The name of the column containing data for Number of persons engaged (in millions).}
-\item{avh_colname}{The name of the column containing data for Average annual hours worked by persons engaged.}
-\item{hc_colname}{The name of the column containing data for Human capital index, based on years of schooling and returns to education; see Human capital in PWT9.}
-\item{rnna_colname}{The name of the column containing data for Capital stock at constant 2017 national prices (in million 2017 USD).}
-\item{rkna_colname}{The name of the column containing data for Capital services at constant 2017 national prices (2017 = 1).}
-\item{K_colname}{A more representative name for \code{rnna_colname}.}
-\item{Kserv_colname}{A more representative name for \code{rkna_colname}.}
-\item{L_colname}{The name of the column containing data for the total number of hours worked in a given year. See \code{PFUWorkflow::get_L_K_GDP_data}.}
-\item{Ladj_colname}{The name of the column containing data for the total number of hours worked adjusted by the human capital index. See \code{PFUWorkflow::get_L_K_GDP_data}.}
+\item{isocode_colname}{The name of the column containing ISO country codes, "isocode".}
+\item{year_colname}{The name of the column containing years, "Year".}
+\item{rgdpe_colname}{The name of the column containing rgdpe values, "rgdpe".}
+\item{rgdpo_colname}{The name of the column containing rgdpo values, "rgdpo".}
+\item{rgdpna_colname}{The name of the column containing rgdpna values, "rgdpna".}
+\item{emp_colname}{The name of the column containing employment values, "emp".}
+\item{avh_colname}{The name of the column containing avh values, "avh".}
+\item{hc_colname}{The name of the column containing hc values, "hc".}
+\item{rnna_colname}{The name of the column containing rnna values, "rnna".}
+\item{rkna_colname}{The name of the column containing rkna values, "rkna".}
+\item{K_colname}{The name of the column containing capital values, "K".}
+\item{Kserv_colname}{The name of the column containing capital services values, "Kserv".}
+\item{L_colname}{The name of the column containing labor values, "L".}
+\item{Ladj_colname}{The name of the column containing quality-adjusted labor values, "Ladj".}
 }
 }
 \usage{
 socioecon_cols
 }
 \description{
-A string list containing values for the column names of socioeconomic data. See \code{pwt10::pwt10.0}.
+A string list containing values for features of socioeconomic data files.
 }
 \examples{
 socioecon_cols

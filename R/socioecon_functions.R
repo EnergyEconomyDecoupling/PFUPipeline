@@ -6,7 +6,7 @@
 #' Note that some data is not available for some countries (mostly non-OECD).
 #'
 #' @param countries A string of iso 3-letter country codes
-#' @param isocode_colname See `PFUWorkflow::socioecon_cols`.
+#' @param isocode_colname See `PFUDatabase::socioecon_cols`.
 #'
 #' @return A data frame containing socioeconomic data from pwt10 for a set of countries.
 

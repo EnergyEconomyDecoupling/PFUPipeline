@@ -4,9 +4,57 @@ output: html_document
 ---
 
 
-# PFUDatabase 0.1.0 (2022-04-14)
+# PFUDatabase 0.1.1 (2023-05-18)
 
-* Beginning to develop as a `targets` workflow.
+* Released version 1.1 of the database.
+  So also releasing this version of the package.
+* Now filtering the muscle work data to only those
+  countries, years, methods, energy types, and last stages
+  also present in the IEA data.
+  Effectively, this change eliminates MW data 
+  in 1960-1970 for developing nations whose IEA data starts in 1971.
+  The target `PSUTMW_all_years` retains all of the muscle work data, but
+  the target `PSUTMW` is filtered.
+* Back to saving the cache upon release.
+  The cache is needed for the Shiny app.
+* No longer tracking 3 separate pinned outputs.
+  Now only one pin (PSUT) contains all data
+  with IEA and MW
+  identified by the IEAMW column.
+* React to name change: 
+    - matsbyname::make_list() --> RCLabels::make_list()
+* `add_iea_mw_psut()` now returns one of 
+  the IEA data frame or the muscle work data frame
+  when the other is `NULL`, thereby enabling
+  the pipeline to complete when 
+  data are missing in a year.
+* `verify_mw_energy_balance()` now returns `TRUE` when a 
+  zero-row data frame is supplied. 
+  This change enables analysis of years when 
+  no muscle work data are available.
+* New functions `load_amw_pfu_data()`, `load_hmw_pfu_data()`, 
+  and `rename_mw_sectors()` ensure
+  muscle work final demand sectors comport with
+  IEA final demand sectors.
+* `targets` pipeline now longer saves the cache.
+  We never looked at it, anyway.
+* `targets` pipeline now includes muscle work
+  on its own and combined with the IEA data.
+* `targets` pipeline now allows additional exemplar countries 
+  without IEA data by skipping writing allocations templates
+  when no IEA data exists.
+* New `targets` pipeline matches the previous `drake` workflow
+  in extent.
+* Cache is now stashed only when a release is requested.
+* Now ignore efficiency files that begin with "~$",
+  thereby ignoring open Excel sheets.
+* We no longer skip the first row of `FIN_ETA` sheets.
+  The first line formerly held a modification date.
+
+
+# PFUDatabase 0.1.0 (2022-04-14) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6462165.svg)](https://doi.org/10.5281/zenodo.6462165)
+
+* Beginning to develop as a package and a `targets` workflow.
 * Several pieces of the targets pipeline are now in place.
 
 

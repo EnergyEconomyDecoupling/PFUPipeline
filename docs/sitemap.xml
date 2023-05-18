@@ -10,6 +10,18 @@
     <loc>/LICENSE.html</loc>
   </url>
   <url>
+    <loc>/articles/How_to_Follow_a_Product.html</loc>
+  </url>
+  <url>
+    <loc>/articles/PFUDatabase_Demo.html</loc>
+  </url>
+  <url>
+    <loc>/articles/following_a_product.html</loc>
+  </url>
+  <url>
+    <loc>/articles/index.html</loc>
+  </url>
+  <url>
     <loc>/authors.html</loc>
   </url>
   <url>
@@ -19,13 +31,73 @@
     <loc>/news/index.html</loc>
   </url>
   <url>
+    <loc>/reference/add_iea_mw_psut.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aggcountries_mw_to_iea.html</loc>
+  </url>
+  <url>
+    <loc>/reference/all_countries.html</loc>
+  </url>
+  <url>
+    <loc>/reference/alloc_graph.html</loc>
+  </url>
+  <url>
+    <loc>/reference/alloc_plots_df.html</loc>
+  </url>
+  <url>
+    <loc>/reference/assemble_eta_fu_tables.html</loc>
+  </url>
+  <url>
+    <loc>/reference/assemble_fu_allocation_tables.html</loc>
+  </url>
+  <url>
+    <loc>/reference/assemble_phi_u_tables.html</loc>
+  </url>
+  <url>
+    <loc>/reference/build_psut_dataframe.html</loc>
+  </url>
+  <url>
+    <loc>/reference/calc_C_mats.html</loc>
+  </url>
+  <url>
+    <loc>/reference/calc_eta_fu_phi_u_vecs.html</loc>
+  </url>
+  <url>
+    <loc>/reference/calc_phi_pf_vecs.html</loc>
+  </url>
+  <url>
+    <loc>/reference/calc_phi_vecs_mw.html</loc>
+  </url>
+  <url>
+    <loc>/reference/canonical_countries.html</loc>
+  </url>
+  <url>
     <loc>/reference/combine_countries_exemplars.html</loc>
   </url>
   <url>
     <loc>/reference/data.html</loc>
   </url>
   <url>
+    <loc>/reference/double_counted_countries.html</loc>
+  </url>
+  <url>
+    <loc>/reference/eta_fu_graph.html</loc>
+  </url>
+  <url>
+    <loc>/reference/eta_fu_plots_df.html</loc>
+  </url>
+  <url>
+    <loc>/reference/exemplar_lists.html</loc>
+  </url>
+  <url>
+    <loc>/reference/exemplar_names.html</loc>
+  </url>
+  <url>
     <loc>/reference/filter_countries_years.html</loc>
+  </url>
+  <url>
+    <loc>/reference/filter_mw_to_iea_years.html</loc>
   </url>
   <url>
     <loc>/reference/get_L_K_GDP_data.html</loc>
@@ -46,16 +118,61 @@
     <loc>/reference/get_pipeline.html</loc>
   </url>
   <url>
+    <loc>/reference/ieamw_cols.html</loc>
+  </url>
+  <url>
     <loc>/reference/index.html</loc>
   </url>
   <url>
     <loc>/reference/is_balanced.html</loc>
   </url>
   <url>
+    <loc>/reference/load_amw_pfu_data.html</loc>
+  </url>
+  <url>
     <loc>/reference/load_country_concordance_table.html</loc>
   </url>
   <url>
+    <loc>/reference/load_exemplar_table.html</loc>
+  </url>
+  <url>
+    <loc>/reference/load_fu_allocation_tables.html</loc>
+  </url>
+  <url>
+    <loc>/reference/load_hmw_pfu_data.html</loc>
+  </url>
+  <url>
     <loc>/reference/machine_constants.html</loc>
+  </url>
+  <url>
+    <loc>/reference/make_balanced.html</loc>
+  </url>
+  <url>
+    <loc>/reference/make_iea_psut.html</loc>
+  </url>
+  <url>
+    <loc>/reference/make_mw_psut.html</loc>
+  </url>
+  <url>
+    <loc>/reference/move_to_exergy.html</loc>
+  </url>
+  <url>
+    <loc>/reference/move_to_useful.html</loc>
+  </url>
+  <url>
+    <loc>/reference/nonstat_alloc_graph.html</loc>
+  </url>
+  <url>
+    <loc>/reference/nonstat_alloc_plots_df.html</loc>
+  </url>
+  <url>
+    <loc>/reference/phi_sources.html</loc>
+  </url>
+  <url>
+    <loc>/reference/phi_u_graph.html</loc>
+  </url>
+  <url>
+    <loc>/reference/phi_u_plots_df.html</loc>
   </url>
   <url>
     <loc>/reference/pipe.html</loc>
@@ -67,6 +184,33 @@
     <loc>/reference/read_all_eta_files.html</loc>
   </url>
   <url>
+    <loc>/reference/release_target.html</loc>
+  </url>
+  <url>
+    <loc>/reference/rename_mw_sectors.html</loc>
+  </url>
+  <url>
+    <loc>/reference/sample_exemplar_table_path.html</loc>
+  </url>
+  <url>
+    <loc>/reference/sep_eta_fu_phi_u.html</loc>
+  </url>
+  <url>
     <loc>/reference/socioecon_cols.html</loc>
+  </url>
+  <url>
+    <loc>/reference/specify.html</loc>
+  </url>
+  <url>
+    <loc>/reference/stash_cache.html</loc>
+  </url>
+  <url>
+    <loc>/reference/sum_phi_vecs.html</loc>
+  </url>
+  <url>
+    <loc>/reference/target_names.html</loc>
+  </url>
+  <url>
+    <loc>/reference/verify_mw_energy_balance.html</loc>
   </url>
 </urlset>

@@ -1,6 +1,6 @@
 Package: PFUDatabase
 Title: Functions and Workflows for Primary-Final-Useful Societal Exergy Analysis Within the PSUT Framework
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: 
     c(person(given = "Matthew",
              family = "Heun",
@@ -15,30 +15,39 @@ Description: This package functions and workflows for primary-final-useful socie
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 Imports:
     assertthat,
-    CEDATools,
     dplyr,
+    ggplot2,
     IEATools,
+    lubridate,
     magrittr,
+    matsbyname,
+    matsindf,
+    MKHthemes,
+    MWTools,
+    PFUSetup,
+    parsedate,
+    pins,
     purrr,
     pwt10,
+    readr,
     readxl,
+    Recca,
+    RCLabels,
     rlang,
-    tarchetypes,
     targets,
     tibble,
-    tidyr,
-    tidyselect
+    tidyr
 Suggests: 
-    knitr
-Remotes: 
-    github::EnergyEconomyDecoupling/CEDATools,
-    github::MatthewHeun/IEATools,
-    github::MatthewHeun/MKHthemes,
-    github::MatthewHeun/Recca
+    knitr,
+    rmarkdown,
+    spelling,
+    testthat (>= 3.0.0)
 Depends: 
     R (>= 2.10)
 VignetteBuilder: knitr
 LazyData: true
+Config/testthat/edition: 3
+Language: en-US

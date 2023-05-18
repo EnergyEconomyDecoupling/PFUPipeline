@@ -1,0 +1,298 @@
+---
+title: "PFUDatabase Demo"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{PFUDatabase Demo}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, include = FALSE}
+library(dplyr)
+library(PFUDatabase)
+library(PFUSetup)
+library(pins)
+library(Recca)
+```
+
+
+## Introduction
+
+This vignette demonstrates the features of the `PFUDatabase` package.
+
+
+## Load `PFUDatabase`
+
+`PFUDatabase` is a package that runs a `targets` pipeline
+and stores data in Dropbox using the `pins` package.
+
+To retrieve data, one needs
+
+* access to the Dropbox folder containing pipeline releases and
+* a valid pin name.
+
+One valid pin name is "psut" and a valid pin release is "20220828T174526Z-60a07".
+"20220828T174526Z-60a07" contains data for all countries (155) and all years (1960--2019).
+
+```{r}
+folder <- PFUSetup::get_abs_paths()[["pipeline_releases_folder"]]
+folder
+# version <- "20220828T174526Z-60a07" # All countries
+version <- "20220909T125050Z-e5a95" # Only GHA
+psut_mats <- folder %>% 
+  pins::board_folder(versioned = TRUE) %>% 
+  pins::pin_read("psut", version = version)
+```
+
+
+## Data structure
+
+`psut_mats` is an `R` data frame. 
+Let's look at its contents.
+
+```{r}
+dplyr::glimpse(psut_mats)
+```
+
+The metadata columns contain the following values.
+
+```{r}
+psut_mats$Country %>% unique()
+psut_mats$Method %>% unique()
+psut_mats$Energy.type %>% unique()
+psut_mats$Last.stage %>% unique()
+c(psut_mats$Year %>% min(), psut_mats$Year %>% max())
+psut_mats$IEAMW %>% unique()
+```
+
+
+## Example ECC matrices
+
+Let's look at a few of matrices using Ghana 1971 as an example.
+Simple matrices can be found in the muscle work data frames.
+
+```{r}
+GHA1971_MW_final <- psut_mats %>% 
+  dplyr::filter(Country == "GHA", Year == 1971, Energy.type == "E", 
+                Last.stage == "Final", IEAMW == "MW")
+dplyr::glimpse(GHA1971_MW_final)
+GHA1971_MW_final$R[[1]]
+GHA1971_MW_final$U[[1]]
+GHA1971_MW_final$V[[1]]
+GHA1971_MW_final$Y[[1]]
+```
+
+These matrices can be dumped to an Excel file for easier browsing.
+
+```{r}
+gha_mw_file <- file.path("~", "GHA1971_MW_final.xlsx")
+Recca::write_ecc_to_excel(GHA1971_MW_final, path = gha_mw_file, overwrite_file = TRUE)
+```
+
+Or a Sankey diagram can be created.
+
+```{r}
+GHA1971_MW_final %>% 
+  Recca::make_sankey() %>% 
+  magrittr::extract2("Sankey") %>% 
+  magrittr::extract2(1)
+```
+
+
+When useful energy is the last stage, 
+we see the food and feed creating muscle work.
+
+```{r}
+GHA1971_MW_useful <- psut_mats %>% 
+  dplyr::filter(Country == "GHA", Year == 1971, Energy.type == "E", 
+                Last.stage == "Useful", IEAMW == "MW")
+GHA1971_MW_useful %>% 
+  Recca::make_sankey() %>% 
+  magrittr::extract2("Sankey") %>% 
+  magrittr::extract2(1)
+```
+
+
+The IEA data give rise to more complicated matrices.
+This one is has the last stage being final energy.
+
+```{r}
+GHA1971_IEA_final <- psut_mats %>% 
+  dplyr::filter(Country == "GHA", Year == 1971, Energy.type == "E", 
+                Last.stage == "Final", IEAMW == "IEA")
+gha_iea_file <- file.path("~", "GHA1971_IEA_final.xlsx")
+Recca::write_ecc_to_excel(GHA1971_IEA_final, path = gha_iea_file, overwrite_file = TRUE)
+```
+
+
+```{r}
+GHA1971_IEA_final %>% 
+  Recca::make_sankey() %>% 
+  magrittr::extract2("Sankey") %>% 
+  magrittr::extract2(1)
+```
+
+When we push to useful energy, the matrices become more complex.
+
+```{r}
+GHA1971_IEA_useful <- psut_mats %>% 
+  dplyr::filter(Country == "GHA", Year == 1971, Energy.type == "E", 
+                Last.stage == "Useful", IEAMW == "IEA")
+gha_iea_file <- file.path("~", "GHA1971_IEA_useful.xlsx")
+Recca::write_ecc_to_excel(GHA1971_IEA_useful, path = gha_iea_file, overwrite_file = TRUE)
+```
+
+And the Sankey diagram is unsurprisingly busier,
+but the matrices keep everything organized.
+
+```{r}
+GHA1971_IEA_useful %>% 
+  Recca::make_sankey() %>% 
+  magrittr::extract2("Sankey") %>% 
+  magrittr::extract2(1)
+```
+
+
+## Example calculations
+
+The following subsections illustrate example calculations.
+
+
+### Matrix math
+
+Here we calculate the value added matrix (**W**)
+within the data frame using `dplyr::mutate()`.
+
+```{r}
+with_W <- GHA1971_MW_final %>% 
+  dplyr::mutate(
+    W = matsbyname::transpose_byname(GHA1971_MW_final$V) %>%
+      matsbyname::difference_byname(GHA1971_MW_final$U)
+  )
+dplyr::glimpse(with_W)
+with_W$W[[1]]
+```
+
+
+### Upstream swim
+
+The PSUT framework allows upstream and downstream "swims."
+
+Here is the final demand matrix for the IEA data.
+
+```{r}
+# View(GHA1971_IEA_final$Y[[1]])
+```
+
+Let's say we wanted to know the energy (at all stages)
+required to provide residential energy in the country.
+We can use an input-output ``upstream swim'' for that analysis.
+
+First, we calculate all the input-output matrices.
+
+```{r}
+with_io_mats <- GHA1971_IEA_final %>% 
+  Recca::calc_io_mats()
+dplyr::glimpse(with_io_mats)
+```
+
+Next, we define a `Y_prime` matrix that contains only final demand from residences.
+
+```{r}
+with_Y_prime <- with_io_mats %>% 
+  dplyr::mutate(
+    Y_prime = Y %>% 
+      matsbyname::select_cols_byname("Residential")
+  )
+with_Y_prime$Y_prime[[1]]
+```
+
+Now let's swim upstream from the `Y_prime` matrix to see what upstream energy 
+is needed to supply Residential final demand.
+
+```{r}
+residential_ecc <- with_Y_prime %>% 
+  Recca::new_Y()
+dplyr::glimpse(residential_ecc)
+```
+
+The `_prime` matrices are what we want.
+So we keep those and make a new Sankey diagram.
+
+```{r}
+residential_ecc_trimmed <- residential_ecc %>% 
+  dplyr::select(Country, Method, Energy.type, Last.stage, Year, IEAMW,
+                R_prime, U_prime, U_feed_prime, U_EIOU_prime, 
+                r_EIOU_prime, V_prime, Y_prime, S_units) %>% 
+  dplyr::rename(
+    R = R_prime, 
+    U = U_prime, 
+    U_feed = U_feed_prime,
+    U_EIOU = U_EIOU_prime,
+    r_EIOU = r_EIOU_prime,
+    V = V_prime, 
+    Y = Y_prime
+  ) %>% 
+  dplyr::mutate(Sector = "Residential")
+dplyr::glimpse(residential_ecc_trimmed)
+```
+
+Make a Sankey diagram of energy required to supply Residential demand only.
+
+```{r}
+residential_ecc_trimmed %>% 
+  Recca::make_sankey() %>% 
+  magrittr::extract2("Sankey") %>% 
+  magrittr::extract2(1)
+```
+
+From the Sankey diagram, we can see all the ways in which Ghanaian residences demanded upstream primary energy in 1971.
+
+
+### Efficiencies
+
+With the Residential sector isolated, we can calculate the efficiency of energy use in residences.
+
+```{r}
+primary_industries <- IEATools::tpes_flows
+primary_industries
+finaldemand_sectors <- IEATools::fd_sectors
+finaldemand_sectors
+with_efficiencies <- residential_ecc_trimmed %>% 
+  Recca::primary_aggregates(p_industries = primary_industries, pattern_type = "leading") %>% 
+  Recca::finaldemand_aggregates(fd_sectors = finaldemand_sectors) %>%
+  dplyr::mutate(
+    eta_pf_net = as.numeric(EX.fd_net) / as.numeric(EX.p),
+    eta_pf_gross = as.numeric(EX.fd_gross) / as.numeric(EX.p)
+  )
+dplyr::glimpse(with_efficiencies)
+```
+
+
+## Pipelines
+
+A different `R` package (`PFUAggDatabase`) 
+does the above calculations (and more!) for
+all countries; 
+all years;
+energy and exergy;
+last stage final and useful;
+IEA, MW, and both;
+etc.
+The calculations are parallelized across countries.
+Despite parallelization, the calculations take several hours on a 10-core laptop, 
+We will (eventually) generating the `PFUAggDatabase` on a supercomputer.
+
+
+## Conclusion
+
+In combination, the PSUT framework and the `R` packages
+`matsbyname`, `matsindf`, and `Recca`
+provide powerful analysis tools for energy conversion chains.
