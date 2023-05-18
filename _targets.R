@@ -48,7 +48,7 @@ additional_exemplar_countries <- c(# "WRLD", # World
 # "matrix" is the built-in matrix object in R.
 # "Matrix" will provide sparse matrices.
 # matrix_class <- "matrix"
-matrix_class <- "matrix"
+matrix_class <- "Matrix"
 
 # Should we specify non-energy flows?
 specify_non_energy_flows <- TRUE
