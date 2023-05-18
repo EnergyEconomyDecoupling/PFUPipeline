@@ -4,6 +4,8 @@ output: html_document
 ---
 
 
+# PFUDatabase 0.1.1 (2023-05-18)
+
 * Released version 1.1 of the database.
   So also releasing this version of the package.
 * Now filtering the muscle work data to only those
