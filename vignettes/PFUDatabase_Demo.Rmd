@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 ```{r setup, include = FALSE}
 library(dplyr)
 library(PFUDatabase)
+library(PFUSetup)
 library(pins)
 library(Recca)
 ```
@@ -24,7 +25,7 @@ library(Recca)
 
 ## Introduction
 
-This vignette demonstrates the features of the PFU Database.
+This vignette demonstrates the features of the `PFUDatabase` package.
 
 
 ## Load `PFUDatabase`
