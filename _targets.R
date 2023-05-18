@@ -12,11 +12,11 @@ library(PFUDatabase)
 version <- "v1.1"
 
 # Custom parameters
-# years <- 1960:2020                        # The years to be analyzed
-years <- 1971
+years <- 1960:2020                        # The years to be analyzed
+# years <- 1971
 # years <- 1971:1980
 
-countries <- c("ARM", "COL", "WRLD")
+# countries <- c("ARM", "COL", "WRLD")
 # countries <- "USA"
 # countries <- "GHA"
 # countries <- "COL"
@@ -24,7 +24,7 @@ countries <- c("ARM", "COL", "WRLD")
 # countries <- "WMBK"
 # countries <- c("AGO", "COL")
 # countries <- "WRLD"
-# countries <- c(PFUDatabase::canonical_countries, "WRLD") |> as.character()
+countries <- c(PFUDatabase::canonical_countries, "WRLD") |> as.character()
 
 # Countries with unique allocation data.
 # countries <- c("WRLD", "BRA", "CAN", "CHNM", "DEU", "DNK", "ESP", "FRA", "GBR", "GHA",
