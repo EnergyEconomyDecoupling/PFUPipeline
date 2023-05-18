@@ -4,6 +4,8 @@ output: html_document
 ---
 
 
+* Released version 1.1 of the database.
+  So also releasing this version of the package.
 * Now filtering the muscle work data to only those
   countries, years, methods, energy types, and last stages
   also present in the IEA data.
