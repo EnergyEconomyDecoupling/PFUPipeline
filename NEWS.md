@@ -4,7 +4,7 @@ output: html_document
 ---
 
 
-# PFUDatabase 0.1.1 (2023-05-18)
+# PFUDatabase 0.1.1 (2023-05-18) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7949498.svg)](https://doi.org/10.5281/zenodo.7949498)
 
 * Released version 1.1 of the database.
   So also releasing this version of the package.
