@@ -7,6 +7,7 @@
 calc_C_mats(
   completed_allocation_tables,
   countries,
+  matrix_class = c("matrix", "Matrix"),
   country = IEATools::iea_cols$country,
   year = IEATools::iea_cols$year,
   c_source = IEATools::template_cols$c_source,
@@ -19,9 +20,12 @@ calc_C_mats(
 \item{completed_allocation_tables}{The completed allocation tables from which allocation (\code{C}) matrices should be created.
 This data frame is most likely to be the \code{CompletedAllocationTables} target.}
 
-\item{countries}{The countries for which \code{C} matrices should be formed}
+\item{countries}{The countries for which \code{C} matrices should be formed.}
 
-\item{country, year}{See \code{IEATools::ieacols}.}
+\item{matrix_class}{The type of matrix that should be produced.
+One of "matrix" (the default and not sparse) or "Matrix" (which may be sparse).}
+
+\item{country, year}{See \code{IEATools::iea_cols}.}
 
 \item{c_source, .values, C_Y, C_EIOU}{See \code{IEATools::template_cols}.}
 }

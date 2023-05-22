@@ -218,13 +218,15 @@ get_pipeline <- function(countries = "all",
     # (11) Build matrices and vectors for extending to useful stage and exergy
     # (11a) Allocation (C) matrices
     targets::tar_target_raw("Cmats", quote(calc_C_mats(completed_allocation_tables = CompletedAllocationTables,
-                                                       countries = Countries)),
+                                                       countries = Countries, 
+                                                       matrix_class = matrix_class)),
                             pattern = quote(map(Countries))),
 
     # (11b) Final-to-useful efficiency (eta_fu) and exergy-to-energy ratio (phi_u) vectors at the useful stage
     targets::tar_target_raw("EtafuPhiuvecs", quote(calc_eta_fu_phi_u_vecs(completed_efficiency_tables = CompletedEfficiencyTables,
                                                                           completed_phi_tables = CompletedPhiuTables,
-                                                                          countries = Countries)),
+                                                                          countries = Countries, 
+                                                                          matrix_class = matrix_class)),
                             pattern = quote(map(Countries))),
 
     # (11c) Final-to-useful efficiency (eta_fu) vectors

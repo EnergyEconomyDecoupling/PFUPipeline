@@ -9,6 +9,7 @@ calc_eta_fu_phi_u_vecs(
   completed_efficiency_tables,
   completed_phi_tables,
   countries,
+  matrix_class = c("matrix", "Matrix"),
   country = IEATools::iea_cols$country,
   year = IEATools::iea_cols$year,
   c_source = IEATools::template_cols$c_source,
@@ -27,6 +28,9 @@ should be created. This data frame is most likely to be the \code{CompletedEffic
 should be created.This data frame is most likely to be the \code{CompletedPhiTables} target.}
 
 \item{countries}{The countries for which \code{eta_fu} and \code{phi_u} vectors should be formed.}
+
+\item{matrix_class}{The type of matrix that should be produced.
+One of "matrix" (the default and not sparse) or "Matrix" (which may be sparse).}
 
 \item{country, year}{See \code{IEATools::ieacols}.}
 
