@@ -139,24 +139,6 @@ sum_phi_vecs <- function(phi_pf_vecs,
                          .phi_sum_OK = ".phi_sum_OK",
                          .phi_pf_colnames = ".phi_pf_colnames",
                          .phi_u_colnames = ".phi_u_colnames") {
-  
-  # phi_df <- dplyr::full_join(phi_pf_vecs,
-  #                            phi_u_vecs,
-  #                            by = matsindf::everything_except(phi_pf_vecs, phi_pf_colname) %>% as.character()) %>%
-  #   dplyr::filter(.data[[country]] %in% countries) %>%
-  #   dplyr::mutate(
-  #     # Check that all phi vectors have 1 column.
-  #     "{.phi_shape_OK}" := (matsbyname::ncol_byname(.data[[phi_pf_colname]]) == 1) &
-  #       (matsbyname::ncol_byname(.data[[phi_u_colname]]) == 1)
-  #   )
-  # if (! all(phi_df[[.phi_shape_OK]])) {
-  #   # Prepare an error message.
-  #   bad_rows <- phi_df %>%
-  #     dplyr::filter(!.data[[.phi_shape_OK]])
-  #   err_msg <- paste("In sum_phi_vecs(), need phi vectors with one column only. These vectors are bad:", matsindf::df_to_msg(bad_rows))
-  #   stop(err_msg)
-  # }
-  
 
   temp <- dplyr::full_join(phi_pf_vecs,
                            phi_u_vecs,
