@@ -3,6 +3,8 @@ title: "Release notes for `PFUDatabase`"
 output: html_document
 ---
 
+* New targets `PSUT_USA` and `EtafuYEIOU`.
+
 
 # PFUDatabase 0.1.1 (2023-05-18) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7949498.svg)](https://doi.org/10.5281/zenodo.7949498)
 

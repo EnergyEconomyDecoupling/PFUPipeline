@@ -42,7 +42,7 @@ as shown in examples.
 \examples{
 \dontrun{
 # Establish the pinboard
-pinboard <- pins::board_folder("~/Dropbox/Fellowship 1960-2015 PFU database/PipelineReleases/")
+pinboard <- pins::board_folder("~/Dropbox/Fellowship 1960-2015 PFU database/OutputData/PipelineReleases/")
 # Get information about the `PSUT` target in the pinboard
 pinboard \%>\%
   pins::pin_meta(name = "psut")
