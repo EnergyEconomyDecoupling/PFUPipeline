@@ -8,6 +8,7 @@ calc_phi_pf_vecs(
   phi_constants,
   phi_u_vecs,
   countries,
+  matrix_class = c("matrix", "Matrix"),
   country = IEATools::iea_cols$country,
   product = IEATools::iea_cols$product,
   eta_fu = IEATools::template_cols$eta_fu,
@@ -25,6 +26,10 @@ with columns \code{product}, \code{phi_colname}, and \code{is_useful_colname}.}
 A column of phi_pf vectors replaces the column of phi_u vectors on output.}
 
 \item{countries}{The countries for which you want to perform this task.}
+
+\item{matrix_class}{A string that tells which type of matrix to create,
+a "matrix" (the built-in type) or a "Matrix" (could be sparse).
+Default is "matrix".}
 
 \item{country, product}{See \code{IEATools::iea_cols}.}
 

@@ -244,7 +244,8 @@ get_pipeline <- function(countries = "all",
     # (11e) Exergy-to-energy ratio (phi_pf) vectors at the primary and final stages
     targets::tar_target_raw("Phipfvecs", quote(calc_phi_pf_vecs(phi_constants = PhiConstants,
                                                                 phi_u_vecs = Phiuvecs,
-                                                                countries = Countries)),
+                                                                countries = Countries, 
+                                                                matrix_class = matrix_class)),
                             pattern = quote(map(Countries))),
 
     # (11f) Exergy-to-energy ratio (phi) vectors at all stages
@@ -317,34 +318,84 @@ get_pipeline <- function(countries = "all",
                                                                psutmw = PSUTMW,
                                                                psutieamw = PSUTIEAMW))),
 
+    # (20) Calculate final-to-useful efficiencies from f-u allocations and machine efficiencies
+    targets::tar_target_raw("EtafuvecsYEIOU", quote(calc_fu_Y_EIOU_efficiencies(C_mats = Cmats,
+                                                                                eta_fu_vecs = Etafuvecs,
+                                                                                phi_vecs = Phivecs,
+                                                                                countries = Countries)),
+                            pattern = quote(map(Countries))),
 
-    # (20) Build reports
-    # (20a) Allocation Graphs
+    # (30) Build reports
+    # (30a) Allocation Graphs
     targets::tar_target_raw("AllocationGraphs", quote(alloc_plots_df(CompletedAllocationTables, countries = Countries)),
                             pattern = quote(map(Countries))),
-    # (20b) Non-Stationary Allocation Graphs
+    # (30b) Non-Stationary Allocation Graphs
     targets::tar_target_raw("NonStationaryAllocationGraphs", quote(nonstat_alloc_plots_df(CompletedAllocationTables, countries = Countries)),
                             pattern = quote(map(Countries))),
-    # (20c) Efficiency Graphs
+    # (30c) Efficiency Graphs
     targets::tar_target_raw("EfficiencyGraphs", quote(eta_fu_plots_df(CompletedEfficiencyTables, countries = Countries)),
                             pattern = quote(map(Countries))),
-    # (20d) Exergy-to-energy ratio graphs
+    # (30d) Exergy-to-energy ratio graphs
     targets::tar_target_raw("PhiGraphs", quote(phi_u_plots_df(CompletedEfficiencyTables, countries = Countries)),
                             pattern = quote(map(Countries))),
 
-    # (21) Save results
-    # (21a) Pin the PSUT data frame
+    # (31) Save results
+    # (31a) Pin the PSUT data frame
     targets::tar_target_raw("ReleasePSUT", quote(release_target(pipeline_releases_folder = PipelineReleasesFolder,
                                                                 targ = PSUT,
                                                                 pin_name = "psut",
                                                                 release = Release))), 
     
-    # (21b) Zip the targets cache and store it in the pipeline_caches_folder
+    # (31b) Zip the targets cache and store it in the pipeline_caches_folder
     targets::tar_target_raw("StoreCache", quote(stash_cache(pipeline_caches_folder = PipelineCachesFolder,
                                                             cache_folder = "_targets",
                                                             file_prefix = "pfu_pipeline_cache_",
                                                             dependency = PSUT, 
-                                                            release = Release)))
+                                                            release = Release))),
     
+    
+    # Some database products are best suited to creating and storing here.
+    
+    # --------------------------------------------------------------------------
+    # Product A ----------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # Pin the PSUT_USA data frame ----------------------------------------------
+    
+    # Filter to the US for Carey King
+    targets::tar_target_raw(
+      "PSUT_USA",
+      quote(PSUT %>%
+                   dplyr::filter(Country == "USA"))
+    ),
+    
+    targets::tar_target_raw(
+      "ReleasePSUT_USA",
+      quote(release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                           targ = PSUT_USA,
+                           pin_name = "psut_usa",
+                           release = Release))
+    ),
+    
+    
+    # --------------------------------------------------------------------------
+    # Product B ----------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # Final-to-useful sector-carrier efficiencies ------------------------------
+    
+    targets::tar_target_raw(
+      "EtafuYEIOU", 
+      quote(calc_fu_Y_EIOU_efficiencies(C_mats = Cmats, 
+                                        eta_fu_vecs = Etafuvecs, 
+                                        phi_vecs = Phivecs, 
+                                        countries = Countries)), 
+      pattern = quote(map(Countries))), 
+    
+    targets::tar_target_raw(
+      "ReleaseEtafuYEIOU",
+      quote(release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                           targ = EtafuYEIOU,
+                           pin_name = "eta_fu_Y_eiou",
+                           release = Release))
+    )
   )
 }
