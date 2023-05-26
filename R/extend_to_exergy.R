@@ -12,6 +12,9 @@
 #' @param phi_u_vecs A data frame containing metadata columns and a column of phi_u vectors.
 #'                   A column of phi_pf vectors replaces the column of phi_u vectors on output.
 #' @param countries The countries for which you want to perform this task.
+#' @param matrix_class A string that tells which type of matrix to create, 
+#'                     a "matrix" (the built-in type) or a "Matrix" (could be sparse).
+#'                     Default is "matrix".
 #' @param country,product See `IEATools::iea_cols`.
 #' @param eta_fu,phi_u,phi_pf_colname See `IEATools::template_cols`.
 #' @param phi_colname,is_useful_colname See `IEATools::phi_constants_colnames`.
@@ -43,6 +46,7 @@
 calc_phi_pf_vecs <- function(phi_constants,
                              phi_u_vecs,
                              countries,
+                             matrix_class = c("matrix", "Matrix"), 
                              country = IEATools::iea_cols$country,
                              product = IEATools::iea_cols$product,
                              # quantity = IEATools::template_cols$quantity,
@@ -51,13 +55,22 @@ calc_phi_pf_vecs <- function(phi_constants,
                              phi_pf_colname = IEATools::template_cols$phi_pf,
                              phi_colname = IEATools::phi_constants_names$phi_colname,
                              is_useful_colname = IEATools::phi_constants_names$is_useful_colname) {
+  
+  matrix_class <- match.arg(matrix_class)
+  
   # Pick up non-useful (i.e., primary and final)
   # phi values.
   phi_pf_constants <- phi_constants %>%
     dplyr::filter(! .data[[is_useful_colname]])
   # Create a vector from phi_pf_constants
-  phi_pf_vec <- matrix(phi_pf_constants[[phi_colname]], nrow = nrow(phi_pf_constants), ncol = 1,
-                       dimnames = list(c(phi_pf_constants[[product]]), phi_colname)) %>%
+  if (matrix_class == "matrix") {
+    phi_pf_vec <- matrix(phi_pf_constants[[phi_colname]], nrow = nrow(phi_pf_constants), ncol = 1,
+                         dimnames = list(c(phi_pf_constants[[product]]), phi_colname))    
+  } else {
+    phi_pf_vec <- matsbyname::Matrix(phi_pf_constants[[phi_colname]], nrow = nrow(phi_pf_constants), ncol = 1,
+                                     dimnames = list(c(phi_pf_constants[[product]]), phi_colname))
+  }
+  phi_pf_vec <- phi_pf_vec |> 
     matsbyname::setrowtype(product) %>% matsbyname::setcoltype(phi_colname)
   
   trimmed_phi_u_vecs <- phi_u_vecs %>%
@@ -139,7 +152,7 @@ sum_phi_vecs <- function(phi_pf_vecs,
                          .phi_sum_OK = ".phi_sum_OK",
                          .phi_pf_colnames = ".phi_pf_colnames",
                          .phi_u_colnames = ".phi_u_colnames") {
-
+  
   temp <- dplyr::full_join(phi_pf_vecs,
                            phi_u_vecs,
                            by = matsindf::everything_except(phi_pf_vecs, phi_pf_colname) %>% as.character()) %>%
@@ -151,6 +164,12 @@ sum_phi_vecs <- function(phi_pf_vecs,
         "{phi_colname}" := list()
       )
   } else {
+    # This line works around a weird bug that prevents
+    # ncol_byname from working correctly.
+    # Seemingly, the Matrix class needs to be pinged 
+    # before the following code works correctly.
+    m <- matsbyname::Matrix(42)
+
     phi_df <- temp |> 
       dplyr::mutate(
         # Check that all phi vectors have 1 column.
@@ -164,6 +183,7 @@ sum_phi_vecs <- function(phi_pf_vecs,
       err_msg <- paste("In sum_phi_vecs(), need phi vectors with one column only. These vectors are bad:", matsindf::df_to_msg(bad_rows))
       stop(err_msg)
     }
+
     out <- phi_df %>%
       dplyr::mutate(
         "{phi_colname}" := matsbyname::sum_byname(.data[[phi_pf_colname]], .data[[phi_u_colname]]),
@@ -242,6 +262,7 @@ sum_phi_vecs <- function(phi_pf_vecs,
       "{phi_pf_colname}" := NULL,
       "{phi_u_colname}" := NULL
     )
+# print("got to the end")
 }
 
 

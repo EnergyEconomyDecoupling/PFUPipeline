@@ -12,9 +12,9 @@ library(PFUDatabase)
 version <- "v1.1"
 
 # Custom parameters
-# years <- 1960:2020                        # The years to be analyzed
+years <- 1960:2020                        # The years to be analyzed
 # years <- 1971
-years <- 1971:1980
+# years <- 1971:1980
 
 # countries <- c("ARM", "COL", "WRLD")
 # countries <- "USA"
