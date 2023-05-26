@@ -351,7 +351,51 @@ get_pipeline <- function(countries = "all",
                                                             cache_folder = "_targets",
                                                             file_prefix = "pfu_pipeline_cache_",
                                                             dependency = PSUT, 
-                                                            release = Release)))
+                                                            release = Release))),
     
+    
+    # Some database products are best suited to creating and storing here.
+    
+    # --------------------------------------------------------------------------
+    # Product A ----------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # Pin the PSUT_USA data frame ----------------------------------------------
+    
+    # Filter to the US for Carey King
+    targets::tar_target_raw(
+      "PSUT_USA",
+      quote(PSUT %>%
+                   dplyr::filter(Country == "USA"))
+    ),
+    
+    targets::tar_target_raw(
+      "ReleasePSUT_USA",
+      quote(release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                           targ = PSUT_USA,
+                           pin_name = "psut_usa",
+                           release = Release))
+    ),
+    
+    
+    # --------------------------------------------------------------------------
+    # Product B ----------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # Final-to-useful sector-carrier efficiencies ------------------------------
+    
+    targets::tar_target_raw(
+      "EtafuYEIOU", 
+      quote(calc_fu_Y_EIOU_efficiencies(C_mats = Cmats, 
+                                        eta_fu_vecs = Etafuvecs, 
+                                        phi_vecs = Phivecs, 
+                                        countries = Countries)), 
+      pattern = quote(map(Countries))), 
+    
+    targets::tar_target_raw(
+      "ReleaseEtafuYEIOU",
+      quote(release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                           targ = EtafuYEIOU,
+                           pin_name = "eta_fu_Y_eiou",
+                           release = Release))
+    )
   )
 }
