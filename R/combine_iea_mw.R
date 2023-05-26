@@ -300,8 +300,22 @@ build_psut_dataframe <- function(psutiea = NULL, psutmw = NULL, psutieamw = NULL
         "{ieamw_colname}" := both
       )
   }
-  dplyr::bind_rows(psutiea, psutmw, psutieamw) %>%
-    dplyr::relocate(.data[[ieamw_colname]], .after = year)
+  dplyr::bind_rows(psutiea, psutmw, psutieamw) |> 
+    # Reorder columns into a sensible sequence.
+    dplyr::select(.data[[country_colname]], 
+                  .data[[method_colname]], 
+                  .data[[energy_type_colname]], 
+                  .data[[last_stage_colname]], 
+                  .data[[year_colname]], 
+                  .data[[ieamw_colname]],
+                  .data[[R_colname]],
+                  .data[[U_colname]],
+                  .data[[U_feed_colname]],
+                  .data[[U_eiou_colname]],
+                  .data[[r_eiou_colname]],
+                  .data[[V_colname]],
+                  .data[[U_colname]],
+                  .data[[S_units_colname]])
 }
 
 
