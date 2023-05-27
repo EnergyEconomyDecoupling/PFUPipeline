@@ -346,14 +346,6 @@ get_pipeline <- function(countries = "all",
                                                                 pin_name = "psut",
                                                                 release = Release))), 
     
-    # (31b) Zip the targets cache and store it in the pipeline_caches_folder
-    targets::tar_target_raw("StoreCache", quote(stash_cache(pipeline_caches_folder = PipelineCachesFolder,
-                                                            cache_folder = "_targets",
-                                                            file_prefix = "pfu_pipeline_cache_",
-                                                            dependency = PSUT, 
-                                                            release = Release))),
-    
-    
     # Some database products are best suited to creating and storing here.
     
     # --------------------------------------------------------------------------
@@ -396,6 +388,14 @@ get_pipeline <- function(countries = "all",
                            targ = EtafuYEIOU,
                            pin_name = "eta_fu_Y_eiou",
                            release = Release))
-    )
+    ), 
+    
+    
+    # Zip the targets cache and store it in the pipeline_caches_folder
+    targets::tar_target_raw("StoreCache", quote(stash_cache(pipeline_caches_folder = PipelineCachesFolder,
+                                                            cache_folder = "_targets",
+                                                            file_prefix = "pfu_pipeline_cache_",
+                                                            dependency = PSUT_USA, 
+                                                            release = Release)))
   )
 }

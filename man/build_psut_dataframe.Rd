@@ -8,11 +8,23 @@ build_psut_dataframe(
   psutiea = NULL,
   psutmw = NULL,
   psutieamw = NULL,
+  country_colname = IEATools::iea_cols$country,
+  method_colname = IEATools::iea_cols$method,
+  energy_type_colname = IEATools::iea_cols$energy_type,
+  last_stage_colname = IEATools::iea_cols$last_stage,
+  year_colname = IEATools::iea_cols$year,
   ieamw_colname = PFUDatabase::ieamw_cols$ieamw,
+  R_colname = IEATools::psut_cols$R,
+  U_colname = IEATools::psut_cols$U,
+  U_feed_colname = IEATools::psut_cols$U_feed,
+  U_eiou_colname = IEATools::psut_cols$U_eiou,
+  r_eiou_colname = IEATools::psut_cols$r_eiou,
+  V_colname = IEATools::psut_cols$V,
+  Y_colname = IEATools::psut_cols$Y,
+  S_units_colname = IEATools::psut_cols$s_units,
   iea = PFUDatabase::ieamw_cols$iea,
   mw = PFUDatabase::ieamw_cols$mw,
-  both = PFUDatabase::ieamw_cols$both,
-  year = IEATools::iea_cols$year
+  both = PFUDatabase::ieamw_cols$both
 )
 }
 \arguments{
