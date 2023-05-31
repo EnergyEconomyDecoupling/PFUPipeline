@@ -14,6 +14,7 @@ version <- "v1.1"
 # Custom parameters
 years <- 1960:2020                        # The years to be analyzed
 # years <- 1971
+# years <- 1971:1972
 # years <- 1971:1980
 
 # countries <- c("ARM", "COL", "WRLD")
@@ -28,8 +29,8 @@ countries <- c(PFUDatabase::canonical_countries, "WRLD") |> as.character()
 
 # Countries with unique allocation data.
 # countries <- c("WRLD", "BRA", "CAN", "CHNM", "DEU", "DNK", "ESP", "FRA", "GBR", "GHA",
-#                "GRC", "HKG", "HND", "IDN", "IND", "JOR", "JPN", "KOR", "MEX",
-#                "NOR", "PRT", "RUS", "USA", "WABK", "WMBK", "ZAF")
+#                "GRC", "HKG", "HND", "IDN", "IND", "JOR", "JPN", "KOR", "MEX", "NOR", 
+#                "PRT", "RUS", "USA", "WABK", "WMBK", "ZAF")
 
 # Additional exemplar countries are countries which aren't included in the workflow
 # as individual countries, but from which allocation or efficiency data may be 
