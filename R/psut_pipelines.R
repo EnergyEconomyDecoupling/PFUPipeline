@@ -358,8 +358,8 @@ get_pipeline <- function(countries = "all",
     # Filter to the US for Carey King
     targets::tar_target_raw(
       "PSUT_USA",
-      quote(PSUT %>%
-                   dplyr::filter(Country == "USA"))
+      quote(PSUT |> 
+              dplyr::filter(Country == "USA"))
     ),
     
     targets::tar_target_raw(
