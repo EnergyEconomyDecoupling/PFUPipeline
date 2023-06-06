@@ -28,6 +28,7 @@ Imports:
     matsindf,
     MKHthemes,
     MWTools,
+    PFUPipelineTools,
     PFUSetup,
     parsedate,
     pins,
