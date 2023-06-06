@@ -343,10 +343,11 @@ get_pipeline <- function(countries = "all",
 
     # (31) Save results
     # (31a) Pin the PSUT data frame
-    targets::tar_target_raw("ReleasePSUT", quote(release_target(pipeline_releases_folder = PipelineReleasesFolder,
-                                                                targ = PSUT,
-                                                                pin_name = "psut",
-                                                                release = Release))), 
+    targets::tar_target_raw("ReleasePSUT", 
+                            quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                                                                   targ = PSUT,
+                                                                   pin_name = "psut",
+                                                                   release = Release))), 
     
     # Some database products are best suited to creating and storing here.
     
@@ -364,10 +365,10 @@ get_pipeline <- function(countries = "all",
     
     targets::tar_target_raw(
       "ReleasePSUT_USA",
-      quote(release_target(pipeline_releases_folder = PipelineReleasesFolder,
-                           targ = PSUT_USA,
-                           pin_name = "psut_usa",
-                           release = Release))
+      quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                                             targ = PSUT_USA,
+                                             pin_name = "psut_usa",
+                                             release = Release))
     ),
     
     
@@ -386,18 +387,19 @@ get_pipeline <- function(countries = "all",
     
     targets::tar_target_raw(
       "ReleaseEtafuYEIOU",
-      quote(release_target(pipeline_releases_folder = PipelineReleasesFolder,
-                           targ = EtafuYEIOU,
-                           pin_name = "eta_fu_Y_eiou",
-                           release = Release))
+      quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                                             targ = EtafuYEIOU,
+                                             pin_name = "eta_fu_Y_eiou",
+                                             release = Release))
     ), 
     
     
     # Zip the targets cache and store it in the pipeline_caches_folder
-    targets::tar_target_raw("StoreCache", quote(stash_cache(pipeline_caches_folder = PipelineCachesFolder,
-                                                            cache_folder = "_targets",
-                                                            file_prefix = "pfu_pipeline_cache_",
-                                                            dependency = PSUT_USA, 
-                                                            release = Release)))
+    targets::tar_target_raw("StoreCache", 
+                            quote(PFUPipelineTools::stash_cache(pipeline_caches_folder = PipelineCachesFolder,
+                                                                cache_folder = "_targets",
+                                                                file_prefix = "pfu_pipeline_cache_",
+                                                                dependency = PSUT_USA, 
+                                                                release = Release)))
   )
 }
