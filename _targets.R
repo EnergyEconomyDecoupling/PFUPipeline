@@ -29,7 +29,7 @@ countries <- c(PFUDatabase::canonical_countries, "WRLD") |> as.character()
 
 # Countries with unique allocation data.
 # countries <- c("WRLD", "BRA", "CAN", "CHNM", "DEU", "DNK", "ESP", "FRA", "GBR", "GHA",
-#                "GRC", "HKG", "HND", "IDN", "IND", "JOR", "JPN", "KOR", "MEX", "NOR", 
+#                "GRC", "HKG", "HND", "IDN", "IND", "JOR", "JPN", "KOR", "MEX", "NOR",
 #                "PRT", "RUS", "USA", "WABK", "WMBK", "ZAF")
 
 # Additional exemplar countries are countries which aren't included in the workflow

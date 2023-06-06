@@ -115,7 +115,7 @@ get_pipeline <- function(countries = "all",
                                                                            specify_non_energy_flows = SpecifyNonEnergyFlows, 
                                                                            apply_fixes = ApplyFixes))),
     targets::tar_target_raw("IEAData", quote(AllIEAData %>%
-                                               filter_countries_years(countries = AllocAndEffCountries, years = Years))),
+                                               PFUPipelineTools::filter_countries_years(countries = AllocAndEffCountries, years = Years))),
 
     # (1b) Country concordance table
     targets::tar_target_raw("CountryConcordanceTable", quote(load_country_concordance_table(country_concordance_path = CountryConcordancePath))),
@@ -128,16 +128,18 @@ get_pipeline <- function(countries = "all",
 
     # (1d) Machine data
     targets::tar_target_raw("AllMachineData", quote(read_all_eta_files(eta_fin_paths = get_eta_filepaths(MachineDataPath)))),
-    targets::tar_target_raw("MachineData", quote(filter_countries_years(AllMachineData, countries = AllocAndEffCountries, years = Years))),
+    targets::tar_target_raw("MachineData", quote(PFUPipelineTools::filter_countries_years(AllMachineData, countries = AllocAndEffCountries, years = Years))),
 
     # (1e) Muscle work data
     targets::tar_target_raw("AMWPFUDataRaw", quote(load_amw_pfu_data(fao_data_path = FAODataPath,
                                                                      mw_concordance_path = MWConcordancePath,
-                                                                     amw_analysis_data_path = AMWAnalysisDataPath))),
+                                                                     amw_analysis_data_path = AMWAnalysisDataPath) |>
+                                                     PFUPipelineTools::filter_countries_years(countries = AllocAndEffCountries, years = Years))),
 
     targets::tar_target_raw("HMWPFUDataRaw", quote(load_hmw_pfu_data(ilo_data_path = ILODataPath,
                                                                      mw_concordance_path = MWConcordancePath,
-                                                                     hmw_analysis_data_path = HMWAnalysisDataPath))),
+                                                                     hmw_analysis_data_path = HMWAnalysisDataPath) |>
+                                                     PFUPipelineTools::filter_countries_years(countries = AllocAndEffCountries, years = Years))),
 
     targets::tar_target_raw("AMWPFUData", quote(aggcountries_mw_to_iea(mw_df = AMWPFUDataRaw))),
 
