@@ -69,7 +69,7 @@ if (("WRLD" %in% countries) & ("WRLD" %in% additional_exemplar_countries)) {
 
 # WRLD should always be in countries or in additional_exemplar_countries.
 if (!("WRLD" %in% countries) & !("WRLD" %in% additional_exemplar_countries)) {
-  # Add to additional_exemplar_countries
+  # Add WRLD to additional_exemplar_countries
   additional_exemplar_countries <- c("WRLD", additional_exemplar_countries)
 }
 
