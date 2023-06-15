@@ -8,7 +8,7 @@ library(PFUDatabase)
 # targets::tar_make(callr_function = NULL) to debug.
 
 
-# Version
+# Input data version
 version <- "v1.1"
 
 # Custom parameters
@@ -21,11 +21,11 @@ years <- 1960:2020                        # The years to be analyzed
 # countries <- "USA"
 # countries <- "GHA"
 # countries <- "COL"
-# countries <- "AGO"
+countries <- "AGO"
 # countries <- "WMBK"
 # countries <- c("AGO", "COL")
 # countries <- "WRLD"
-countries <- c(PFUDatabase::canonical_countries, "WRLD") |> as.character()
+# countries <- c(PFUDatabase::canonical_countries, "WRLD") |> as.character()
 
 # Countries with unique allocation data.
 # countries <- c("WRLD", "BRA", "CAN", "CHNM", "DEU", "DNK", "ESP", "FRA", "GBR", "GHA",
@@ -35,8 +35,7 @@ countries <- c(PFUDatabase::canonical_countries, "WRLD") |> as.character()
 # Additional exemplar countries are countries which aren't included in the workflow
 # as individual countries, but from which allocation or efficiency data may be 
 # obtained and assigned to countries in the workflow using the exemplar system.
-additional_exemplar_countries <- c(# "WRLD", # World
-                                   "AFRI", # Africa 
+additional_exemplar_countries <- c("AFRI", # Africa 
                                    "ASIA", # Asia
                                    "EURP", # Europe 
                                    "MIDE", # Middle East
@@ -62,7 +61,17 @@ release <- FALSE
 
 # End user-adjustable parameters.
 
+# WRLD should not be in both countries and additional_exemplar_countries
+if (("WRLD" %in% countries) & ("WRLD" %in% additional_exemplar_countries)) {
+  # Remove WRLD from additional_exemplar_countries
+  additional_exemplar_countries <- additional_exemplar_countries[!(additional_exemplar_countries == "WRLD")]
+}
 
+# WRLD should always be in countries or in additional_exemplar_countries.
+if (!("WRLD" %in% countries) & !("WRLD" %in% additional_exemplar_countries)) {
+  # Add to additional_exemplar_countries
+  additional_exemplar_countries <- c("WRLD", additional_exemplar_countries)
+}
 
 # Set up for multithreaded work on the local machine.
 future::plan(future.callr::callr)
