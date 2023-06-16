@@ -2,7 +2,7 @@
 % Please edit documentation in R/data_functions.R
 \name{is_balanced}
 \alias{is_balanced}
-\title{Tells whether IEA data are balanced}
+\title{Extract specific country and year data}
 \usage{
 is_balanced(
   .iea_data,
@@ -17,20 +17,37 @@ is_balanced(
 
 \item{countries}{the countries for which balancing should be checked as strings}
 
-\item{country}{The name of the country column in \code{IEAData}. Default is Country.}
+\item{country, year}{See \code{IEATools::iea_cols}.}
 
 \item{grp_vars}{the groups that should be checked. Default is
 \code{c(country, IEATools::iea_cols$method, IEATools::iea_cols$energy_type, IEATools::iea_cols$last_stage, IEATools::iea_cols$product)}.}
+
+\item{.df}{A data frame containing cleaned data with lots of countries and years.}
+
+\item{years}{A vector of years. "all" means return all years.}
+
+\item{country}{The name of the country column in \code{IEAData}. Default is Country.}
 }
 \value{
+A data frame with the desired IEA data only.
+
 a logical stating whether all products are balanced for the country of interest
 }
 \description{
-Performs the the energy balance check in a way that is amenable to drake subtargets.
-Internally, this function uses \code{\link[IEATools:calc_tidy_iea_df_balances]{IEATools::calc_tidy_iea_df_balances()}}.
-Grouping is doing internal to this function using the value of \code{grp_vars}.
+Data is extracted according to the \code{countries} and \code{years} objects
+in a way that is amenable to drake subtargets.
+\code{dplyr::filter()} does the subsetting.
 }
 \examples{
+IEATools::sample_iea_data_path() \%>\%
+  IEATools::load_tidy_iea_df() \%>\%
+  filter_countries_years(countries = c("ZAF"), years = 1960:1999)
+Tells whether IEA data are balanced
+
+Performs the the energy balance check in a way that is amenable to drake subtargets.
+Internally, this function uses [IEATools::calc_tidy_iea_df_balances()].
+Grouping is doing internal to this function using the value of `grp_vars`.
+
 # These data are not balanced, because they are raw.
 IEATools::sample_iea_data_path() \%>\%
   IEATools::load_tidy_iea_df() \%>\%
