@@ -9,7 +9,7 @@ library(PFUDatabase)
 
 
 # Input data version
-version <- "v1.1"
+version <- "v1.2"
 
 # Custom parameters
 years <- 1960:2020                        # The years to be analyzed
