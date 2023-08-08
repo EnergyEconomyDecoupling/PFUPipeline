@@ -5,11 +5,11 @@ citEntry(entry = "Manual",
   author       = personList(as.person("Matthew Kuperus Heun"), as.person("Zeke Marshall")),
   year         = "2023",
   note         = "R package version 0.1.1",
-  url          = "https://github.com/EnergyEconomyDecoupling/PFUDatabase",
+  url          = "https://doi.org/10.5281/zenodo.5228375",
 
   textVersion  =
   paste("Matthew Kuperus Heun (2023).",
         "Functions and Workflows for Primary-Final-Useful Societal Exergy Analysis Within the PSUT Framework.",
         "R package version 0.1.1.",
-        "https://github.com/EnergyEconomyDecoupling/PFUDatabase")
+        "https://doi.org/10.5281/zenodo.5228375")
 )
