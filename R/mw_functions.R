@@ -172,7 +172,7 @@ load_hmw_pfu_data <- function(ilo_working_hours_data_path,
   ilo_working_hours_data <- readr::read_rds(ilo_working_hours_data_path)
   ilo_employment_data <- readr::read_rds(ilo_employment_data_path)
   
-  MWTools::prepareRawILOData(ilo_workingHours_data = ilo_working_hours_data, 
+  MWTools::prepareRawILOData(ilo_working_hours_data = ilo_working_hours_data, 
                              ilo_employment_data = ilo_employment_data) %>% 
     MWTools::calc_hmw_pfu(concordance_path = mw_concordance_path,
                           hmw_analysis_data_path = hmw_analysis_data_path) %>% 

@@ -21,7 +21,7 @@ get_pipeline(
   ceda_data_folder,
   fao_data_path,
   ilo_employment_data_path,
-  ilo_workingHours_data_path,
+  ilo_working_hours_data_path,
   machine_data_path,
   exemplar_table_path,
   fu_analysis_folder,
