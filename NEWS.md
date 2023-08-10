@@ -8,7 +8,6 @@ which always resolves to the latest release.
 
 * Adapted to changes in `MWTools` for downloading and
   analyzing ILO data.
-  
 * New targets `PSUT_USA` and `EtafuYEIOU`.
 
 
