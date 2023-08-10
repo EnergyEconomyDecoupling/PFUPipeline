@@ -138,7 +138,7 @@ get_pipeline <- function(countries = "all",
                                                                      amw_analysis_data_path = AMWAnalysisDataPath) |>
                                                      PFUPipelineTools::filter_countries_years(countries = AllocAndEffCountries, years = Years))),
 
-    targets::tar_target_raw("HMWPFUDataRaw", quote(load_hmw_pfu_data(ilo_workingHours_data_path = ILOWorkingHoursDataPath,
+    targets::tar_target_raw("HMWPFUDataRaw", quote(load_hmw_pfu_data(ilo_working_hours_data_path = ILOWorkingHoursDataPath,
                                                                      ilo_employment_data_path = ILOEmploymentDataPath,
                                                                      mw_concordance_path = MWConcordancePath,
                                                                      hmw_analysis_data_path = HMWAnalysisDataPath) |>
