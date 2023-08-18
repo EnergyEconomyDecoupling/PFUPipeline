@@ -78,6 +78,10 @@ Default is "all_targets" to indicate all targets of the plan should be returned.
 
 \item{fao_data_path}{The path to Food and Agriculture Organization (FAO) data.}
 
+\item{ilo_employment_data_path}{The path to International Labor Organization (ILO) employment data.}
+
+\item{ilo_working_hours_data_path}{The path to International Labor Organization (ILO) working hours data.}
+
 \item{machine_data_path}{The path to the machine data in .xlsx format.}
 
 \item{exemplar_table_path}{The path to an exemplar table.}
@@ -98,8 +102,6 @@ cache are stored.}
 
 \item{release}{A boolean that tells whether a new release of the \code{PSUT} targets should be made.
 Default is \code{FALSE}.}
-
-\item{ilo_data_path}{The path to International Labor Organization (ILO) data.}
 }
 \value{
 A \code{targets} pipeline.

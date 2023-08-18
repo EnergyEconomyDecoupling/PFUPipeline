@@ -17,13 +17,15 @@ calc_fu_Y_EIOU_efficiencies(
 )
 }
 \arguments{
+\item{C_mats}{A data frame containing allocation matrices.}
+
 \item{eta_fu_vecs}{A data frame containing vectors of machine efficiencies, probably the Etafuvecs target.}
 
 \item{phi_vecs}{A data frame containing vectors of exergy-to-energy ratios, probably the Phivecs target.}
 
 \item{countries}{The countries for which this analysis should be performed.}
 
-\item{Cmats}{A data frame containing allocation matrices (both \strong{C_Y} and \strong{C_EIOU}), probably the Cmats target.}
+\item{country, last_stage, energy_type, method, year}{See \code{IEATools::iea_cols}.}
 }
 \value{
 A data frame of final-to-useful efficiencies by energy sector and energy carrier.

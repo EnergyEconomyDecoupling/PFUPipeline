@@ -8,10 +8,11 @@
 #' This function performs those calculations using
 #' [Recca::calc_eta_fu_Y_eiou()].
 #'
-#' @param Cmats A data frame containing allocation matrices (both **C_Y** and **C_EIOU**), probably the Cmats target.
+#' @param C_mats A data frame containing allocation matrices.
 #' @param eta_fu_vecs A data frame containing vectors of machine efficiencies, probably the Etafuvecs target.
 #' @param phi_vecs A data frame containing vectors of exergy-to-energy ratios, probably the Phivecs target.
 #' @param countries The countries for which this analysis should be performed. 
+#' @param country,last_stage,energy_type,method,year See `IEATools::iea_cols`.
 #'
 #' @return A data frame of final-to-useful efficiencies by energy sector and energy carrier.
 #' 
