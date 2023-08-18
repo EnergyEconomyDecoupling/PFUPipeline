@@ -7,7 +7,7 @@ Cite all releases with doi [10.5281/zenodo.5228375](https://doi.org/10.5281/zeno
 which always resolves to the latest release.
 
 
-# PFUDatabase 0.1.2 (2023-08-18)
+# PFUDatabase 0.1.2 (2023-08-18) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8264516.svg)](https://doi.org/10.5281/zenodo.8264516)
 
 * Adapted to changes in `MWTools` for downloading and
   analyzing ILO data.
