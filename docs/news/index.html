@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">PFUDatabase</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,7 +45,13 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.1" id="pfudatabase-011-2023-05-18">PFUDatabase 0.1.1 (2023-05-18)<a class="anchor" aria-label="anchor" href="#pfudatabase-011-2023-05-18"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.1.2" id="pfudatabase-012-2023-08-18">PFUDatabase 0.1.2 (2023-08-18)<a class="anchor" aria-label="anchor" href="#pfudatabase-012-2023-08-18"></a></h2>
+<ul><li>Adapted to changes in <code>MWTools</code> for downloading and analyzing ILO data.</li>
+<li>New targets <code>PSUT_USA</code> and <code>EtafuYEIOU</code>.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.1" id="pfudatabase-011-2023-05-18-doi">PFUDatabase 0.1.1 (2023-05-18) <a href="https://doi.org/10.5281/zenodo.7949498" class="external-link"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.7949498.svg" alt="DOI"></a>
+<a class="anchor" aria-label="anchor" href="#pfudatabase-011-2023-05-18-doi"></a></h2>
 <ul><li>Released version 1.1 of the database. So also releasing this version of the package.</li>
 <li>Now filtering the muscle work data to only those countries, years, methods, energy types, and last stages also present in the IEA data. Effectively, this change eliminates MW data in 1960-1970 for developing nations whose IEA data starts in 1971. The target <code>PSUTMW_all_years</code> retains all of the muscle work data, but the target <code>PSUTMW</code> is filtered.</li>
 <li>Back to saving the cache upon release. The cache is needed for the Shiny app.</li>

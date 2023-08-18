@@ -260,17 +260,20 @@ aggcountries_mw_to_iea <- function(mw_df,
 #' @param psutiea A PSUT data frame of IEA data. Default is `NULL.`
 #' @param psutmw A PSUT data frame of muscle work data. Default is `NULL.`
 #' @param psutieamw A PSUT data frame of combined IEA and MW data. Default is `NULL.`
-#' @param ieamw_colname The name of the column that identifies data source (IEA, MW, or both).
+#' @param country_colname,method_colname,energy_type_colname,last_stage_colname,year_colname Column names. 
+#'                                                                                           See `IEATools::iea_cols` for defaults.
+#' @param ieamw_colname The name of the column that identifies whether data are for the IEA, 
+#'                      muscle work (MW) or both. 
 #'                      Default is `PFUDatabase::ieamw_cols$ieamw`.
+#' @param R_colname,U_colname,U_feed_colname,U_eiou_colname,r_eiou_colname,V_colname,Y_colname,S_units_colname Names of matrix columns. 
+#'                                                                                                             See `IEATools::psut_cols`.
 #' @param iea The string that identifies ECC data are from the IEA only.
 #'            Default is `PFUDatabase::ieamw_cols$iea`.
 #' @param mw The string that identifies ECC data are for muscle work only.
 #'           Default is `PFUDatabase::ieamw_cols$mw`.
 #' @param both The string that identifies ECC data are for both IEA and muscle work.
+#'             Default is `PFUDatabase::ieamw_cols`.
 #'             Default is `PFUDatabase::ieamw_cols$both`.
-#' @param year The string name of the year column. 
-#'             Default is `IEATools::iea_cols$year`.
-#'
 #' @return A data frame with `PSUTIEA`, `PSUTMW`, and `PSUTIEAMW` `rbind()`ed together, 
 #'         and a new column (`IEAMW_colname`) that distinguishes among them.
 #' 

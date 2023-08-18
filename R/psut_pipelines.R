@@ -32,7 +32,8 @@
 #' @param phi_constants_path The path to a phi (exergy-to-energy ratio) Excel file.
 #' @param ceda_data_folder The path to the CEDA data in text file, .per, format.
 #' @param fao_data_path The path to Food and Agriculture Organization (FAO) data.
-#' @param ilo_data_path The path to International Labor Organization (ILO) data.
+#' @param ilo_employment_data_path The path to International Labor Organization (ILO) employment data.
+#' @param ilo_working_hours_data_path The path to International Labor Organization (ILO) working hours data.
 #' @param machine_data_path The path to the machine data in .xlsx format.
 #' @param exemplar_table_path The path to an exemplar table.
 #' @param fu_analysis_folder The path to a folder containing final-to-useful analyses.

@@ -1,7 +1,7 @@
 Package: PFUDatabase
 Title: Functions and Workflows for Primary-Final-Useful Societal Exergy Analysis Within the PSUT Framework
-Version: 0.1.1
-Date: 2023-05-18
+Version: 0.1.2
+Date: 2023-08-18
 Authors@R: 
     c(person(given = "Matthew",
              family = "Heun",
@@ -11,7 +11,7 @@ Authors@R:
       person(given = "Zeke", 
              family = "Marshall", 
              role = "aut"))
-Description: This package functions and workflows for primary-final-useful societal exergy analysis within the PSUT framework.
+Description: Functions and pipelines for primary-final-useful societal exergy analysis within the PSUT framework.
              The package is compatible with `targets`.
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -22,7 +22,6 @@ Imports:
     dplyr,
     ggplot2,
     IEATools,
-    lubridate,
     magrittr,
     matsbyname,
     matsindf,
@@ -30,8 +29,6 @@ Imports:
     MWTools,
     PFUPipelineTools,
     PFUSetup,
-    parsedate,
-    pins,
     purrr,
     pwt10,
     readr,
@@ -44,6 +41,7 @@ Imports:
     tidyr
 Suggests: 
     knitr,
+    pins,
     rmarkdown,
     spelling,
     testthat (>= 3.0.0)
