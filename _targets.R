@@ -24,8 +24,8 @@ years <- 1960:2020                        # The years to be analyzed
 # countries <- "AGO"
 # countries <- "WMBK"
 # countries <- c("AGO", "COL")
-# countries <- "WRLD"
-countries <- c(PFUDatabase::canonical_countries, "WRLD") |> as.character()
+countries <- "WRLD"
+# countries <- c(PFUDatabase::canonical_countries, "WRLD") |> as.character()
 
 # Countries with unique allocation data.
 # countries <- c("WRLD", "BRA", "CAN", "CHNM", "DEU", "DNK", "ESP", "FRA", "GBR", "GHA",
@@ -99,7 +99,8 @@ PFUDatabase::get_pipeline(countries = countries,
                           # Temperature data not required for V1, argument set to NULL.
                           ceda_data_folder = NULL,
                           fao_data_path = PFUSetup::get_abs_paths(version = version)[["fao_data_path"]],
-                          ilo_data_path = PFUSetup::get_abs_paths(version = version)[["ilo_data_path"]],
+                          ilo_employment_data_path = PFUSetup::get_abs_paths(version = version)[["ilo_employment_data_path"]],
+                          ilo_working_hours_data_path = PFUSetup::get_abs_paths(version = version)[["ilo_working_hours_data_path"]],
                           machine_data_path = PFUSetup::get_abs_paths(version = version)[["machine_data_folder"]],
                           exemplar_table_path = PFUSetup::get_abs_paths(version = version)[["exemplar_table_path"]],
                           fu_analysis_folder = PFUSetup::get_abs_paths(version = version)[["fu_analysis_folder"]],

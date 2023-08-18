@@ -6,7 +6,8 @@ output: html_document
 Cite all releases with doi [10.5281/zenodo.5228375](https://doi.org/10.5281/zenodo.5228375), 
 which always resolves to the latest release.
 
-
+* Adapted to changes in `MWTools` for downloading and
+  analyzing ILO data.
 * New targets `PSUT_USA` and `EtafuYEIOU`.
 
 

@@ -156,17 +156,24 @@ load_amw_pfu_data <- function(fao_data_path,
 #' This function loads human muscle work data and 
 #' renames the sectors according to the default arguments to `rename_mw_sectors()`.
 #'
-#' @param ilo_data_path The path to ILO data.
+#' @param ilo_working_hours_data_path The path to ILO working hours data.
+#' @param ilo_employment_data_path The path to the ILO employment data.
 #' @param mw_concordance_path The path to the muscle work concordance.
 #' @param hmw_analysis_data_path The path the human muscle work data.
 #'
 #' @return A data frame of human muscle work data.
 #' 
 #' @export
-load_hmw_pfu_data <- function(ilo_data_path, 
+load_hmw_pfu_data <- function(ilo_working_hours_data_path,
+                              ilo_employment_data_path,
                               mw_concordance_path, 
                               hmw_analysis_data_path) {
-  readr::read_rds(file = ilo_data_path) %>% 
+  
+  ilo_working_hours_data <- readr::read_rds(ilo_working_hours_data_path)
+  ilo_employment_data <- readr::read_rds(ilo_employment_data_path)
+  
+  MWTools::prepareRawILOData(ilo_working_hours_data = ilo_working_hours_data, 
+                             ilo_employment_data = ilo_employment_data) %>% 
     MWTools::calc_hmw_pfu(concordance_path = mw_concordance_path,
                           hmw_analysis_data_path = hmw_analysis_data_path) %>% 
     rename_mw_sectors()
