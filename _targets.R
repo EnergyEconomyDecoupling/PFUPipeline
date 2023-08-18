@@ -8,12 +8,13 @@ library(PFUDatabase)
 # targets::tar_make(callr_function = NULL) to debug.
 
 
-# Version
-version <- "v1.1"
+# Input data version
+version <- "v1.2"
 
 # Custom parameters
 years <- 1960:2020                        # The years to be analyzed
 # years <- 1971
+# years <- 1971:1972
 # years <- 1971:1980
 
 # countries <- c("ARM", "COL", "WRLD")
@@ -23,19 +24,18 @@ years <- 1960:2020                        # The years to be analyzed
 # countries <- "AGO"
 # countries <- "WMBK"
 # countries <- c("AGO", "COL")
-# countries <- "WRLD"
-countries <- c(PFUDatabase::canonical_countries, "WRLD") |> as.character()
+countries <- "WRLD"
+# countries <- c(PFUDatabase::canonical_countries, "WRLD") |> as.character()
 
 # Countries with unique allocation data.
 # countries <- c("WRLD", "BRA", "CAN", "CHNM", "DEU", "DNK", "ESP", "FRA", "GBR", "GHA",
-#                "GRC", "HKG", "HND", "IDN", "IND", "JOR", "JPN", "KOR", "MEX",
-#                "NOR", "PRT", "RUS", "USA", "WABK", "WMBK", "ZAF")
+#                "GRC", "HKG", "HND", "IDN", "IND", "JOR", "JPN", "KOR", "MEX", "NOR",
+#                "PRT", "RUS", "USA", "WABK", "WMBK", "ZAF")
 
 # Additional exemplar countries are countries which aren't included in the workflow
 # as individual countries, but from which allocation or efficiency data may be 
 # obtained and assigned to countries in the workflow using the exemplar system.
-additional_exemplar_countries <- c(# "WRLD", # World
-                                   "AFRI", # Africa 
+additional_exemplar_countries <- c("AFRI", # Africa 
                                    "ASIA", # Asia
                                    "EURP", # Europe 
                                    "MIDE", # Middle East
@@ -61,7 +61,17 @@ release <- FALSE
 
 # End user-adjustable parameters.
 
+# WRLD should not be in both countries and additional_exemplar_countries
+if (("WRLD" %in% countries) & ("WRLD" %in% additional_exemplar_countries)) {
+  # Remove WRLD from additional_exemplar_countries
+  additional_exemplar_countries <- additional_exemplar_countries[!(additional_exemplar_countries == "WRLD")]
+}
 
+# WRLD should always be in countries or in additional_exemplar_countries.
+if (!("WRLD" %in% countries) & !("WRLD" %in% additional_exemplar_countries)) {
+  # Add WRLD to additional_exemplar_countries
+  additional_exemplar_countries <- c("WRLD", additional_exemplar_countries)
+}
 
 # Set up for multithreaded work on the local machine.
 future::plan(future.callr::callr)
@@ -89,7 +99,8 @@ PFUDatabase::get_pipeline(countries = countries,
                           # Temperature data not required for V1, argument set to NULL.
                           ceda_data_folder = NULL,
                           fao_data_path = PFUSetup::get_abs_paths(version = version)[["fao_data_path"]],
-                          ilo_data_path = PFUSetup::get_abs_paths(version = version)[["ilo_data_path"]],
+                          ilo_employment_data_path = PFUSetup::get_abs_paths(version = version)[["ilo_employment_data_path"]],
+                          ilo_working_hours_data_path = PFUSetup::get_abs_paths(version = version)[["ilo_working_hours_data_path"]],
                           machine_data_path = PFUSetup::get_abs_paths(version = version)[["machine_data_folder"]],
                           exemplar_table_path = PFUSetup::get_abs_paths(version = version)[["exemplar_table_path"]],
                           fu_analysis_folder = PFUSetup::get_abs_paths(version = version)[["fu_analysis_folder"]],

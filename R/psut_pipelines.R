@@ -32,7 +32,8 @@
 #' @param phi_constants_path The path to a phi (exergy-to-energy ratio) Excel file.
 #' @param ceda_data_folder The path to the CEDA data in text file, .per, format.
 #' @param fao_data_path The path to Food and Agriculture Organization (FAO) data.
-#' @param ilo_data_path The path to International Labor Organization (ILO) data.
+#' @param ilo_employment_data_path The path to International Labor Organization (ILO) employment data.
+#' @param ilo_working_hours_data_path The path to International Labor Organization (ILO) working hours data.
 #' @param machine_data_path The path to the machine data in .xlsx format.
 #' @param exemplar_table_path The path to an exemplar table.
 #' @param fu_analysis_folder The path to a folder containing final-to-useful analyses.
@@ -65,7 +66,8 @@ get_pipeline <- function(countries = "all",
                          phi_constants_path,
                          ceda_data_folder,
                          fao_data_path,
-                         ilo_data_path,
+                         ilo_employment_data_path,
+                         ilo_working_hours_data_path,
                          machine_data_path,
                          exemplar_table_path,
                          fu_analysis_folder,
@@ -96,7 +98,8 @@ get_pipeline <- function(countries = "all",
     # Temperature data not required for V1
     # targets::tar_target_raw("CEDADataFolder", ceda_data_folder),
     targets::tar_target_raw("FAODataPath", fao_data_path),
-    targets::tar_target_raw("ILODataPath", ilo_data_path),
+    targets::tar_target_raw("ILOEmploymentDataPath", ilo_employment_data_path),
+    targets::tar_target_raw("ILOWorkingHoursDataPath", ilo_working_hours_data_path),
     targets::tar_target_raw("MachineDataPath", machine_data_path),
     targets::tar_target_raw("ExemplarTablePath", exemplar_table_path),
     targets::tar_target_raw("FUAnalysisFolder", fu_analysis_folder),
@@ -115,7 +118,7 @@ get_pipeline <- function(countries = "all",
                                                                            specify_non_energy_flows = SpecifyNonEnergyFlows, 
                                                                            apply_fixes = ApplyFixes))),
     targets::tar_target_raw("IEAData", quote(AllIEAData %>%
-                                               filter_countries_years(countries = AllocAndEffCountries, years = Years))),
+                                               PFUPipelineTools::filter_countries_years(countries = AllocAndEffCountries, years = Years))),
 
     # (1b) Country concordance table
     targets::tar_target_raw("CountryConcordanceTable", quote(load_country_concordance_table(country_concordance_path = CountryConcordancePath))),
@@ -128,16 +131,19 @@ get_pipeline <- function(countries = "all",
 
     # (1d) Machine data
     targets::tar_target_raw("AllMachineData", quote(read_all_eta_files(eta_fin_paths = get_eta_filepaths(MachineDataPath)))),
-    targets::tar_target_raw("MachineData", quote(filter_countries_years(AllMachineData, countries = AllocAndEffCountries, years = Years))),
+    targets::tar_target_raw("MachineData", quote(PFUPipelineTools::filter_countries_years(AllMachineData, countries = AllocAndEffCountries, years = Years))),
 
     # (1e) Muscle work data
     targets::tar_target_raw("AMWPFUDataRaw", quote(load_amw_pfu_data(fao_data_path = FAODataPath,
                                                                      mw_concordance_path = MWConcordancePath,
-                                                                     amw_analysis_data_path = AMWAnalysisDataPath))),
+                                                                     amw_analysis_data_path = AMWAnalysisDataPath) |>
+                                                     PFUPipelineTools::filter_countries_years(countries = AllocAndEffCountries, years = Years))),
 
-    targets::tar_target_raw("HMWPFUDataRaw", quote(load_hmw_pfu_data(ilo_data_path = ILODataPath,
+    targets::tar_target_raw("HMWPFUDataRaw", quote(load_hmw_pfu_data(ilo_working_hours_data_path = ILOWorkingHoursDataPath,
+                                                                     ilo_employment_data_path = ILOEmploymentDataPath,
                                                                      mw_concordance_path = MWConcordancePath,
-                                                                     hmw_analysis_data_path = HMWAnalysisDataPath))),
+                                                                     hmw_analysis_data_path = HMWAnalysisDataPath) |>
+                                                     PFUPipelineTools::filter_countries_years(countries = AllocAndEffCountries, years = Years))),
 
     targets::tar_target_raw("AMWPFUData", quote(aggcountries_mw_to_iea(mw_df = AMWPFUDataRaw))),
 
@@ -218,13 +224,15 @@ get_pipeline <- function(countries = "all",
     # (11) Build matrices and vectors for extending to useful stage and exergy
     # (11a) Allocation (C) matrices
     targets::tar_target_raw("Cmats", quote(calc_C_mats(completed_allocation_tables = CompletedAllocationTables,
-                                                       countries = Countries)),
+                                                       countries = Countries, 
+                                                       matrix_class = matrix_class)),
                             pattern = quote(map(Countries))),
 
     # (11b) Final-to-useful efficiency (eta_fu) and exergy-to-energy ratio (phi_u) vectors at the useful stage
     targets::tar_target_raw("EtafuPhiuvecs", quote(calc_eta_fu_phi_u_vecs(completed_efficiency_tables = CompletedEfficiencyTables,
                                                                           completed_phi_tables = CompletedPhiuTables,
-                                                                          countries = Countries)),
+                                                                          countries = Countries, 
+                                                                          matrix_class = matrix_class)),
                             pattern = quote(map(Countries))),
 
     # (11c) Final-to-useful efficiency (eta_fu) vectors
@@ -242,7 +250,8 @@ get_pipeline <- function(countries = "all",
     # (11e) Exergy-to-energy ratio (phi_pf) vectors at the primary and final stages
     targets::tar_target_raw("Phipfvecs", quote(calc_phi_pf_vecs(phi_constants = PhiConstants,
                                                                 phi_u_vecs = Phiuvecs,
-                                                                countries = Countries)),
+                                                                countries = Countries, 
+                                                                matrix_class = matrix_class)),
                             pattern = quote(map(Countries))),
 
     # (11f) Exergy-to-energy ratio (phi) vectors at all stages
@@ -315,34 +324,86 @@ get_pipeline <- function(countries = "all",
                                                                psutmw = PSUTMW,
                                                                psutieamw = PSUTIEAMW))),
 
+    # (20) Calculate final-to-useful efficiencies from f-u allocations and machine efficiencies
+    targets::tar_target_raw("EtafuvecsYEIOU", quote(calc_fu_Y_EIOU_efficiencies(C_mats = Cmats,
+                                                                                eta_fu_vecs = Etafuvecs,
+                                                                                phi_vecs = Phivecs,
+                                                                                countries = Countries)),
+                            pattern = quote(map(Countries))),
 
-    # (20) Build reports
-    # (20a) Allocation Graphs
+    # (30) Build reports
+    # (30a) Allocation Graphs
     targets::tar_target_raw("AllocationGraphs", quote(alloc_plots_df(CompletedAllocationTables, countries = Countries)),
                             pattern = quote(map(Countries))),
-    # (20b) Non-Stationary Allocation Graphs
+    # (30b) Non-Stationary Allocation Graphs
     targets::tar_target_raw("NonStationaryAllocationGraphs", quote(nonstat_alloc_plots_df(CompletedAllocationTables, countries = Countries)),
                             pattern = quote(map(Countries))),
-    # (20c) Efficiency Graphs
+    # (30c) Efficiency Graphs
     targets::tar_target_raw("EfficiencyGraphs", quote(eta_fu_plots_df(CompletedEfficiencyTables, countries = Countries)),
                             pattern = quote(map(Countries))),
-    # (20d) Exergy-to-energy ratio graphs
+    # (30d) Exergy-to-energy ratio graphs
     targets::tar_target_raw("PhiGraphs", quote(phi_u_plots_df(CompletedEfficiencyTables, countries = Countries)),
                             pattern = quote(map(Countries))),
 
-    # (21) Save results
-    # (21a) Pin the PSUT data frame
-    targets::tar_target_raw("ReleasePSUT", quote(release_target(pipeline_releases_folder = PipelineReleasesFolder,
-                                                                targ = PSUT,
-                                                                pin_name = "psut",
-                                                                release = Release))), 
+    # (31) Save results
+    # (31a) Pin the PSUT data frame
+    targets::tar_target_raw("ReleasePSUT", 
+                            quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                                                                   targ = PSUT,
+                                                                   pin_name = "psut",
+                                                                   release = Release))), 
     
-    # (21b) Zip the targets cache and store it in the pipeline_caches_folder
-    targets::tar_target_raw("StoreCache", quote(stash_cache(pipeline_caches_folder = PipelineCachesFolder,
-                                                            cache_folder = "_targets",
-                                                            file_prefix = "pfu_pipeline_cache_",
-                                                            dependency = PSUT, 
-                                                            release = Release)))
+    # Some database products are best suited to creating and storing here.
     
+    # --------------------------------------------------------------------------
+    # Product A ----------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # Pin the PSUT_USA data frame ----------------------------------------------
+    
+    # Filter to the US for Carey King
+    targets::tar_target_raw(
+      "PSUT_USA",
+      quote(PSUT |> 
+              dplyr::filter(Country == "USA"))
+    ),
+    
+    targets::tar_target_raw(
+      "ReleasePSUT_USA",
+      quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                                             targ = PSUT_USA,
+                                             pin_name = "psut_usa",
+                                             release = Release))
+    ),
+    
+    
+    # --------------------------------------------------------------------------
+    # Product B ----------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # Final-to-useful sector-carrier efficiencies ------------------------------
+    
+    targets::tar_target_raw(
+      "EtafuYEIOU", 
+      quote(calc_fu_Y_EIOU_efficiencies(C_mats = Cmats, 
+                                        eta_fu_vecs = Etafuvecs, 
+                                        phi_vecs = Phivecs, 
+                                        countries = Countries)), 
+      pattern = quote(map(Countries))), 
+    
+    targets::tar_target_raw(
+      "ReleaseEtafuYEIOU",
+      quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                                             targ = EtafuYEIOU,
+                                             pin_name = "eta_fu_Y_eiou",
+                                             release = Release))
+    ), 
+    
+    
+    # Zip the targets cache and store it in the pipeline_caches_folder
+    targets::tar_target_raw("StoreCache", 
+                            quote(PFUPipelineTools::stash_cache(pipeline_caches_folder = PipelineCachesFolder,
+                                                                cache_folder = "_targets",
+                                                                file_prefix = "pfu_pipeline_cache_",
+                                                                dependency = PSUT_USA, 
+                                                                release = Release)))
   )
 }

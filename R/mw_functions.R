@@ -9,6 +9,8 @@
 #' @param matrix_class The type of matrix to be created. 
 #'                     One of "matrix" (the base class) or 
 #'                     "Matrix" (for sparse matrices).
+#' @param output_unit A string of length one that specifies the output unit.
+#'                    One of "TJ" or "ktoe" for terajoules or kilotons of oil equivalent.
 #' @param country The name of the country column in `.hmw_df` and `.amw_df`. Default is `MWTools::mw_cols$country`.
 #' @param year The name of the year column in `.hmw_df` and `.amw_df`.Default is `MWTools::mw_cols$year`.
 #'
@@ -19,10 +21,12 @@ make_mw_psut <- function(.hmw_df, .amw_df,
                          countries,
                          years,
                          matrix_class = c("matrix", "Matrix"),
+                         output_unit = c("TJ", "ktoe"),
                          country = MWTools::mw_cols$country, 
                          year = MWTools::mw_cols$year) {
   
   matrix_class <- match.arg(matrix_class)
+  output_unit <- match.arg(output_unit)
   
   hmw_data <- .hmw_df %>% 
     dplyr::filter(.data[[country]] %in% countries, 
@@ -30,7 +34,10 @@ make_mw_psut <- function(.hmw_df, .amw_df,
   amw_data <- .amw_df %>% 
     dplyr::filter(.data[[country]] %in% countries, 
                   .data[[year]] %in% years)
-  MWTools::prep_psut(.hmw_df = hmw_data, .amw_df = amw_data, matrix_class = matrix_class)
+  MWTools::prep_psut(.hmw_df = hmw_data,
+                     .amw_df = amw_data,
+                     matrix_class = matrix_class, 
+                     output_unit = output_unit)
 }
 
 
@@ -149,17 +156,24 @@ load_amw_pfu_data <- function(fao_data_path,
 #' This function loads human muscle work data and 
 #' renames the sectors according to the default arguments to `rename_mw_sectors()`.
 #'
-#' @param ilo_data_path The path to ILO data.
+#' @param ilo_working_hours_data_path The path to ILO working hours data.
+#' @param ilo_employment_data_path The path to the ILO employment data.
 #' @param mw_concordance_path The path to the muscle work concordance.
 #' @param hmw_analysis_data_path The path the human muscle work data.
 #'
 #' @return A data frame of human muscle work data.
 #' 
 #' @export
-load_hmw_pfu_data <- function(ilo_data_path, 
+load_hmw_pfu_data <- function(ilo_working_hours_data_path,
+                              ilo_employment_data_path,
                               mw_concordance_path, 
                               hmw_analysis_data_path) {
-  readr::read_rds(file = ilo_data_path) %>% 
+  
+  ilo_working_hours_data <- readr::read_rds(ilo_working_hours_data_path)
+  ilo_employment_data <- readr::read_rds(ilo_employment_data_path)
+  
+  MWTools::prepareRawILOData(ilo_working_hours_data = ilo_working_hours_data, 
+                             ilo_employment_data = ilo_employment_data) %>% 
     MWTools::calc_hmw_pfu(concordance_path = mw_concordance_path,
                           hmw_analysis_data_path = hmw_analysis_data_path) %>% 
     rename_mw_sectors()

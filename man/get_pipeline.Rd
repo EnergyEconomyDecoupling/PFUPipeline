@@ -20,7 +20,8 @@ get_pipeline(
   phi_constants_path,
   ceda_data_folder,
   fao_data_path,
-  ilo_data_path,
+  ilo_employment_data_path,
+  ilo_working_hours_data_path,
   machine_data_path,
   exemplar_table_path,
   fu_analysis_folder,
@@ -77,7 +78,9 @@ Default is "all_targets" to indicate all targets of the plan should be returned.
 
 \item{fao_data_path}{The path to Food and Agriculture Organization (FAO) data.}
 
-\item{ilo_data_path}{The path to International Labor Organization (ILO) data.}
+\item{ilo_employment_data_path}{The path to International Labor Organization (ILO) employment data.}
+
+\item{ilo_working_hours_data_path}{The path to International Labor Organization (ILO) working hours data.}
 
 \item{machine_data_path}{The path to the machine data in .xlsx format.}
 

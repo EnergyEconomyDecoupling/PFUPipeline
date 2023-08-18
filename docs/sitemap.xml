@@ -10,13 +10,7 @@
     <loc>/LICENSE.html</loc>
   </url>
   <url>
-    <loc>/articles/How_to_Follow_a_Product.html</loc>
-  </url>
-  <url>
     <loc>/articles/PFUDatabase_Demo.html</loc>
-  </url>
-  <url>
-    <loc>/articles/following_a_product.html</loc>
   </url>
   <url>
     <loc>/articles/index.html</loc>
@@ -62,6 +56,9 @@
   </url>
   <url>
     <loc>/reference/calc_eta_fu_phi_u_vecs.html</loc>
+  </url>
+  <url>
+    <loc>/reference/calc_fu_Y_EIOU_efficiencies.html</loc>
   </url>
   <url>
     <loc>/reference/calc_phi_pf_vecs.html</loc>
@@ -184,9 +181,6 @@
     <loc>/reference/read_all_eta_files.html</loc>
   </url>
   <url>
-    <loc>/reference/release_target.html</loc>
-  </url>
-  <url>
     <loc>/reference/rename_mw_sectors.html</loc>
   </url>
   <url>
@@ -200,9 +194,6 @@
   </url>
   <url>
     <loc>/reference/specify.html</loc>
-  </url>
-  <url>
-    <loc>/reference/stash_cache.html</loc>
   </url>
   <url>
     <loc>/reference/sum_phi_vecs.html</loc>

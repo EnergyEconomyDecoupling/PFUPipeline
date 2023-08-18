@@ -10,6 +10,7 @@ make_mw_psut(
   countries,
   years,
   matrix_class = c("matrix", "Matrix"),
+  output_unit = c("TJ", "ktoe"),
   country = MWTools::mw_cols$country,
   year = MWTools::mw_cols$year
 )
@@ -24,6 +25,9 @@ make_mw_psut(
 \item{matrix_class}{The type of matrix to be created.
 One of "matrix" (the base class) or
 "Matrix" (for sparse matrices).}
+
+\item{output_unit}{A string of length one that specifies the output unit.
+One of "TJ" or "ktoe" for terajoules or kilotons of oil equivalent.}
 
 \item{country}{The name of the country column in \code{.hmw_df} and \code{.amw_df}. Default is \code{MWTools::mw_cols$country}.}
 

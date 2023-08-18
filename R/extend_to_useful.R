@@ -5,8 +5,10 @@
 #'
 #' @param completed_allocation_tables The completed allocation tables from which allocation (`C`) matrices should be created.
 #'                                    This data frame is most likely to be the `CompletedAllocationTables` target.
-#' @param countries The countries for which `C` matrices should be formed
-#' @param country,year See `IEATools::ieacols`.
+#' @param countries The countries for which `C` matrices should be formed.
+#' @param matrix_class The type of matrix that should be produced. 
+#'                     One of "matrix" (the default and not sparse) or "Matrix" (which may be sparse).
+#' @param country,year See `IEATools::iea_cols`.
 #' @param c_source,.values,C_Y,C_EIOU See `IEATools::template_cols`.
 #'
 #' @return A data frame with `C_Y` and `C_EIOU` columns containing allocation matrices.
@@ -14,12 +16,14 @@
 #' @export
 calc_C_mats <- function(completed_allocation_tables,
                         countries,
+                        matrix_class = c("matrix", "Matrix"),
                         country = IEATools::iea_cols$country,
                         year = IEATools::iea_cols$year,
                         c_source = IEATools::template_cols$c_source,
                         .values = IEATools::template_cols$.values,
                         C_Y = IEATools::template_cols$C_Y,
                         C_EIOU  = IEATools::template_cols$C_eiou) {
+  matrix_class <- match.arg(matrix_class)
   tables <- completed_allocation_tables %>%
     dplyr::filter(.data[[country]] %in% countries) %>%
     dplyr::mutate(
@@ -32,7 +36,7 @@ calc_C_mats <- function(completed_allocation_tables,
   # Need to form C matrices from completed_allocation_tables.
   # Use the IEATools::form_C_mats() function for this task.
   # The function accepts a tidy data frame in addition to wide-by-year data frames.
-  IEATools::form_C_mats(tables, matvals = .values)
+  IEATools::form_C_mats(tables, matvals = .values, matrix_class = matrix_class)
 }
 
 
@@ -47,6 +51,8 @@ calc_C_mats <- function(completed_allocation_tables,
 #' @param completed_phi_tables The completed phi tables from which exergy-to-energy ratio vectors (`phi_u`)
 #'                             should be created.This data frame is most likely to be the `CompletedPhiTables` target.
 #' @param countries The countries for which `eta_fu` and `phi_u` vectors should be formed.
+#' @param matrix_class The type of matrix that should be produced. 
+#'                     One of "matrix" (the default and not sparse) or "Matrix" (which may be sparse).
 #' @param country,year See `IEATools::ieacols`.
 #' @param c_source,eta_fu_source,.values,eta_fu,phi_u See `IEATools::template_cols`.
 #' @param phi_u_source See `IEATools::phi_constants_names`.
@@ -57,6 +63,7 @@ calc_C_mats <- function(completed_allocation_tables,
 calc_eta_fu_phi_u_vecs <- function(completed_efficiency_tables,
                                    completed_phi_tables,
                                    countries,
+                                   matrix_class = c("matrix", "Matrix"),
                                    country = IEATools::iea_cols$country,
                                    year = IEATools::iea_cols$year,
                                    c_source = IEATools::template_cols$c_source,
@@ -65,6 +72,7 @@ calc_eta_fu_phi_u_vecs <- function(completed_efficiency_tables,
                                    eta_fu = IEATools::template_cols$eta_fu,
                                    phi_u = IEATools::template_cols$phi_u,
                                    phi_u_source = IEATools::phi_constants_names$phi_source_colname) {
+  matrix_class <- match.arg(matrix_class)
   lapply(list(completed_efficiency_tables, completed_phi_tables), function(t) {
     t %>%
       dplyr::filter(.data[[country]] %in% countries) %>%
@@ -86,7 +94,7 @@ calc_eta_fu_phi_u_vecs <- function(completed_efficiency_tables,
     # Need to form eta_fu and phi_u vectors from completed_efficiency_tables.
     # Use the IEATools::form_eta_fu_phi_u_vecs() function for this task.
     # The function accepts a tidy data frame in addition to wide-by-year data frames.
-    IEATools::form_eta_fu_phi_u_vecs(matvals = .values)
+    IEATools::form_eta_fu_phi_u_vecs(matvals = .values, matrix_class = matrix_class)
 }
 
 

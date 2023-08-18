@@ -8,11 +8,23 @@ build_psut_dataframe(
   psutiea = NULL,
   psutmw = NULL,
   psutieamw = NULL,
+  country_colname = IEATools::iea_cols$country,
+  method_colname = IEATools::iea_cols$method,
+  energy_type_colname = IEATools::iea_cols$energy_type,
+  last_stage_colname = IEATools::iea_cols$last_stage,
+  year_colname = IEATools::iea_cols$year,
   ieamw_colname = PFUDatabase::ieamw_cols$ieamw,
+  R_colname = IEATools::psut_cols$R,
+  U_colname = IEATools::psut_cols$U,
+  U_feed_colname = IEATools::psut_cols$U_feed,
+  U_eiou_colname = IEATools::psut_cols$U_eiou,
+  r_eiou_colname = IEATools::psut_cols$r_eiou,
+  V_colname = IEATools::psut_cols$V,
+  Y_colname = IEATools::psut_cols$Y,
+  S_units_colname = IEATools::psut_cols$s_units,
   iea = PFUDatabase::ieamw_cols$iea,
   mw = PFUDatabase::ieamw_cols$mw,
-  both = PFUDatabase::ieamw_cols$both,
-  year = IEATools::iea_cols$year
+  both = PFUDatabase::ieamw_cols$both
 )
 }
 \arguments{
@@ -22,8 +34,15 @@ build_psut_dataframe(
 
 \item{psutieamw}{A PSUT data frame of combined IEA and MW data. Default is \code{NULL.}}
 
-\item{ieamw_colname}{The name of the column that identifies data source (IEA, MW, or both).
+\item{country_colname, method_colname, energy_type_colname, last_stage_colname, year_colname}{Column names.
+See \code{IEATools::iea_cols} for defaults.}
+
+\item{ieamw_colname}{The name of the column that identifies whether data are for the IEA,
+muscle work (MW) or both.
 Default is \code{PFUDatabase::ieamw_cols$ieamw}.}
+
+\item{R_colname, U_colname, U_feed_colname, U_eiou_colname, r_eiou_colname, V_colname, Y_colname, S_units_colname}{Names of matrix columns.
+See \code{IEATools::psut_cols}.}
 
 \item{iea}{The string that identifies ECC data are from the IEA only.
 Default is \code{PFUDatabase::ieamw_cols$iea}.}
@@ -32,10 +51,8 @@ Default is \code{PFUDatabase::ieamw_cols$iea}.}
 Default is \code{PFUDatabase::ieamw_cols$mw}.}
 
 \item{both}{The string that identifies ECC data are for both IEA and muscle work.
+Default is \code{PFUDatabase::ieamw_cols}.
 Default is \code{PFUDatabase::ieamw_cols$both}.}
-
-\item{year}{The string name of the year column.
-Default is \code{IEATools::iea_cols$year}.}
 }
 \value{
 A data frame with \code{PSUTIEA}, \code{PSUTMW}, and \code{PSUTIEAMW} \code{rbind()}ed together,

@@ -4,10 +4,17 @@
 \alias{load_hmw_pfu_data}
 \title{Load human muscle work data}
 \usage{
-load_hmw_pfu_data(ilo_data_path, mw_concordance_path, hmw_analysis_data_path)
+load_hmw_pfu_data(
+  ilo_working_hours_data_path,
+  ilo_employment_data_path,
+  mw_concordance_path,
+  hmw_analysis_data_path
+)
 }
 \arguments{
-\item{ilo_data_path}{The path to ILO data.}
+\item{ilo_working_hours_data_path}{The path to ILO working hours data.}
+
+\item{ilo_employment_data_path}{The path to the ILO employment data.}
 
 \item{mw_concordance_path}{The path to the muscle work concordance.}
 

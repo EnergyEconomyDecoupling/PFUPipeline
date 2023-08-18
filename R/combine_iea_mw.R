@@ -260,27 +260,42 @@ aggcountries_mw_to_iea <- function(mw_df,
 #' @param psutiea A PSUT data frame of IEA data. Default is `NULL.`
 #' @param psutmw A PSUT data frame of muscle work data. Default is `NULL.`
 #' @param psutieamw A PSUT data frame of combined IEA and MW data. Default is `NULL.`
-#' @param ieamw_colname The name of the column that identifies data source (IEA, MW, or both).
+#' @param country_colname,method_colname,energy_type_colname,last_stage_colname,year_colname Column names. 
+#'                                                                                           See `IEATools::iea_cols` for defaults.
+#' @param ieamw_colname The name of the column that identifies whether data are for the IEA, 
+#'                      muscle work (MW) or both. 
 #'                      Default is `PFUDatabase::ieamw_cols$ieamw`.
+#' @param R_colname,U_colname,U_feed_colname,U_eiou_colname,r_eiou_colname,V_colname,Y_colname,S_units_colname Names of matrix columns. 
+#'                                                                                                             See `IEATools::psut_cols`.
 #' @param iea The string that identifies ECC data are from the IEA only.
 #'            Default is `PFUDatabase::ieamw_cols$iea`.
 #' @param mw The string that identifies ECC data are for muscle work only.
 #'           Default is `PFUDatabase::ieamw_cols$mw`.
 #' @param both The string that identifies ECC data are for both IEA and muscle work.
+#'             Default is `PFUDatabase::ieamw_cols`.
 #'             Default is `PFUDatabase::ieamw_cols$both`.
-#' @param year The string name of the year column. 
-#'             Default is `IEATools::iea_cols$year`.
-#'
 #' @return A data frame with `PSUTIEA`, `PSUTMW`, and `PSUTIEAMW` `rbind()`ed together, 
 #'         and a new column (`IEAMW_colname`) that distinguishes among them.
 #' 
 #' @export
 build_psut_dataframe <- function(psutiea = NULL, psutmw = NULL, psutieamw = NULL, 
+                                 country_colname = IEATools::iea_cols$country,
+                                 method_colname = IEATools::iea_cols$method,
+                                 energy_type_colname = IEATools::iea_cols$energy_type,
+                                 last_stage_colname = IEATools::iea_cols$last_stage,
+                                 year_colname = IEATools::iea_cols$year,
                                  ieamw_colname = PFUDatabase::ieamw_cols$ieamw, 
+                                 R_colname = IEATools::psut_cols$R, 
+                                 U_colname = IEATools::psut_cols$U,
+                                 U_feed_colname = IEATools::psut_cols$U_feed,
+                                 U_eiou_colname = IEATools::psut_cols$U_eiou,
+                                 r_eiou_colname = IEATools::psut_cols$r_eiou,
+                                 V_colname = IEATools::psut_cols$V,
+                                 Y_colname = IEATools::psut_cols$Y,
+                                 S_units_colname = IEATools::psut_cols$s_units,
                                  iea = PFUDatabase::ieamw_cols$iea, 
                                  mw = PFUDatabase::ieamw_cols$mw, 
-                                 both = PFUDatabase::ieamw_cols$both, 
-                                 year = IEATools::iea_cols$year) {
+                                 both = PFUDatabase::ieamw_cols$both) {
   # Bind the data frames, with each one having the new IEAMW column.
   if (!is.null(psutiea)) {
     psutiea <- psutiea %>%
@@ -300,8 +315,22 @@ build_psut_dataframe <- function(psutiea = NULL, psutmw = NULL, psutieamw = NULL
         "{ieamw_colname}" := both
       )
   }
-  dplyr::bind_rows(psutiea, psutmw, psutieamw) %>%
-    dplyr::relocate(.data[[ieamw_colname]], .after = year)
+  dplyr::bind_rows(psutiea, psutmw, psutieamw) |> 
+    # Reorder columns into a sensible sequence.
+    dplyr::select(.data[[country_colname]], 
+                  .data[[method_colname]], 
+                  .data[[energy_type_colname]], 
+                  .data[[last_stage_colname]], 
+                  .data[[year_colname]], 
+                  .data[[ieamw_colname]],
+                  .data[[R_colname]],
+                  .data[[U_colname]],
+                  .data[[U_feed_colname]],
+                  .data[[U_eiou_colname]],
+                  .data[[r_eiou_colname]],
+                  .data[[V_colname]],
+                  .data[[Y_colname]],
+                  .data[[S_units_colname]])
 }
 
 
