@@ -53,4 +53,5 @@ jobs:
           # --no-manual and --as-cran are defaults
           # --no-vignettes prevents the vignette from building.
           # The vignette fails, due to lack of access to the database.
+          # However, this is not working at the moment (11 Sept 2023)
           args: 'c("--no-manual", "--as-cran", "--no-vignettes")'
