@@ -50,4 +50,7 @@ jobs:
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
+          # --no-manual and --as-cran are defaults
+          # --no-vignettes prevents the vignette from building.
+          # The vignette fails, due to lack of access to the database.
           args: 'c("--no-manual", "--as-cran", "--no-vignettes")'
