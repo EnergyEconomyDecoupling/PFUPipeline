@@ -44,10 +44,7 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck, 
-                          github::MatthewHeun/IEATools, github::MatthewHeun/MKHthemes, github::MatthewHeun/Recca, 
-                          github::EnergyEconomyDecoupling/MWTools, github::EnergyEconomyDecoupling/CEDATools, 
-                          github::EnergyEconomyDecoupling/PFUSetup
+          extra-packages: any::rcmdcheck, github::MatthewHeun/IEATools, github::MatthewHeun/MKHthemes, github::EnergyEconomyDecoupling/MWTools, github::EnergyEconomyDecoupling/PFUPipelineTools, github::EnergyEconomyDecoupling/PFUSetup, github::MatthewHeun/Recca, github::EnergyEconomyDecoupling/CEDATools
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2
