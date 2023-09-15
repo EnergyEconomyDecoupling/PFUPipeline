@@ -24,8 +24,8 @@ years <- 1960:2020                        # The years to be analyzed
 # countries <- "AGO"
 # countries <- "WMBK"
 # countries <- c("AGO", "COL")
-countries <- "WRLD"
-# countries <- c(PFUDatabase::canonical_countries, "WRLD") |> as.character()
+# countries <- "WRLD"
+countries <- c(PFUDatabase::canonical_countries, "WRLD") |> as.character()
 
 # Countries with unique allocation data.
 # countries <- c("WRLD", "BRA", "CAN", "CHNM", "DEU", "DNK", "ESP", "FRA", "GBR", "GHA",
