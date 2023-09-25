@@ -347,16 +347,20 @@ get_pipeline <- function(countries = "all",
 
     # (31) Save results
     # (31a) Pin the PSUT data frame
+
+    # --------------------------------------------------------------------------
+    # Product A ----------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # Pin the PSUT data frame --------------------------------------------------
     targets::tar_target_raw("ReleasePSUT", 
                             quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
                                                                    targ = PSUT,
                                                                    pin_name = "psut",
                                                                    release = Release))), 
     
-    # Some database products are best suited to creating and storing here.
     
     # --------------------------------------------------------------------------
-    # Product A ----------------------------------------------------------------
+    # Product B ----------------------------------------------------------------
     # --------------------------------------------------------------------------
     # Pin the PSUT_USA data frame ----------------------------------------------
     
@@ -377,7 +381,7 @@ get_pipeline <- function(countries = "all",
     
     
     # --------------------------------------------------------------------------
-    # Product B ----------------------------------------------------------------
+    # Product C ----------------------------------------------------------------
     # --------------------------------------------------------------------------
     # Final-to-useful sector-carrier efficiencies ------------------------------
     
@@ -398,6 +402,73 @@ get_pipeline <- function(countries = "all",
     ), 
     
     
+    # --------------------------------------------------------------------------
+    # Product D ----------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # Completed allocation tables ----------------------------------------------
+    targets::tar_target_raw(
+      "ReleaseCompletedAllocationTables",
+      quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                                             targ = CompletedAllocationTables,
+                                             pin_name = "completed_allocation_tables",
+                                             release = Release))
+    ),
+    
+    
+    # --------------------------------------------------------------------------
+    # Product E ----------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # Completed efficiency tables ----------------------------------------------
+    targets::tar_target_raw(
+      "ReleaseCompletedEfficiencyTables",
+      quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                                             targ = CompletedEfficiencyTables,
+                                             pin_name = "completed_efficiency_tables",
+                                             release = Release))
+    ),
+    
+    
+    # --------------------------------------------------------------------------
+    # Product F ----------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # Completed phi tables -----------------------------------------------------
+    targets::tar_target_raw(
+      "CompletedPhiTables", 
+      quote(Phivecs |> 
+              matsindf::expand_to_tidy())
+    ),
+    targets::tar_target_raw(
+      "ReleaseCompletedPhiTables",
+      quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                                             targ = CompletedPhiTables,
+                                             pin_name = "completed_phi_tables",
+                                             release = Release))
+    ),
+    
+    
+    # --------------------------------------------------------------------------
+    # Product G ----------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # Energy transformation machine efficiencies -------------------------------
+    tarchetypes::tar_group_by(
+      name = "PSUTbyYear",
+      command = PSUT,
+      Year
+    ),
+    targets::tar_target_raw(
+      "EtaiTables",
+      quote(PSUTbyYear |>
+              Recca::calc_eta_i()),
+      pattern = quote(map(PSUTbyYear))
+    ),
+    targets::tar_target_raw(
+      "ReleaseEtai",
+      quote(PFUPipelineTools::release_target(pipeline_releases_folder = PinboardFolder,
+                                             targ = EtaiTables,
+                                             pin_name = "eta_i_tables",
+                                             release = Release))),
+
+        
     # Zip the targets cache and store it in the pipeline_caches_folder
     targets::tar_target_raw("StoreCache", 
                             quote(PFUPipelineTools::stash_cache(pipeline_caches_folder = PipelineCachesFolder,

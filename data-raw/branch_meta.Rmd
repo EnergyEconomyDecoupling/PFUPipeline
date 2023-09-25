@@ -1,0 +1,53 @@
+---
+title: "Branches for `PFUDatabase`"
+author: "Matthew Kuperus Heun"
+date: "`r Sys.Date()`"
+output: html_document
+---
+  
+  
+## Purpose
+  
+This file (data-raw/branch_meta.Rmd) describes branches in this repository.
+It will help us keep track of what we are doing and why.
+The file lives in the `data-raw` directory, so it is not part of the package.
+
+Information in this file supports my code development strategy,
+which can be found in my
+[github repository](https://github.com/MatthewHeun/DevelopmentStrategies).
+
+
+## Branches
+
+### master
+
+The primary branch of the repository.
+
+### develop
+
+The branch into which new features are merged.
+
+### Feature branches
+
+Use this template to describe feature branches.
+
+#### Branch name
+
+* Purpose:
+  * Next step:
+  * Author:
+  * Date:
+  
+  
+  
+#### non_joss_review_develop
+  
+* Purpose: Holds code that is not part of the JOSS paper review.
+We will treat this branch as the "develop" branch
+until the JOSS paper review is complete.
+* Next step: Branch off of non_joss_review_develop to create 
+new features for the aggregation computational pipeline. 
+* Author: Matthew Kuperus Heun
+* Date: 25 Sept 2023
+
+
