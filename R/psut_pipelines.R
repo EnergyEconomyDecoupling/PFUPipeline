@@ -449,7 +449,12 @@ get_pipeline <- function(countries = "all",
     targets::tar_target_raw(
       "Etai",
       quote(PSUTbyYear |>
-              Recca::calc_eta_i()),
+              Recca::calc_eta_i() |> 
+              dplyr::mutate(
+                R = NULL, U = NULL, U_feed = NULL, U_EIOU = NULL, 
+                r_EIOU = NULL, V = NULL, Y = NULL, S_units = NULL
+              ) |> 
+              PFUPipelineTools::tar_ungroup()),
       pattern = quote(map(PSUTbyYear))
     ),
     targets::tar_target_raw(
