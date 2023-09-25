@@ -32,11 +32,11 @@ The branch into which new features are merged.
 Use this template to describe feature branches.
 
 #### Branch name
-
-* Purpose:
-  * Next step:
-  * Author:
-  * Date:
+* Purpose: 
+* Next step:
+* Branched from:
+* Author:
+* Date: 
   
   
   
@@ -47,7 +47,17 @@ We will treat this branch as the "develop" branch
 until the JOSS paper review is complete.
 * Next step: Branch off of non_joss_review_develop to create 
 new features for the aggregation computational pipeline. 
+* Branched from: develop
 * Author: Matthew Kuperus Heun
 * Date: 25 Sept 2023
 
 
+#### new_targets
+
+* Purpose: Develop new targets for work on the Kaya paper with Emmanuel and 
+           the improvements work with Zeus.
+* Next step: Pull Etai target from Zeus' pipeline into this pipeline.
+             It is generally useful
+* Branched from: non_joss_review_develop
+* Author: Matthew Kuperus Heun
+* Date: 25 Sept 2023

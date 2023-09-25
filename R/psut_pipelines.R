@@ -453,7 +453,7 @@ get_pipeline <- function(countries = "all",
       Year
     ),
     targets::tar_target_raw(
-      "EtaiTables",
+      "Etai",
       quote(PSUTbyYear |>
               Recca::calc_eta_i()),
       pattern = quote(map(PSUTbyYear))
@@ -461,8 +461,8 @@ get_pipeline <- function(countries = "all",
     targets::tar_target_raw(
       "ReleaseEtai",
       quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
-                                             targ = EtaiTables,
-                                             pin_name = "eta_i_tables",
+                                             targ = Etai,
+                                             pin_name = "eta_i",
                                              release = Release))),
 
         
