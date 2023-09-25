@@ -428,17 +428,11 @@ get_pipeline <- function(countries = "all",
     # --------------------------------------------------------------------------
     # Product F ----------------------------------------------------------------
     # --------------------------------------------------------------------------
-    # Completed phi tables -----------------------------------------------------
     targets::tar_target_raw(
-      "CompletedPhiTables", 
-      quote(Phivecs |> 
-              expand_phi_vecs())
-    ),
-    targets::tar_target_raw(
-      "ReleaseCompletedPhiTables",
+      "ReleasePhivecs",
       quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
-                                             targ = CompletedPhiTables,
-                                             pin_name = "completed_phi_tables",
+                                             targ = Phivecs,
+                                             pin_name = "phi_vecs",
                                              release = Release))
     ),
     
