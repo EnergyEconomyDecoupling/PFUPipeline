@@ -363,14 +363,11 @@ get_pipeline <- function(countries = "all",
     # Product B ----------------------------------------------------------------
     # --------------------------------------------------------------------------
     # Pin the PSUT_USA data frame ----------------------------------------------
-    
-    # Filter to the US for Carey King
     targets::tar_target_raw(
       "PSUT_USA",
       quote(PSUT |> 
               dplyr::filter(Country == "USA"))
     ),
-    
     targets::tar_target_raw(
       "ReleasePSUT_USA",
       quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
@@ -435,7 +432,7 @@ get_pipeline <- function(countries = "all",
     targets::tar_target_raw(
       "CompletedPhiTables", 
       quote(Phivecs |> 
-              matsindf::expand_to_tidy())
+              expand_phi_vecs())
     ),
     targets::tar_target_raw(
       "ReleaseCompletedPhiTables",
@@ -474,7 +471,10 @@ get_pipeline <- function(countries = "all",
                             quote(PFUPipelineTools::stash_cache(pipeline_caches_folder = PipelineCachesFolder,
                                                                 cache_folder = "_targets",
                                                                 file_prefix = "pfu_pipeline_cache_",
-                                                                dependency = PSUT_USA, 
+                                                                dependency = c(ReleasePSUT, ReleasePSUT_USA,
+                                                                               ReleaseEtafuYEIOU, ReleaseCompletedAllocationTables,
+                                                                               ReleaseCompletedEfficiencyTables, CompletedPhiTables,
+                                                                               ReleaseEtai),
                                                                 release = Release)))
   )
 }
