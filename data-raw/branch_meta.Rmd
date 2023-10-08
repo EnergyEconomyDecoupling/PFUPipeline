@@ -57,7 +57,7 @@ new features for the aggregation computational pipeline.
 * Purpose: Develop new targets for work on the Kaya paper with Emmanuel and 
            the improvements work with Zeus.
 * Next step: Pull Etai target from Zeus' pipeline into this pipeline.
-             It is generally useful
+             It is generally useful.
 * Branched from: non_joss_review_develop
 * Author: Matthew Kuperus Heun
 * Date: 25 Sept 2023
