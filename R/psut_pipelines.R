@@ -347,26 +347,27 @@ get_pipeline <- function(countries = "all",
 
     # (31) Save results
     # (31a) Pin the PSUT data frame
+
+    # --------------------------------------------------------------------------
+    # Product A ----------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # Pin the PSUT data frame --------------------------------------------------
     targets::tar_target_raw("ReleasePSUT", 
                             quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
                                                                    targ = PSUT,
                                                                    pin_name = "psut",
                                                                    release = Release))), 
     
-    # Some database products are best suited to creating and storing here.
     
     # --------------------------------------------------------------------------
-    # Product A ----------------------------------------------------------------
+    # Product B ----------------------------------------------------------------
     # --------------------------------------------------------------------------
     # Pin the PSUT_USA data frame ----------------------------------------------
-    
-    # Filter to the US for Carey King
     targets::tar_target_raw(
       "PSUT_USA",
       quote(PSUT |> 
               dplyr::filter(Country == "USA"))
     ),
-    
     targets::tar_target_raw(
       "ReleasePSUT_USA",
       quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
@@ -377,7 +378,7 @@ get_pipeline <- function(countries = "all",
     
     
     # --------------------------------------------------------------------------
-    # Product B ----------------------------------------------------------------
+    # Product C ----------------------------------------------------------------
     # --------------------------------------------------------------------------
     # Final-to-useful sector-carrier efficiencies ------------------------------
     
@@ -398,12 +399,81 @@ get_pipeline <- function(countries = "all",
     ), 
     
     
+    # --------------------------------------------------------------------------
+    # Product D ----------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # Completed allocation tables ----------------------------------------------
+    targets::tar_target_raw(
+      "ReleaseCompletedAllocationTables",
+      quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                                             targ = CompletedAllocationTables,
+                                             pin_name = "completed_allocation_tables",
+                                             release = Release))
+    ),
+    
+    
+    # --------------------------------------------------------------------------
+    # Product E ----------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # Completed efficiency tables ----------------------------------------------
+    targets::tar_target_raw(
+      "ReleaseCompletedEfficiencyTables",
+      quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                                             targ = CompletedEfficiencyTables,
+                                             pin_name = "completed_efficiency_tables",
+                                             release = Release))
+    ),
+    
+    
+    # --------------------------------------------------------------------------
+    # Product F ----------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    targets::tar_target_raw(
+      "ReleasePhivecs",
+      quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                                             targ = Phivecs,
+                                             pin_name = "phi_vecs",
+                                             release = Release))
+    ),
+    
+    
+    # --------------------------------------------------------------------------
+    # Product G ----------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # Energy transformation machine efficiencies -------------------------------
+    tarchetypes::tar_group_by(
+      name = "PSUTbyYear",
+      command = PSUT,
+      Year
+    ),
+    targets::tar_target_raw(
+      "Etai",
+      quote(PSUTbyYear |>
+              Recca::calc_eta_i() |> 
+              dplyr::mutate(
+                R = NULL, U = NULL, U_feed = NULL, U_EIOU = NULL, 
+                r_EIOU = NULL, V = NULL, Y = NULL, S_units = NULL
+              ) |> 
+              PFUPipelineTools::tar_ungroup()),
+      pattern = quote(map(PSUTbyYear))
+    ),
+    targets::tar_target_raw(
+      "ReleaseEtai",
+      quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                                             targ = Etai,
+                                             pin_name = "eta_i",
+                                             release = Release))),
+
+        
     # Zip the targets cache and store it in the pipeline_caches_folder
     targets::tar_target_raw("StoreCache", 
                             quote(PFUPipelineTools::stash_cache(pipeline_caches_folder = PipelineCachesFolder,
                                                                 cache_folder = "_targets",
                                                                 file_prefix = "pfu_pipeline_cache_",
-                                                                dependency = PSUT_USA, 
+                                                                dependency = c(ReleasePSUT, ReleasePSUT_USA,
+                                                                               ReleaseEtafuYEIOU, ReleaseCompletedAllocationTables,
+                                                                               ReleaseCompletedEfficiencyTables, CompletedPhiTables,
+                                                                               ReleaseEtai),
                                                                 release = Release)))
   )
 }
