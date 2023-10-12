@@ -1,0 +1,109 @@
+Exiobase.Flow,PFU.flow,Final.energy.flow
+Production,Not relevant,FALSE
+Imports,Not relevant,FALSE
+Exports,Not relevant,FALSE
+International marine bunkers,Not relevant,FALSE
+International aviation bunkers,Not relevant,FALSE
+Total energy supply,Not relevant,FALSE
+Total energy supply; Transfers,Not relevant,FALSE
+Total energy supply; Transformation processes,Not relevant,FALSE
+Total energy supply; Transformation processes; Main activity producer electricity plants,Not relevant,FALSE
+Total energy supply; Transformation processes; Autoproducer electricity plants,Not relevant,FALSE
+Total energy supply; Transformation processes; Main activity producer CHP plants,Not relevant,FALSE
+Total energy supply; Transformation processes; Autoproducer CHP plants,Not relevant,FALSE
+Total energy supply; Transformation processes; Main activity producer heat plants,Not relevant,FALSE
+Total energy supply; Transformation processes; Autoproducer heat plants,Not relevant,FALSE
+Total energy supply; Transformation processes; Heat pumps,Not relevant,FALSE
+Total energy supply; Transformation processes; Electric boilers,Not relevant,FALSE
+Total energy supply; Transformation processes; Chemical heat for electricity production,Not relevant,FALSE
+Total energy supply; Transformation processes; Blast furnaces,Not relevant,FALSE
+Total energy supply; Transformation processes; Gas works,Not relevant,FALSE
+Total energy supply; Transformation processes; Coke ovens,Not relevant,FALSE
+Total energy supply; Transformation processes; Patent fuel plants,Not relevant,FALSE
+Total energy supply; Transformation processes; BKB/peat briquette plants,Not relevant,FALSE
+Total energy supply; Transformation processes; Oil refineries,Not relevant,FALSE
+Total energy supply; Transformation processes; Petrochemical plants,Not relevant,FALSE
+Total energy supply; Transformation processes; Coal liquefaction plants,Not relevant,FALSE
+Total energy supply; Transformation processes; Gas-to-liquids (GTL) plants,Not relevant,FALSE
+Total energy supply; Transformation processes; For blended natural gas,Not relevant,FALSE
+Total energy supply; Transformation processes; Charcoal production plants,Not relevant,FALSE
+Total energy supply; Transformation processes; Non-specified (transformation),Not relevant,FALSE
+Total energy supply; Energy industry own use,Not relevant,FALSE
+Total energy supply; Energy industry own use; Coal mines,Coal mines,TRUE
+Total energy supply; Energy industry own use; Oil and gas extraction,Oil and gas extraction,TRUE
+Total energy supply; Energy industry own use; Blast furnaces,Blast furnaces,TRUE
+Total energy supply; Energy industry own use; Gas works,Gas works,TRUE
+Total energy supply; Energy industry own use; Gasification plants for biogases,Gasification plants for biogases,TRUE
+Total energy supply; Energy industry own use; Coke ovens,Coke ovens,TRUE
+Total energy supply; Energy industry own use; Patent fuel plants,Patent fuel plant,TRUE
+Total energy supply; Energy industry own use; BKB/peat briquette plants,BKB/peat briquette plants,TRUE
+Total energy supply; Energy industry own use; Oil refineries,Oil refineries,TRUE
+Total energy supply; Energy industry own use; Coal liquefaction plants,Coal liquefaction plants,TRUE
+Total energy supply; Energy industry own use; Liquefaction (LNG) / regasification plants,Liquefaction (LNG) / regasification plants,TRUE
+Total energy supply; Energy industry own use; Gas-to-liquids (GTL) plants,Gas-to-liquids (GTL) plants,TRUE
+"Total energy supply; Energy industry own use; Own use in electricity, CHP and heat plants","Own use in electricity, CHP and heat plants",TRUE
+Total energy supply; Energy industry own use; Pumped storage plants,Pumped storage plants,TRUE
+Total energy supply; Energy industry own use; Nuclear industry,Nuclear industry,TRUE
+Total energy supply; Energy industry own use; Charcoal production plants,Charcoal production plants,TRUE
+Total energy supply; Energy industry own use; Non-specified (energy),,TRUE
+Total energy supply; Losses,,TRUE
+Total energy supply; Total final consumption,Not relevant,FALSE
+Total energy supply; Total final consumption; Industry,Not relevant,FALSE
+Total energy supply; Total final consumption; Industry; Mining and quarrying,Mining and quarrying,TRUE
+Total energy supply; Total final consumption; Industry; Construction,Construction,TRUE
+Total energy supply; Total final consumption; Industry; Manufacturing,Not relevant,FALSE
+Total energy supply; Total final consumption; Industry; Manufacturing; Iron and steel,Iron and steel,TRUE
+Total energy supply; Total final consumption; Industry; Manufacturing; Chemical and petrochemical,Chemical and petrochemical,TRUE
+Total energy supply; Total final consumption; Industry; Manufacturing; Non-ferrous metals,Non-ferrous metals,TRUE
+Total energy supply; Total final consumption; Industry; Manufacturing; Non-metallic minerals,Non-metallic minerals,TRUE
+Total energy supply; Total final consumption; Industry; Manufacturing; Transport equipment,Transport equipment,TRUE
+Total energy supply; Total final consumption; Industry; Manufacturing; Machinery,Machinery,TRUE
+Total energy supply; Total final consumption; Industry; Manufacturing; Food and tobacco,Food and tobacco,TRUE
+"Total energy supply; Total final consumption; Industry; Manufacturing; Paper, pulp and printing","Paper, pulp and printing",TRUE
+Total energy supply; Total final consumption; Industry; Manufacturing; Wood and wood products,Wood and wood products,TRUE
+Total energy supply; Total final consumption; Industry; Manufacturing; Textile and leather,Textile and leather,TRUE
+Total energy supply; Total final consumption; Industry; Industry not elsewhere specified,Industry not elsewhere specified,TRUE
+Total energy supply; Total final consumption; Transport,Not relevant,FALSE
+Total energy supply; Total final consumption; Transport; World aviation bunkers,World aviation bunkers,TRUE
+Total energy supply; Total final consumption; Transport; Domestic aviation,Domestic aviation,TRUE
+Total energy supply; Total final consumption; Transport; Road,Road,TRUE
+Total energy supply; Total final consumption; Transport; Rail,Rail,TRUE
+Total energy supply; Total final consumption; Transport; Pipeline transport,Pipeline transport,TRUE
+Total energy supply; Total final consumption; Transport; World marine bunkers,World marine bunkers,TRUE
+Total energy supply; Total final consumption; Transport; Domestic navigation,Domestic navigation,TRUE
+Total energy supply; Total final consumption; Transport; Transport not elsewhere specified,Transport not elsewhere specified,TRUE
+Total energy supply; Total final consumption; Residential,Residential,TRUE
+Total energy supply; Total final consumption; Commercial and public services,Commercial and public services,TRUE
+Total energy supply; Total final consumption; Agriculture/forestry,Agriculture/forestry,TRUE
+Total energy supply; Total final consumption; Fishing,Fishing,TRUE
+Total energy supply; Total final consumption; Final consumption not elsewhere specified,Final consumption not elsewhere specified,TRUE
+Total energy supply; Total final consumption; Non-energy use,Not relevant,FALSE
+Total energy supply; Total final consumption; Non-energy use; Non-energy use industry/transformation/energy,Non-energy use industry/transformation/energy,TRUE
+Total energy supply; Total final consumption; Non-energy use; Non-energy use industry/transformation/energy; Memo: Non-energy use in industry,Not relevant,FALSE
+Total energy supply; Total final consumption; Non-energy use; Non-energy use industry/transformation/energy; Memo: Non-energy use in industry; Memo: Non-energy use in construction,Not relevant,FALSE
+Total energy supply; Total final consumption; Non-energy use; Non-energy use industry/transformation/energy; Memo: Non-energy use in industry; Memo: Non-energy use in mining and quarrying,Not relevant,FALSE
+Total energy supply; Total final consumption; Non-energy use; Non-energy use industry/transformation/energy; Memo: Non-energy use in industry; Memo: Non-energy use in iron and steel,Not relevant,FALSE
+Total energy supply; Total final consumption; Non-energy use; Non-energy use industry/transformation/energy; Memo: Non-energy use in industry; Memo: Non-energy use in chemical/petrochemical,Not relevant,FALSE
+Total energy supply; Total final consumption; Non-energy use; Non-energy use industry/transformation/energy; Memo: Non-energy use in industry; Memo: Non-energy use in non-ferrous metals,Not relevant,FALSE
+Total energy supply; Total final consumption; Non-energy use; Non-energy use industry/transformation/energy; Memo: Non-energy use in industry; Memo: Non-energy use in non-metallic minerals,Not relevant,FALSE
+Total energy supply; Total final consumption; Non-energy use; Non-energy use industry/transformation/energy; Memo: Non-energy use in industry; Memo: Non-energy use in transport equipment,Not relevant,FALSE
+Total energy supply; Total final consumption; Non-energy use; Non-energy use industry/transformation/energy; Memo: Non-energy use in industry; Memo: Non-energy use in machinery,Not relevant,FALSE
+Total energy supply; Total final consumption; Non-energy use; Non-energy use industry/transformation/energy; Memo: Non-energy use in industry; Memo: Non-energy use in food/beverages/tobacco,Not relevant,FALSE
+Total energy supply; Total final consumption; Non-energy use; Non-energy use industry/transformation/energy; Memo: Non-energy use in industry; Memo: Non-energy use in paper/pulp and printing,Not relevant,FALSE
+Total energy supply; Total final consumption; Non-energy use; Non-energy use industry/transformation/energy; Memo: Non-energy use in industry; Memo: Non-energy use in wood and wood products,Not relevant,FALSE
+Total energy supply; Total final consumption; Non-energy use; Non-energy use industry/transformation/energy; Memo: Non-energy use in industry; Memo: Non-energy use in textiles and leather,Not relevant,FALSE
+Total energy supply; Total final consumption; Non-energy use; Non-energy use industry/transformation/energy; Memo: Non-energy use in industry; Memo: Non-energy use in industry not elsewhere specified,Not relevant,FALSE
+Total energy supply; Total final consumption; Non-energy use; Non-energy use in transport,Non-energy use in transport,TRUE
+Total energy supply; Total final consumption; Non-energy use; Non-energy use in other,Non-energy use in other,TRUE
+Stock changes,Not relevant,FALSE
+Total energy supply; Statistical differences,Not relevant,FALSE
+Electricity output (GWh),Not relevant,FALSE
+Electricity output (GWh); Electricity output (GWh)-autoproducer CHP plants,Not relevant,FALSE
+Electricity output (GWh); Electricity output (GWh)-autoproducer electricity plants,Not relevant,FALSE
+Electricity output (GWh); Electricity output (GWh)-main activity producer CHP plants,Not relevant,FALSE
+Electricity output (GWh); Electricity output (GWh)-main activity producer electricity plants,Not relevant,FALSE
+Heat output,Not relevant,FALSE
+Heat output; Heat output-autoproducer CHP plants,Not relevant,FALSE
+Heat output; Heat output-autoproducer heat plants,Not relevant,FALSE
+Heat output; Heat output-main activity producer CHP plants,Not relevant,FALSE
+Heat output; Heat output-main activity producer heat plants,Not relevant,FALSE
