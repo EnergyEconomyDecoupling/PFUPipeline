@@ -493,11 +493,11 @@ get_pipeline <- function(countries = "all",
     # Exiobase coefficients ----------------------------------------------------
     
     # Country concordance table
-    targets::tar_target_raw(
-      "CountryConcordanceTable2",
-      quote(read_country_concordance_table(country_concordance_table_file = CountryConcordancePath,
-                                           countries = Countries))
-    ),
+    # targets::tar_target_raw(
+    #   "CountryConcordanceTable2",
+    #   quote(read_country_concordance_table(country_concordance_table_file = CountryConcordancePath,
+    #                                        countries = Countries))
+    # ),
     
     # List of Exiobase code energy flows
     targets::tar_target_raw(
@@ -586,7 +586,6 @@ get_pipeline <- function(countries = "all",
                                              pin_name = "exiobase_Ef_to_Xloss_multipliers",
                                              type = "csv",
                                              release = Release)))
-    
     
     # Debugging target - to be removed.
     # targets::tar_target_raw(

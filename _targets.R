@@ -12,7 +12,7 @@ library(PFUDatabase)
 version <- "v1.2"
 
 # Custom parameters
-years <- 2019:2020                        # The years to be analyzed
+years <- 1971:2019                        # The years to be analyzed
 # years <- 1971
 # years <- 1971:1972
 # years <- 1971:1980
@@ -21,7 +21,7 @@ years <- 2019:2020                        # The years to be analyzed
 years_exiobase <- 1995:2020
 
 # countries <- c("ARM", "COL", "WRLD")
-countries <- c("GBR", "MEX", "GUY")
+# countries <- c("GBR", "MEX", "GUY")
 # countries <- "USA"
 # countries <- "GHA"
 # countries <- "COL"
@@ -29,7 +29,7 @@ countries <- c("GBR", "MEX", "GUY")
 # countries <- "WMBK"
 # countries <- c("AGO", "COL")
 # countries <- "WRLD"
-# countries <- c(PFUDatabase::canonical_countries, "WRLD") |> as.character()
+countries <- c(PFUDatabase::canonical_countries, "WRLD") |> as.character()
 
 # Countries with unique allocation data.
 # countries <- c("WRLD", "BRA", "CAN", "CHNM", "DEU", "DNK", "ESP", "FRA", "GBR", "GHA",
