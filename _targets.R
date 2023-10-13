@@ -12,7 +12,7 @@ library(PFUDatabase)
 version <- "v1.2"
 
 # Custom parameters
-years <- 1971:2019                        # The years to be analyzed
+years <- 1971:2020                        # The years to be analyzed
 # years <- 1971
 # years <- 1971:1972
 # years <- 1971:1980
