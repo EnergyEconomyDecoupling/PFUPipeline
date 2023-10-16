@@ -65,20 +65,20 @@ calc_Ef_to_Xf_exiobase <- function(phi_vecs,
     tidyr::expand_grid(list_final_energy_flows) %>%
     dplyr::filter(Product %in% IEATools::products) %>%
     dplyr::rename(PFU.code = Country) %>%
-    dplyr::left_join(country_concordance_table_df %>% dplyr::select(IEA.name, PFU.code),
+    dplyr::left_join(country_concordance_table_df %>% dplyr::select(IEA.name.accented, PFU.code),
                      by = "PFU.code") %>%
     dplyr::select(-PFU.code) %>%
-    dplyr::rename(IEA.country.name = IEA.name,
+    dplyr::rename(IEA.country.name = IEA.name.accented,
                   Flow = Exiobase.Flow) %>%
     dplyr::filter(!is.na(IEA.country.name)) %>%
     dplyr::relocate(IEA.country.name, .before = Year) %>%
-    dplyr::mutate(
-      dplyr::case_when(
-        IEA.country.name == "Curacao/Netherlands Antilles" ~ "Curaçao/Netherlands Antilles",
-        IEA.country.name == "Cote d'Ivoire" ~ "Côte d'Ivoire",
-        TRUE ~ IEA.country.name
-      )
-    ) %>%
+    # dplyr::mutate(
+    #   dplyr::case_when(
+    #     IEA.country.name == "Curacao/Netherlands Antilles" ~ "Curaçao/Netherlands Antilles",
+    #     IEA.country.name == "Cote d'Ivoire" ~ "Côte d'Ivoire",
+    #     TRUE ~ IEA.country.name
+    #   )
+    # ) %>%
     tidyr::pivot_wider(names_from = Year, values_from = matvals)
   
   return(phi_vals_df)
@@ -131,21 +131,21 @@ calc_Ef_to_Eu_exiobase <- function(EtafuYEIOU_mats,
     dplyr::left_join(eta_fu_df, by = c("Country", "Year", "Product", "PFU.flow")) |> 
     dplyr::filter(!is.na(eta)) |> 
     dplyr::rename(PFU.code = Country) |> 
-    dplyr::left_join(country_concordance_table_df %>% dplyr::select(IEA.name, PFU.code),
+    dplyr::left_join(country_concordance_table_df %>% dplyr::select(IEA.name.accented, PFU.code),
                      by = "PFU.code") |>
     dplyr::select(-PFU.code) |>
-    dplyr::rename(IEA.country.name = IEA.name,
+    dplyr::rename(IEA.country.name = IEA.name.accented,
                   Flow = Exiobase.Flow) |>
     dplyr::filter(!is.na(IEA.country.name)) |>
     dplyr::select(IEA.country.name, Year, Product, Flow, eta) |>
     dplyr::relocate(Flow, .before = Product) |>
-    dplyr::mutate(
-      dplyr::case_when(
-        IEA.country.name == "Curacao/Netherlands Antilles" ~ "Curaçao/Netherlands Antilles",
-        IEA.country.name == "Cote d'Ivoire" ~ "Côte d'Ivoire",
-        TRUE ~ IEA.country.name
-      )
-    ) |> 
+    # dplyr::mutate(
+    #   dplyr::case_when(
+    #     IEA.country.name == "Curacao/Netherlands Antilles" ~ "Curaçao/Netherlands Antilles",
+    #     IEA.country.name == "Cote d'Ivoire" ~ "Côte d'Ivoire",
+    #     TRUE ~ IEA.country.name
+    #   )
+    # ) |> 
     tidyr::pivot_wider(names_from = Year, values_from = eta)
   
   return(Ef_to_Eu_multipliers)
@@ -236,21 +236,21 @@ calc_Ef_to_Xu_exiobase <- function(EtafuYEIOU_mats,
     dplyr::left_join(phi_eta_fu_df, by = c("Country", "Year", "Product", "PFU.flow")) |> 
     dplyr::filter(!is.na(phi_eta_X)) |> 
     dplyr::rename(PFU.code = Country) |> 
-    dplyr::left_join(country_concordance_table_df %>% dplyr::select(IEA.name, PFU.code),
+    dplyr::left_join(country_concordance_table_df %>% dplyr::select(IEA.name.accented, PFU.code),
                      by = "PFU.code") |>
     dplyr::select(-PFU.code) |>
-    dplyr::rename(IEA.country.name = IEA.name,
+    dplyr::rename(IEA.country.name = IEA.name.accented,
                   Flow = Exiobase.Flow) |>
     dplyr::filter(!is.na(IEA.country.name)) |>
     dplyr::select(IEA.country.name, Year, Product, Flow, phi_eta_X) |>
     dplyr::relocate(Flow, .before = Product) |>
-    dplyr::mutate(
-      dplyr::case_when(
-        IEA.country.name == "Curacao/Netherlands Antilles" ~ "Curaçao/Netherlands Antilles",
-        IEA.country.name == "Cote d'Ivoire" ~ "Côte d'Ivoire",
-        TRUE ~ IEA.country.name
-      )
-    ) |> 
+    # dplyr::mutate(
+    #   dplyr::case_when(
+    #     IEA.country.name == "Curacao/Netherlands Antilles" ~ "Curaçao/Netherlands Antilles",
+    #     IEA.country.name == "Cote d'Ivoire" ~ "Côte d'Ivoire",
+    #     TRUE ~ IEA.country.name
+    #   )
+    # ) |> 
     tidyr::pivot_wider(names_from = Year, values_from = phi_eta_X)
   
   # # Expanding to determine phi values for each Exiobase flow
