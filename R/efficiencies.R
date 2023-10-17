@@ -6,7 +6,7 @@
 #' final demand and energy industry own use
 #' in an energy conversion chain. 
 #' This function performs those calculations using
-#' [Recca::calc_eta_fu_Y_eiou()].
+#' `Recca::calc_eta_fu_Y_eiou()`.
 #'
 #' @param C_mats A data frame containing allocation matrices.
 #' @param eta_fu_vecs A data frame containing vectors of machine efficiencies, probably the Etafuvecs target.
