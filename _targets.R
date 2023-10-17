@@ -12,10 +12,15 @@ library(PFUDatabase)
 version <- "v1.2"
 
 # Custom parameters
-years <- 1971:2020                        # The years to be analyzed
+
+# The years to be analyzed
+
+# years <- 1971:2020                        
 # years <- 1971
 # years <- 1971:1972
 # years <- 1971:1980
+# years <- 1995
+years <- 1960:2020
 
 # Set the years to provide exiobase coefficients
 years_exiobase <- 1995:2020
@@ -29,6 +34,7 @@ years_exiobase <- 1995:2020
 # countries <- "WMBK"
 # countries <- c("AGO", "COL")
 # countries <- "WRLD"
+# countries <- c("BEN", "WRLD")
 countries <- c(PFUDatabase::canonical_countries, "WRLD") |> as.character()
 
 # Countries with unique allocation data.
