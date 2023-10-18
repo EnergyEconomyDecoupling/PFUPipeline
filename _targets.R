@@ -102,7 +102,8 @@ if ((sys_info[["sysname"]] == "Linux") && (sys_info[["user"]] == "eeear")){
   setup[["ilo_working_hours_data_path"]] <- "/home/eeear/Documents/Datasets/GPFU_database/InputData/v1.2/ilo_working_hours_data.rds"
   setup[["machine_data_folder"]] <- "/home/eeear/Documents/Datasets/GPFU_database/InputData/v1.2/Machines - Data"
   setup[["exemplar_table_path"]] <- "/home/eeear/Documents/Datasets/GPFU_database/InputData/v1.2/Exemplar_Table.xlsx"
-  setup[["fu_analysis_folder"]] <- "/home/eeear/Documents/Datasets/GPFU_database/InputData/v1.2/FU analysis data"
+  setup[["fu_analysis_folder"]] <- "/home/eeear/Documents/Datasets/GPFU_database/InputData/v1.2/FU analysis data"#
+  setup[["exiobase_energy_flows_path"]] <- "/home/eeear/Documents/Datasets/GPFU_database/InputData/v1.2/exiobase_energy_flows_concordance.xlsx"
   #setup[["reports_source_folders"]]
   setup[["reports_dest_folder"]] <- "/home/eeear/Documents/Datasets/GPFU_database/OutputData/Reports"
   setup["pipeline_releases_folder"] <- "/home/eeear/Documents/Datasets/GPFU_database/OutputData/Releases"
@@ -142,7 +143,7 @@ PFUDatabase::get_pipeline(countries = countries,
                           machine_data_path = setup[["machine_data_folder"]],
                           exemplar_table_path = setup[["exemplar_table_path"]],
                           fu_analysis_folder = setup[["fu_analysis_folder"]],
-                          exiobase_data_folder = "inst/extdata/exiobase_data/",
+                          exiobase_energy_flows_path = setup[["exiobase_energy_flows_path"]],
                           years_exiobase = years_exiobase,
                           reports_source_folders = setup[["reports_source_folders"]],
                           reports_dest_folder = setup[["reports_dest_folder"]],

@@ -25,7 +25,7 @@ get_pipeline(
   machine_data_path,
   exemplar_table_path,
   fu_analysis_folder,
-  exiobase_data_folder,
+  exiobase_energy_flows_path,
   years_exiobase,
   reports_source_folders,
   reports_dest_folder,
@@ -91,7 +91,7 @@ Default is "all_targets" to indicate all targets of the plan should be returned.
 \item{fu_analysis_folder}{The path to a folder containing final-to-useful analyses.
 Sub-folders named with 3-letter country abbreviations are assumed.}
 
-\item{exiobase_data_folder}{The path to a folder where the data needed from Exiobase are stored.}
+\item{exiobase_energy_flows_path}{The path to the file where the list of Exiobase energy flows, and their concordance to the PFU database flows are stored.}
 
 \item{years_exiobase}{The years for which the multipliers to provide to the Exiobase team need to be calculated.}
 

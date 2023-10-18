@@ -38,7 +38,7 @@
 #' @param exemplar_table_path The path to an exemplar table.
 #' @param fu_analysis_folder The path to a folder containing final-to-useful analyses.
 #'                           Sub-folders named with 3-letter country abbreviations are assumed.
-#' @param exiobase_data_folder The path to a folder where the data needed from Exiobase are stored.
+#' @param exiobase_energy_flows_path The path to the file where the list of Exiobase energy flows, and their concordance to the PFU database flows are stored.
 #' @param years_exiobase The years for which the multipliers to provide to the Exiobase team need to be calculated.
 #' @param reports_source_folders A string vector containing paths to folders of report sources, usually
 #'                               `.Rnw` or `.Rmd` files.
@@ -73,7 +73,7 @@ get_pipeline <- function(countries = "all",
                          machine_data_path,
                          exemplar_table_path,
                          fu_analysis_folder,
-                         exiobase_data_folder,
+                         exiobase_energy_flows_path,
                          years_exiobase,
                          reports_source_folders,
                          reports_dest_folder,
@@ -114,7 +114,7 @@ get_pipeline <- function(countries = "all",
     targets::tar_target_raw("Release", release),
     
     # Exiobase information
-    targets::tar_target_raw("ExiobaseDataFolder", exiobase_data_folder),
+    targets::tar_target_raw("ExiobaseEnergyFlowsPath", exiobase_energy_flows_path),
     targets::tar_target_raw("ExiobaseYears", list(years_exiobase)),
     
     
@@ -502,8 +502,7 @@ get_pipeline <- function(countries = "all",
     # List of Exiobase code energy flows
     targets::tar_target_raw(
       "ListExiobaseEnergyFlows",
-      quote(read_list_exiobase_energy_flows(path_to_exiobase_data = ExiobaseDataFolder,
-                                            list_energy_flows_file = "list_energy_flows.csv"))
+      quote(read_list_exiobase_energy_flows(path_to_list_exiobase_energy_flows = ExiobaseEnergyFlowsPath))
     ),
     
     # Phi values
@@ -586,22 +585,6 @@ get_pipeline <- function(countries = "all",
                                              pin_name = "exiobase_Ef_to_Xloss_multipliers",
                                              type = "csv",
                                              release = Release)))
-    
-    # Debugging target - to be removed.
-    # targets::tar_target_raw(
-    #   "Debugging_Country_Joins",
-    #   quote(debug_country_joins(phi_vecs = Phivecs,
-    #                             country_concordance_table_df = CountryConcordanceTable))
-    # ),
-    # Release Debugging_Country_Joins
-    # targets::tar_target_raw(
-    #   "Release_Debugging_Country_Joins",
-    #   quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
-    #                                          targ = Debugging_Country_Joins,
-    #                                          pin_name = "debugging_country_joins",
-    #                                          type = "csv",
-    #                                          release = Release))),
-    
   )
 }
 

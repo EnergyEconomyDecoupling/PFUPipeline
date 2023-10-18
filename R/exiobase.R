@@ -26,10 +26,9 @@
 #'
 #' @return A data frame containsing the list of Exiobase energy flows, and a boolean column stating whether the flow is a final energy flow or not
 #' @export
-read_list_exiobase_energy_flows <- function(path_to_exiobase_data,
-                                            list_energy_flows_file){
+read_list_exiobase_energy_flows <- function(path_to_list_exiobase_energy_flows){
   
-  list_exiobase_energy_flows <- readr::read_csv(paste0(path_to_exiobase_data, list_energy_flows_file))
+  list_exiobase_energy_flows <- readxl::read_excel(path_to_list_exiobase_energy_flows)
   
   return(list_exiobase_energy_flows)
 }

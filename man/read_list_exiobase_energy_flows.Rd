@@ -4,7 +4,7 @@
 \alias{read_list_exiobase_energy_flows}
 \title{Reads the list of Exiobase energy flows}
 \usage{
-read_list_exiobase_energy_flows(path_to_exiobase_data, list_energy_flows_file)
+read_list_exiobase_energy_flows(path_to_list_exiobase_energy_flows)
 }
 \arguments{
 \item{path_to_exiobase_data}{Contains the path to the folder containing input data from Exiobase}
