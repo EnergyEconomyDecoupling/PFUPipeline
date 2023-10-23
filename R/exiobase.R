@@ -24,7 +24,7 @@
 #' @param path_to_exiobase_data Contains the path to the folder containing input data from Exiobase
 #' @param list_energy_flows_file Contains the name of the file containing all the Exiobase energy flows
 #'
-#' @return A data frame containsing the list of Exiobase energy flows, and a boolean column stating whether the flow is a final energy flow or not
+#' @return A data frame containing the list of Exiobase energy flows, and a boolean column stating whether the flow is a final energy flow or not
 #' @export
 read_list_exiobase_energy_flows <- function(path_to_list_exiobase_energy_flows){
   
