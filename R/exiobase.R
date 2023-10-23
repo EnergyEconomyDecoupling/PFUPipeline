@@ -21,8 +21,7 @@
 
 #' Reads the list of Exiobase energy flows
 #'
-#' @param path_to_exiobase_data Contains the path to the folder containing input data from Exiobase
-#' @param list_energy_flows_file Contains the name of the file containing all the Exiobase energy flows
+#' @param path_to_list_exiobase_energy_flows Contains the path to the folder containing the list of Exiobase energy flows
 #'
 #' @return A data frame containing the list of Exiobase energy flows, and a boolean column stating whether the flow is a final energy flow or not
 #' @export
@@ -86,7 +85,7 @@ calc_Ef_to_Xf_exiobase <- function(phi_vecs,
 
 #' Calculates the final energy to useful energy multipliers
 #'
-#' @param EtafuYEIOU_df The input data frame containing matrices with all the efficiencies by final demand sector and energy industry
+#' @param EtafuYEIOU_mats The input data frame containing matrices with all the efficiencies by final demand sector and energy industry
 #' @param years_exiobase The years for which the coefficients are provided to the Exiobase team
 #' @param full_list_exiobase_flows The full list of energy flows used in the Exiobase pipeline led by KR
 #' @param country_concordance_table_df A data frame containing the country concordance table
@@ -175,7 +174,7 @@ calc_Ef_to_Eloss_exiobase <- function(ExiobaseEftoEuMultipliers_df){
 
 #' Calculates the final energy to useful exergy multipliers
 #'
-#' @param EtafuYEIOU_df The input data frame containing matrices with all the efficiencies by final demand sector and energy industry
+#' @param EtafuYEIOU_mats The input data frame containing matrices with all the efficiencies by final demand sector and energy industry
 #' @param phi_vecs A data frame of phi (exergy-to-energy ratio) coefficients.
 #' @param years_exiobase The years for which the coefficients are provided to the Exiobase team
 #' @param full_list_exiobase_flows The full list of energy flows used in the Exiobase pipeline led by KR
