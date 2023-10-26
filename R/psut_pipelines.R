@@ -501,16 +501,9 @@ get_pipeline <- function(countries = "all",
     
     
     # --------------------------------------------------------------------------
-    # Product Agg-unknown ------------------------------------------------------
+    # Product H ----------------------------------------------------------------
     # --------------------------------------------------------------------------
-    # Exiobase coefficients ----------------------------------------------------
-    
-    # Country concordance table
-    # targets::tar_target_raw(
-    #   "CountryConcordanceTable2",
-    #   quote(read_country_concordance_table(country_concordance_table_file = CountryConcordancePath,
-    #                                        countries = Countries))
-    # ),
+    # Final energy to final exergy multipliers----------------------------------
     
     # List of Exiobase code energy flows
     targets::tar_target_raw(
@@ -536,6 +529,11 @@ get_pipeline <- function(countries = "all",
                                              type = "csv",
                                              release = Release))),
     
+    # --------------------------------------------------------------------------
+    # Product I ----------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # Final energy to useful energy multipliers---------------------------------
+    
     # Eta_fu, E, values
     # Multiplier to go from final energy to useful energy
     targets::tar_target_raw(
@@ -553,6 +551,11 @@ get_pipeline <- function(countries = "all",
                                              type = "csv",
                                              release = Release))),
     
+    # --------------------------------------------------------------------------
+    # Product J ----------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # Final energy to energy losses multipliers---------------------------------
+    
     # (1 - Eta_fu) values
     # Multiplier to go from final energy to energy losses
     targets::tar_target_raw(
@@ -567,7 +570,11 @@ get_pipeline <- function(countries = "all",
                                              type = "csv",
                                              release = Release))),
     
-    # Eta_fu, E, values
+    # --------------------------------------------------------------------------
+    # Product K ----------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # Final energy to useful exergy multipliers---------------------------------
+    
     # Multiplier to go from final exergy to useful exergy
     targets::tar_target_raw(
       "ExiobaseEftoXuMultipliers",
@@ -585,7 +592,11 @@ get_pipeline <- function(countries = "all",
                                              type = "csv",
                                              release = Release))),
     
-    # Eta_fu, E, values
+    # --------------------------------------------------------------------------
+    # Product L ----------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # Final energy to exergy losses multipliers---------------------------------
+    
     # Multiplier to go from final energy to exergy losses
     targets::tar_target_raw(
       "ExiobaseEftoXlossMultipliers",
