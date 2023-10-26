@@ -341,6 +341,16 @@ get_pipeline <- function(countries = "all",
                                                                                 countries = Countries)),
                             pattern = quote(map(Countries))),
 
+    # (21) Calculating Cmats (i) EIOU-wide, (ii) Y-wide, and (iii) economy-wide
+    # Add parallelisation later
+    targets::tar_target_raw("CmatsAgg", quote(calc_C_mats_agg(C_mats = Cmats, psut_iea = PSUTIEA))),
+    
+    
+    # (22) Calculating the product efficiency at the (i) EIOU-wide, (ii) Y-wide, and (iii) economy-wide levels
+    # Add parallelisation later
+    targets::tar_target_raw("EtafuYEIOUagg", quote(calc_fu_Y_EIOU_agg_efficiencies(C_mats_agg = CmatsAgg, eta_fu_vecs = Etafuvecs))),
+    
+    
     # (30) Build reports
     # (30a) Allocation Graphs
     targets::tar_target_raw("AllocationGraphs", quote(alloc_plots_df(CompletedAllocationTables, countries = Countries)),
@@ -355,15 +365,11 @@ get_pipeline <- function(countries = "all",
     targets::tar_target_raw("PhiGraphs", quote(phi_u_plots_df(CompletedEfficiencyTables, countries = Countries)),
                             pattern = quote(map(Countries))),
 
-    # (31) Calculating Cmats (i) EIOU-wide, (ii) Y-wide, and (iii) economy-wide
-    # Add parallelisation later
-    targets::tar_target_raw("CmatsAgg", quote(calc_C_mats_agg(C_mats = Cmats, psut_iea = PSUTIEA))),
+
     
     
-    
-    
-    # (32) Save results
-    # (32a) Pin the PSUT data frame
+    # (31) Save results
+    # (31a) Pin the PSUT data frame
 
     # --------------------------------------------------------------------------
     # Product A ----------------------------------------------------------------
