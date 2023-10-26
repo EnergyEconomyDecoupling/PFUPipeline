@@ -355,8 +355,15 @@ get_pipeline <- function(countries = "all",
     targets::tar_target_raw("PhiGraphs", quote(phi_u_plots_df(CompletedEfficiencyTables, countries = Countries)),
                             pattern = quote(map(Countries))),
 
-    # (31) Save results
-    # (31a) Pin the PSUT data frame
+    # (31) Calculating Cmats (i) EIOU-wide, (ii) Y-wide, and (iii) economy-wide
+    # Add parallelisation later
+    targets::tar_target_raw("CmatsAgg", quote(calc_C_mats_agg(C_mats = Cmats, psut_iea = PSUTIEA))),
+    
+    
+    
+    
+    # (32) Save results
+    # (32a) Pin the PSUT data frame
 
     # --------------------------------------------------------------------------
     # Product A ----------------------------------------------------------------
