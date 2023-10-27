@@ -85,14 +85,16 @@ calc_Ef_to_Xf_exiobase <- function(phi_vecs,
 
 #' Calculates the final energy to useful energy multipliers
 #'
-#' @param EtafuYEIOU_mats The input data frame containing matrices with all the efficiencies by final demand sector and energy industry
+#' @param eta_fu_Y_EIOU_mats The input data frame containing matrices with all the efficiencies by final demand sector and energy industry
+#' @param eta_fu_Y_EIOU_agg The input data frame containing matrices with the economy-wide efficiencies by energy product
 #' @param years_exiobase The years for which the coefficients are provided to the Exiobase team
 #' @param full_list_exiobase_flows The full list of energy flows used in the Exiobase pipeline led by KR
 #' @param country_concordance_table_df A data frame containing the country concordance table
 #'
 #' @return A dataframe of the final energy to useful energy multipliers
 #' @export
-calc_Ef_to_Eu_exiobase <- function(EtafuYEIOU_mats,
+calc_Ef_to_Eu_exiobase <- function(eta_fu_Y_EIOU_mats,
+                                   eta_fu_Y_EIOU_agg,
                                    years_exiobase,
                                    full_list_exiobase_flows,
                                    country_concordance_table_df){
@@ -104,7 +106,7 @@ calc_Ef_to_Eu_exiobase <- function(EtafuYEIOU_mats,
     dplyr::select(Exiobase.Flow, PFU.flow)
   
   # Expanding the final-to-useful efficiencies to prepare the join
-  eta_fu_df <- EtafuYEIOU_mats |>
+  eta_fu_df <- eta_fu_Y_EIOU_mats |>
     dplyr::filter(Year %in% years_exiobase) |> 
     dplyr::select(Country:Year, eta_fu_Y_E:eta_fu_EIOU_E) |> 
     tidyr::pivot_longer(cols = tidyr::ends_with("_E"), names_to = "matnames", values_to = "matvals") |> 
@@ -113,6 +115,20 @@ calc_Ef_to_Eu_exiobase <- function(EtafuYEIOU_mats,
     dplyr::rename(eta = matvals) |> 
     dplyr::filter(Product %in% IEATools::products) |>
     dplyr::filter(eta != 0)
+  
+  # Expanding the economy-wide efficiencies data frame to prepare the join
+  eta_fu_economy_wide_df <- eta_fu_Y_EIOU_agg |> 
+    dplyr::filter(Energy.type == "E", NEU == "Excluded") |> 
+    dplyr::select(Country, Method, Energy.type, Last.stage, Year, eta_p_eiou_y) |> 
+    tidyr::pivot_longer(cols = eta_p_eiou_y, values_to = "matvals", names_to = "matnames") |> 
+    matsindf::expand_to_tidy() |> 
+    dplyr::rename(
+      Product = rownames,
+      PFU.code = Country,
+      eta = "matvals"
+    ) |> 
+    dplyr::select(PFU.code, Method, Energy.type, Last.stage, Year, Product, eta) |>
+    dplyr::mutate(Exiobase.Flow = "Economy-wide")
   
   # Preparing the (Country, Year, Product) list
   country_year_product_list <- eta_fu_df |> 
@@ -129,6 +145,8 @@ calc_Ef_to_Eu_exiobase <- function(EtafuYEIOU_mats,
     dplyr::left_join(eta_fu_df, by = c("Country", "Year", "Product", "PFU.flow")) |> 
     dplyr::filter(!is.na(eta)) |> 
     dplyr::rename(PFU.code = Country) |> 
+    dplyr::select(-PFU.flow) |> 
+    dplyr::bind_rows(eta_fu_economy_wide_df) |> 
     dplyr::left_join(country_concordance_table_df %>% dplyr::select(IEA.name.accented, PFU.code),
                      by = "PFU.code") |>
     dplyr::select(-PFU.code) |>

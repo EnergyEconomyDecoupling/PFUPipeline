@@ -538,7 +538,8 @@ get_pipeline <- function(countries = "all",
     # Multiplier to go from final energy to useful energy
     targets::tar_target_raw(
       "ExiobaseEftoEuMultipliers",
-      quote(calc_Ef_to_Eu_exiobase(EtafuYEIOU_mats = EtafuYEIOU,
+      quote(calc_Ef_to_Eu_exiobase(eta_fu_Y_EIOU_mats = EtafuYEIOU,
+                                   eta_fu_Y_EIOU_agg = EtafuYEIOUagg,
                                    years_exiobase = ExiobaseYears,
                                    full_list_exiobase_flows = ListExiobaseEnergyFlows,
                                    country_concordance_table_df = CountryConcordanceTable))
@@ -574,6 +575,9 @@ get_pipeline <- function(countries = "all",
     # Product K ----------------------------------------------------------------
     # --------------------------------------------------------------------------
     # Final energy to useful exergy multipliers---------------------------------
+    
+    # Actually for this here we are still missing the aggregated exergy efficiencies...! 
+    # EtafuYEIOUagg only have energy efficiencies for now...
     
     # Multiplier to go from final exergy to useful exergy
     targets::tar_target_raw(
