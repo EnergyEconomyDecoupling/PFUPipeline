@@ -219,22 +219,8 @@ calc_Ef_to_Eu_exiobase <- function(eta_fu_Y_EIOU_mats,
     dplyr::select(-rowtypes, -coltypes, -matnames) |> 
     dplyr::rename(eta = matvals) |> 
     dplyr::filter(Product %in% IEATools::products) |>
-    dplyr::filter(eta != 0) |> 
-    dplyr::bind_rows(eta_fu_EIOU_wide_df)
-  
-  # Expanding the EIOU-wide efficiencies data frame to prepare the join
-  eta_fu_EIOU_wide_df <- eta_fu_Y_EIOU_agg |> 
-    dplyr::filter(Energy.type == "E") |> 
-    dplyr::select(Country, Method, Energy.type, Year, eta_p_eiou) |> 
-    tidyr::pivot_longer(cols = eta_p_eiou, values_to = "matvals", names_to = "matnames") |> 
-    matsindf::expand_to_tidy() |> 
-    dplyr::rename(
-      Product = rownames,
-      PFU.code = Country,
-      eta = "matvals"
-    ) |> 
-    dplyr::select(PFU.code, Method, Energy.type, Year, Product, eta) |>
-    dplyr::mutate(PFU.flow = "EIOU-wide")
+    dplyr::bind_rows(eta_fu_EIOU_wide_df) |> 
+    dplyr::filter(eta != 0)
   
   # Expanding the economy-wide efficiencies data frame to prepare the join
   eta_fu_economy_wide_df <- eta_fu_Y_EIOU_agg |> 
@@ -248,7 +234,8 @@ calc_Ef_to_Eu_exiobase <- function(eta_fu_Y_EIOU_mats,
       eta = "matvals"
     ) |> 
     dplyr::select(PFU.code, Method, Energy.type, Year, Product, eta) |>
-    dplyr::mutate(Exiobase.Flow = "Economy-wide")
+    dplyr::mutate(Exiobase.Flow = "Economy-wide") |> 
+    dplyr::filter(eta != 0)
   
   # Preparing the (Country, Year, Product) list
   country_year_product_list <- eta_fu_df |> 
@@ -359,13 +346,13 @@ calc_Ef_to_Xu_exiobase <- function(EtafuYEIOU_mats,
     dplyr::select(-rowtypes, -coltypes, -matnames) |> 
     dplyr::rename(eta = matvals) |> 
     dplyr::filter(Product %in% IEATools::products) |>
-    dplyr::filter(eta != 0) |> 
     dplyr::left_join(phi_vals_df |> dplyr::rename(Country = PFU.code), by = c("Country", "Year", "Product")) |> 
     dplyr::mutate(
       phi_eta_X = phi * eta
     ) |> 
     dplyr::select(-eta, -phi) |> 
-    dplyr::bind_rows(eta_times_phi_EIOU_wide_df)
+    dplyr::bind_rows(eta_times_phi_EIOU_wide_df) |> 
+    dplyr::filter(phi_eta_X != 0)
   
   # Expanding the economy-wide efficiencies*phi values data frame to prepare the join
   eta_times_phi_economy_wide_df <- eta_fu_phi_Y_EIOU_agg |> 
@@ -378,7 +365,8 @@ calc_Ef_to_Xu_exiobase <- function(EtafuYEIOU_mats,
       phi_eta_X = "matvals"
     ) |> 
     dplyr::select(PFU.code, Method, Year, Product, phi_eta_X) |>
-    dplyr::mutate(Exiobase.Flow = "Economy-wide")
+    dplyr::mutate(Exiobase.Flow = "Economy-wide") |> 
+    dplyr::filter(phi_eta_X != 0)
   
   # Preparing the (Country, Year, Product) list
   country_year_product_list <- phi_eta_fu_df |> 
