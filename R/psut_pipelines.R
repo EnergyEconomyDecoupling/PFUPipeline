@@ -341,6 +341,18 @@ get_pipeline <- function(countries = "all",
                                                                                 countries = Countries)),
                             pattern = quote(map(Countries))),
 
+    # (21) Calculating Cmats (i) EIOU-wide, (ii) Y-wide, and (iii) economy-wide
+    # Add parallelisation later
+    targets::tar_target_raw("CmatsAgg", quote(calc_C_mats_agg(C_mats = Cmats, psut_iea = PSUTIEA))),
+    
+    
+    # (22) Calculating the product efficiency at the (i) EIOU-wide, (ii) Y-wide, and (iii) economy-wide levels
+    # Add parallelisation later
+    targets::tar_target_raw("EtafuYEIOUagg", quote(calc_fu_Y_EIOU_agg_efficiencies(C_mats_agg = CmatsAgg, 
+                                                                                   eta_fu_vecs = Etafuvecs,
+                                                                                   phi_vecs = Phivecs))),
+    
+    
     # (30) Build reports
     # (30a) Allocation Graphs
     targets::tar_target_raw("AllocationGraphs", quote(alloc_plots_df(CompletedAllocationTables, countries = Countries)),
@@ -355,6 +367,9 @@ get_pipeline <- function(countries = "all",
     targets::tar_target_raw("PhiGraphs", quote(phi_u_plots_df(CompletedEfficiencyTables, countries = Countries)),
                             pattern = quote(map(Countries))),
 
+
+    
+    
     # (31) Save results
     # (31a) Pin the PSUT data frame
 
@@ -488,16 +503,9 @@ get_pipeline <- function(countries = "all",
     
     
     # --------------------------------------------------------------------------
-    # Product Agg-unknown ------------------------------------------------------
+    # Product H ----------------------------------------------------------------
     # --------------------------------------------------------------------------
-    # Exiobase coefficients ----------------------------------------------------
-    
-    # Country concordance table
-    # targets::tar_target_raw(
-    #   "CountryConcordanceTable2",
-    #   quote(read_country_concordance_table(country_concordance_table_file = CountryConcordancePath,
-    #                                        countries = Countries))
-    # ),
+    # Final energy to final exergy multipliers----------------------------------
     
     # List of Exiobase code energy flows
     targets::tar_target_raw(
@@ -523,11 +531,17 @@ get_pipeline <- function(countries = "all",
                                              type = "csv",
                                              release = Release))),
     
+    # --------------------------------------------------------------------------
+    # Product I ----------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # Final energy to useful energy multipliers---------------------------------
+    
     # Eta_fu, E, values
     # Multiplier to go from final energy to useful energy
     targets::tar_target_raw(
       "ExiobaseEftoEuMultipliers",
-      quote(calc_Ef_to_Eu_exiobase(EtafuYEIOU_mats = EtafuYEIOU,
+      quote(calc_Ef_to_Eu_exiobase(eta_fu_Y_EIOU_mats = EtafuYEIOU,
+                                   eta_fu_Y_EIOU_agg = EtafuYEIOUagg,
                                    years_exiobase = ExiobaseYears,
                                    full_list_exiobase_flows = ListExiobaseEnergyFlows,
                                    country_concordance_table_df = CountryConcordanceTable))
@@ -539,6 +553,11 @@ get_pipeline <- function(countries = "all",
                                              pin_name = "exiobase_Ef_to_Eu_multipliers",
                                              type = "csv",
                                              release = Release))),
+    
+    # --------------------------------------------------------------------------
+    # Product J ----------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # Final energy to energy losses multipliers---------------------------------
     
     # (1 - Eta_fu) values
     # Multiplier to go from final energy to energy losses
@@ -554,12 +573,22 @@ get_pipeline <- function(countries = "all",
                                              type = "csv",
                                              release = Release))),
     
-    # Eta_fu, E, values
+    # --------------------------------------------------------------------------
+    # Product K ----------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # Final energy to useful exergy multipliers---------------------------------
+    
+    # This is just an intermediary target that is needed for the ExiobaseEftoXuMultipliers targets
+    targets::tar_target_raw("EtafuPhiYEIOUagg", quote(calc_eta_fu_eff_phi_Y_EIOU_agg(C_mats_agg = CmatsAgg,
+                                                                                     eta_fu_vecs = Etafuvecs,
+                                                                                     phi_vecs = Phivecs))),
+    
     # Multiplier to go from final exergy to useful exergy
     targets::tar_target_raw(
       "ExiobaseEftoXuMultipliers",
       quote(calc_Ef_to_Xu_exiobase(EtafuYEIOU_mats = EtafuYEIOU,
                                    phi_vecs = Phivecs,
+                                   eta_fu_phi_Y_EIOU_agg = EtafuPhiYEIOUagg,
                                    years_exiobase = ExiobaseYears,
                                    full_list_exiobase_flows = ListExiobaseEnergyFlows,
                                    country_concordance_table_df = CountryConcordanceTable))
@@ -572,7 +601,11 @@ get_pipeline <- function(countries = "all",
                                              type = "csv",
                                              release = Release))),
     
-    # Eta_fu, E, values
+    # --------------------------------------------------------------------------
+    # Product L ----------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # Final energy to exergy losses multipliers---------------------------------
+    
     # Multiplier to go from final energy to exergy losses
     targets::tar_target_raw(
       "ExiobaseEftoXlossMultipliers",
