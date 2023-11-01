@@ -7,12 +7,10 @@
 read_list_exiobase_energy_flows(path_to_list_exiobase_energy_flows)
 }
 \arguments{
-\item{path_to_exiobase_data}{Contains the path to the folder containing input data from Exiobase}
-
-\item{list_energy_flows_file}{Contains the name of the file containing all the Exiobase energy flows}
+\item{path_to_list_exiobase_energy_flows}{Contains the path to the folder containing the list of Exiobase energy flows}
 }
 \value{
-A data frame containsing the list of Exiobase energy flows, and a boolean column stating whether the flow is a final energy flow or not
+A data frame containing the list of Exiobase energy flows, and a boolean column stating whether the flow is a final energy flow or not
 }
 \description{
 Reads the list of Exiobase energy flows

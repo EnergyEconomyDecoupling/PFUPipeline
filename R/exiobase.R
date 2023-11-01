@@ -112,8 +112,7 @@ calc_eta_fu_eff_phi_Y_EIOU_agg <- function(C_mats_agg,
         matsbyname::setcoltype(product) |> 
         matsbyname::matrixproduct_byname(phi),
     ) |> 
-    dplyr::select(.data[[country]], .data[[method]], .data[[year]], .data[[C_EIOU_agg]], .data[[C_Y_agg]], .data[[C_EIOU_Y_agg]], .data[[eta_phi_p_eiou]],
-                  .data[[eta_phi_p_y]], .data[[eta_phi_p_eiou_y]])
+    dplyr::select(.data[[country]], .data[[method]], .data[[year]], .data[[eta_phi_p_eiou]], .data[[eta_phi_p_y]], .data[[eta_phi_p_eiou_y]])
   
   # (3) Determination of aggregated efficiencies (excluding non-energy uses)
   # eta_fu_eff_phi_Y_EIOU_agg <- C_mats_agg_excl_NEU |> 
@@ -197,6 +196,20 @@ calc_Ef_to_Eu_exiobase <- function(eta_fu_Y_EIOU_mats,
     dplyr::filter(Useful.energy.flow == TRUE) %>%
     dplyr::select(Exiobase.Flow, PFU.flow)
   
+  # Expanding the EIOU-wide efficiencies data frame to prepare the join
+  eta_fu_EIOU_wide_df <- eta_fu_Y_EIOU_agg |> 
+    dplyr::filter(Energy.type == "E") |> 
+    dplyr::select(Country, Method, Energy.type, Year, eta_p_eiou) |> 
+    tidyr::pivot_longer(cols = eta_p_eiou, values_to = "matvals", names_to = "matnames") |> 
+    matsindf::expand_to_tidy() |> 
+    dplyr::rename(
+      Product = rownames,
+      eta = "matvals"
+    ) |> 
+    dplyr::select(Country, Method, Energy.type, Year, Product, eta) |>
+    dplyr::mutate(PFU.flow = "EIOU-wide",
+                  Last.stage = "Final")
+  
   # Expanding the final-to-useful efficiencies to prepare the join
   eta_fu_df <- eta_fu_Y_EIOU_mats |>
     dplyr::filter(Year %in% years_exiobase) |> 
@@ -206,12 +219,27 @@ calc_Ef_to_Eu_exiobase <- function(eta_fu_Y_EIOU_mats,
     dplyr::select(-rowtypes, -coltypes, -matnames) |> 
     dplyr::rename(eta = matvals) |> 
     dplyr::filter(Product %in% IEATools::products) |>
-    dplyr::filter(eta != 0)
+    dplyr::filter(eta != 0) |> 
+    dplyr::bind_rows(eta_fu_EIOU_wide_df)
+  
+  # Expanding the EIOU-wide efficiencies data frame to prepare the join
+  eta_fu_EIOU_wide_df <- eta_fu_Y_EIOU_agg |> 
+    dplyr::filter(Energy.type == "E") |> 
+    dplyr::select(Country, Method, Energy.type, Year, eta_p_eiou) |> 
+    tidyr::pivot_longer(cols = eta_p_eiou, values_to = "matvals", names_to = "matnames") |> 
+    matsindf::expand_to_tidy() |> 
+    dplyr::rename(
+      Product = rownames,
+      PFU.code = Country,
+      eta = "matvals"
+    ) |> 
+    dplyr::select(PFU.code, Method, Energy.type, Year, Product, eta) |>
+    dplyr::mutate(PFU.flow = "EIOU-wide")
   
   # Expanding the economy-wide efficiencies data frame to prepare the join
   eta_fu_economy_wide_df <- eta_fu_Y_EIOU_agg |> 
     dplyr::filter(Energy.type == "E") |> 
-    dplyr::select(Country, Method, Energy.type, Last.stage, Year, eta_p_eiou_y) |> 
+    dplyr::select(Country, Method, Energy.type, Year, eta_p_eiou_y) |> 
     tidyr::pivot_longer(cols = eta_p_eiou_y, values_to = "matvals", names_to = "matnames") |> 
     matsindf::expand_to_tidy() |> 
     dplyr::rename(
@@ -219,7 +247,7 @@ calc_Ef_to_Eu_exiobase <- function(eta_fu_Y_EIOU_mats,
       PFU.code = Country,
       eta = "matvals"
     ) |> 
-    dplyr::select(PFU.code, Method, Energy.type, Last.stage, Year, Product, eta) |>
+    dplyr::select(PFU.code, Method, Energy.type, Year, Product, eta) |>
     dplyr::mutate(Exiobase.Flow = "Economy-wide")
   
   # Preparing the (Country, Year, Product) list
@@ -299,6 +327,20 @@ calc_Ef_to_Xu_exiobase <- function(EtafuYEIOU_mats,
     dplyr::filter(Useful.energy.flow == TRUE) %>%
     dplyr::select(Exiobase.Flow, PFU.flow)
   
+  # Expanding the EIOU-wide efficiencies*phi values data frame to prepare the join
+  eta_times_phi_EIOU_wide_df <- eta_fu_phi_Y_EIOU_agg |> 
+    dplyr::select(Country, Method, Year, eta_phi_p_eiou) |> 
+    tidyr::pivot_longer(cols = eta_phi_p_eiou, values_to = "matvals", names_to = "matnames") |> 
+    matsindf::expand_to_tidy() |> 
+    dplyr::rename(
+      Product = rownames,
+      phi_eta_X = "matvals"
+    ) |> 
+    dplyr::select(Country, Method, Year, Product, phi_eta_X) |>
+    dplyr::mutate(PFU.flow = "EIOU-wide",
+                  Last.stage = "Final",
+                  Energy.type = "E")
+  
   # Expanding Phivecs
   phi_vals_df <- phi_vecs |> 
     dplyr::filter(Year %in% years_exiobase) |> 
@@ -322,7 +364,8 @@ calc_Ef_to_Xu_exiobase <- function(EtafuYEIOU_mats,
     dplyr::mutate(
       phi_eta_X = phi * eta
     ) |> 
-    dplyr::select(-eta, -phi)
+    dplyr::select(-eta, -phi) |> 
+    dplyr::bind_rows(eta_times_phi_EIOU_wide_df)
   
   # Expanding the economy-wide efficiencies*phi values data frame to prepare the join
   eta_times_phi_economy_wide_df <- eta_fu_phi_Y_EIOU_agg |> 
@@ -362,45 +405,6 @@ calc_Ef_to_Xu_exiobase <- function(EtafuYEIOU_mats,
     dplyr::select(IEA.country.name, Year, Product, Flow, phi_eta_X) |>
     dplyr::relocate(Flow, .before = Product) |>
     tidyr::pivot_wider(names_from = Year, values_from = phi_eta_X)
-  
-  # # Expanding to determine phi values for each Exiobase flow
-  # Ef_to_Xu_multipliers <- EtafuYEIOU_mats |> 
-  #   dplyr::filter(Year %in% years_exiobase) |> 
-  #   dplyr::select(Country:Year, eta_fu_Y_X:eta_fu_EIOU_X) |> 
-  #   tidyr::pivot_longer(cols = tidyr::ends_with("_X"), names_to = "matnames", values_to = "matvals") |> 
-  #   matsindf::expand_to_tidy(rownames = "Product", colnames = "PFU.flow") |> 
-  #   dplyr::select(-rowtypes, -coltypes, -matnames) |> 
-  #   dplyr::rename(eta = matvals) |> 
-  #   dplyr::left_join(
-  #     list_final_energy_flows, by = "PFU.flow"
-  #   ) |> 
-  #   # THIS HERE NEEDS TO BE SORTED OUT!!!!
-  #   dplyr::rename(PFU.code = Country,
-  #                 Flow = Exiobase.Flow) |>
-  #   dplyr::filter(!is.na(Flow)) |> 
-  #   # select(PFU.flow) |> 
-  #   # distinct() |> print()
-  #   dplyr::filter(Product %in% IEATools::products) |>
-  #   dplyr::left_join(phi_vals_df, by = c("PFU.code", "Year", "Product")) |> 
-  #   dplyr::mutate(
-  #     Ef_to_Xu_Multiplier = eta * phi
-  #   ) |> 
-  #   dplyr::left_join(country_concordance_table_df %>% dplyr::select(IEA.name, PFU.code),
-  #                    by = "PFU.code") |>
-  #   dplyr::select(-PFU.code) |>
-  #   dplyr::rename(IEA.country.name = IEA.name) |>
-  #   dplyr::filter(!is.na(IEA.country.name)) |>
-  #   dplyr::select(IEA.country.name, Year, Product, Flow, Ef_to_Xu_Multiplier) |>
-  #   dplyr::relocate(IEA.country.name, .before = Year) |>
-  #   dplyr::filter(Ef_to_Xu_Multiplier != 0) |> 
-  #   dplyr::mutate(
-  #     dplyr::case_when(
-  #       IEA.country.name == "Curacao/Netherlands Antilles" ~ "Curaçao/Netherlands Antilles",
-  #       IEA.country.name == "Cote d'Ivoire" ~ "Côte d'Ivoire",
-  #       TRUE ~ IEA.country.name
-  #     )
-  #   ) |> 
-  #   tidyr::pivot_wider(names_from = Year, values_from = Ef_to_Xu_Multiplier)
   
   return(Ef_to_Xu_multipliers)
 }

@@ -5,20 +5,23 @@
 \title{Calculates the final energy to useful energy multipliers}
 \usage{
 calc_Ef_to_Eu_exiobase(
-  EtafuYEIOU_mats,
+  eta_fu_Y_EIOU_mats,
+  eta_fu_Y_EIOU_agg,
   years_exiobase,
   full_list_exiobase_flows,
   country_concordance_table_df
 )
 }
 \arguments{
+\item{eta_fu_Y_EIOU_mats}{The input data frame containing matrices with all the efficiencies by final demand sector and energy industry}
+
+\item{eta_fu_Y_EIOU_agg}{The input data frame containing matrices with the economy-wide efficiencies by energy product}
+
 \item{years_exiobase}{The years for which the coefficients are provided to the Exiobase team}
 
 \item{full_list_exiobase_flows}{The full list of energy flows used in the Exiobase pipeline led by KR}
 
 \item{country_concordance_table_df}{A data frame containing the country concordance table}
-
-\item{EtafuYEIOU_df}{The input data frame containing matrices with all the efficiencies by final demand sector and energy industry}
 }
 \value{
 A dataframe of the final energy to useful energy multipliers

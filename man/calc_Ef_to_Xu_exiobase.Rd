@@ -7,21 +7,24 @@
 calc_Ef_to_Xu_exiobase(
   EtafuYEIOU_mats,
   phi_vecs,
+  eta_fu_phi_Y_EIOU_agg,
   years_exiobase,
   full_list_exiobase_flows,
   country_concordance_table_df
 )
 }
 \arguments{
+\item{EtafuYEIOU_mats}{The input data frame containing matrices with all the efficiencies by final demand sector and energy industry}
+
 \item{phi_vecs}{A data frame of phi (exergy-to-energy ratio) coefficients.}
+
+\item{eta_fu_phi_Y_EIOU_agg}{A data frame containing matrices with the economy-wide efficiencies time phi values by energy product}
 
 \item{years_exiobase}{The years for which the coefficients are provided to the Exiobase team}
 
 \item{full_list_exiobase_flows}{The full list of energy flows used in the Exiobase pipeline led by KR}
 
 \item{country_concordance_table_df}{A data frame containing the country concordance table}
-
-\item{EtafuYEIOU_df}{The input data frame containing matrices with all the efficiencies by final demand sector and energy industry}
 }
 \value{
 A data frame of the final energy to useful exergy multipliers
