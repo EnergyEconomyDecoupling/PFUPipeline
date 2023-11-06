@@ -67,7 +67,7 @@ specify_non_energy_flows <- TRUE
 apply_fixes <- TRUE
 
 # Should we do a release of the results?
-release <- FALSE
+release <- TRUE
 
 # End user-adjustable parameters.
 

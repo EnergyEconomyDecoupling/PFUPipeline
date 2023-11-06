@@ -333,7 +333,14 @@ get_pipeline <- function(countries = "all",
     targets::tar_target_raw("PSUT", quote(build_psut_dataframe(psutiea = PSUTIEA,
                                                                psutmw = PSUTMW,
                                                                psutieamw = PSUTIEAMW))),
-
+    
+    # Make a version that is grouped by Year for later parallel calculations
+    tarchetypes::tar_group_by(
+      name = "PSUTbyYear",
+      command = PSUT,
+      Year
+    ),
+    
     # (20) Calculate final-to-useful efficiencies from f-u allocations and machine efficiencies
     targets::tar_target_raw("EtafuvecsYEIOU", quote(calc_fu_Y_EIOU_efficiencies(C_mats = Cmats,
                                                                                 eta_fu_vecs = Etafuvecs,
@@ -451,11 +458,6 @@ get_pipeline <- function(countries = "all",
     # Product G ----------------------------------------------------------------
     # --------------------------------------------------------------------------
     # Energy transformation machine efficiencies -------------------------------
-    tarchetypes::tar_group_by(
-      name = "PSUTbyYear",
-      command = PSUT,
-      Year
-    ),
     targets::tar_target_raw(
       "Etai",
       quote(PSUTbyYear |>
@@ -584,6 +586,25 @@ get_pipeline <- function(countries = "all",
                                              targ = ExiobaseEftoXlossMultipliers,
                                              pin_name = "exiobase_Ef_to_Xloss_multipliers",
                                              type = "csv",
+                                             release = Release))), 
+    
+    # Calculate a version of the PSUT data frame with all Non-energy use removed.
+    # This target is parallelized.
+    targets::tar_target_raw(
+      "PSUTWithoutNEU", 
+      quote(remove_non_energy_use(PSUTbyYear)), 
+      pattern = quote(map(PSUTbyYear))
+    ), 
+    
+    # --------------------------------------------------------------------------
+    # Product L ----------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # PSUT with Non-energy use removed -----------------------------------------
+    targets::tar_target_raw(
+      "ReleasePSUTWithoutNEU",
+      quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                                             targ = PSUTWithoutNEU,
+                                             pin_name = "psut_without_neu",
                                              release = Release)))
   )
 }
