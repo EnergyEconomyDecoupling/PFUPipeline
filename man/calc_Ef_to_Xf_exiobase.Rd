@@ -8,7 +8,22 @@ calc_Ef_to_Xf_exiobase(
   phi_vecs,
   years_exiobase,
   full_list_exiobase_flows,
-  country_concordance_table_df
+  country_concordance_table_df,
+  final_energy_flow = "Final.energy.flow",
+  exiobase_flow = "Exiobase.Flow",
+  pfu_code = "PFU.code",
+  iea_country_name = "IEA.country.name",
+  iea_country_name_accented = "IEA.name.accented",
+  phi = "phi",
+  matnames = "matnames",
+  colnames = "colnames",
+  matvals = "matvals",
+  rowtypes = "rowtypes",
+  coltypes = "coltypes",
+  country = IEATools::iea_cols$country,
+  product = IEATools::iea_cols$product,
+  year = IEATools::iea_cols$year,
+  flow = IEATools::iea_cols$flow
 )
 }
 \arguments{
@@ -19,6 +34,26 @@ calc_Ef_to_Xf_exiobase(
 \item{full_list_exiobase_flows}{The full list of energy flows used in the Exiobase pipeline led by KR}
 
 \item{country_concordance_table_df}{A data frame containing the country concordance table}
+
+\item{final_energy_flow}{The name of the column stating whether a flow is a final energy flow or not}
+
+\item{exiobase_flow}{The name of the column stating the name of the Exiobase flow}
+
+\item{pfu_code}{The name of the column containing the PFU country name}
+
+\item{iea_country_name}{The name of the column containing the IEA country name}
+
+\item{phi}{The name of the column containing the phi values}
+
+\item{matnames}{The name of the column containing matrices names after unpacking the matrices}
+
+\item{matvals}{The name of the column containing matrices values after unpacking the matrices}
+
+\item{rowtypes}{The name of the column containing the matrices row types names after unpacking the matrices}
+
+\item{coltypes}{The name of the column containing matrices column types after unpacking the matrices}
+
+\item{country, year, product, flow}{See \code{IEATools::iea_cols}.}
 }
 \value{
 A data frame of final energy to final exergy multipliers
