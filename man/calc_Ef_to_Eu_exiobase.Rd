@@ -9,7 +9,32 @@ calc_Ef_to_Eu_exiobase(
   eta_fu_Y_EIOU_agg,
   years_exiobase,
   full_list_exiobase_flows,
-  country_concordance_table_df
+  country_concordance_table_df,
+  useful_energy_flow = "Useful.energy.flow",
+  exiobase_flow = "Exiobase.Flow",
+  pfu_code = "PFU.code",
+  pfu_flow = "PFU.flow",
+  iea_country_name = "IEA.country.name",
+  iea_country_name_accented = "IEA.name.accented",
+  phi = "phi",
+  matnames = "matnames",
+  colnames = "colnames",
+  matvals = "matvals",
+  rowtypes = "rowtypes",
+  coltypes = "coltypes",
+  energy_type_E = IEATools::energy_types$e,
+  country = IEATools::iea_cols$country,
+  product = IEATools::iea_cols$product,
+  year = IEATools::iea_cols$year,
+  flow = IEATools::iea_cols$flow,
+  method = IEATools::iea_cols$method,
+  energy_type = IEATools::iea_cols$energy_type,
+  last_stage = IEATools::iea_cols$last_stage,
+  eta_p_eiou = "eta_p_eiou",
+  eta_p_eiou_y = "eta_p_eiou_y",
+  eta_fu_Y_E = "eta_fu_Y_E",
+  eta_fu_EIOU_E = "eta_fu_EIOU_E",
+  eta = "eta"
 )
 }
 \arguments{
@@ -22,6 +47,36 @@ calc_Ef_to_Eu_exiobase(
 \item{full_list_exiobase_flows}{The full list of energy flows used in the Exiobase pipeline led by KR}
 
 \item{country_concordance_table_df}{A data frame containing the country concordance table}
+
+\item{useful_energy_flow}{The name of the column stating whether a flow is a final energy flow or not}
+
+\item{exiobase_flow}{The name of the column stating the name of the Exiobase flow}
+
+\item{pfu_code}{The name of the column containing the PFU country name}
+
+\item{iea_country_name}{The name of the column containing the IEA country name}
+
+\item{phi}{The name of the column containing the phi values}
+
+\item{matnames}{The name of the column containing matrices names after unpacking the matrices}
+
+\item{matvals}{The name of the column containing matrices values after unpacking the matrices}
+
+\item{rowtypes}{The name of the column containing the matrices row types names after unpacking the matrices}
+
+\item{coltypes}{The name of the column containing matrices column types after unpacking the matrices}
+
+\item{energy_type_E}{The letter standing for energy as energy type.}
+
+\item{country, year, product, flow, method, energy_type, last_stage}{See \code{IEATools::iea_cols}.}
+
+\item{eta_p_eiou}{The name of the column containing the efficiencies.}
+
+\item{eta_fu_Y_E}{The name of the the column containing the efficiencies of products when used as part of final demand.}
+
+\item{eta_fu_EIOU_E}{The name of the column containing the efficiencies of products when used as part of the EIOU matrix.}
+
+\item{eta}{The name of the column containing the efficiencies.}
 }
 \value{
 A dataframe of the final energy to useful energy multipliers
