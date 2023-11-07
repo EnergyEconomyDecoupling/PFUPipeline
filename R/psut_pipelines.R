@@ -342,15 +342,24 @@ get_pipeline <- function(countries = "all",
     ),
     
     # (20) Calculate final-to-useful efficiencies from f-u allocations and machine efficiencies
-    targets::tar_target_raw("EtafuvecsYEIOU", quote(calc_fu_Y_EIOU_efficiencies(C_mats = Cmats,
-                                                                                eta_fu_vecs = Etafuvecs,
-                                                                                phi_vecs = Phivecs,
-                                                                                countries = Countries)),
+    targets::tar_target_raw("EtafuvecsYEIOU", 
+                            quote(calc_fu_Y_EIOU_efficiencies(C_mats = Cmats,
+                                                              eta_fu_vecs = Etafuvecs,
+                                                              phi_vecs = Phivecs,
+                                                              countries = Countries)),
                             pattern = quote(map(Countries))),
 
     # (21) Calculating Cmats (i) EIOU-wide, (ii) Y-wide, and (iii) economy-wide
     # Add parallelisation later
-    targets::tar_target_raw("CmatsAgg", quote(calc_C_mats_agg(C_mats = Cmats, psut_iea = PSUTIEA))),
+    tarchetypes::tar_group_by(
+      name = "CmatsbyCountry",
+      command = Cmats,
+      Country, Year
+    ),
+    targets::tar_target_raw("CmatsAgg",
+                            quote(calc_C_mats_agg(C_mats = CmatsbyCountry,
+                                                  psut_iea = PSUTIEA)),
+                            pattern = quote(map(CmatsbyCountry))),
     
     
     # (22) Calculating the product efficiency at the (i) EIOU-wide, (ii) Y-wide, and (iii) economy-wide levels
