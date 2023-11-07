@@ -31,6 +31,7 @@ read_list_exiobase_energy_flows <- function(path_to_list_exiobase_energy_flows){
 #' @param eta_phi_p_eiou The name of the column containing the efficiency of each product when used in EIOU.
 #' @param eta_phi_p_y The name of the column containing the efficiency of each product when used in final demand.
 #' @param eta_phi_p_eiou_y The name of the column containing the efficiency of each product when used in either EIOU or final demand.
+#' @param phi The name of the column containing the phi values.
 #' @param country,method,energy_type,last_stage,year,product See `IEATools::iea_cols`.
 #'
 #' @return A data frame containing the average FU efficiencies times phi values for each product when used in EIOU, Y, or economy-wide (Y and EIOU).
@@ -49,6 +50,7 @@ calc_eta_fu_eff_phi_Y_EIOU_agg <- function(C_mats_agg,
                                            eta_phi_p_eiou = "eta_phi_p_eiou",
                                            eta_phi_p_y = "eta_phi_p_y",
                                            eta_phi_p_eiou_y = "eta_phi_p_eiou_y",
+                                           phi = "phi",
                                            country = IEATools::iea_cols$country,
                                            method = IEATools::iea_cols$method,
                                            energy_type = IEATools::iea_cols$energy_type,
@@ -98,19 +100,19 @@ calc_eta_fu_eff_phi_Y_EIOU_agg <- function(C_mats_agg,
         matsbyname::rename_to_piece_byname(piece = "suff", margin = 2, notation = list(RCLabels::arrow_notation)) |> 
         matsbyname::aggregate_byname(margin = 2) |> 
         matsbyname::setcoltype(product) |> 
-        matsbyname::matrixproduct_byname(phi),
+        matsbyname::matrixproduct_byname(.data[[phi]]),
       "{eta_phi_p_y}" := matsbyname::matrixproduct_byname(.data[[C_Y_agg]], matsbyname::hatize_byname(.data[[eta.fu]])) |> 
         matsbyname::clean_byname(margin = 1) |> 
         matsbyname::rename_to_piece_byname(piece = "suff", margin = 2, notation = list(RCLabels::arrow_notation)) |> 
         matsbyname::aggregate_byname(margin = 2) |> 
         matsbyname::setcoltype(product) |> 
-        matsbyname::matrixproduct_byname(phi),
+        matsbyname::matrixproduct_byname(.data[[phi]]),
       "{eta_phi_p_eiou_y}" := matsbyname::matrixproduct_byname(.data[[C_EIOU_Y_agg]], matsbyname::hatize_byname(.data[[eta.fu]])) |> 
         matsbyname::clean_byname(margin = 1) |> 
         matsbyname::rename_to_piece_byname(piece = "suff", margin = 2, notation = list(RCLabels::arrow_notation)) |> 
         matsbyname::aggregate_byname(margin = 2) |> 
         matsbyname::setcoltype(product) |> 
-        matsbyname::matrixproduct_byname(phi),
+        matsbyname::matrixproduct_byname(.data[[phi]]),
     ) |> 
     dplyr::select(.data[[country]], .data[[method]], .data[[year]], .data[[eta_phi_p_eiou]], .data[[eta_phi_p_y]], .data[[eta_phi_p_eiou_y]])
   
@@ -141,9 +143,11 @@ calc_eta_fu_eff_phi_Y_EIOU_agg <- function(C_mats_agg,
 #' @param exiobase_flow The name of the column stating the name of the Exiobase flow
 #' @param pfu_code The name of the column containing the PFU country name
 #' @param iea_country_name The name of the column containing the IEA country name
+#' @param iea_country_name_accented The name of the column containing the IEA country name with accents
 #' @param phi The name of the column containing the phi values
 #' @param matnames The name of the column containing matrices names after unpacking the matrices
 #' @param matvals The name of the column containing matrices values after unpacking the matrices
+#' @param colnames The name of the column containing the column names after unpacking the matrices
 #' @param rowtypes The name of the column containing the matrices row types names after unpacking the matrices
 #' @param coltypes The name of the column containing matrices column types after unpacking the matrices
 #' @param country,year,product,flow See `IEATools::iea_cols`.
@@ -209,13 +213,17 @@ calc_Ef_to_Xf_exiobase <- function(phi_vecs,
 #' @param useful_energy_flow The name of the column stating whether a flow is a final energy flow or not
 #' @param exiobase_flow The name of the column stating the name of the Exiobase flow
 #' @param pfu_code The name of the column containing the PFU country name
+#' @param pfu_flow The name of the column containing the PFU flow names
 #' @param iea_country_name The name of the column containing the IEA country name
+#' @param iea_country_name_accented The name of the column containing the IEA country name with accents
 #' @param phi The name of the column containing the phi values
 #' @param matnames The name of the column containing matrices names after unpacking the matrices
+#' @param colnames The name of the column containing the column names after unpacking the matrices
 #' @param matvals The name of the column containing matrices values after unpacking the matrices
 #' @param rowtypes The name of the column containing the matrices row types names after unpacking the matrices
 #' @param coltypes The name of the column containing matrices column types after unpacking the matrices
-#' @param eta_p_eiou The name of the column containing the efficiencies.
+#' @param eta_p_eiou The name of the column containing the efficiencies for products used in EIOU
+#' @param eta_p_eiou_y The name of the column containing the efficiencies for products used in final demand.
 #' @param country,year,product,flow,method,energy_type,last_stage See `IEATools::iea_cols`.
 #' @param energy_type_E The letter standing for energy as energy type.
 #' @param eta_fu_Y_E The name of the the column containing the efficiencies of products when used as part of final demand.
@@ -346,7 +354,7 @@ calc_Ef_to_Eloss_exiobase <- function(ExiobaseEftoEuMultipliers_df){
     # However we are now filtering out 0 efficiencies in the calc_Ef_to_Eu_exiobase() function to help identify potentially missing efficiencies
     dplyr::mutate(
       dplyr::across(
-        where(is.double), ~ dplyr::case_when(.x == 0 ~ .x, 
+        dplyr::where(is.double), ~ dplyr::case_when(.x == 0 ~ .x, 
                                              .x >= 1 ~ 0,
                                              TRUE ~ 1 - .x)
       )
@@ -366,10 +374,13 @@ calc_Ef_to_Eloss_exiobase <- function(ExiobaseEftoEuMultipliers_df){
 #' @param useful_energy_flow The name of the column stating whether a flow is a final energy flow or not
 #' @param exiobase_flow The name of the column stating the name of the Exiobase flow
 #' @param pfu_code The name of the column containing the PFU country name
+#' @param pfu_flow The name of the column containing the PFU flow names
 #' @param iea_country_name The name of the column containing the IEA country name
+#' @param iea_country_name_accented The name of the column containing the IEA country name with accents
 #' @param phi The name of the column containing the phi values
 #' @param matnames The name of the column containing matrices names after unpacking the matrices
 #' @param matvals The name of the column containing matrices values after unpacking the matrices
+#' @param colnames The name of the column containing the column names after unpacking the matrices
 #' @param rowtypes The name of the column containing the matrices row types names after unpacking the matrices
 #' @param coltypes The name of the column containing matrices column types after unpacking the matrices
 #' @param eta_p_eiou The name of the column containing the efficiencies.
@@ -377,8 +388,11 @@ calc_Ef_to_Eloss_exiobase <- function(ExiobaseEftoEuMultipliers_df){
 #' @param energy_type_E The letter standing for energy as energy type.
 #' @param eta_fu_Y_E The name of the the column containing the efficiencies of products when used as part of final demand.
 #' @param eta_fu_EIOU_E The name of the column containing the efficiencies of products when used as part of the EIOU matrix.
+#' @param eta_p_eiou_y The name of the column containing the efficiencies of products when used as part of the final demand
 #' @param eta_phi_p_eiou The name of the column with the matrices containing the efficiencies, multiplied by the phi values, of products when used as part of the EIOU matrix.
 #' @param eta_phi_p_eiou_y The name of the column with the matrices containing the efficiencies, multiplied by the phi values, of products when used as part of the Y matrix.
+#' @param eta_phi_p_eiou The name of the column containing the efficiency values multiplied by the phi values for products used in EIOU.
+#' @param eta_phi_p_eiou_y The name of the column containing the efficiency values multiplied by the phi values for products used economy-wide.
 #' @param phi_eta_X The name of the column containing the efficiencies, multiplied by the phi values, of products when used as part of the EIOU matrix.
 #' @param eta The name of the column containing the efficiencies.
 #'
@@ -414,6 +428,8 @@ calc_Ef_to_Xu_exiobase <- function(EtafuYEIOU_mats,
                                    eta_p_eiou_y = "eta_p_eiou_y",
                                    eta_fu_Y_E = "eta_fu_Y_E",
                                    eta_fu_EIOU_E = "eta_fu_EIOU_E",
+                                   eta_fu_Y_X = "eta_fu_Y_X",
+                                   eta_fu_EIOU = "eta_fu_EIOU",
                                    eta_phi_p_eiou = "eta_phi_p_eiou",
                                    eta_phi_p_eiou_y = "eta_phi_p_eiou_y",
                                    phi_eta_X = "phi_eta_X",
@@ -452,7 +468,7 @@ calc_Ef_to_Xu_exiobase <- function(EtafuYEIOU_mats,
   phi_eta_fu_df <- EtafuYEIOU_mats |>
     dplyr::filter(.data[[year]] %in% years_exiobase) |> 
     # WRITE THIS NEAT.
-    dplyr::select(Country:Year, eta_fu_Y_X:eta_fu_EIOU_X) |> 
+    dplyr::select(tidyselect::all_of(c(country, method, energy_type, last_stage, year, eta_fu_Y_X, eta_fu_EIOU,X))) |> 
     tidyr::pivot_longer(cols = tidyr::ends_with("_X"), names_to = matnames, values_to = matvals) |> 
     matsindf::expand_to_tidy(rownames = product, colnames = pfu_flow) |> 
     dplyr::select(-tidyselect::all_of(c(rowtypes, coltypes, matnames))) |> 
@@ -524,7 +540,7 @@ calc_Ef_to_Xloss_exiobase <- function(ExiobaseEftoXuMultipliers_df){
     # However we are now filtering out 0 efficiencies in the calc_Ef_to_Eu_exiobase() function to help identify potentially missing efficiencies
     dplyr::mutate(
       dplyr::across(
-        where(is.double), ~ dplyr::case_when(.x == 0 ~ .x, 
+        dplyr::where(is.double), ~ dplyr::case_when(.x == 0 ~ .x, 
                                              .x >= 1 ~ 0,
                                              TRUE ~ 1 - .x)
       )
