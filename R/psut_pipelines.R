@@ -354,6 +354,8 @@ get_pipeline <- function(countries = "all",
     tarchetypes::tar_group_by(
       name = "CmatsbyCountry",
       command = Cmats,
+      # Change later to only Country. 
+      # Country, Year was only for diagnostic purposes.
       Country, Year
     ),
     targets::tar_target_raw("CmatsAgg",
