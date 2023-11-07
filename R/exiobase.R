@@ -393,6 +393,8 @@ calc_Ef_to_Eloss_exiobase <- function(ExiobaseEftoEuMultipliers_df){
 #' @param eta_phi_p_eiou_y The name of the column with the matrices containing the efficiencies, multiplied by the phi values, of products when used as part of the Y matrix.
 #' @param eta_phi_p_eiou The name of the column containing the efficiency values multiplied by the phi values for products used in EIOU.
 #' @param eta_phi_p_eiou_y The name of the column containing the efficiency values multiplied by the phi values for products used economy-wide.
+#' @param eta_fu_Y_X The name of the column containing the exergy efficiencies for products used as part of final demand.
+#' @param eta_fu_EIOU The name of the column containing the exergy efficiencies for products used as part of EIOU.
 #' @param phi_eta_X The name of the column containing the efficiencies, multiplied by the phi values, of products when used as part of the EIOU matrix.
 #' @param eta The name of the column containing the efficiencies.
 #'
