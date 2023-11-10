@@ -74,7 +74,7 @@ calc_C_mats_agg <- function(C_mats,
   C_mats_agg <- dplyr::left_join(
     C_mats, psut_iea, by = c({country}, {method}, {energy_type}, {last_stage}, {year})
   ) |> 
-    dplyr::select(.data[[country]], .data[[method]], .data[[energy_type]], .data[[last_stage]], .data[[year]], .data[[C_EIOU]], .data[[C_Y]], .data[[Y]], .data[[U_EIOU]]) |> 
+    dplyr::select(tidyselect::any_of(c(country, method, energy_type, last_stage, year, C_EIOU, C_Y, Y, U_EIOU))) |> 
     # Calculating all the bunch of vectors and matrices needed now:
     dplyr::mutate(
       # Total use of product p industry EIOU industry i, as a vector. U_EIOU vectorised.
@@ -82,13 +82,13 @@ calc_C_mats_agg <- function(C_mats,
       # Total use of product p in final demand sector s, as a vector. Y vectorised.
       y_vec = matsbyname::vectorize_byname(a = .data[[Y]], notation = list(RCLabels::arrow_notation)),
       # Total use of product p in machine m across all EIOU industries aggregated
-      Alloc_mat_EIOU = matsbyname::matrixproduct_byname(matsbyname::hatize_byname(eiou_vec),
+      Alloc_mat_EIOU = matsbyname::matrixproduct_byname(matsbyname::hatize_byname(eiou_vec, keep = "rownames"),
                                                         .data[[C_EIOU]]) |> 
         matsbyname::aggregate_pieces_byname(piece = "noun", 
                                             margin = 1, 
                                             notation = list(RCLabels::arrow_notation)),
       # Total use of product p in final demand sector s across all final demand sectors aggregated
-      Alloc_mat_Y = matsbyname::matrixproduct_byname(matsbyname::hatize_byname(y_vec),
+      Alloc_mat_Y = matsbyname::matrixproduct_byname(matsbyname::hatize_byname(y_vec, keep = "rownames"),
                                                      .data[[C_Y]]) |> 
         matsbyname::aggregate_pieces_byname(piece = "noun", 
                                             margin = 1, 
@@ -111,7 +111,7 @@ calc_C_mats_agg <- function(C_mats,
       "{C_EIOU_Y_agg}" := matsbyname::matrixproduct_byname(matsbyname::hatinv_byname(f_EIOU_Y, keep = "rownames"),
                                                            Alloc_mat_EIOU_Y),
     ) |> 
-    dplyr::select(.data[[country]], .data[[method]], .data[[energy_type]], .data[[last_stage]], .data[[year]], .data[[C_EIOU_agg]], .data[[C_Y_agg]], .data[[C_EIOU_Y_agg]])
+    dplyr::select(tidyselect::any_of(c(country, method, energy_type, last_stage, year, C_EIOU_agg, C_Y_agg, C_EIOU_Y_agg)))
   
   return(C_mats_agg)
 }

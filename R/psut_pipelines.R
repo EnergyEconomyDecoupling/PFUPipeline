@@ -360,8 +360,9 @@ get_pipeline <- function(countries = "all",
     ),
     targets::tar_target_raw("CmatsAgg",
                             quote(calc_C_mats_agg(C_mats = CmatsbyCountry,
-                                                  psut_iea = PSUTIEA)),
-                            pattern = quote(map(CmatsbyCountry))),
+                                                  psut_iea = PSUTIEA))#,
+                            #pattern = quote(map(CmatsbyCountry))
+                            ),
     
     
     # (22) Calculating the product efficiency at the (i) EIOU-wide, (ii) Y-wide, and (iii) economy-wide levels
