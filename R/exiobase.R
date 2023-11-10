@@ -80,8 +80,9 @@ calc_eta_fu_eff_phi_Y_EIOU_agg <- function(C_mats_agg,
           matsbyname::hatinv_byname(), 
         matsbyname::select_cols_byname(.data[[C_EIOU_Y_agg]], remove_pattern = list(non_energy_use_machine)))
     ) |> 
-    dplyr::select(.data[[country]], .data[[method]], .data[[energy_type]], .data[[last_stage]], .data[[year]], .data[[C_EIOU_agg_excl_NEU]],
-                  .data[[C_Y_agg_excl_NEU]], .data[[C_EIOU_Y_agg_excl_NEU]]) |> 
+    dplyr::select(tidyselect::any_of(c(country, method, energy_type, last_stage, year, C_EIOU_agg_excl_NEU, C_Y_agg_excl_NEU, C_EIOU_Y_agg_excl_NEU))) |> 
+    # dplyr::select(.data[[country]], .data[[method]], .data[[energy_type]], .data[[last_stage]], .data[[year]], .data[[C_EIOU_agg_excl_NEU]],
+    #               .data[[C_Y_agg_excl_NEU]], .data[[C_EIOU_Y_agg_excl_NEU]]) |> 
     dplyr::rename(
       "{C_EIOU_agg}" := .data[[C_EIOU_agg_excl_NEU]],
       "{C_Y_agg}" := .data[[C_Y_agg_excl_NEU]],
@@ -114,7 +115,8 @@ calc_eta_fu_eff_phi_Y_EIOU_agg <- function(C_mats_agg,
         matsbyname::setcoltype(product) |> 
         matsbyname::matrixproduct_byname(.data[[phi]]),
     ) |> 
-    dplyr::select(.data[[country]], .data[[method]], .data[[year]], .data[[eta_phi_p_eiou]], .data[[eta_phi_p_y]], .data[[eta_phi_p_eiou_y]])
+    dplyr::select(tidyselect::any_of(c(country, method, year, eta_phi_p_eiou, eta_phi_p_y, eta_phi_p_eiou_y)))
+    #dplyr::select(.data[[country]], .data[[method]], .data[[year]], .data[[eta_phi_p_eiou]], .data[[eta_phi_p_y]], .data[[eta_phi_p_eiou_y]])
   
   # (3) Determination of aggregated efficiencies (excluding non-energy uses)
   # eta_fu_eff_phi_Y_EIOU_agg <- C_mats_agg_excl_NEU |> 
@@ -272,8 +274,8 @@ calc_Ef_to_Eu_exiobase <- function(eta_fu_Y_EIOU_mats,
   # Expanding the EIOU-wide efficiencies data frame to prepare the join
   eta_fu_EIOU_wide_df <- eta_fu_Y_EIOU_agg |> 
     dplyr::filter(.data[[energy_type]] == energy_type_E) |> 
-    dplyr::select(tidyselect::all_of(c(country, method, energy_type, year, eta_p_eiou))) |> 
-    tidyr::pivot_longer(cols = tidyselect::all_of(eta_p_eiou), values_to = matvals, names_to = matnames) |> 
+    dplyr::select(tidyselect::any_of(c(country, method, energy_type, year, eta_p_eiou))) |> 
+    tidyr::pivot_longer(cols = tidyselect::any_of(eta_p_eiou), values_to = matvals, names_to = matnames) |> 
     matsindf::expand_to_tidy() |> 
     dplyr::rename(
       "{product}" := rownames,
@@ -286,7 +288,7 @@ calc_Ef_to_Eu_exiobase <- function(eta_fu_Y_EIOU_mats,
   # Expanding the final-to-useful efficiencies to prepare the join
   eta_fu_df <- eta_fu_Y_EIOU_mats |>
     dplyr::filter(.data[[year]] %in% years_exiobase) |> 
-    dplyr::select(tidyselect::all_of(c(country, method, energy_type, last_stage, year, eta_fu_Y_E, eta_fu_EIOU_E))) |> 
+    dplyr::select(tidyselect::any_of(c(country, method, energy_type, last_stage, year, eta_fu_Y_E, eta_fu_EIOU_E))) |> 
     tidyr::pivot_longer(cols = tidyr::ends_with("_E"), names_to = matnames, values_to = matvals) |> 
     matsindf::expand_to_tidy(rownames = product, colnames = pfu_flow) |> 
     dplyr::select(-tidyselect::all_of(c(rowtypes, coltypes, matnames))) |> 
@@ -298,7 +300,7 @@ calc_Ef_to_Eu_exiobase <- function(eta_fu_Y_EIOU_mats,
   # Expanding the economy-wide efficiencies data frame to prepare the join
   eta_fu_economy_wide_df <- eta_fu_Y_EIOU_agg |> 
     dplyr::filter(.data[[energy_type]] == energy_type_E) |> 
-    dplyr::select(tidyselect::all_of(c(country, method, energy_type, year, eta_p_eiou_y))) |> 
+    dplyr::select(tidyselect::any_of(c(country, method, energy_type, year, eta_p_eiou_y))) |> 
     tidyr::pivot_longer(cols = eta_p_eiou_y, values_to = matvals, names_to = matnames) |> 
     matsindf::expand_to_tidy() |> 
     dplyr::rename(
@@ -445,8 +447,8 @@ calc_Ef_to_Xu_exiobase <- function(EtafuYEIOU_mats,
   
   # Expanding the EIOU-wide efficiencies*phi values data frame to prepare the join
   eta_times_phi_EIOU_wide_df <- eta_fu_phi_Y_EIOU_agg |> 
-    dplyr::select(tidyselect::all_of(c(country, method, year, eta_phi_p_eiou))) |> 
-    tidyr::pivot_longer(cols = tidyselect::all_of(eta_phi_p_eiou), values_to = matvals, names_to = matnames) |> 
+    dplyr::select(tidyselect::any_of(c(country, method, year, eta_phi_p_eiou))) |> 
+    tidyr::pivot_longer(cols = tidyselect::any_of(eta_phi_p_eiou), values_to = matvals, names_to = matnames) |> 
     matsindf::expand_to_tidy() |> 
     dplyr::rename(
       "{product}" := rownames,
@@ -460,7 +462,7 @@ calc_Ef_to_Xu_exiobase <- function(EtafuYEIOU_mats,
   # Expanding Phivecs
   phi_vals_df <- phi_vecs |> 
     dplyr::filter(.data[[year]] %in% years_exiobase) |> 
-    tidyr::pivot_longer(cols = tidyselect::all_of(phi), names_to = matnames, values_to = matvals) |> 
+    tidyr::pivot_longer(cols = tidyselect::any_of(phi), names_to = matnames, values_to = matvals) |> 
     matsindf::expand_to_tidy(rownames = product) |> 
     dplyr::select(-tidyselect::all_of(c(matnames, colnames, rowtypes, coltypes))) |> 
     dplyr::rename("{pfu_code}" := country,
@@ -470,7 +472,7 @@ calc_Ef_to_Xu_exiobase <- function(EtafuYEIOU_mats,
   phi_eta_fu_df <- EtafuYEIOU_mats |>
     dplyr::filter(.data[[year]] %in% years_exiobase) |> 
     # WRITE THIS NEAT.
-    dplyr::select(tidyselect::all_of(c(country, method, energy_type, last_stage, year, eta_fu_Y_X, eta_fu_EIOU,X))) |> 
+    dplyr::select(tidyselect::any_of(c(country, method, energy_type, last_stage, year, eta_fu_Y_X, eta_fu_EIOU,X))) |> 
     tidyr::pivot_longer(cols = tidyr::ends_with("_X"), names_to = matnames, values_to = matvals) |> 
     matsindf::expand_to_tidy(rownames = product, colnames = pfu_flow) |> 
     dplyr::select(-tidyselect::all_of(c(rowtypes, coltypes, matnames))) |> 
@@ -486,8 +488,8 @@ calc_Ef_to_Xu_exiobase <- function(EtafuYEIOU_mats,
   
   # Expanding the economy-wide efficiencies*phi values data frame to prepare the join
   eta_times_phi_economy_wide_df <- eta_fu_phi_Y_EIOU_agg |> 
-    dplyr::select(tidyselect::all_of(c(country, method, year, eta_phi_p_eiou_y))) |> 
-    tidyr::pivot_longer(cols = tidyselect::all_of(eta_phi_p_eiou_y), values_to = matvals, names_to = matnames) |> 
+    dplyr::select(tidyselect::any_of(c(country, method, year, eta_phi_p_eiou_y))) |> 
+    tidyr::pivot_longer(cols = tidyselect::any_of(eta_phi_p_eiou_y), values_to = matvals, names_to = matnames) |> 
     matsindf::expand_to_tidy() |> 
     dplyr::rename(
       "{product}" := rownames,
