@@ -118,13 +118,13 @@ calc_eta_fu_eff_phi_Y_EIOU_agg <- function(C_mats_agg,
       #   matsbyname::aggregate_byname(margin = 2) |> 
       #   matsbyname::setcoltype(product) |> 
       #   matsbyname::matrixproduct_byname(.data[[phi]]),
-      "{eta_phi_p_y}" := matsbyname::matrixproduct_byname(.data[[C_Y_agg]], matsbyname::hatize_byname(.data[[eta.fu]])) |> 
+      "{eta_phi_p_y}" := matsbyname::matrixproduct_byname(.data[[C_Y_agg]], matsbyname::hatize_byname(.data[[eta.fu]], keep = "rownames")) |> 
         matsbyname::clean_byname(margin = 1) |> 
         matsbyname::rename_to_piece_byname(piece = "suff", margin = 2, notation = list(RCLabels::arrow_notation)) |> 
         matsbyname::aggregate_byname(margin = 2) |> 
         matsbyname::setcoltype(product) |> 
         matsbyname::matrixproduct_byname(.data[[phi]]),
-      "{eta_phi_p_eiou_y}" := matsbyname::matrixproduct_byname(.data[[C_EIOU_Y_agg]], matsbyname::hatize_byname(.data[[eta.fu]])) |> 
+      "{eta_phi_p_eiou_y}" := matsbyname::matrixproduct_byname(.data[[C_EIOU_Y_agg]], matsbyname::hatize_byname(.data[[eta.fu]], keep = "rownames")) |> 
         matsbyname::clean_byname(margin = 1) |> 
         matsbyname::rename_to_piece_byname(piece = "suff", margin = 2, notation = list(RCLabels::arrow_notation)) |> 
         matsbyname::aggregate_byname(margin = 2) |> 

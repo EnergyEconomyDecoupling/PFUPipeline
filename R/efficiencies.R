@@ -234,14 +234,14 @@ calc_fu_Y_EIOU_agg_efficiencies <- function(C_mats_agg,
       #   matsbyname::matrixproduct_byname(phi) |> 
       #   matsbyname::clean_byname() |> 
       #   matsbyname::setcolnames_byname(eta_fu),
-      "{eta_p_y}" := matsbyname::matrixproduct_byname(matsbyname::hatize_byname(phi), C_Y_agg) |> 
+      "{eta_p_y}" := matsbyname::matrixproduct_byname(matsbyname::hatize_byname(phi, keep = "rownames"), C_Y_agg) |> 
         matsbyname::matrixproduct_byname(matsbyname::hatize_byname(eta.fu)) |> 
         matsbyname::aggregate_pieces_byname(piece = "suff", margin = 2, notation = list(RCLabels::arrow_notation)) |> 
         matsbyname::setcoltype(product) |> 
         matsbyname::matrixproduct_byname(phi) |> 
         matsbyname::clean_byname() |> 
         matsbyname::setcolnames_byname(eta_fu),
-      "{eta_p_eiou_y}" := matsbyname::matrixproduct_byname(matsbyname::hatize_byname(phi), C_EIOU_Y_agg) |> 
+      "{eta_p_eiou_y}" := matsbyname::matrixproduct_byname(matsbyname::hatize_byname(phi, keep = "rownames"), C_EIOU_Y_agg) |> 
         matsbyname::matrixproduct_byname(matsbyname::hatize_byname(eta.fu)) |> 
         matsbyname::aggregate_pieces_byname(piece = "suff", margin = 2, notation = list(RCLabels::arrow_notation)) |> 
         matsbyname::setcoltype(product) |> 
