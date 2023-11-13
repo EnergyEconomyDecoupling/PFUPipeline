@@ -54,11 +54,17 @@ calc_Ef_to_Eu_exiobase(
 
 \item{pfu_code}{The name of the column containing the PFU country name}
 
+\item{pfu_flow}{The name of the column containing the PFU flow names}
+
 \item{iea_country_name}{The name of the column containing the IEA country name}
+
+\item{iea_country_name_accented}{The name of the column containing the IEA country name with accents}
 
 \item{phi}{The name of the column containing the phi values}
 
 \item{matnames}{The name of the column containing matrices names after unpacking the matrices}
+
+\item{colnames}{The name of the column containing the column names after unpacking the matrices}
 
 \item{matvals}{The name of the column containing matrices values after unpacking the matrices}
 
@@ -70,7 +76,9 @@ calc_Ef_to_Eu_exiobase(
 
 \item{country, year, product, flow, method, energy_type, last_stage}{See \code{IEATools::iea_cols}.}
 
-\item{eta_p_eiou}{The name of the column containing the efficiencies.}
+\item{eta_p_eiou}{The name of the column containing the efficiencies for products used in EIOU}
+
+\item{eta_p_eiou_y}{The name of the column containing the efficiencies for products used in final demand.}
 
 \item{eta_fu_Y_E}{The name of the the column containing the efficiencies of products when used as part of final demand.}
 

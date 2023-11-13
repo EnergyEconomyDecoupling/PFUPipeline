@@ -43,9 +43,13 @@ calc_Ef_to_Xf_exiobase(
 
 \item{iea_country_name}{The name of the column containing the IEA country name}
 
+\item{iea_country_name_accented}{The name of the column containing the IEA country name with accents}
+
 \item{phi}{The name of the column containing the phi values}
 
 \item{matnames}{The name of the column containing matrices names after unpacking the matrices}
+
+\item{colnames}{The name of the column containing the column names after unpacking the matrices}
 
 \item{matvals}{The name of the column containing matrices values after unpacking the matrices}
 

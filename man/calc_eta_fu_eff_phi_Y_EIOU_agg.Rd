@@ -19,6 +19,7 @@ calc_eta_fu_eff_phi_Y_EIOU_agg(
   eta_phi_p_eiou = "eta_phi_p_eiou",
   eta_phi_p_y = "eta_phi_p_y",
   eta_phi_p_eiou_y = "eta_phi_p_eiou_y",
+  phi = "phi",
   country = IEATools::iea_cols$country,
   method = IEATools::iea_cols$method,
   energy_type = IEATools::iea_cols$energy_type,
@@ -56,6 +57,8 @@ for efficiencies excluding non-energy uses.}
 \item{eta_phi_p_y}{The name of the column containing the efficiency of each product when used in final demand.}
 
 \item{eta_phi_p_eiou_y}{The name of the column containing the efficiency of each product when used in either EIOU or final demand.}
+
+\item{phi}{The name of the column containing the phi values.}
 
 \item{country, method, energy_type, last_stage, year, product}{See \code{IEATools::iea_cols}.}
 }

@@ -185,11 +185,11 @@ calc_fu_Y_EIOU_agg_efficiencies <- function(C_mats_agg,
           matsbyname::hatinv_byname(), 
         matsbyname::select_cols_byname(.data[[C_Y_agg]], remove_pattern = list(non_energy_use_machine))),
       # New C_EIOU_agg excluding non-energy uses
-      "{C_EIOU_agg_excl_NEU}" := matsbyname::matrixproduct_byname(
-        matsbyname::select_cols_byname(.data[[C_EIOU_agg]], remove_pattern = list(non_energy_use_machine)) |>
-          matsbyname::rowsums_byname() |>
-          matsbyname::hatinv_byname(keep = "rownames"),
-        matsbyname::select_cols_byname(.data[[C_EIOU_agg]], remove_pattern = list(non_energy_use_machine))),
+      # "{C_EIOU_agg_excl_NEU}" := matsbyname::matrixproduct_byname(
+      #   matsbyname::select_cols_byname(.data[[C_EIOU_agg]], remove_pattern = list(non_energy_use_machine)) |>
+      #     matsbyname::rowsums_byname() |>
+      #     matsbyname::hatinv_byname(keep = "rownames"),
+      #   matsbyname::select_cols_byname(.data[[C_EIOU_agg]], remove_pattern = list(non_energy_use_machine))),
       # New C_EIOU_Y_agg excluding non-energy uses
       "{C_EIOU_Y_agg_excl_NEU}" := matsbyname::matrixproduct_byname(
         matsbyname::select_cols_byname(.data[[C_EIOU_Y_agg]], remove_pattern = list(non_energy_use_machine)) |> 
@@ -197,11 +197,11 @@ calc_fu_Y_EIOU_agg_efficiencies <- function(C_mats_agg,
           matsbyname::hatinv_byname(), 
         matsbyname::select_cols_byname(.data[[C_EIOU_Y_agg]], remove_pattern = list(non_energy_use_machine)))
     ) |> 
-    dplyr::select(tidyselect::any_of(country, method, energy_type, last_stage, year, C_EIOU_agg_excl_NEU, C_Y_agg_excl_NEU, C_EIOU_Y_agg_excl_NEU)) |> 
+    dplyr::select(tidyselect::any_of(c(country, method, energy_type, last_stage, year, C_EIOU_agg_excl_NEU, C_Y_agg_excl_NEU, C_EIOU_Y_agg_excl_NEU))) |> 
     # dplyr::select(.data[[country]], .data[[method]], .data[[energy_type]], .data[[last_stage]], .data[[year]], .data[[C_EIOU_agg_excl_NEU]],
     #               .data[[C_Y_agg_excl_NEU]], .data[[C_EIOU_Y_agg_excl_NEU]]) |> 
     dplyr::rename(
-      "{C_EIOU_agg}" := .data[[C_EIOU_agg_excl_NEU]],
+      #"{C_EIOU_agg}" := .data[[C_EIOU_agg_excl_NEU]],
       "{C_Y_agg}" := .data[[C_Y_agg_excl_NEU]],
       "{C_EIOU_Y_agg}" := .data[[C_EIOU_Y_agg_excl_NEU]]
     )
@@ -210,8 +210,8 @@ calc_fu_Y_EIOU_agg_efficiencies <- function(C_mats_agg,
   eta_E_fu_agg <- C_mats_agg_excl_NEU |> 
     dplyr::left_join(eta_fu_vecs, by = c({country}, {method}, {energy_type}, {last_stage}, {year})) |> 
     dplyr::mutate(
-      "{eta_p_eiou}" := matsbyname::matrixproduct_byname(.data[[C_EIOU_agg]], .data[[eta.fu]]) |> 
-        matsbyname::clean_byname(margin = 1),
+      # "{eta_p_eiou}" := matsbyname::matrixproduct_byname(.data[[C_EIOU_agg]], .data[[eta.fu]]) |> 
+      #   matsbyname::clean_byname(margin = 1),
       "{eta_p_y}" := matsbyname::matrixproduct_byname(.data[[C_Y_agg]], .data[[eta.fu]]) |> 
         matsbyname::clean_byname(margin = 1),
       "{eta_p_eiou_y}" := matsbyname::matrixproduct_byname(.data[[C_EIOU_Y_agg]], .data[[eta.fu]]) |> 
@@ -227,13 +227,13 @@ calc_fu_Y_EIOU_agg_efficiencies <- function(C_mats_agg,
     dplyr::left_join(eta_fu_vecs, by = c({country}, {method}, {energy_type}, {last_stage}, {year})) |> 
     dplyr::left_join(phi_vecs, by = c({country}, {year})) |> 
     dplyr::mutate(
-      "{eta_p_eiou}" := matsbyname::matrixproduct_byname(matsbyname::hatize_byname(phi), C_EIOU_agg) |> 
-        matsbyname::matrixproduct_byname(matsbyname::hatize_byname(eta.fu)) |> 
-        matsbyname::aggregate_pieces_byname(piece = "suff", margin = 2, notation = list(RCLabels::arrow_notation)) |> 
-        matsbyname::setcoltype(product) |> 
-        matsbyname::matrixproduct_byname(phi) |> 
-        matsbyname::clean_byname() |> 
-        matsbyname::setcolnames_byname(eta_fu),
+      # "{eta_p_eiou}" := matsbyname::matrixproduct_byname(matsbyname::hatize_byname(phi), C_EIOU_agg) |> 
+      #   matsbyname::matrixproduct_byname(matsbyname::hatize_byname(eta.fu)) |> 
+      #   matsbyname::aggregate_pieces_byname(piece = "suff", margin = 2, notation = list(RCLabels::arrow_notation)) |> 
+      #   matsbyname::setcoltype(product) |> 
+      #   matsbyname::matrixproduct_byname(phi) |> 
+      #   matsbyname::clean_byname() |> 
+      #   matsbyname::setcolnames_byname(eta_fu),
       "{eta_p_y}" := matsbyname::matrixproduct_byname(matsbyname::hatize_byname(phi), C_Y_agg) |> 
         matsbyname::matrixproduct_byname(matsbyname::hatize_byname(eta.fu)) |> 
         matsbyname::aggregate_pieces_byname(piece = "suff", margin = 2, notation = list(RCLabels::arrow_notation)) |> 

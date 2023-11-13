@@ -35,6 +35,8 @@ calc_Ef_to_Xu_exiobase(
   eta_p_eiou_y = "eta_p_eiou_y",
   eta_fu_Y_E = "eta_fu_Y_E",
   eta_fu_EIOU_E = "eta_fu_EIOU_E",
+  eta_fu_Y_X = "eta_fu_Y_X",
+  eta_fu_EIOU_X = "eta_fu_EIOU_X",
   eta_phi_p_eiou = "eta_phi_p_eiou",
   eta_phi_p_eiou_y = "eta_phi_p_eiou_y",
   phi_eta_X = "phi_eta_X",
@@ -60,11 +62,17 @@ calc_Ef_to_Xu_exiobase(
 
 \item{pfu_code}{The name of the column containing the PFU country name}
 
+\item{pfu_flow}{The name of the column containing the PFU flow names}
+
 \item{iea_country_name}{The name of the column containing the IEA country name}
+
+\item{iea_country_name_accented}{The name of the column containing the IEA country name with accents}
 
 \item{phi}{The name of the column containing the phi values}
 
 \item{matnames}{The name of the column containing matrices names after unpacking the matrices}
+
+\item{colnames}{The name of the column containing the column names after unpacking the matrices}
 
 \item{matvals}{The name of the column containing matrices values after unpacking the matrices}
 
@@ -78,17 +86,23 @@ calc_Ef_to_Xu_exiobase(
 
 \item{eta_p_eiou}{The name of the column containing the efficiencies.}
 
+\item{eta_p_eiou_y}{The name of the column containing the efficiencies of products when used as part of the final demand}
+
 \item{eta_fu_Y_E}{The name of the the column containing the efficiencies of products when used as part of final demand.}
 
 \item{eta_fu_EIOU_E}{The name of the column containing the efficiencies of products when used as part of the EIOU matrix.}
 
-\item{eta_phi_p_eiou}{The name of the column with the matrices containing the efficiencies, multiplied by the phi values, of products when used as part of the EIOU matrix.}
+\item{eta_fu_Y_X}{The name of the column containing the exergy efficiencies for products used as part of final demand.}
 
-\item{eta_phi_p_eiou_y}{The name of the column with the matrices containing the efficiencies, multiplied by the phi values, of products when used as part of the Y matrix.}
+\item{eta_phi_p_eiou}{The name of the column containing the efficiency values multiplied by the phi values for products used in EIOU.}
+
+\item{eta_phi_p_eiou_y}{The name of the column containing the efficiency values multiplied by the phi values for products used economy-wide.}
 
 \item{phi_eta_X}{The name of the column containing the efficiencies, multiplied by the phi values, of products when used as part of the EIOU matrix.}
 
 \item{eta}{The name of the column containing the efficiencies.}
+
+\item{eta_fu_EIOU}{The name of the column containing the exergy efficiencies for products used as part of EIOU.}
 }
 \value{
 A data frame of the final energy to useful exergy multipliers
