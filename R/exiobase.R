@@ -81,7 +81,7 @@ calc_eta_fu_eff_phi_Y_EIOU_agg <- function(C_mats_agg,
       "{C_Y_agg_excl_NEU}" := matsbyname::matrixproduct_byname(
         matsbyname::select_cols_byname(.data[[C_Y_agg]], remove_pattern = list(non_energy_use_machine)) |> 
           matsbyname::rowsums_byname() |> 
-          matsbyname::hatinv_byname(), 
+          matsbyname::hatinv_byname(keep = "rownames"), 
         matsbyname::select_cols_byname(.data[[C_Y_agg]], remove_pattern = list(non_energy_use_machine))),
       # New C_EIOU_agg excluding non-energy uses
       # "{C_EIOU_agg_excl_NEU}" := matsbyname::matrixproduct_byname(
@@ -93,7 +93,7 @@ calc_eta_fu_eff_phi_Y_EIOU_agg <- function(C_mats_agg,
       "{C_EIOU_Y_agg_excl_NEU}" := matsbyname::matrixproduct_byname(
         matsbyname::select_cols_byname(.data[[C_EIOU_Y_agg]], remove_pattern = list(non_energy_use_machine)) |> 
           matsbyname::rowsums_byname() |> 
-          matsbyname::hatinv_byname(), 
+          matsbyname::hatinv_byname(keep = "rownames"), 
         matsbyname::select_cols_byname(.data[[C_EIOU_Y_agg]], remove_pattern = list(non_energy_use_machine)))
     ) |> 
     dplyr::select(tidyselect::any_of(c(country, method, energy_type, last_stage, year, C_EIOU_agg_excl_NEU, C_Y_agg_excl_NEU, C_EIOU_Y_agg_excl_NEU))) |> 

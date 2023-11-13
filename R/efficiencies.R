@@ -105,7 +105,7 @@ calc_C_mats_agg <- function(C_mats,
       "{C_EIOU_agg}" := matsbyname::matrixproduct_byname(matsbyname::hatinv_byname(f_EIOU, keep = "rownames"),
                                                          Alloc_mat_EIOU),
       # Share of product p used in each machine m across final demand. Sum by product yields 1.
-      "{C_Y_agg}" := matsbyname::matrixproduct_byname(matsbyname::hatinv_byname(f_Y),
+      "{C_Y_agg}" := matsbyname::matrixproduct_byname(matsbyname::hatinv_byname(f_Y, keep = "rownames"),
                                                       Alloc_mat_Y),
       # Share of product p used in each machine m across final demand and EIOU. Sum by product yields 1.
       "{C_EIOU_Y_agg}" := matsbyname::matrixproduct_byname(matsbyname::hatinv_byname(f_EIOU_Y, keep = "rownames"),
@@ -182,7 +182,7 @@ calc_fu_Y_EIOU_agg_efficiencies <- function(C_mats_agg,
       "{C_Y_agg_excl_NEU}" := matsbyname::matrixproduct_byname(
         matsbyname::select_cols_byname(.data[[C_Y_agg]], remove_pattern = list(non_energy_use_machine)) |> 
           matsbyname::rowsums_byname() |> 
-          matsbyname::hatinv_byname(), 
+          matsbyname::hatinv_byname(keep = "rownames"), 
         matsbyname::select_cols_byname(.data[[C_Y_agg]], remove_pattern = list(non_energy_use_machine))),
       # New C_EIOU_agg excluding non-energy uses
       # "{C_EIOU_agg_excl_NEU}" := matsbyname::matrixproduct_byname(
@@ -194,7 +194,7 @@ calc_fu_Y_EIOU_agg_efficiencies <- function(C_mats_agg,
       "{C_EIOU_Y_agg_excl_NEU}" := matsbyname::matrixproduct_byname(
         matsbyname::select_cols_byname(.data[[C_EIOU_Y_agg]], remove_pattern = list(non_energy_use_machine)) |> 
           matsbyname::rowsums_byname() |> 
-          matsbyname::hatinv_byname(), 
+          matsbyname::hatinv_byname(keep = "rownames"), 
         matsbyname::select_cols_byname(.data[[C_EIOU_Y_agg]], remove_pattern = list(non_energy_use_machine)))
     ) |> 
     dplyr::select(tidyselect::any_of(c(country, method, energy_type, last_stage, year, C_EIOU_agg_excl_NEU, C_Y_agg_excl_NEU, C_EIOU_Y_agg_excl_NEU))) |> 
@@ -235,14 +235,14 @@ calc_fu_Y_EIOU_agg_efficiencies <- function(C_mats_agg,
       #   matsbyname::clean_byname() |> 
       #   matsbyname::setcolnames_byname(eta_fu),
       "{eta_p_y}" := matsbyname::matrixproduct_byname(matsbyname::hatize_byname(phi, keep = "rownames"), C_Y_agg) |> 
-        matsbyname::matrixproduct_byname(matsbyname::hatize_byname(eta.fu)) |> 
+        matsbyname::matrixproduct_byname(matsbyname::hatize_byname(eta.fu, keep = "rownames")) |> 
         matsbyname::aggregate_pieces_byname(piece = "suff", margin = 2, notation = list(RCLabels::arrow_notation)) |> 
         matsbyname::setcoltype(product) |> 
         matsbyname::matrixproduct_byname(phi) |> 
         matsbyname::clean_byname() |> 
         matsbyname::setcolnames_byname(eta_fu),
       "{eta_p_eiou_y}" := matsbyname::matrixproduct_byname(matsbyname::hatize_byname(phi, keep = "rownames"), C_EIOU_Y_agg) |> 
-        matsbyname::matrixproduct_byname(matsbyname::hatize_byname(eta.fu)) |> 
+        matsbyname::matrixproduct_byname(matsbyname::hatize_byname(eta.fu, keep = "rownames")) |> 
         matsbyname::aggregate_pieces_byname(piece = "suff", margin = 2, notation = list(RCLabels::arrow_notation)) |> 
         matsbyname::setcoltype(product) |> 
         matsbyname::matrixproduct_byname(phi) |> 
