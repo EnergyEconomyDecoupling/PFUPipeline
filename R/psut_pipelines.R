@@ -137,9 +137,26 @@ get_pipeline <- function(countries = "all",
     #                                                                           agg_cru_cy_metric = c("tmp", "tmn", "tmx"),
     #                                                                           agg_cru_cy_year = 2020))),
 
-    # (1d) Machine data
-    targets::tar_target_raw("AllMachineData", quote(read_all_eta_files(eta_fin_paths = get_eta_filepaths(MachineDataPath)))),
-    targets::tar_target_raw("MachineData", quote(PFUPipelineTools::filter_countries_years(AllMachineData, countries = AllocAndEffCountries, years = Years))),
+    # 
+    # Product N: all_machine_data ----------------------------------------------
+    # 
+    targets::tar_target_raw(
+      "AllMachineData", 
+      quote(read_all_eta_files(eta_fin_paths = get_eta_filepaths(MachineDataPath)))
+    ),
+    targets::tar_target_raw(
+      "ReleaseAllMachineData",
+      quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                                             targ = AllMachineData,
+                                             pin_name = "all_machine_data",
+                                             release = Release))
+    ),
+    
+    
+    targets::tar_target_raw(
+      "MachineData", 
+      quote(PFUPipelineTools::filter_countries_years(AllMachineData, countries = AllocAndEffCountries, years = Years))
+    ),
 
     # (1e) Muscle work data
     targets::tar_target_raw("AMWPFUDataRaw", quote(load_amw_pfu_data(fao_data_path = FAODataPath,
@@ -206,15 +223,30 @@ get_pipeline <- function(countries = "all",
                                                                                           countries = AllocAndEffCountries)),
                             pattern = quote(map(AllocAndEffCountries))),
 
-    # (8) Complete FU allocation tables
-    targets::tar_target_raw("CompletedAllocationTables", quote(assemble_fu_allocation_tables(incomplete_allocation_tables = IncompleteAllocationTables,
-                                                                                             exemplar_lists = ExemplarLists,
-                                                                                             specified_iea_data = SpecifiedIEA %>% dplyr::mutate(tar_group = NULL),
-                                                                                             countries = Countries,
-                                                                                             years = Years)),
+    
+    # 
+    # Product D: completed_allocation_tables -----------------------------------
+    # 
+    targets::tar_target_raw("CompletedAllocationTables", 
+                            quote(assemble_fu_allocation_tables(incomplete_allocation_tables = IncompleteAllocationTables,
+                                                                exemplar_lists = ExemplarLists,
+                                                                specified_iea_data = SpecifiedIEA %>% dplyr::mutate(tar_group = NULL),
+                                                                countries = Countries,
+                                                                years = Years)),
                             pattern = quote(map(Countries))),
-
-    # (9) Complete efficiency tables
+    
+    targets::tar_target_raw(
+      "ReleaseCompletedAllocationTables",
+      quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                                             targ = CompletedAllocationTables,
+                                             pin_name = "completed_allocation_tables",
+                                             release = Release))
+    ),
+    
+    
+    #
+    # Product E: completed_efficiency_tables -----------------------------------
+    #
     targets::tar_target_raw("CompletedEfficiencyTables", quote(assemble_eta_fu_tables(incomplete_eta_fu_tables = MachineData,
                                                                                       exemplar_lists = ExemplarLists,
                                                                                       completed_fu_allocation_tables = CompletedAllocationTables,
@@ -222,6 +254,16 @@ get_pipeline <- function(countries = "all",
                                                                                       years = Years,
                                                                                       which_quantity = IEATools::template_cols$eta_fu)),
                             pattern = quote(map(Countries))),
+    
+    targets::tar_target_raw(
+      "ReleaseCompletedEfficiencyTables",
+      quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                                             targ = CompletedEfficiencyTables,
+                                             pin_name = "completed_efficiency_tables",
+                                             release = Release))
+    ),
+    
+    
 
     # (10) Complete phi_u tables
     targets::tar_target_raw("CompletedPhiuTables", quote(assemble_phi_u_tables(incomplete_phi_u_table = MachineData,
@@ -264,11 +306,21 @@ get_pipeline <- function(countries = "all",
                                                                 matrix_class = matrix_class)),
                             pattern = quote(map(Countries))),
 
-    # (11f) Exergy-to-energy ratio (phi) vectors at all stages
+    # 
+    # Product F: phi_vecs ------------------------------------------------------
+    # 
     targets::tar_target_raw("Phivecs", quote(sum_phi_vecs(phi_pf_vecs = Phipfvecs,
                                                           phi_u_vecs = Phiuvecs,
                                                           countries = Countries)),
                             pattern = quote(map(Countries))),
+    targets::tar_target_raw(
+      "ReleasePhivecs",
+      quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                                             targ = Phivecs,
+                                             pin_name = "phi_vecs",
+                                             release = Release))
+    ),
+    
 
     # (12) Extend to useful stage
     targets::tar_target_raw("PSUTUsefulIEA", quote(move_to_useful(psut_final = PSUTFinalIEA,
@@ -329,10 +381,20 @@ get_pipeline <- function(countries = "all",
                             pattern = quote(map(Countries))),
 
 
-    # (19) Build final data frame
+    
+    # 
+    # Product A: psut ---------------------------------------------------------- 
+    # 
     targets::tar_target_raw("PSUT", quote(build_psut_dataframe(psutiea = PSUTIEA,
                                                                psutmw = PSUTMW,
-                                                               psutieamw = PSUTIEAMW))),
+                                                               psutieamw = PSUTIEAMW))
+    ),
+    targets::tar_target_raw("ReleasePSUT", 
+                            quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                                                                   targ = PSUT,
+                                                                   pin_name = "psut",
+                                                                   release = Release))), 
+    
     
     # Make a version that is grouped by Year for later parallel calculations
     tarchetypes::tar_group_by(
@@ -340,6 +402,24 @@ get_pipeline <- function(countries = "all",
       command = PSUT,
       Year
     ),
+    
+    
+    # 
+    # Product B: psut_usa ----------------------------------------------------------------
+    # 
+    targets::tar_target_raw(
+      "PSUT_USA",
+      quote(PSUT |> 
+              dplyr::filter(Country == "USA"))
+    ),
+    targets::tar_target_raw(
+      "ReleasePSUT_USA",
+      quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                                             targ = PSUT_USA,
+                                             pin_name = "psut_usa",
+                                             release = Release))
+    ),
+    
     
     # (20) Calculate final-to-useful efficiencies from f-u allocations and machine efficiencies
     targets::tar_target_raw("EtafuvecsYEIOU", 
@@ -365,11 +445,6 @@ get_pipeline <- function(countries = "all",
                             ),
     
     
-    # (22) Calculating the product efficiency at the (i) EIOU-wide, (ii) Y-wide, and (iii) economy-wide levels
-    # Add parallelisation later
-    targets::tar_target_raw("EtafuYEIOUagg", quote(calc_fu_Y_EIOU_agg_efficiencies(C_mats_agg = CmatsAgg, 
-                                                                                   eta_fu_vecs = Etafuvecs,
-                                                                                   phi_vecs = Phivecs))),
     
     
     # (30) Build reports
@@ -385,55 +460,20 @@ get_pipeline <- function(countries = "all",
     # (30d) Exergy-to-energy ratio graphs
     targets::tar_target_raw("PhiGraphs", quote(phi_u_plots_df(CompletedEfficiencyTables, countries = Countries)),
                             pattern = quote(map(Countries))),
-
-
     
+  
     
-    # (31) Save results
-    # (31a) Pin the PSUT data frame
-
-    # --------------------------------------------------------------------------
-    # Product A ----------------------------------------------------------------
-    # --------------------------------------------------------------------------
-    # Pin the PSUT data frame --------------------------------------------------
-    targets::tar_target_raw("ReleasePSUT", 
-                            quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
-                                                                   targ = PSUT,
-                                                                   pin_name = "psut",
-                                                                   release = Release))), 
-    
-    
-    # --------------------------------------------------------------------------
-    # Product B ----------------------------------------------------------------
-    # --------------------------------------------------------------------------
-    # Pin the PSUT_USA data frame ----------------------------------------------
-    targets::tar_target_raw(
-      "PSUT_USA",
-      quote(PSUT |> 
-              dplyr::filter(Country == "USA"))
-    ),
-    targets::tar_target_raw(
-      "ReleasePSUT_USA",
-      quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
-                                             targ = PSUT_USA,
-                                             pin_name = "psut_usa",
-                                             release = Release))
-    ),
-    
-    
-    # --------------------------------------------------------------------------
-    # Product C ----------------------------------------------------------------
-    # --------------------------------------------------------------------------
-    # Final-to-useful sector-carrier efficiencies ------------------------------
-    
+    # 
+    # Product C: eta_fu_Y_eiou -------------------------------------------------
+    # 
     targets::tar_target_raw(
       "EtafuYEIOU", 
       quote(calc_fu_Y_EIOU_efficiencies(C_mats = Cmats, 
                                         eta_fu_vecs = Etafuvecs, 
                                         phi_vecs = Phivecs, 
                                         countries = Countries)), 
-      pattern = quote(map(Countries))), 
-    
+      pattern = quote(map(Countries))
+    ), 
     targets::tar_target_raw(
       "ReleaseEtafuYEIOU",
       quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
@@ -443,48 +483,11 @@ get_pipeline <- function(countries = "all",
     ), 
     
     
-    # --------------------------------------------------------------------------
-    # Product D ----------------------------------------------------------------
-    # --------------------------------------------------------------------------
-    # Completed allocation tables ----------------------------------------------
-    targets::tar_target_raw(
-      "ReleaseCompletedAllocationTables",
-      quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
-                                             targ = CompletedAllocationTables,
-                                             pin_name = "completed_allocation_tables",
-                                             release = Release))
-    ),
     
     
-    # --------------------------------------------------------------------------
-    # Product E ----------------------------------------------------------------
-    # --------------------------------------------------------------------------
-    # Completed efficiency tables ----------------------------------------------
-    targets::tar_target_raw(
-      "ReleaseCompletedEfficiencyTables",
-      quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
-                                             targ = CompletedEfficiencyTables,
-                                             pin_name = "completed_efficiency_tables",
-                                             release = Release))
-    ),
-    
-    
-    # --------------------------------------------------------------------------
-    # Product F ----------------------------------------------------------------
-    # --------------------------------------------------------------------------
-    targets::tar_target_raw(
-      "ReleasePhivecs",
-      quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
-                                             targ = Phivecs,
-                                             pin_name = "phi_vecs",
-                                             release = Release))
-    ),
-    
-    
-    # --------------------------------------------------------------------------
-    # Product G ----------------------------------------------------------------
-    # --------------------------------------------------------------------------
-    # Energy transformation machine efficiencies -------------------------------
+    # 
+    # Product G: eta_i ---------------------------------------------------------
+    # 
     targets::tar_target_raw(
       "Etai",
       quote(PSUTbyYear |>
@@ -504,23 +507,58 @@ get_pipeline <- function(countries = "all",
                                              release = Release))),
 
         
-    # Zip the targets cache and store it in the pipeline_caches_folder
-    targets::tar_target_raw("StoreCache", 
-                            quote(PFUPipelineTools::stash_cache(pipeline_caches_folder = PipelineCachesFolder,
-                                                                cache_folder = "_targets",
-                                                                file_prefix = "pfu_pipeline_cache_",
-                                                                dependency = c(ReleasePSUT, ReleasePSUT_USA,
-                                                                               ReleaseEtafuYEIOU, ReleaseCompletedAllocationTables,
-                                                                               ReleaseCompletedEfficiencyTables, CompletedPhiTables,
-                                                                               ReleaseEtai),
-                                                                release = Release))),
+    # 
+    # Product H: exiobase_Ef_to_Eloss_multipliers ------------------------------
+    # 
+    # (1 - Eta_fu) values
+    # Multiplier to go from final energy to energy losses
+    targets::tar_target_raw(
+      "ExiobaseEftoElossMultipliers",
+      quote(calc_Ef_to_Eloss_exiobase(ExiobaseEftoEuMultipliers))
+    ),
+    targets::tar_target_raw(
+      "ReleaseExiobaseEftoElossMultipliers",
+      quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                                             targ = ExiobaseEftoElossMultipliers,
+                                             pin_name = "exiobase_Ef_to_Eloss_multipliers",
+                                             type = "csv",
+                                             release = Release))),
     
     
-    # --------------------------------------------------------------------------
-    # Product H ----------------------------------------------------------------
-    # --------------------------------------------------------------------------
-    # Final energy to final exergy multipliers----------------------------------
+    # 
+    # Product I: exiobase_Ef_to_Eu_multipliers ---------------------------------
+    # 
+    # Calculating the product efficiency at the (i) EIOU-wide, (ii) Y-wide, and (iii) economy-wide levels
+    # Add parallelisation later
+    targets::tar_target_raw(
+      "EtafuYEIOUagg",
+      quote(calc_fu_Y_EIOU_agg_efficiencies(C_mats_agg = CmatsAgg, 
+                                            eta_fu_vecs = Etafuvecs,
+                                            phi_vecs = Phivecs))
+    ),
+    # Eta_fu, E, values
+    # Multiplier to go from final energy to useful energy
+    targets::tar_target_raw(
+      "ExiobaseEftoEuMultipliers",
+      quote(calc_Ef_to_Eu_exiobase(eta_fu_Y_EIOU_mats = EtafuYEIOU,
+                                   eta_fu_Y_EIOU_agg = EtafuYEIOUagg,
+                                   years_exiobase = ExiobaseYears,
+                                   full_list_exiobase_flows = ListExiobaseEnergyFlows,
+                                   country_concordance_table_df = CountryConcordanceTable))
+    ),
+    targets::tar_target_raw(
+      "ReleaseExiobaseEftoEuMultipliers",
+      quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                                             targ = ExiobaseEftoEuMultipliers,
+                                             pin_name = "exiobase_Ef_to_Eu_multipliers",
+                                             type = "csv",
+                                             release = Release))),
     
+    
+    # 
+    # Product J: exiobase_Ef_to_Xf_multipliers ---------------------------------
+    # 
+    # Final energy to final exergy multipliers
     # List of Exiobase code energy flows
     targets::tar_target_raw(
       "ListExiobaseEnergyFlows",
@@ -545,59 +583,36 @@ get_pipeline <- function(countries = "all",
                                              type = "csv",
                                              release = Release))),
     
-    # --------------------------------------------------------------------------
-    # Product I ----------------------------------------------------------------
-    # --------------------------------------------------------------------------
-    # Final energy to useful energy multipliers---------------------------------
     
-    # Eta_fu, E, values
-    # Multiplier to go from final energy to useful energy
+    # 
+    # Product K: exiobase_Ef_to_Xloss_multipliers ------------------------------
+    # 
+    # Final energy to exergy losses multipliers
+    # Multiplier to go from final energy to exergy losses
     targets::tar_target_raw(
-      "ExiobaseEftoEuMultipliers",
-      quote(calc_Ef_to_Eu_exiobase(eta_fu_Y_EIOU_mats = EtafuYEIOU,
-                                   eta_fu_Y_EIOU_agg = EtafuYEIOUagg,
-                                   years_exiobase = ExiobaseYears,
-                                   full_list_exiobase_flows = ListExiobaseEnergyFlows,
-                                   country_concordance_table_df = CountryConcordanceTable))
+      "ExiobaseEftoXlossMultipliers",
+      quote(calc_Ef_to_Xloss_exiobase(ExiobaseEftoXuMultipliers))
     ),
     targets::tar_target_raw(
-      "ReleaseExiobaseEftoEuMultipliers",
+      "ReleaseExiobaseEftoXlossMultipliers",
       quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
-                                             targ = ExiobaseEftoEuMultipliers,
-                                             pin_name = "exiobase_Ef_to_Eu_multipliers",
+                                             targ = ExiobaseEftoXlossMultipliers,
+                                             pin_name = "exiobase_Ef_to_Xloss_multipliers",
                                              type = "csv",
-                                             release = Release))),
-    
-    # --------------------------------------------------------------------------
-    # Product J ----------------------------------------------------------------
-    # --------------------------------------------------------------------------
-    # Final energy to energy losses multipliers---------------------------------
-    
-    # (1 - Eta_fu) values
-    # Multiplier to go from final energy to energy losses
-    targets::tar_target_raw(
-      "ExiobaseEftoElossMultipliers",
-      quote(calc_Ef_to_Eloss_exiobase(ExiobaseEftoEuMultipliers))
-    ),
-    targets::tar_target_raw(
-      "ReleaseExiobaseEftoElossMultipliers",
-      quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
-                                             targ = ExiobaseEftoElossMultipliers,
-                                             pin_name = "exiobase_Ef_to_Eloss_multipliers",
-                                             type = "csv",
-                                             release = Release))),
-    
-    # --------------------------------------------------------------------------
-    # Product K ----------------------------------------------------------------
-    # --------------------------------------------------------------------------
-    # Final energy to useful exergy multipliers---------------------------------
-    
-    # This is just an intermediary target that is needed for the ExiobaseEftoXuMultipliers targets
-    targets::tar_target_raw("EtafuPhiYEIOUagg", quote(calc_eta_fu_eff_phi_Y_EIOU_agg(C_mats_agg = CmatsAgg,
-                                                                                     eta_fu_vecs = Etafuvecs,
-                                                                                     phi_vecs = Phivecs))),
-    
+                                             release = Release))), 
+
+    # 
+    # Product L: exiobase_Ef_to_Xu_multipliers ---------------------------------
+    # 
+    # Final energy to useful exergy multipliers
     # Multiplier to go from final exergy to useful exergy
+    # This is just an intermediary target that is needed for the ExiobaseEftoXuMultipliers targets
+    targets::tar_target_raw(
+      "EtafuPhiYEIOUagg", 
+      quote(calc_eta_fu_eff_phi_Y_EIOU_agg(C_mats_agg = CmatsAgg,
+                                           eta_fu_vecs = Etafuvecs,
+                                           phi_vecs = Phivecs))
+    ),
     targets::tar_target_raw(
       "ExiobaseEftoXuMultipliers",
       quote(calc_Ef_to_Xu_exiobase(EtafuYEIOU_mats = EtafuYEIOU,
@@ -615,24 +630,9 @@ get_pipeline <- function(countries = "all",
                                              type = "csv",
                                              release = Release))),
     
-    # --------------------------------------------------------------------------
-    # Product L ----------------------------------------------------------------
-    # --------------------------------------------------------------------------
-    # Final energy to exergy losses multipliers---------------------------------
-    
-    # Multiplier to go from final energy to exergy losses
-    targets::tar_target_raw(
-      "ExiobaseEftoXlossMultipliers",
-      quote(calc_Ef_to_Xloss_exiobase(ExiobaseEftoXuMultipliers))
-    ),
-    targets::tar_target_raw(
-      "ReleaseExiobaseEftoXlossMultipliers",
-      quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
-                                             targ = ExiobaseEftoXlossMultipliers,
-                                             pin_name = "exiobase_Ef_to_Xloss_multipliers",
-                                             type = "csv",
-                                             release = Release))), 
-    
+    # 
+    # Product M: psut_without_neu ----------------------------------------------
+    # 
     # Calculate a version of the PSUT data frame with all Non-energy use removed.
     # This target is parallelized.
     targets::tar_target_raw(
@@ -640,18 +640,31 @@ get_pipeline <- function(countries = "all",
       quote(remove_non_energy_use(PSUTbyYear)), 
       pattern = quote(map(PSUTbyYear))
     ), 
-    
-    # --------------------------------------------------------------------------
-    # Product L ----------------------------------------------------------------
-    # --------------------------------------------------------------------------
-    # PSUT with Non-energy use removed -----------------------------------------
     targets::tar_target_raw(
       "ReleasePSUTWithoutNEU",
       quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
                                              targ = PSUTWithoutNEU,
                                              pin_name = "psut_without_neu",
-                                             release = Release)))
-  )
+                                             release = Release))), 
+    
+  
+    
+    
+    
+    
+    
+    # Zip the targets cache and store it in the pipeline_caches_folder
+    targets::tar_target_raw("StoreCache", 
+                            quote(PFUPipelineTools::stash_cache(pipeline_caches_folder = PipelineCachesFolder,
+                                                                cache_folder = "_targets",
+                                                                file_prefix = "pfu_pipeline_cache_",
+                                                                dependency = c(ReleasePSUT, ReleasePSUT_USA,
+                                                                               ReleaseEtafuYEIOU, ReleaseCompletedAllocationTables,
+                                                                               ReleaseCompletedEfficiencyTables, CompletedPhiTables,
+                                                                               ReleaseEtai),
+                                                                release = Release))
+    )
+  ) 
 }
 
 
