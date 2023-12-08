@@ -442,7 +442,7 @@ get_pipeline <- function(countries = "all",
                             quote(calc_C_mats_agg(C_mats = CmatsbyCountry,
                                                   psut_iea = PSUTIEA))#,
                             #pattern = quote(map(CmatsbyCountry))
-                            ),
+    ),
     
     
     
