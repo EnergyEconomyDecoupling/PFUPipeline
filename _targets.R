@@ -12,12 +12,21 @@ library(PFUDatabase)
 version <- "v1.2"
 
 # Custom parameters
-years <- 1960:2020                        # The years to be analyzed
+
+# The years to be analyzed
+
+# years <- 1971:2020                        
 # years <- 1971
 # years <- 1971:1972
 # years <- 1971:1980
+# years <- 1995
+years <- 1960:2020
+
+# Set the years to provide exiobase coefficients
+years_exiobase <- 1995:2020
 
 # countries <- c("ARM", "COL", "WRLD")
+# countries <- c("GBR", "MEX", "GUY")
 # countries <- "USA"
 # countries <- "GHA"
 # countries <- "COL"
@@ -25,6 +34,7 @@ years <- 1960:2020                        # The years to be analyzed
 # countries <- "WMBK"
 # countries <- c("AGO", "COL")
 # countries <- "WRLD"
+# countries <- c("BEN", "WRLD")
 countries <- c(PFUDatabase::canonical_countries, "WRLD") |> as.character()
 
 # Countries with unique allocation data.
@@ -73,6 +83,35 @@ if (!("WRLD" %in% countries) & !("WRLD" %in% additional_exemplar_countries)) {
   additional_exemplar_countries <- c("WRLD", additional_exemplar_countries)
 }
 
+
+# Getting default filepaths
+sys_info <- Sys.info()
+setup <- PFUSetup::get_abs_paths(version = version)
+
+# Amending for EA
+if ((sys_info[["sysname"]] == "Linux") && (sys_info[["user"]] == "eeear")){
+  setup[["iea_data_path"]] <- "/home/eeear/Documents/Datasets/IEA/WEEBs/IEA Extended Energy Balances 2022 (TJ).csv"
+  setup[["aggregation_mapping_path"]] <- "/home/eeear/Documents/Datasets/GPFU_database/InputData/v1.2/aggregation_mapping.xlsx"
+  setup[["country_concordance_path"]] <- "/home/eeear/Documents/Datasets/GPFU_database/InputData/v1.2/Country_Concordance_Full.xlsx"
+  setup[["mw_concordance_path"]] <- "/home/eeear/Documents/Datasets/GPFU_database/InputData/v1.2/FAO_ISO_MW_Mapping.xlsx"
+  setup[["amw_analysis_data_path"]] <- "/home/eeear/Documents/Datasets/GPFU_database/InputData/v1.2/amw_analysis_data.xlsx"
+  setup[["hmw_analysis_data_path"]] <- "/home/eeear/Documents/Datasets/GPFU_database/InputData/v1.2/hmw_analysis_data.xlsx"
+  setup[["phi_constants_path"]] <- "/home/eeear/Documents/Datasets/GPFU_database/InputData/v1.2/phi_constants.xlsx"
+  setup[["fao_data_path"]] <- "/home/eeear/Documents/Datasets/GPFU_database/InputData/v1.2/fao_qcl_data.rds"
+  setup[["ilo_employment_data_path"]] <- "/home/eeear/Documents/Datasets/GPFU_database/InputData/v1.2/ilo_employment_data.rds"
+  setup[["ilo_working_hours_data_path"]] <- "/home/eeear/Documents/Datasets/GPFU_database/InputData/v1.2/ilo_working_hours_data.rds"
+  setup[["machine_data_folder"]] <- "/home/eeear/Documents/Datasets/GPFU_database/InputData/v1.2/Machines - Data"
+  setup[["exemplar_table_path"]] <- "/home/eeear/Documents/Datasets/GPFU_database/InputData/v1.2/Exemplar_Table.xlsx"
+  setup[["fu_analysis_folder"]] <- "/home/eeear/Documents/Datasets/GPFU_database/InputData/v1.2/FU analysis data"#
+  setup[["exiobase_energy_flows_path"]] <- "/home/eeear/Documents/Datasets/GPFU_database/InputData/v1.2/exiobase_energy_flows_concordance.xlsx"
+  #setup[["reports_source_folders"]]
+  setup[["reports_dest_folder"]] <- "/home/eeear/Documents/Datasets/GPFU_database/OutputData/Reports"
+  setup["pipeline_releases_folder"] <- "/home/eeear/Documents/Datasets/GPFU_database/OutputData/Releases"
+  setup[["pipeline_caches_folder"]] <- "/home/eeear/Documents/Datasets/GPFU_database/OutputData/PipelineCaches"
+}
+
+
+
 # Set up for multithreaded work on the local machine.
 future::plan(future.callr::callr)
 
@@ -90,23 +129,25 @@ PFUDatabase::get_pipeline(countries = countries,
                           apply_fixes = apply_fixes,
                           years = years,
                           how_far = "all_targets",
-                          iea_data_path = PFUSetup::get_abs_paths(version = version)[["iea_data_path"]],
-                          country_concordance_path = PFUSetup::get_abs_paths(version = version)[["country_concordance_path"]],
-                          mw_concordance_path = PFUSetup::get_abs_paths(version = version)[["mw_concordance_path"]],
-                          amw_analysis_data_path = PFUSetup::get_abs_paths(version = version)[["amw_analysis_data_path"]],
-                          hmw_analysis_data_path = PFUSetup::get_abs_paths(version = version)[["hmw_analysis_data_path"]],
-                          phi_constants_path = PFUSetup::get_abs_paths(version = version)[["phi_constants_path"]],
+                          iea_data_path = setup[["iea_data_path"]],
+                          country_concordance_path = setup[["country_concordance_path"]],
+                          mw_concordance_path = setup[["mw_concordance_path"]],
+                          amw_analysis_data_path = setup[["amw_analysis_data_path"]],
+                          hmw_analysis_data_path = setup[["hmw_analysis_data_path"]],
+                          phi_constants_path = setup[["phi_constants_path"]],
                           # Temperature data not required for V1, argument set to NULL.
                           ceda_data_folder = NULL,
-                          fao_data_path = PFUSetup::get_abs_paths(version = version)[["fao_data_path"]],
-                          ilo_employment_data_path = PFUSetup::get_abs_paths(version = version)[["ilo_employment_data_path"]],
-                          ilo_working_hours_data_path = PFUSetup::get_abs_paths(version = version)[["ilo_working_hours_data_path"]],
-                          machine_data_path = PFUSetup::get_abs_paths(version = version)[["machine_data_folder"]],
-                          exemplar_table_path = PFUSetup::get_abs_paths(version = version)[["exemplar_table_path"]],
-                          fu_analysis_folder = PFUSetup::get_abs_paths(version = version)[["fu_analysis_folder"]],
-                          reports_source_folders = PFUSetup::get_abs_paths(version = version)[["reports_source_folders"]],
-                          reports_dest_folder = PFUSetup::get_abs_paths(version = version)[["reports_dest_folder"]],
-                          pipeline_releases_folder = PFUSetup::get_abs_paths(version = version)[["pipeline_releases_folder"]],
-                          pipeline_caches_folder = PFUSetup::get_abs_paths(version = version)[["pipeline_caches_folder"]],
+                          fao_data_path = setup[["fao_data_path"]],
+                          ilo_employment_data_path = setup[["ilo_employment_data_path"]],
+                          ilo_working_hours_data_path = setup[["ilo_working_hours_data_path"]],
+                          machine_data_path = setup[["machine_data_folder"]],
+                          exemplar_table_path = setup[["exemplar_table_path"]],
+                          fu_analysis_folder = setup[["fu_analysis_folder"]],
+                          exiobase_energy_flows_path = setup[["exiobase_energy_flows_path"]],
+                          years_exiobase = years_exiobase,
+                          reports_source_folders = setup[["reports_source_folders"]],
+                          reports_dest_folder = setup[["reports_dest_folder"]],
+                          pipeline_releases_folder = setup[["pipeline_releases_folder"]],
+                          pipeline_caches_folder = setup[["pipeline_caches_folder"]],
                           release = release)
 

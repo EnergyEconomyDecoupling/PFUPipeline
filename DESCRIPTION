@@ -38,12 +38,14 @@ Imports:
     rlang,
     targets,
     tibble,
-    tidyr
+    tidyr,
+    tidyselect
 Suggests: 
     knitr,
     pins,
     rmarkdown,
     spelling,
+    tarchetypes,
     testthat (>= 3.0.0)
 Depends: 
     R (>= 2.10)
