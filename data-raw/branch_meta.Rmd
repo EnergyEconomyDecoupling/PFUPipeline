@@ -51,4 +51,9 @@ new features for the aggregation computational pipeline.
 * Author: Matthew Kuperus Heun
 * Date: 25 Sept 2023
 
-
+#### exiobase_coeffs_from_NJRD
+* Purpose: Move Exiobase multipliers calculations from PFUAggDatabase repository and finish calculations.
+* Next step: Merge back into non_joss_review_develop once calculations are completed as intended.
+* Branched from: non_joss_review_develop
+* Author: EA
+* Date: 12/10/23
