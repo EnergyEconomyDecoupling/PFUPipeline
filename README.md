@@ -3,6 +3,10 @@
 <!-- Note: README.md is generated from README.Rmd.   -->
 <!-- Be sure to edit README.Rmd and generate the README.md file by Cmd/Ctl-shift-K -->
 <!-- *********** -->
+<!-- badges: start -->
+
+[![R-CMD-check](https://github.com/EnergyEconomyDecoupling/PFUDatabase/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/EnergyEconomyDecoupling/PFUDatabase/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
 
 # PFUDatabase [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5228375.svg)](https://doi.org/10.5281/zenodo.5228375)
 
@@ -44,13 +48,17 @@ of target meanings can be found with `?PFUDatabase::target_names`.
 `targets::tar_destroy()` invalidates the `targets` cache and forces
 reanalysis of everything. Reanalyzing everything may take a while.
 
-### More
+### More Information
 
-See the [targets manual](https://books.ropensci.org/targets/).
+For information about the `targets` package, see the [targets
+manual](https://books.ropensci.org/targets/).
+
+For documentation on the `PFUDatabase` package, see
+<https://EnergyEconomyDecoupling.github.io/PFUDatabase/>.
 
 ## Contributors
 
--   Emmanuel Aramendia, University of Leeds
--   Paul Brockway, University of Leeds
--   Matthew Kuperus Heun, Calvin University
--   Zeke Marshall, University of Leeds
+- Emmanuel Aramendia, University of Leeds
+- Paul Brockway, University of Leeds
+- Matthew Kuperus Heun, Calvin University
+- Zeke Marshall, University of Leeds

@@ -51,9 +51,13 @@ A list of target meanings can be found with `?PFUDatabase::target_names`.
 Reanalyzing everything may take a while.
 
 
-### More
+### More Information
 
-See the [targets manual](https://books.ropensci.org/targets/).
+For information about the `targets` package, 
+see the [targets manual](https://books.ropensci.org/targets/).
+
+For documentation on the `PFUDatabase` package, 
+see <https://EnergyEconomyDecoupling.github.io/PFUDatabase/>.
 
 
 ## Contributors
