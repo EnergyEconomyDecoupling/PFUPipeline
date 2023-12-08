@@ -1,4 +1,5 @@
 url: https://energyeconomydecoupling.github.io/PFUDatabase/
 template:
   bootstrap: 5
+  bootswatch: simplex
 
