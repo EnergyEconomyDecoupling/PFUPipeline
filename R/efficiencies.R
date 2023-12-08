@@ -69,7 +69,16 @@ calc_C_mats_agg <- function(C_mats,
                             method = IEATools::iea_cols$method,
                             energy_type = IEATools::iea_cols$energy_type,
                             last_stage = IEATools::iea_cols$last_stage,
-                            year = IEATools::iea_cols$year){
+                            year = IEATools::iea_cols$year) {
+  # These assignments eliminate notes in R CMD check
+  eiou_vec <- NULL
+  y_vec <- NULL
+  Alloc_mat_EIOU <- NULL
+  Alloc_mat_Y <- NULL
+  Alloc_mat_EIOU_Y <- NULL
+  f_EIOU <- NULL
+  f_Y <- NULL
+  f_EIOU_Y <- NULL
   
   C_mats_agg <- dplyr::left_join(
     C_mats, psut_iea, by = c({country}, {method}, {energy_type}, {last_stage}, {year})

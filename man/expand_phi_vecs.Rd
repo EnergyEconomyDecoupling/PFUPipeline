@@ -18,6 +18,8 @@ expand_phi_vecs(
 }
 \arguments{
 \item{phi_vecs}{The incoming Phivecs target.}
+
+\item{machine, phi, matnames, matvals, rownames, colnames, rowtypes, coltypes}{Columns names in \code{phi_vecs}.}
 }
 \value{
 A data frame with columns Country, Year, Machine, and phi.

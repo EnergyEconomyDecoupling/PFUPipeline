@@ -38,7 +38,8 @@ Imports:
     rlang,
     targets,
     tibble,
-    tidyr
+    tidyr,
+    tidyselect
 Suggests: 
     knitr,
     pins,

@@ -7,6 +7,7 @@
 #' a data table.
 #'
 #' @param phi_vecs The incoming Phivecs target.
+#' @param machine,phi,matnames,matvals,rownames,colnames,rowtypes,coltypes Columns names in `phi_vecs`.
 #'
 #' @return A data frame with columns Country, Year, Machine, and phi.
 #' 

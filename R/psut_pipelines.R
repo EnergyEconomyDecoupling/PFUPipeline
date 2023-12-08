@@ -81,6 +81,12 @@ get_pipeline <- function(countries = "all",
                          pipeline_caches_folder,
                          release = FALSE) {
   
+  # Avoid R CMD check errors
+  PSUT <- NULL
+  Year <- NULL
+  Cmats <- NULL
+  Country <- NULL
+  
   matrix_class <- match.arg(matrix_class)
   
   # Create the pipeline
