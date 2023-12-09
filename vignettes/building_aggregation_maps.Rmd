@@ -24,7 +24,7 @@ from PSUT matrices to create an aggregation map.
 
 To provide an example,
 this vignette uses data from one of the CL-PFU Database products, 
-namely the producte named "psut" from v0.9 of the database, 
+namely the product named "psut" from v0.9 of the database, 
 which is a `matsindf` data frame containing PSUT matrices for the USA, 1960--2019.
 
 

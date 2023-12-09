@@ -85,9 +85,9 @@ R_supply_2013
 
 The IEA data show the same information.
 
-![Naptha Imports shown in IEA Extended World Energy Balance data.](./figure/Naptha_imports.png)
+![Naphtha Imports shown in IEA Extended World Energy Balance data.](./figure/Naphtha_imports.png)
 
-![Naptha Stock changes shown in IEA Extended World Energy Balance data.](./figure/Naptha_stock_changes.png)
+![Naphtha Stock changes shown in IEA Extended World Energy Balance data.](./figure/Naphtha_stock_changes.png)
 
 However, there is no use (**U**) of Naphtha by the energy industry in 2013.
 
@@ -100,7 +100,7 @@ U_consumption_2013
 
 The IEA EWEB data show the same.
 
-![Naptha Energy industry own use shown in IEA Extended World Energy Balance data.](./figure/Naptha_EIOU.png)
+![Naphtha Energy industry own use shown in IEA Extended World Energy Balance data.](./figure/Naphtha_EIOU.png)
 
 (1 ktoe of Naphtha is used in 2014, as we will see later.)
 
@@ -116,7 +116,7 @@ V_supply_2013
 The product of Naphtha found in the **V** matrix 
 comes from the "Oil refineries" row in the IEA's EWEB data.
 
-![Naptha manufacturing by Oil refineries as shown in IEA Extended World Energy Balance data.](./figure/Naptha_make.png)
+![Naphtha manufacturing by Oil refineries as shown in IEA Extended World Energy Balance data.](./figure/Naphtha_make.png)
 
 Naphtha is consumed in final demand (**Y**) for Non-energy use industry/transformation/energy.
 
@@ -130,7 +130,7 @@ Y_consumption_2013
 Again, the consumption of Naphtha for non-energy uses is evident in the IEA's EWEB data.
 
 
-![Naptha Non-energy use consumption as shown in IEA Extended World Energy Balance data.](./figure/Naptha_final_demand.png)
+![Naphtha Non-energy use consumption as shown in IEA Extended World Energy Balance data.](./figure/Naphtha_final_demand.png)
 
 
 ## Verify overall energy balance
