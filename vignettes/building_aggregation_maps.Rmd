@@ -1,0 +1,390 @@
+---
+title: "Building Aggregation Maps From Row and Column Labels"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Building Aggregation Maps From Row and Column Labels}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+## Introduction
+
+Aggregation maps are helpful when aggregating products and industries
+in rows and columns of PSUT matrices (**R**, **U**, **V**, and **Y**).
+This vignette demonstrates ways to use row and column names 
+from PSUT matrices to create an aggregation map.
+
+To provide an example,
+this vignette uses data from one of the CL-PFU Database products, 
+namely the producte named "psut" from v0.9 of the database, 
+which is a `matsindf` data frame containing PSUT matrices for the USA, 1960--2019.
+
+
+## Load PSUT data
+
+To work with the CL-PFU database as shown in this vignette, 
+be sure you have access to several packages.
+
+```{r setup, message=FALSE}
+library(dplyr)
+library(magrittr)
+library(matsbyname)
+library(pins)
+library(Recca)
+library(readxl)
+```
+
+To load the data, use code like this:
+
+```{r}
+pinboard <- pins::board_folder("~/Dropbox/Fellowship 1960-2015 PFU database/OutputData/PipelineReleases")
+df <- pinboard |>
+  # Load USA data from v0.9 of the database
+  pins::pin_read(name = "psut_usa", version = "20230220T223535Z-35e3e")
+dplyr::glimpse(df)
+```
+
+
+## Extract row and column names
+
+`Recca::get_all_products_and_industries()`
+will find the product and industry names for each row of the matsindf data frame.
+The results are placed in two new columns of the data frame
+named (by default) "Product.names" and "Industry.names".
+
+```{r}
+df_with_prods_inds <- df |> 
+  Recca::get_all_products_and_industries()
+dplyr::glimpse(df_with_prods_inds)
+```
+
+Product and industry names can be quite different
+from row to row in the data frame, 
+because there are many new energy carriers (products)
+when the Last.stage is "Useful" compared to "Final".
+
+```{r}
+# Check a row with "Final" energy as the Last.stage.
+df_with_prods_inds |> 
+  dplyr::filter(Energy.type == "E", 
+                Last.stage == "Final", 
+                Year == 1960, 
+                IEAMW == "IEA") |> 
+  magrittr::extract2("Product.names")
+
+# Check a row with "Useful" energy as the Last.stage.
+df_with_prods_inds |> 
+  dplyr::filter(Energy.type == "E", 
+                Last.stage == "Useful", 
+                Year == 1960, 
+                IEAMW == "IEA") |> 
+  magrittr::extract2("Product.names")
+```
+
+Similarly, industry names may be quite different when Last.stage is “Final” or “Useful”.
+
+```{r}
+# Check a row with "Final" energy as the Last.stage.
+df_with_prods_inds |> 
+  dplyr::filter(Energy.type == "E", 
+                Last.stage == "Final", 
+                Year == 1960, 
+                IEAMW == "IEA") |> 
+  magrittr::extract2("Industry.names") |> 
+  unlist()
+
+# Check a row with "Useful" energy as the Last.stage.
+df_with_prods_inds |> 
+  dplyr::filter(Energy.type == "E", 
+                Last.stage == "Useful", 
+                Year == 1960, 
+                IEAMW == "IEA") |> 
+  magrittr::extract2("Industry.names") |> 
+  unlist()
+```
+
+
+## Get lists of unique product and industry names
+
+To obtain lists of unique product and industry names, 
+one can use `unique()`.
+
+```{r}
+# Unique products in the data frame
+df_with_prods_inds$Product.names |> 
+  unlist() |> 
+  unique()
+
+# Unique industries in the data frame
+df_with_prods_inds$Industry.names |> 
+  unlist() |> 
+  unique()
+```
+
+
+## Aggregate by parts of row and column labels
+
+`Recca::get_all_products_and_industries()` 
+can also select only parts of the row and column label. 
+Knowing that we (eventually) want to aggregate by the nouns, 
+we can extract only the nouns (prefixes) from the row and column labels,
+as shown by the code below.
+Extracting by a piece of the row and column names is
+significantly slower than extracting the entire row or column names.
+
+```{r}
+df_with_prods_inds_nouns <- df |>
+  # Restrict years to reduce execution time.
+  dplyr::filter(Year == 1960) |>
+  Recca::get_all_products_and_industries(
+    piece = "noun",
+    inf_notation = TRUE,
+    notation = list(RCLabels::bracket_notation, RCLabels::arrow_notation))
+dplyr::glimpse(df_with_prods_inds_nouns)
+```
+
+Again, one can use `unique()` to find the nouns required for aggregation maps.
+These lists are shorter than 
+lists of whole names of products and industries, because 
+there are fewer unique nouns than unique row and column labels.
+
+```{r}
+# Unique products (nouns only) in the data frame
+df_with_prods_inds_nouns$Product.names |> 
+  unlist() |> 
+  unique()
+
+# Unique industries (nouns only) in the data frame
+df_with_prods_inds_nouns$Industry.names |> 
+  unlist() |> 
+  unique()
+```
+
+The lists of nouns can be used to create aggregation maps, as shown in the next section.
+
+
+## Construct an aggregation map
+
+An aggregation map is 
+a description of the way aggregation is to be performed.
+In `R` terms, 
+an aggregation map is simply a named list 
+where values are the row or column names (or pieces of names) to be aggregated and
+names are the new names for the aggregated rows or columns. 
+
+For example,
+
+```{r}
+prod_agg_map_example <- list(
+  `Coal & coal products` = c("Hard coal (if no detail)", 
+                             "Brown coal (if no detail)",
+                             "Anthracite",
+                             "Coking coal",
+                             "Other bituminous coal",
+                             "Sub-bituminous coal"), 
+  `Oil & oil products` = c("Crude/NGL/feedstocks (if no detail)", 
+                           "Crude oil", 
+                           "Natural gas liquids", 
+                           "Refinery feedstocks", 
+                           "Additives/blending components", 
+                           "Other hydrocarbons")
+)
+```
+
+Aggregation maps can also be constructed from a data frame with “Many” and “Few” columns.
+
+```{r}
+prod_agg_table_example <- tibble::tribble(
+  ~Many, ~Few, 
+  "Hard coal (if no detail)", "Coal & coal products",
+  "Brown coal (if no detail)", "Coal & coal products",
+  "Anthracite", "Coal & coal products",
+  "Coking coal", "Coal & coal products",
+  "Other bituminous coal", "Coal & coal products",
+  "Sub-bituminous coal", "Coal & coal products",
+  "Crude/NGL/feedstocks (if no detail)", "Oil & oil products",
+  "Crude oil", "Oil & oil products",
+  "Natural gas liquids", "Oil & oil products",
+  "Refinery feedstocks", "Oil & oil products",
+  "Additives/blending components", "Oil & oil products",
+  "Other hydrocarbons", "Oil & oil products"
+)
+prod_agg_table_example
+
+matsbyname::agg_table_to_agg_map(prod_agg_table_example,
+                                 many_colname = "Many", 
+                                 few_colname = "Few")
+```
+
+Aggregation tables can be created in an Excel file and
+read into `R` with the `readxl` package. 
+Example aggregation tables can be found in the 
+"Aggregation_maps.xlsx" file in the `PFUDatabase` package.
+
+```{r}
+prod_agg_map <- system.file("extdata", "Aggregation_Tables.xlsx",  
+                            package="PFUDatabase") |> 
+  readxl::read_excel(sheet = "product_aggregation") |> 
+  matsbyname::agg_table_to_agg_map(many_colname = "Many", 
+                                   few_colname = "Few")
+prod_agg_map
+
+ind_agg_map <- system.file("extdata", "Aggregation_Tables.xlsx", 
+                              package="PFUDatabase") |> 
+  readxl::read_excel(sheet = "industry_aggregation") |> 
+  matsbyname::agg_table_to_agg_map(many_colname = "Many", 
+                                   few_colname = "Few")
+ind_agg_map
+```
+
+
+## Perform the aggregations
+
+There are two `matsbyname` functions that assist with aggregations: 
+`matsbyname::aggregate_byname()` and
+`matsbyname::aggregate_pieces_byname()`.
+A third function (`matsbyname::aggregate_to_pref_suff_byname()`) 
+has been deprecated in favor of `matsbyname::aggregate_pieces_byname()`.
+
+Knowing that the `matsbyname` package can aggregate
+by any piece of a row or column label
+(including prefix, suffix, noun, or object of a preposition),
+aggregation maps can be constructed 
+by focusing only on the nouns (prefixes) 
+of the row and column names.
+
+To aggregate the matrices in the `df` object, 
+one can use code like the following example.
+
+```{r}
+aggregated <- df |> 
+  # Restrict to a single year to reduce execution time.
+  dplyr::filter(Year == 1960) |> 
+  dplyr::mutate(
+    # Aggregate R
+    R_agg = .data[["R"]] |>
+      matsbyname::aggregate_pieces_byname(
+        piece = "noun",
+        margin = "Industry",
+        inf_notation = TRUE,
+        notation = list(list(RCLabels::bracket_notation, RCLabels::arrow_notation)),
+      ) |>
+      matsbyname::aggregate_pieces_byname(
+        piece = "noun",
+        margin = "Product",
+        inf_notation = FALSE,
+        notation = RCLabels::bracket_notation,
+        aggregation_map = list(prod_agg_map)
+      ),
+    # Aggregate U_feed
+    U_feed_agg = .data[["U_feed"]] |>
+      matsbyname::aggregate_pieces_byname(
+        piece = "noun",
+        margin = "Product",
+        inf_notation = FALSE,
+        notation = RCLabels::bracket_notation,
+        aggregation_map = list(prod_agg_map)
+      ) |>
+      matsbyname::aggregate_pieces_byname(
+        piece = "noun",
+        margin = "Industry",
+        inf_notation = TRUE,
+        notation = list(list(RCLabels::bracket_notation, RCLabels::arrow_notation)),
+        aggregation_map = list(ind_agg_map)
+      ),
+    # Aggregate U_EIOU
+    U_EIOU_agg = .data[["U_EIOU"]] |>
+      matsbyname::aggregate_pieces_byname(
+        piece = "noun",
+        margin = "Product",
+        inf_notation = FALSE,
+        notation = RCLabels::bracket_notation,
+        aggregation_map = list(prod_agg_map)
+      ) |>
+      matsbyname::aggregate_pieces_byname(
+        piece = "noun",
+        margin = "Industry",
+        inf_notation = TRUE,
+        notation = list(list(RCLabels::bracket_notation, RCLabels::arrow_notation)),
+        aggregation_map = list(ind_agg_map)
+      ),
+    # Create aggregated U matrix
+    U_agg = matsbyname::sum_byname(.data[["U_feed_agg"]], .data[["U_EIOU_agg"]]),
+    # Create aggregated r_EIOU matrix
+    r_EIOU_agg = matsbyname::quotient_byname(.data[["U_EIOU"]], .data[["U"]]) |>
+      matsbyname::replaceNaN_byname(),
+    # Aggregate V
+    V_agg = .data[["V"]] |>
+      matsbyname::aggregate_pieces_byname(
+        piece = "noun",
+        margin = "Industry",
+        inf_notation = TRUE,
+        notation = list(list(RCLabels::bracket_notation, RCLabels::arrow_notation)),
+      ) |>
+      matsbyname::aggregate_pieces_byname(
+        piece = "noun",
+        margin = "Product",
+        inf_notation = FALSE,
+        notation = RCLabels::bracket_notation,
+        aggregation_map = list(prod_agg_map)
+      ),
+    # Aggregate Y
+    Y_agg = .data[["Y"]] |>
+      matsbyname::aggregate_pieces_byname(
+        piece = "noun",
+        margin = "Product",
+        inf_notation = FALSE,
+        notation = RCLabels::bracket_notation,
+        aggregation_map = list(prod_agg_map)
+      ) |>
+      matsbyname::aggregate_pieces_byname(
+        piece = "noun",
+        margin = "Industry",
+        inf_notation = TRUE,
+        notation = list(list(RCLabels::bracket_notation, RCLabels::arrow_notation)),
+        aggregation_map = list(ind_agg_map)
+      )
+  )
+```
+
+The aggregated matrices are simpler than the original matrices, as expected.
+
+```{r}
+aggregated$R_agg[[1]]
+
+aggregated$U_feed_agg[[1]]
+
+aggregated$U_EIOU_agg[[1]]
+
+aggregated$U_agg[[1]]
+
+aggregated$V_agg[[1]]
+
+aggregated$Y_agg[[1]]
+```
+
+
+## Conclusion
+
+Through judicious use of several helpful functions
+(`Recca::get_all_products_and_industries()`, `matsbyname::agg_table_to_agg_map()`, and
+`matsbyname::aggregate_pieces_byname()`),
+one can aggregate PSUT matrices when they are arranged in a matsindf data frame.
+
+
+
+
+
+
+
+
+
+
