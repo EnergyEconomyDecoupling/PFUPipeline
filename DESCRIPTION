@@ -8,9 +8,16 @@ Authors@R:
              role = c("aut", "cre"),
              email = "matthew.heun@me.com",
              comment = c(ORCID = "0000-0002-7438-214X")),
+      person(given = "Emmanuel", 
+             family = "Aramendia", 
+             role = "aut", 
+             email = "e.aramendia@leeds.ac.uk",
+             comment = c(ORCID = "0000-0002-5964-6776")),
       person(given = "Zeke", 
              family = "Marshall", 
-             role = "aut"))
+             role = "aut", 
+             email = "marshall_zeke@outlook.com",
+             comment = c(ORCID = "0000-0001-9260-7827")))
 Description: Functions and pipelines for primary-final-useful societal exergy analysis within the PSUT framework.
              The package is compatible with `targets`.
 License: MIT + file LICENSE
