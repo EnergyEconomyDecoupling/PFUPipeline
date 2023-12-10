@@ -3,8 +3,19 @@
 <!-- Note: README.md is generated from README.Rmd.   -->
 <!-- Be sure to edit README.Rmd and generate the README.md file by Cmd/Ctl-shift-K -->
 <!-- *********** -->
+<!-- badges: start -->
 
-# PFUDatabase [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5228375.svg)](https://doi.org/10.5281/zenodo.5228375)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/PFUDatabase)](https://cran.r-project.org/package=PFUDatabase)
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![Project Status: Active – The project has reached a stable, usable
+state and is being actively
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5228375.svg)](https://doi.org/10.5281/zenodo.5228375)
+<!-- badges: end -->
+
+# PFUDatabase
 
 This repository contains analysis code for the fellowship project of
 Paul Brockway. One goal of the fellowship is building a world database
@@ -44,13 +55,17 @@ of target meanings can be found with `?PFUDatabase::target_names`.
 `targets::tar_destroy()` invalidates the `targets` cache and forces
 reanalysis of everything. Reanalyzing everything may take a while.
 
-### More
+### More Information
 
-See the [targets manual](https://books.ropensci.org/targets/).
+For information about the `targets` package, see the [targets
+manual](https://books.ropensci.org/targets/).
+
+For documentation on the `PFUDatabase` package, see
+<https://EnergyEconomyDecoupling.github.io/PFUDatabase/>.
 
 ## Contributors
 
--   Emmanuel Aramendia, University of Leeds
--   Paul Brockway, University of Leeds
--   Matthew Kuperus Heun, Calvin University
--   Zeke Marshall, University of Leeds
+- Emmanuel Aramendia, University of Leeds
+- Paul Brockway, University of Leeds
+- Matthew Kuperus Heun, Calvin University
+- Zeke Marshall, University of Leeds
