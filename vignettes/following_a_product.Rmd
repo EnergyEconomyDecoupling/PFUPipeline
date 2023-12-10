@@ -1,0 +1,215 @@
+---
+title: "Following a Product Through an Energy Conversion Chain"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Following a Product Through an Energy Conversion Chain}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+
+It can be helpful to follow a product
+through the energy conversion chain (ECC) 
+in the CL-PFU database 
+to trace its production and consumption. 
+Doing so enables comparison to raw data 
+to enhance understanding of the way the PSUT framework represents IEA data.
+
+To provide an example, 
+this vignette follows one product (Naphtha) through the USA
+in 2013 and 2014. 
+Comparison between the two years demonstrates 
+an interesting feature of the CL-PFU database.
+
+
+## Evaluate a single year
+
+To work with the CL-PFU database in the vignette, 
+be sure you have access to several packages.
+
+
+```{r setup, message=FALSE}
+library(dplyr)
+library(knitr)
+library(matsbyname)
+library(pins)
+```
+
+The `matsbyname` package is especially useful
+for isolating a particular product in an energy conversion chain.
+
+To load data for 2013 and 2014 from the CL-PFU Database, 
+one can use the following code:
+
+```{r}
+pinboard <- pins::board_folder("~/Dropbox/Fellowship 1960-2015 PFU database/OutputData/PipelineReleases")
+df <- pinboard %>%
+  # Load USA data from v0.9 of the database
+  pins::pin_read(name = "psut_usa", version = "20230220T223535Z-35e3e") %>% 
+  # Isolate data of interest
+  dplyr::filter(Year %in% c(2013, 2014), 
+                Energy.type == "E",
+                Last.stage == "Final", 
+                IEAMW == "IEA")
+dplyr::glimpse(df)
+```
+
+
+## Interrogate PSUT matrices
+
+Next, we interrogate the PSUT matrices 
+(**R**, **Y**, **V**, and **Y**) for Naphtha. 
+(Note that row 1 contains 2013 data and row 2 contains 2014 data.) 
+Along the way, we will compare to the original
+IEA World Extended Energy Balance (WEEB) data. 
+We begin with 2013 data.
+
+The **R** matrix contains 
+exogenous inputs of Naphtha to the ECC.
+In 2013, there are both "Imports" and releases from stock ("Stock changes") of Naphtha.
+
+```{r}
+R_supply_2013 <- df$R[[1]] %>% 
+  matsbyname::select_rows_byname("Naphtha") %>%
+  matsbyname::clean_byname()
+R_supply_2013
+```
+
+The IEA data show the same information.
+
+![Naphtha Imports shown in IEA Extended World Energy Balance data.](./figure/Naphtha_imports.png)
+
+![Naphtha Stock changes shown in IEA Extended World Energy Balance data.](./figure/Naphtha_stock_changes.png)
+
+However, there is no use (**U**) of Naphtha by the energy industry in 2013.
+
+```{r}
+U_consumption_2013 <- df$U[[1]] %>% 
+  matsbyname::select_rows_byname("Naphtha") %>%
+  matsbyname::clean_byname()
+U_consumption_2013
+```
+
+The IEA EWEB data show the same.
+
+![Naphtha Energy industry own use shown in IEA Extended World Energy Balance data.](./figure/Naphtha_EIOU.png)
+
+(1 ktoe of Naphtha is used in 2014, as we will see later.)
+
+Oil refineries make (**V**) Naphtha.
+
+```{r}
+V_supply_2013 <- df$V[[1]] %>% 
+  matsbyname::select_cols_byname("Naphtha") %>%
+  matsbyname::clean_byname()
+V_supply_2013
+```
+
+The product of Naphtha found in the **V** matrix 
+comes from the "Oil refineries" row in the IEA's EWEB data.
+
+![Naphtha manufacturing by Oil refineries as shown in IEA Extended World Energy Balance data.](./figure/Naphtha_make.png)
+
+Naphtha is consumed in final demand (**Y**) for Non-energy use industry/transformation/energy.
+
+```{r}
+Y_consumption_2013 <- df$Y[[1]] %>% 
+  matsbyname::select_rows_byname("Naphtha") %>%
+  matsbyname::clean_byname()
+Y_consumption_2013
+```
+
+Again, the consumption of Naphtha for non-energy uses is evident in the IEA's EWEB data.
+
+
+![Naphtha Non-energy use consumption as shown in IEA Extended World Energy Balance data.](./figure/Naphtha_final_demand.png)
+
+
+## Verify overall energy balance
+
+We can see that Naphtha is balanced, as expected, 
+for 2013.
+In fact, energy balance is verified for all products 
+in the CL-PFU database at the time of construction. 
+Small corrections are made, 
+if necessary (< 5 ktoe) and placed in the "Statistical differences" category. 
+Thus, energy balance is guaranteed for every energy carrier in the CL-PFU database.
+
+```{r}
+supply_2013 <- matsbyname::sumall_byname(R_supply_2013) + 
+  as.numeric(V_supply_2013)
+supply_2013
+consumption_2013 <- as.numeric(Y_consumption_2013)
+consumption_2013
+# This difference should be exactly 0, and it is.
+supply_2013 - consumption_2013
+```
+
+
+## Compare across years
+
+The data for 2013 have an interesting feature: 
+the **U** matrix is empty of Naphtha, because
+no Naphtha is used by transformation processes. 
+However, in 2014, the energy industry used 1 ktoe of Naphtha.
+
+```{r}
+# Row 2 contains data for 2014.
+df$U[[2]] %>% 
+  matsbyname::select_rows_byname("Naphtha") %>%
+  matsbyname::clean_byname()
+```
+
+The CL-PFU database contains three **U** matrices
+(**U** itself, **U_feed**, and **U_EIOU**) and
+a related matrix (**r_EIOU**). 
+We can use **U_feed** and **U_EIOU** to learn the purpose
+of the 1 ktoe of Naphtha consumption by the energy industry in 2014.
+
+```{r}
+df$U_feed[[2]] |> 
+  matsbyname::select_rows_byname("Naphtha") |> 
+  matsbyname::clean_byname()
+
+df$U_EIOU[[2]] |> 
+  matsbyname::select_rows_byname("Naphtha") |> 
+  matsbyname::clean_byname()
+```
+
+So we see that the use of Naphtha by the energy industry
+is self-consumption by Oil refineries.
+
+Incidentally, 
+it is always true that **U** = **U_feed** + **U_eiou**.
+The **U_feed** and **U_EIOU** matrices 
+give the split between feedstocks and Energy industry own use.
+The matrix **r_EIOU** gives the element-wise ratio between **U_EIOU** and **U**.
+
+
+## Conclusion
+
+Through judicious use of functions in `matsbyname` and other packages, 
+analysts can isolate a single energy carrier and
+follow its Imports, Stock changes, use, production, and
+final demand through the CL-PFU database.
+
+Following a single energy carrier through the PFU Database and comparing to raw IEA data can lead to better understanding of how IEA data are mapped into PSUT matrices.
+
+
+
+
+
+
+
+
+
+
+

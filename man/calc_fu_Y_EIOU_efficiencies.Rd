@@ -37,5 +37,5 @@ calculate the final-to-useful efficiencies for all
 final demand and energy industry own use
 in an energy conversion chain.
 This function performs those calculations using
-\code{\link[Recca:calc_eta_fu_Y_eiou]{Recca::calc_eta_fu_Y_eiou()}}.
+\code{Recca::calc_eta_fu_Y_eiou()}.
 }
