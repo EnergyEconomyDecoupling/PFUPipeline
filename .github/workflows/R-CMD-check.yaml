@@ -46,7 +46,6 @@ jobs:
         with:
           extra-packages: any::rcmdcheck, github::MatthewHeun/IEATools, github::MatthewHeun/MKHthemes, github::MatthewHeun/Recca, github::EnergyEconomyDecoupling/PFUPipelineTools, github::EnergyEconomyDecoupling/PFUSetup, github::EnergyEconomyDecoupling/MWTools
           needs: check
-          args: 'c("--no-manual", "--as-cran", "--no-build-vignettes")'
 
       - uses: r-lib/actions/check-r-package@v2
         with:
@@ -55,4 +54,4 @@ jobs:
           # --no-vignettes prevents the vignette from building.
           # The vignette fails, due to lack of access to the database.
           # However, this is not working at the moment (11 Sept 2023)
-          args: 'c("--no-manual", "--as-cran", "--no-build-vignettes")'
+          args: 'c("--no-manual", "--as-cran", "--no-build-vignettes", "--ignore-vignettes")'
