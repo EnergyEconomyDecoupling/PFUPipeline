@@ -44,7 +44,7 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck, github::MatthewHeun/IEATools
+          extra-packages: any::rcmdcheck, github::MatthewHeun/IEATools, github::MatthewHeun/MKHthemes, github::MatthewHeun/Recca, github::EnergyEconomyDecoupling/PFUPipelineTools, github::EnergyEconomyDecoupling/PFUSetup, github::EnergyEconomyDecoupling/MWTools
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2
