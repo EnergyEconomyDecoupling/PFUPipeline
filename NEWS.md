@@ -6,6 +6,12 @@ output: html_document
 Cite all releases with doi [10.5281/zenodo.5228375](https://doi.org/10.5281/zenodo.5228375), 
 which always resolves to the latest release.
 
+* Removed GitHub Actions for R-CMD-check and pkgdown.
+  They didn't work and don't make much sense
+  for this repository. 
+  Both the vignettes and the examples rely
+  on access to database input data which are 
+  unavailable to GitHub Actions.
 * Added exiobase coefficient calculations.
 * New target `Etai` calculates efficiency 
   of every machine.
