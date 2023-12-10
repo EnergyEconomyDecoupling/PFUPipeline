@@ -6,7 +6,7 @@ output: html_document
 Cite all releases with doi [10.5281/zenodo.5228375](https://doi.org/10.5281/zenodo.5228375), 
 which always resolves to the latest release.
 
-# PFUDatabase 0.1.3 (2023-12-10)
+# PFUDatabase 0.1.3 (2023-12-10) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10343587.svg)](https://doi.org/10.5281/zenodo.10343587)
 
 * Removed GitHub Actions for R-CMD-check and pkgdown.
   They didn't work and don't make much sense
