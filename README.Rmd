@@ -8,10 +8,13 @@ output: github_document
 <!-- *********** -->
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/EnergyEconomyDecoupling/PFUDatabase/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/EnergyEconomyDecoupling/PFUDatabase/actions/workflows/R-CMD-check.yaml)
+[![CRAN status](https://www.r-pkg.org/badges/version/PFUDatabase)](https://cran.r-project.org/package=PFUDatabase)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5228375.svg)](https://doi.org/10.5281/zenodo.5228375)
 <!-- badges: end -->
 
-# PFUDatabase [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5228375.svg)](https://doi.org/10.5281/zenodo.5228375)
+# PFUDatabase 
 
 This repository contains analysis code for the fellowship project of Paul Brockway.
 One goal of the fellowship is building a world database of country-specific primary, final, and useful exergy 
