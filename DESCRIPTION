@@ -1,6 +1,6 @@
 Package: PFUDatabase
 Title: Functions and Workflows for Primary-Final-Useful Societal Exergy Analysis Within the PSUT Framework
-Version: 0.1.3
+Version: 0.1.4
 Date: 2023-12-10
 Authors@R: 
     c(person(given = "Matthew",
