@@ -54,6 +54,13 @@ Suggests:
     spelling,
     tarchetypes,
     testthat (>= 3.0.0)
+Remotes:
+    github::MatthewHeun/IEATools,
+    github::MatthewHeun/MKHthemes,
+    github::EnergyEconomyDecoupling/MWTools,
+    github::EnergyEconomyDecoupling/PFUPipelineTools,
+    github::EnergyEconomyDecoupling/PFUSetup,
+    github::EnergyEconomyDecoupling/Recca
 Depends: 
     R (>= 2.10)
 VignetteBuilder: knitr
