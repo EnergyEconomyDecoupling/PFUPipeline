@@ -651,7 +651,7 @@ get_pipeline <- function(countries = "all",
       quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
                                              targ = PSUTWithoutNEU,
                                              pin_name = "psut_without_neu",
-                                             release = Release))), 
+                                             release = Release))) #, 
     
   
     
@@ -660,16 +660,17 @@ get_pipeline <- function(countries = "all",
     
     
     # Zip the targets cache and store it in the pipeline_caches_folder
-    targets::tar_target_raw("StoreCache", 
-                            quote(PFUPipelineTools::stash_cache(pipeline_caches_folder = PipelineCachesFolder,
-                                                                cache_folder = "_targets",
-                                                                file_prefix = "pfu_pipeline_cache_",
-                                                                dependency = c(ReleasePSUT, ReleasePSUT_USA,
-                                                                               ReleaseEtafuYEIOU, ReleaseCompletedAllocationTables,
-                                                                               ReleaseCompletedEfficiencyTables, CompletedPhiTables,
-                                                                               ReleaseEtai),
-                                                                release = Release))
-    )
+    # Commented in Dec 2023, because we don't use it.
+    # targets::tar_target_raw("StoreCache", 
+    #                         quote(PFUPipelineTools::stash_cache(pipeline_caches_folder = PipelineCachesFolder,
+    #                                                             cache_folder = "_targets",
+    #                                                             file_prefix = "pfu_pipeline_cache_",
+    #                                                             dependency = c(ReleasePSUT, ReleasePSUT_USA,
+    #                                                                            ReleaseEtafuYEIOU, ReleaseCompletedAllocationTables,
+    #                                                                            ReleaseCompletedEfficiencyTables, CompletedPhiTables,
+    #                                                                            ReleaseEtai),
+    #                                                             release = Release))
+    # )
   ) 
 }
 

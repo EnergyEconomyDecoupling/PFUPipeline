@@ -7,6 +7,9 @@ Cite all releases with doi [10.5281/zenodo.5228375](https://doi.org/10.5281/zeno
 which always resolves to the latest release.
 
 
+* Cache is no longer saved.
+
+
 # PFUDatabase 0.1.4 (2023-12-10) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10345511.svg)](https://doi.org/10.5281/zenodo.10345511)
 
 * Fixed a bug in GitHub pages. 
