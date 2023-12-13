@@ -7,6 +7,8 @@ Cite all releases with doi [10.5281/zenodo.5228375](https://doi.org/10.5281/zeno
 which always resolves to the latest release.
 
 
+* Add `Remotes:` field to `DESCRIPTION` to assist
+  installing with metapackage `CLPFUDatabase`.
 * Cache is no longer saved.
 
 
