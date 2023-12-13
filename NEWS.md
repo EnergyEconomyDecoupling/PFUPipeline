@@ -3,10 +3,11 @@ title: "Release notes for `PFUDatabase`"
 output: html_document
 ---
 
+
 Cite all releases with doi [10.5281/zenodo.5228375](https://doi.org/10.5281/zenodo.5228375), 
 which always resolves to the latest release.
 
-
+* Added statement of need to the `README.Rmd` file.
 * Add `Remotes:` field to `DESCRIPTION` to assist
   installing with metapackage `CLPFUDatabase`.
 * Cache is no longer saved.
