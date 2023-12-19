@@ -17,16 +17,26 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 
 # PFUDatabase
 
-This repository contains analysis code for the fellowship project of
-Paul Brockway. One goal of the fellowship is building a world database
-of country-specific primary, final, and useful exergy for 1960–2019.
+## Statement of need
 
-Analyses are completed using the
-[targets](https://github.com/ropensci/targets) environment which
-provides helpful dependency management for the calculation pipeline.
+The CL-PFU database uses many sources of input data spanning hundreds of
+data files. When creating the CL-PFU database, matrices are created
+according to the
+[PSUT](https://www.sciencedirect.com/science/article/pii/S0306261918308298?via%3Dihub)
+framework, final energy data are extended to the useful stage, and
+energy conversion chains are converted to exergy quantifications. A way
+to specify all calculation steps is needed. Furthermore, the
+calculations take many hours to complete, so what is done should stay
+done during debugging. Calculation pipelines are needed, ones that
+clearly identify all steps in database creation and ones that can be
+resumed where needed.
 
-This repository also includes a ShinyApp for visualization of the data
-analyzed in the targets workflow.
+This package (`PFUPipeline`) provides functions to create several
+products of the CL-PFU database. The primary objective of `PFUPipeline`
+is to create data frames of **RUVY** matrices in
+[matsindf](https://MatthewHeun.github.io/matsindf/) format. A
+[targets](https://docs.ropensci.org/targets/) pipeline provides helpful
+dependency management for the calculations.
 
 ## Quick start
 
@@ -38,10 +48,7 @@ tar_visnetwork()              # to see a directed acyclic graph of the calculati
 tar_make_future(workers = 2)  # to execute the calculations (or `workers = 8`, if you have enough cores)
 ```
 
-To run the App simply open the App.R script in the ShinyApp file and
-click RunApp.
-
-### Accessing targets
+## Accessing targets
 
 A list of targets can be found with `PFUDatabase::target_names`. A list
 of target meanings can be found with `?PFUDatabase::target_names`.
@@ -50,18 +57,26 @@ of target meanings can be found with `?PFUDatabase::target_names`.
 `targets` cache. (`<<target>>` should be an unquoted symbol such as
 `Specified`.)
 
-### Fresh start
+## Fresh start
 
 `targets::tar_destroy()` invalidates the `targets` cache and forces
 reanalysis of everything. Reanalyzing everything may take a while.
 
-### More Information
+## More Information
 
 For information about the `targets` package, see the [targets
 manual](https://books.ropensci.org/targets/).
 
 For documentation on the `PFUDatabase` package, see
 <https://EnergyEconomyDecoupling.github.io/PFUDatabase/>.
+
+## History
+
+The CL-PFU database is supported by an EPSRC
+[fellowship](https://environment.leeds.ac.uk/energy-climate-change-mitigation/dir-record/research-projects/1773/epsrc-fellowship-applying-thermodynamic-laws-to-the-energy-gdp-decoupling-problem)
+awarded to Paul Brockway of Leeds University. A goal of the fellowship
+is building a world database of country-specific primary, final, and
+useful exergy for 1960–2019.
 
 ## Contributors
 

@@ -1,7 +1,7 @@
 Package: PFUDatabase
 Title: Functions and Workflows for Primary-Final-Useful Societal Exergy Analysis Within the PSUT Framework
-Version: 0.1.4
-Date: 2023-12-10
+Version: 0.1.5
+Date: 2023-12-19
 Authors@R: 
     c(person(given = "Matthew",
              family = "Heun",
@@ -48,12 +48,20 @@ Imports:
     tidyr,
     tidyselect
 Suggests: 
+    future.callr,
     knitr,
     pins,
     rmarkdown,
     spelling,
     tarchetypes,
     testthat (>= 3.0.0)
+Remotes:
+    github::MatthewHeun/IEATools,
+    github::MatthewHeun/MKHthemes,
+    github::EnergyEconomyDecoupling/MWTools,
+    github::EnergyEconomyDecoupling/PFUPipelineTools,
+    github::EnergyEconomyDecoupling/PFUSetup,
+    github::EnergyEconomyDecoupling/Recca
 Depends: 
     R (>= 2.10)
 VignetteBuilder: knitr
