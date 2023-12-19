@@ -28,7 +28,7 @@
     
     <a class="navbar-brand me-2" href="index.html">PFUDatabase</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,9 +67,12 @@
 <div class="section level1">
 <div class="page-header"><h1 id="pfudatabase">PFUDatabase<a class="anchor" aria-label="anchor" href="#pfudatabase"></a>
 </h1></div>
-<p>This repository contains analysis code for the fellowship project of Paul Brockway. One goal of the fellowship is building a world database of country-specific primary, final, and useful exergy for 1960–2019.</p>
-<p>Analyses are completed using the <a href="https://github.com/ropensci/targets" class="external-link">targets</a> environment which provides helpful dependency management for the calculation pipeline.</p>
-<p>This repository also includes a ShinyApp for visualization of the data analyzed in the targets workflow.</p>
+<div class="section level2">
+<h2 id="statement-of-need">Statement of need<a class="anchor" aria-label="anchor" href="#statement-of-need"></a>
+</h2>
+<p>The CL-PFU database uses many sources of input data spanning hundreds of data files. When creating the CL-PFU database, matrices are created according to the <a href="https://www.sciencedirect.com/science/article/pii/S0306261918308298?via%3Dihub" class="external-link">PSUT</a> framework, final energy data are extended to the useful stage, and energy conversion chains are converted to exergy quantifications. A way to specify all calculation steps is needed. Furthermore, the calculations take many hours to complete, so what is done should stay done during debugging. Calculation pipelines are needed, ones that clearly identify all steps in database creation and ones that can be resumed where needed.</p>
+<p>This package (<code>PFUPipeline</code>) provides functions to create several products of the CL-PFU database. The primary objective of <code>PFUPipeline</code> is to create data frames of <strong>RUVY</strong> matrices in <a href="https://MatthewHeun.github.io/matsindf/" class="external-link">matsindf</a> format. A <a href="https://docs.ropensci.org/targets/" class="external-link">targets</a> pipeline provides helpful dependency management for the calculations.</p>
+</div>
 <div class="section level2">
 <h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
@@ -78,24 +81,28 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/targets/" class="external-link">targets</a></span><span class="op">)</span>              <span class="co"># to load the targets package   </span></span>
 <span><span class="fu"><a href="https://docs.ropensci.org/targets/reference/tar_visnetwork.html" class="external-link">tar_visnetwork</a></span><span class="op">(</span><span class="op">)</span>              <span class="co"># to see a directed acyclic graph of the calculations that will take place   </span></span>
 <span><span class="fu"><a href="https://docs.ropensci.org/targets/reference/tar_make_future.html" class="external-link">tar_make_future</a></span><span class="op">(</span>workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>  <span class="co"># to execute the calculations (or `workers = 8`, if you have enough cores)</span></span></code></pre></div>
-<p>To run the App simply open the App.R script in the ShinyApp file and click RunApp.</p>
-<div class="section level3">
-<h3 id="accessing-targets">Accessing targets<a class="anchor" aria-label="anchor" href="#accessing-targets"></a>
-</h3>
+</div>
+<div class="section level2">
+<h2 id="accessing-targets">Accessing targets<a class="anchor" aria-label="anchor" href="#accessing-targets"></a>
+</h2>
 <p>A list of targets can be found with <code><a href="reference/target_names.html">PFUDatabase::target_names</a></code>. A list of target meanings can be found with <code><a href="reference/target_names.html">?PFUDatabase::target_names</a></code>.</p>
 <p><code>targets::tar_read(&lt;&lt;target&gt;&gt;)</code> pulls the value of a target out of the <code>targets</code> cache. (<code>&lt;&lt;target&gt;&gt;</code> should be an unquoted symbol such as <code>Specified</code>.)</p>
 </div>
-<div class="section level3">
-<h3 id="fresh-start">Fresh start<a class="anchor" aria-label="anchor" href="#fresh-start"></a>
-</h3>
+<div class="section level2">
+<h2 id="fresh-start">Fresh start<a class="anchor" aria-label="anchor" href="#fresh-start"></a>
+</h2>
 <p><code><a href="https://docs.ropensci.org/targets/reference/tar_destroy.html" class="external-link">targets::tar_destroy()</a></code> invalidates the <code>targets</code> cache and forces reanalysis of everything. Reanalyzing everything may take a while.</p>
 </div>
-<div class="section level3">
-<h3 id="more-information">More Information<a class="anchor" aria-label="anchor" href="#more-information"></a>
-</h3>
+<div class="section level2">
+<h2 id="more-information">More Information<a class="anchor" aria-label="anchor" href="#more-information"></a>
+</h2>
 <p>For information about the <code>targets</code> package, see the <a href="https://books.ropensci.org/targets/" class="external-link">targets manual</a>.</p>
 <p>For documentation on the <code>PFUDatabase</code> package, see <a href="https://EnergyEconomyDecoupling.github.io/PFUDatabase/" class="external-link uri">https://EnergyEconomyDecoupling.github.io/PFUDatabase/</a>.</p>
 </div>
+<div class="section level2">
+<h2 id="history">History<a class="anchor" aria-label="anchor" href="#history"></a>
+</h2>
+<p>The CL-PFU database is supported by an EPSRC <a href="https://environment.leeds.ac.uk/energy-climate-change-mitigation/dir-record/research-projects/1773/epsrc-fellowship-applying-thermodynamic-laws-to-the-energy-gdp-decoupling-problem" class="external-link">fellowship</a> awarded to Paul Brockway of Leeds University. A goal of the fellowship is building a world database of country-specific primary, final, and useful exergy for 1960–2019.</p>
 </div>
 <div class="section level2">
 <h2 id="contributors">Contributors<a class="anchor" aria-label="anchor" href="#contributors"></a>

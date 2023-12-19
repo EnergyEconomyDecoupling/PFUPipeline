@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">PFUDatabase</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -127,13 +127,13 @@ you have access to several packages.</p>
 <div class="section level2">
 <h2 id="extract-row-and-column-names">Extract row and column names<a class="anchor" aria-label="anchor" href="#extract-row-and-column-names"></a>
 </h2>
-<p><code><a href="https://rdrr.io/pkg/Recca/man/get_all_products_and_industries.html" class="external-link">Recca::get_all_products_and_industries()</a></code> will find the
+<p><code><a href="https://matthewheun.github.io/Recca/reference/get_all_products_and_industries.html" class="external-link">Recca::get_all_products_and_industries()</a></code> will find the
 product and industry names for each row of the matsindf data frame. The
 results are placed in two new columns of the data frame named (by
 default) “Product.names” and “Industry.names”.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df_with_prods_inds</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">Recca</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Recca/man/get_all_products_and_industries.html" class="external-link">get_all_products_and_industries</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu">Recca</span><span class="fu">::</span><span class="fu"><a href="https://matthewheun.github.io/Recca/reference/get_all_products_and_industries.html" class="external-link">get_all_products_and_industries</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">df_with_prods_inds</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 720</span></span>
 <span><span class="co">#&gt; Columns: 16</span></span>
@@ -1034,7 +1034,7 @@ when the Last.stage is “Useful” compared to “Final”.</p>
 <div class="section level2">
 <h2 id="aggregate-by-parts-of-row-and-column-labels">Aggregate by parts of row and column labels<a class="anchor" aria-label="anchor" href="#aggregate-by-parts-of-row-and-column-labels"></a>
 </h2>
-<p><code><a href="https://rdrr.io/pkg/Recca/man/get_all_products_and_industries.html" class="external-link">Recca::get_all_products_and_industries()</a></code> can also select
+<p><code><a href="https://matthewheun.github.io/Recca/reference/get_all_products_and_industries.html" class="external-link">Recca::get_all_products_and_industries()</a></code> can also select
 only parts of the row and column label. Knowing that we (eventually)
 want to aggregate by the nouns, we can extract only the nouns (prefixes)
 from the row and column labels, as shown by the code below. Extracting
@@ -1044,7 +1044,7 @@ extracting the entire row or column names.</p>
 <code class="sourceCode R"><span><span class="va">df_with_prods_inds_nouns</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span></span>
 <span>  <span class="co"># Restrict years to reduce execution time.</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">Year</span> <span class="op">==</span> <span class="fl">1960</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">Recca</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Recca/man/get_all_products_and_industries.html" class="external-link">get_all_products_and_industries</a></span><span class="op">(</span></span>
+<span>  <span class="fu">Recca</span><span class="fu">::</span><span class="fu"><a href="https://matthewheun.github.io/Recca/reference/get_all_products_and_industries.html" class="external-link">get_all_products_and_industries</a></span><span class="op">(</span></span>
 <span>    piece <span class="op">=</span> <span class="st">"noun"</span>,</span>
 <span>    inf_notation <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    notation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu">RCLabels</span><span class="fu">::</span><span class="va"><a href="https://matthewheun.github.io/RCLabels/reference/bracket_notation.html" class="external-link">bracket_notation</a></span>, <span class="fu">RCLabels</span><span class="fu">::</span><span class="va"><a href="https://matthewheun.github.io/RCLabels/reference/arrow_notation.html" class="external-link">arrow_notation</a></span><span class="op">)</span><span class="op">)</span></span>
@@ -1753,7 +1753,7 @@ expected.</p>
 <h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
 </h2>
 <p>Through judicious use of several helpful functions
-(<code><a href="https://rdrr.io/pkg/Recca/man/get_all_products_and_industries.html" class="external-link">Recca::get_all_products_and_industries()</a></code>,
+(<code><a href="https://matthewheun.github.io/Recca/reference/get_all_products_and_industries.html" class="external-link">Recca::get_all_products_and_industries()</a></code>,
 <code><a href="https://rdrr.io/pkg/matsbyname/man/aggregation_map_helpers.html" class="external-link">matsbyname::agg_table_to_agg_map()</a></code>, and
 <code><a href="https://rdrr.io/pkg/matsbyname/man/aggregate_pieces_byname.html" class="external-link">matsbyname::aggregate_pieces_byname()</a></code>), one can aggregate
 PSUT matrices when they are arranged in a matsindf data frame.</p>
