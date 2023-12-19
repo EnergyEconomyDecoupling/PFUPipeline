@@ -9,7 +9,7 @@ which always resolves to the latest release.
 
 
 
-# PFUDatabase 0.1.5 (2023-12-19)
+# PFUDatabase 0.1.5 (2023-12-19) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10407898.svg)](https://doi.org/10.5281/zenodo.10407898)
 
 * Added statement of need to the `README.Rmd` file.
 * Add `Remotes:` field to `DESCRIPTION` to assist
