@@ -8,20 +8,20 @@ get_L_K_GDP_data(
   pwt10_data,
   country_colname = IEATools::iea_cols$country,
   Year_colname = IEATools::iea_cols$year,
-  year_colname = PFUDatabase::socioecon_cols$year_colname,
-  isocode_colname = PFUDatabase::socioecon_cols$isocode_colname,
-  rgdpe_colname = PFUDatabase::socioecon_cols$rgdpe_colname,
-  rgdpo_colname = PFUDatabase::socioecon_cols$rgdpo_colname,
-  rgdpna_colname = PFUDatabase::socioecon_cols$rgdpna_colname,
-  emp_colname = PFUDatabase::socioecon_cols$emp_colname,
-  avh_colname = PFUDatabase::socioecon_cols$avh_colname,
-  hc_colname = PFUDatabase::socioecon_cols$hc_colname,
-  rnna_colname = PFUDatabase::socioecon_cols$rnna_colname,
-  rkna_colname = PFUDatabase::socioecon_cols$rkna_colname,
-  K_colname = PFUDatabase::socioecon_cols$K_colname,
-  Kserv_colname = PFUDatabase::socioecon_cols$Kserv_colname,
-  L_colname = PFUDatabase::socioecon_cols$L_colname,
-  Ladj_colname = PFUDatabase::socioecon_cols$Ladj_colname
+  year_colname = PFUPipeline::socioecon_cols$year_colname,
+  isocode_colname = PFUPipeline::socioecon_cols$isocode_colname,
+  rgdpe_colname = PFUPipeline::socioecon_cols$rgdpe_colname,
+  rgdpo_colname = PFUPipeline::socioecon_cols$rgdpo_colname,
+  rgdpna_colname = PFUPipeline::socioecon_cols$rgdpna_colname,
+  emp_colname = PFUPipeline::socioecon_cols$emp_colname,
+  avh_colname = PFUPipeline::socioecon_cols$avh_colname,
+  hc_colname = PFUPipeline::socioecon_cols$hc_colname,
+  rnna_colname = PFUPipeline::socioecon_cols$rnna_colname,
+  rkna_colname = PFUPipeline::socioecon_cols$rkna_colname,
+  K_colname = PFUPipeline::socioecon_cols$K_colname,
+  Kserv_colname = PFUPipeline::socioecon_cols$Kserv_colname,
+  L_colname = PFUPipeline::socioecon_cols$L_colname,
+  Ladj_colname = PFUPipeline::socioecon_cols$Ladj_colname
 )
 }
 \arguments{
@@ -30,7 +30,7 @@ usually obtained from \code{get_all_pwt_data()}.}
 
 \item{country_colname, Year_colname}{See \code{IEATools::iea_cols}.}
 
-\item{isocode_colname, year_colname, rgdpe_colname, rgdpo_colname, rgdpna_colname, emp_colname, avh_colname, hc_colname, rnna_colname, rkna_colname, K_colname, Kserv_colname, L_colname, Ladj_colname}{See \code{PFUDatabase::socioecon_cols}.}
+\item{isocode_colname, year_colname, rgdpe_colname, rgdpo_colname, rgdpna_colname, emp_colname, avh_colname, hc_colname, rnna_colname, rkna_colname, K_colname, Kserv_colname, L_colname, Ladj_colname}{See \code{PFUPipeline::socioecon_cols}.}
 }
 \value{
 A data frame containing three GDP metrics, Labor, Adjusted Labor,

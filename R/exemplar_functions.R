@@ -8,7 +8,7 @@
 #' sample_exemplar_table_path()
 sample_exemplar_table_path <- function() {
   file.path("extdata", "Exemplar_Table.xlsx") %>%
-    system.file(package = "PFUDatabase")
+    system.file(package = "PFUPipeline")
 }
 
 
@@ -26,7 +26,7 @@ sample_exemplar_table_path <- function() {
 #'                  all countries in the file at `exemplar_table_path` are returned.
 #' @param years The years for which you want the exemplar table, an integer.
 #'              Default is `NULL`, meaning that all years from the file at `exemplar_table_path` are included.
-#' @param exemplar_table_tab_name,prev_names See `PFUDatabase::exemplar_names`.
+#' @param exemplar_table_tab_name,prev_names See `PFUPipeline::exemplar_names`.
 #' @param year,country See `IEATools::iea_cols`.
 #'
 #' @return an exemplar table
@@ -38,8 +38,8 @@ sample_exemplar_table_path <- function() {
 load_exemplar_table <- function(exemplar_table_path = sample_exemplar_table_path(),
                                 countries = NULL,
                                 years = NULL,
-                                exemplar_table_tab_name = PFUDatabase::exemplar_names$exemplar_tab_name,
-                                prev_names = PFUDatabase::exemplar_names$prev_names,
+                                exemplar_table_tab_name = PFUPipeline::exemplar_names$exemplar_tab_name,
+                                prev_names = PFUPipeline::exemplar_names$prev_names,
                                 country = IEATools::iea_cols$country,
                                 year = IEATools::iea_cols$year) {
   
@@ -96,7 +96,7 @@ load_exemplar_table <- function(exemplar_table_path = sample_exemplar_table_path
 #'
 #' @param exemplar_table An exemplar table, probably read by `load_exemplar_table()`.
 #' @param countries The countries for which exemplar lists are desired. Default is `NULL`, which returns all known countries.
-#' @param exemplars,prev_names,exemplar_country,region_code,world See `PFUDatabase::exemplar_names`.
+#' @param exemplars,prev_names,exemplar_country,region_code,world See `PFUPipeline::exemplar_names`.
 #' @param country,year See `IEATools::iea_cols`.
 #' @param year_temp The name of a temporary year column. Default is ".year_temp".
 #' @param prev_names_list The name of a temporary column in `exemplar_table`. Default is ".prev_names_list".
@@ -121,11 +121,11 @@ load_exemplar_table <- function(exemplar_table_path = sample_exemplar_table_path
 #' el[[4, "Exemplars"]]
 exemplar_lists <- function(exemplar_table,
                            countries = NULL,
-                           prev_names = PFUDatabase::exemplar_names$prev_names,
-                           exemplar_country = PFUDatabase::exemplar_names$exemplar_country,
-                           exemplars = PFUDatabase::exemplar_names$exemplars,
-                           region_code = PFUDatabase::exemplar_names$region_code,
-                           world = PFUDatabase::exemplar_names$world,
+                           prev_names = PFUPipeline::exemplar_names$prev_names,
+                           exemplar_country = PFUPipeline::exemplar_names$exemplar_country,
+                           exemplars = PFUPipeline::exemplar_names$exemplars,
+                           region_code = PFUPipeline::exemplar_names$region_code,
+                           world = PFUPipeline::exemplar_names$world,
                            country = IEATools::iea_cols$country,
                            year = IEATools::iea_cols$year,
                            year_temp = ".year_temp",

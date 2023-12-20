@@ -1,8 +1,8 @@
 ---
-title: "PFUDatabase Demo"
+title: "PFUPipeline Demo"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{PFUDatabase Demo}
+  %\VignetteIndexEntry{PFUPipeline Demo}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 ```{r setup, include = FALSE}
 library(dplyr)
-library(PFUDatabase)
+library(PFUPipeline)
 library(PFUSetup)
 library(pins)
 library(Recca)
@@ -25,12 +25,12 @@ library(Recca)
 
 ## Introduction
 
-This vignette demonstrates the features of the `PFUDatabase` package.
+This vignette demonstrates the features of the `PFUPipeline` package.
 
 
-## Load `PFUDatabase`
+## Load `PFUPipeline`
 
-`PFUDatabase` is a package that runs a `targets` pipeline
+`PFUPipeline` is a package that runs a `targets` pipeline
 and stores data in Dropbox using the `pins` package.
 
 To retrieve data, one needs

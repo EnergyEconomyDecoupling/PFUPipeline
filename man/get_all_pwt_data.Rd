@@ -6,13 +6,13 @@
 \usage{
 get_all_pwt_data(
   countries,
-  isocode_colname = PFUDatabase::socioecon_cols$isocode_colname
+  isocode_colname = PFUPipeline::socioecon_cols$isocode_colname
 )
 }
 \arguments{
 \item{countries}{A string of iso 3-letter country codes}
 
-\item{isocode_colname}{See \code{PFUDatabase::socioecon_cols}.}
+\item{isocode_colname}{See \code{PFUPipeline::socioecon_cols}.}
 }
 \value{
 A data frame containing socioeconomic data from pwt10 for a set of countries.

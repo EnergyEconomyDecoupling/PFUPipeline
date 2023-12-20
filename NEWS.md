@@ -1,11 +1,15 @@
 ---
-title: "Release notes for `PFUDatabase`"
+title: "Release notes for `PFUPipeline`"
 output: html_document
 ---
 
 
 Cite all releases with doi [10.5281/zenodo.5228375](https://doi.org/10.5281/zenodo.5228375), 
 which always resolves to the latest release.
+
+
+
+* Name change to `PFUPipeline`.
 
 
 # PFUDatabase 0.1.6 (2023-12-19) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10408246.svg)](https://doi.org/10.5281/zenodo.10408246)

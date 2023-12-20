@@ -6,7 +6,7 @@
 <!-- badges: start -->
 
 [![CRAN
-status](https://www.r-pkg.org/badges/version/PFUDatabase)](https://cran.r-project.org/package=PFUDatabase)
+status](https://www.r-pkg.org/badges/version/PFUPipeline)](https://cran.r-project.org/package=PFUPipeline)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![Project Status: Active – The project has reached a stable, usable
@@ -15,7 +15,7 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5228375.svg)](https://doi.org/10.5281/zenodo.5228375)
 <!-- badges: end -->
 
-# PFUDatabase
+# PFUPipeline
 
 ## Statement of need
 
@@ -50,8 +50,8 @@ tar_make_future(workers = 2)  # to execute the calculations (or `workers = 8`, i
 
 ## Accessing targets
 
-A list of targets can be found with `PFUDatabase::target_names`. A list
-of target meanings can be found with `?PFUDatabase::target_names`.
+A list of targets can be found with `PFUPipeline::target_names`. A list
+of target meanings can be found with `?PFUPipeline::target_names`.
 
 `targets::tar_read(<<target>>)` pulls the value of a target out of the
 `targets` cache. (`<<target>>` should be an unquoted symbol such as
@@ -67,8 +67,8 @@ reanalysis of everything. Reanalyzing everything may take a while.
 For information about the `targets` package, see the [targets
 manual](https://books.ropensci.org/targets/).
 
-For documentation on the `PFUDatabase` package, see
-<https://EnergyEconomyDecoupling.github.io/PFUDatabase/>.
+For documentation on the `PFUPipeline` package, see
+<https://EnergyEconomyDecoupling.github.io/PFUPipeline/>.
 
 ## History
 

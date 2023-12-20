@@ -13,7 +13,7 @@ build_psut_dataframe(
   energy_type_colname = IEATools::iea_cols$energy_type,
   last_stage_colname = IEATools::iea_cols$last_stage,
   year_colname = IEATools::iea_cols$year,
-  ieamw_colname = PFUDatabase::ieamw_cols$ieamw,
+  ieamw_colname = PFUPipeline::ieamw_cols$ieamw,
   R_colname = IEATools::psut_cols$R,
   U_colname = IEATools::psut_cols$U,
   U_feed_colname = IEATools::psut_cols$U_feed,
@@ -22,9 +22,9 @@ build_psut_dataframe(
   V_colname = IEATools::psut_cols$V,
   Y_colname = IEATools::psut_cols$Y,
   S_units_colname = IEATools::psut_cols$s_units,
-  iea = PFUDatabase::ieamw_cols$iea,
-  mw = PFUDatabase::ieamw_cols$mw,
-  both = PFUDatabase::ieamw_cols$both
+  iea = PFUPipeline::ieamw_cols$iea,
+  mw = PFUPipeline::ieamw_cols$mw,
+  both = PFUPipeline::ieamw_cols$both
 )
 }
 \arguments{
@@ -39,20 +39,20 @@ See \code{IEATools::iea_cols} for defaults.}
 
 \item{ieamw_colname}{The name of the column that identifies whether data are for the IEA,
 muscle work (MW) or both.
-Default is \code{PFUDatabase::ieamw_cols$ieamw}.}
+Default is \code{PFUPipeline::ieamw_cols$ieamw}.}
 
 \item{R_colname, U_colname, U_feed_colname, U_eiou_colname, r_eiou_colname, V_colname, Y_colname, S_units_colname}{Names of matrix columns.
 See \code{IEATools::psut_cols}.}
 
 \item{iea}{The string that identifies ECC data are from the IEA only.
-Default is \code{PFUDatabase::ieamw_cols$iea}.}
+Default is \code{PFUPipeline::ieamw_cols$iea}.}
 
 \item{mw}{The string that identifies ECC data are for muscle work only.
-Default is \code{PFUDatabase::ieamw_cols$mw}.}
+Default is \code{PFUPipeline::ieamw_cols$mw}.}
 
 \item{both}{The string that identifies ECC data are for both IEA and muscle work.
-Default is \code{PFUDatabase::ieamw_cols}.
-Default is \code{PFUDatabase::ieamw_cols$both}.}
+Default is \code{PFUPipeline::ieamw_cols}.
+Default is \code{PFUPipeline::ieamw_cols$both}.}
 }
 \value{
 A data frame with \code{PSUTIEA}, \code{PSUTMW}, and \code{PSUTIEAMW} \code{rbind()}ed together,

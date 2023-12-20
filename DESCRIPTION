@@ -1,4 +1,4 @@
-Package: PFUDatabase
+Package: PFUPipeline
 Title: Functions and Workflows for Primary-Final-Useful Societal Exergy Analysis Within the PSUT Framework
 Version: 0.1.6
 Date: 2023-12-19
@@ -68,4 +68,4 @@ VignetteBuilder: knitr
 LazyData: true
 Config/testthat/edition: 3
 Language: en-US
-URL: https://energyeconomydecoupling.github.io/PFUDatabase/
+URL: https://energyeconomydecoupling.github.io/PFUPipeline/

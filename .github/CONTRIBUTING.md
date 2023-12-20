@@ -9,9 +9,9 @@ output:
 
 
 
-# Contributing to `PFUDatabase`
+# Contributing to `PFUPipeline`
 
-This document outlines how to propose a change to the `PFUDatabase` package.
+This document outlines how to propose a change to the `PFUPipeline` package.
 
 ## Fixing typos
 
@@ -45,7 +45,7 @@ If you’ve found a bug, please file an issue that illustrates the bug with a mi
 
 ### Code style
 
-* New code should be written in a style that matches the rest of the code in `PFUDatabase`. 
+* New code should be written in a style that matches the rest of the code in `PFUPipeline`. 
 * We use [roxygen2](https://cran.r-project.org/package=roxygen2), 
   with [Markdown syntax](https://cran.r-project.org/web/packages/roxygen2/vignettes/rd-formatting.html), 
   for documentation.

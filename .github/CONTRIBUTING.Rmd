@@ -10,7 +10,7 @@ output:
 ```{r, include=FALSE}
 # Set the name of the package here.
 # It will be used in several places below.
-pkg_name <- "PFUDatabase"
+pkg_name <- "PFUPipeline"
 ```
 
 # Contributing to ``r pkg_name``

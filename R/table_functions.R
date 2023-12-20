@@ -92,7 +92,7 @@ load_fu_allocation_tables <- function(fu_analysis_folder,
 #' @param countries A vector of countries for which completed final-to-useful allocation tables are to be assembled.
 #' @param years The years for which analysis is desired. Default is `NULL`, meaning analyze all years.
 #' @param country,year See `IEATools::iea_cols`.
-#' @param exemplars,exemplar_tables,iea_data,incomplete_alloc_tables,complete_alloc_tables See `PFUDatabase::exemplar_names`.
+#' @param exemplars,exemplar_tables,iea_data,incomplete_alloc_tables,complete_alloc_tables See `PFUPipeline::exemplar_names`.
 #'
 #' @return A tidy data frame containing completed final-to-useful allocation tables.
 #'
@@ -139,11 +139,11 @@ assemble_fu_allocation_tables <- function(incomplete_allocation_tables,
                                           years = NULL,
                                           country = IEATools::iea_cols$country,
                                           year = IEATools::iea_cols$year,
-                                          exemplars = PFUDatabase::exemplar_names$exemplars,
-                                          exemplar_tables = PFUDatabase::exemplar_names$exemplar_tables,
-                                          iea_data = PFUDatabase::exemplar_names$iea_data,
-                                          incomplete_alloc_tables = PFUDatabase::exemplar_names$incomplete_alloc_table,
-                                          complete_alloc_tables = PFUDatabase::exemplar_names$complete_alloc_table) {
+                                          exemplars = PFUPipeline::exemplar_names$exemplars,
+                                          exemplar_tables = PFUPipeline::exemplar_names$exemplar_tables,
+                                          iea_data = PFUPipeline::exemplar_names$iea_data,
+                                          incomplete_alloc_tables = PFUPipeline::exemplar_names$incomplete_alloc_table,
+                                          complete_alloc_tables = PFUPipeline::exemplar_names$complete_alloc_table) {
   
   # The incomplete tables are easier to deal with when they are tidy.
   tidy_incomplete_allocation_tables <- IEATools::tidy_fu_allocation_table(incomplete_allocation_tables)
@@ -206,7 +206,7 @@ assemble_fu_allocation_tables <- function(incomplete_allocation_tables,
     tidyr::unnest(cols = .data[[complete_alloc_tables]])
   assertthat::assert_that(!(complete_alloc_tables %in% names(out)), 
                           msg = paste(paste0(countries, collapse = ", "), 
-                                      "do (does) not have allocation information in PFUDatabase::assemble_fu_allocation_tables()"))
+                                      "do (does) not have allocation information in PFUPipeline::assemble_fu_allocation_tables()"))
   return(out)
 }
 
@@ -263,7 +263,7 @@ get_one_exemplar_table_list <- function(tidy_incomplete_tables,
 #'                       Must be one or both of the default values.
 #' @param country,method,energy_type,last_stage,year,unit,e_dot See `IEATools::iea_cols`.
 #' @param machine,eu_product,eta_fu,phi_u,c_source,eta_fu_source,e_dot_machine,e_dot_machine_perc,quantity,maximum_values,e_dot_perc,.values See `IEATools::template_cols`.
-#' @param exemplars,exemplar_tables,alloc_data,incomplete_eta_tables,complete_eta_tables See `PFUDatabase::exemplar_names`.
+#' @param exemplars,exemplar_tables,alloc_data,incomplete_eta_tables,complete_eta_tables See `PFUPipeline::exemplar_names`.
 #'
 #' @return A tidy data frame containing completed final-to-useful efficiency tables.
 #'
@@ -319,11 +319,11 @@ assemble_eta_fu_tables <- function(incomplete_eta_fu_tables,
                                    maximum_values = IEATools::template_cols$maximum_values,
                                    e_dot_perc = IEATools::template_cols$e_dot_perc,
                                    
-                                   exemplars = PFUDatabase::exemplar_names$exemplars,
-                                   exemplar_tables = PFUDatabase::exemplar_names$exemplar_tables,
-                                   alloc_data = PFUDatabase::exemplar_names$alloc_data,
-                                   incomplete_eta_tables = PFUDatabase::exemplar_names$incomplete_eta_table,
-                                   complete_eta_tables = PFUDatabase::exemplar_names$complete_eta_table,
+                                   exemplars = PFUPipeline::exemplar_names$exemplars,
+                                   exemplar_tables = PFUPipeline::exemplar_names$exemplar_tables,
+                                   alloc_data = PFUPipeline::exemplar_names$alloc_data,
+                                   incomplete_eta_tables = PFUPipeline::exemplar_names$incomplete_eta_table,
+                                   complete_eta_tables = PFUPipeline::exemplar_names$complete_eta_table,
                                    
                                    .values = IEATools::template_cols$.values) {
   
@@ -452,7 +452,7 @@ assemble_eta_fu_tables <- function(incomplete_eta_fu_tables,
 #' @param country,year,product See `IEATools::iea_cols`.
 #' @param machine,quantity,phi_u,.values,eu_product,eta_fu_source See `IEATools::template_cols`.
 #' @param phi_colname,phi_source_colname,is_useful See `IEATools::phi_constants_names`.
-#' @param eta_fu_tables,phi_constants See `PFUDatabase::phi_sources`.
+#' @param eta_fu_tables,phi_constants See `PFUPipeline::phi_sources`.
 #'
 #' @return A data frame of phi values for every combination of country, year, machine, destination, etc.
 #'
@@ -509,8 +509,8 @@ assemble_phi_u_tables <- function(incomplete_phi_u_table,
                                   phi_colname = IEATools::phi_constants_names$phi_colname,
                                   phi_source_colname = IEATools::phi_constants_names$phi_source_colname,
                                   is_useful = IEATools::phi_constants_names$is_useful_colname,
-                                  eta_fu_tables = PFUDatabase::phi_sources$eta_fu_tables,
-                                  phi_constants = PFUDatabase::phi_sources$phi_constants) {
+                                  eta_fu_tables = PFUPipeline::phi_sources$eta_fu_tables,
+                                  phi_constants = PFUPipeline::phi_sources$phi_constants) {
   
   if (!is.null(years)) {
     incomplete_phi_u_table <- incomplete_phi_u_table %>%
