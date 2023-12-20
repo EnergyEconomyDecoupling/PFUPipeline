@@ -227,18 +227,18 @@ matsbyname::agg_table_to_agg_map(prod_agg_table_example,
 Aggregation tables can be created in an Excel file and
 read into `R` with the `readxl` package. 
 Example aggregation tables can be found in the 
-"Aggregation_maps.xlsx" file in the `PFUDatabase` package.
+"Aggregation_maps.xlsx" file in the `PFUPipeline` package.
 
 ```{r}
 prod_agg_map <- system.file("extdata", "Aggregation_Tables.xlsx",  
-                            package="PFUDatabase") |> 
+                            package="PFUPipeline") |> 
   readxl::read_excel(sheet = "product_aggregation") |> 
   matsbyname::agg_table_to_agg_map(many_colname = "Many", 
                                    few_colname = "Few")
 prod_agg_map
 
 ind_agg_map <- system.file("extdata", "Aggregation_Tables.xlsx", 
-                              package="PFUDatabase") |> 
+                              package="PFUPipeline") |> 
   readxl::read_excel(sheet = "industry_aggregation") |> 
   matsbyname::agg_table_to_agg_map(many_colname = "Many", 
                                    few_colname = "Few")

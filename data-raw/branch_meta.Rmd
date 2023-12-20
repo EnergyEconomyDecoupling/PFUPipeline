@@ -1,5 +1,5 @@
 ---
-title: "Branches for `PFUDatabase`"
+title: "Branches for `PFUPipeline`"
 author: "Matthew Kuperus Heun"
 date: "`r Sys.Date()`"
 output: html_document
@@ -40,20 +40,3 @@ Use this template to describe feature branches.
   
   
   
-#### non_joss_review_develop
-  
-* Purpose: Holds code that is not part of the JOSS paper review.
-We will treat this branch as the "develop" branch
-until the JOSS paper review is complete.
-* Next step: Branch off of non_joss_review_develop to create 
-new features for the aggregation computational pipeline. 
-* Branched from: develop
-* Author: Matthew Kuperus Heun
-* Date: 25 Sept 2023
-
-#### exiobase_coeffs_from_NJRD
-* Purpose: Move Exiobase multipliers calculations from PFUAggDatabase repository and finish calculations.
-* Next step: Merge back into non_joss_review_develop once calculations are completed as intended.
-* Branched from: non_joss_review_develop
-* Author: EA
-* Date: 12/10/23

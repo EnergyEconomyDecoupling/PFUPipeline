@@ -160,7 +160,7 @@
 #'
 #' A string list containing named names of columns and tabs for exemplar tables.
 #' Items in the list provide default values for column name function arguments
-#' throughout the `PFUDatabase` package.
+#' throughout the `PFUPipeline` package.
 #'
 #' @format A string list with `r length(exemplar_names)` entries.
 #' \describe{

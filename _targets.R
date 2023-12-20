@@ -1,6 +1,6 @@
 library(magrittr)
 library(targets)
-library(PFUDatabase)
+library(PFUPipeline)
 # targets::tar_make() to run the pipeline
 # targets::tar_make_future(workers = 8) to execute across multiple cores.
 # targets::tar_read(<<target_name>>) to view the results.
@@ -35,7 +35,7 @@ years_exiobase <- 1995:2020
 # countries <- c("AGO", "COL")
 # countries <- "WRLD"
 # countries <- c("BEN", "WRLD")
-countries <- c(PFUDatabase::canonical_countries, "WRLD") |> as.character()
+countries <- c(PFUPipeline::canonical_countries, "WRLD") |> as.character()
 
 # Countries with unique allocation data.
 # countries <- c("WRLD", "BRA", "CAN", "CHNM", "DEU", "DNK", "ESP", "FRA", "GBR", "GHA",
@@ -122,7 +122,7 @@ targets::tar_option_set(
 )
 
 # Pull in the pipeline
-PFUDatabase::get_pipeline(countries = countries,
+PFUPipeline::get_pipeline(countries = countries,
                           additional_exemplar_countries = additional_exemplar_countries,
                           matrix_class = matrix_class,
                           specify_non_energy_flows = specify_non_energy_flows,

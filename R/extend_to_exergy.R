@@ -219,7 +219,7 @@ sum_phi_vecs <- function(phi_pf_vecs,
           "{phi_colname}" := NULL
         )
       
-      err_msg <- paste("In PFUDatabase::sum_phi_vecs(), the length of the sum of phi_pf and phi_u vectors",
+      err_msg <- paste("In PFUPipeline::sum_phi_vecs(), the length of the sum of phi_pf and phi_u vectors",
                        "was not the same as the sum of vector lengths. The rows that failed the test are",
                        matsindf::df_to_msg(problem_rows))
       stop(err_msg)
@@ -236,7 +236,7 @@ sum_phi_vecs <- function(phi_pf_vecs,
           "{.phi_cols_OK}" := NULL,
           "{phi_colname}" := NULL
         )
-      err_msg <- paste("In PFUDatabase::sum_phi_vecs(), the names of the phi.pf and phi.u columns should be the same.",
+      err_msg <- paste("In PFUPipeline::sum_phi_vecs(), the names of the phi.pf and phi.u columns should be the same.",
                        "Rows that failed the test are",
                        matsindf::df_to_msg(problem_rows))
       stop(err_msg)

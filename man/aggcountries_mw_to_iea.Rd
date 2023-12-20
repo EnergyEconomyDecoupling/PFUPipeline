@@ -11,9 +11,9 @@ aggcountries_mw_to_iea(
   year = IEATools::iea_cols$year,
   unit = IEATools::iea_cols$unit,
   e_dot = IEATools::iea_cols$e_dot,
-  agg_code_col = PFUDatabase::exemplar_names$agg_code_col,
-  region_code = PFUDatabase::exemplar_names$region_code,
-  exemplar_country = PFUDatabase::exemplar_names$exemplar_country,
+  agg_code_col = PFUPipeline::exemplar_names$agg_code_col,
+  region_code = PFUPipeline::exemplar_names$region_code,
+  exemplar_country = PFUPipeline::exemplar_names$exemplar_country,
   species = MWTools::mw_constants$species,
   stage_col = MWTools::mw_constants$stage_col,
   sector_col = MWTools::mw_constants$sector_col
@@ -28,7 +28,7 @@ work data. Usually retrieved from the \code{AMWPFUDataRaw} and
 
 \item{country, year, unit, e_dot}{See \code{IEATools::iea_cols}.}
 
-\item{agg_code_col, region_code, exemplar_country}{See \code{PFUDatabase::exemplar_names}.}
+\item{agg_code_col, region_code, exemplar_country}{See \code{PFUPipeline::exemplar_names}.}
 
 \item{species, stage_col, sector_col}{See \code{MWTools::mw_constants}.}
 }

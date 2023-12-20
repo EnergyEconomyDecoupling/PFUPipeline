@@ -8,8 +8,8 @@ load_exemplar_table(
   exemplar_table_path = sample_exemplar_table_path(),
   countries = NULL,
   years = NULL,
-  exemplar_table_tab_name = PFUDatabase::exemplar_names$exemplar_tab_name,
-  prev_names = PFUDatabase::exemplar_names$prev_names,
+  exemplar_table_tab_name = PFUPipeline::exemplar_names$exemplar_tab_name,
+  prev_names = PFUPipeline::exemplar_names$prev_names,
   country = IEATools::iea_cols$country,
   year = IEATools::iea_cols$year
 )
@@ -24,7 +24,7 @@ all countries in the file at \code{exemplar_table_path} are returned.}
 \item{years}{The years for which you want the exemplar table, an integer.
 Default is \code{NULL}, meaning that all years from the file at \code{exemplar_table_path} are included.}
 
-\item{exemplar_table_tab_name, prev_names}{See \code{PFUDatabase::exemplar_names}.}
+\item{exemplar_table_tab_name, prev_names}{See \code{PFUPipeline::exemplar_names}.}
 
 \item{year, country}{See \code{IEATools::iea_cols}.}
 }

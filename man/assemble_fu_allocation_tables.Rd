@@ -12,11 +12,11 @@ assemble_fu_allocation_tables(
   years = NULL,
   country = IEATools::iea_cols$country,
   year = IEATools::iea_cols$year,
-  exemplars = PFUDatabase::exemplar_names$exemplars,
-  exemplar_tables = PFUDatabase::exemplar_names$exemplar_tables,
-  iea_data = PFUDatabase::exemplar_names$iea_data,
-  incomplete_alloc_tables = PFUDatabase::exemplar_names$incomplete_alloc_table,
-  complete_alloc_tables = PFUDatabase::exemplar_names$complete_alloc_table
+  exemplars = PFUPipeline::exemplar_names$exemplars,
+  exemplar_tables = PFUPipeline::exemplar_names$exemplar_tables,
+  iea_data = PFUPipeline::exemplar_names$iea_data,
+  incomplete_alloc_tables = PFUPipeline::exemplar_names$incomplete_alloc_table,
+  complete_alloc_tables = PFUPipeline::exemplar_names$complete_alloc_table
 )
 }
 \arguments{
@@ -34,7 +34,7 @@ telling which countries should be considered exemplars for the country and year 
 
 \item{country, year}{See \code{IEATools::iea_cols}.}
 
-\item{exemplars, exemplar_tables, iea_data, incomplete_alloc_tables, complete_alloc_tables}{See \code{PFUDatabase::exemplar_names}.}
+\item{exemplars, exemplar_tables, iea_data, incomplete_alloc_tables, complete_alloc_tables}{See \code{PFUPipeline::exemplar_names}.}
 }
 \value{
 A tidy data frame containing completed final-to-useful allocation tables.

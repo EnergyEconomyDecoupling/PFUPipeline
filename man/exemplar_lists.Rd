@@ -7,11 +7,11 @@
 exemplar_lists(
   exemplar_table,
   countries = NULL,
-  prev_names = PFUDatabase::exemplar_names$prev_names,
-  exemplar_country = PFUDatabase::exemplar_names$exemplar_country,
-  exemplars = PFUDatabase::exemplar_names$exemplars,
-  region_code = PFUDatabase::exemplar_names$region_code,
-  world = PFUDatabase::exemplar_names$world,
+  prev_names = PFUPipeline::exemplar_names$prev_names,
+  exemplar_country = PFUPipeline::exemplar_names$exemplar_country,
+  exemplars = PFUPipeline::exemplar_names$exemplars,
+  region_code = PFUPipeline::exemplar_names$region_code,
+  world = PFUPipeline::exemplar_names$world,
   country = IEATools::iea_cols$country,
   year = IEATools::iea_cols$year,
   year_temp = ".year_temp",
@@ -23,7 +23,7 @@ exemplar_lists(
 
 \item{countries}{The countries for which exemplar lists are desired. Default is \code{NULL}, which returns all known countries.}
 
-\item{exemplars, prev_names, exemplar_country, region_code, world}{See \code{PFUDatabase::exemplar_names}.}
+\item{exemplars, prev_names, exemplar_country, region_code, world}{See \code{PFUPipeline::exemplar_names}.}
 
 \item{country, year}{See \code{IEATools::iea_cols}.}
 

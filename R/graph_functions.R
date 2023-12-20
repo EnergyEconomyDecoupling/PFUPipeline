@@ -417,9 +417,11 @@ eta_fu_graph <- function(.df,
 #' The data frame is grouped by `machine`, and `eu_product` and nested prior to making the graphs,
 #' meaning that one final-to useful efficiency graph is constructed for each combination of machine, and eu_product.
 #'
-#' @param .df The completed final-to useful efficiency tables data frame. Which contains both eta.fu and phi.u values. Default is `drake::readd(PFUDatabase::target_names$completed_efficiency_tables, path = cache_path, character_only = TRUE)`.
+#' @param .df The completed final-to useful efficiency tables data frame, 
+#'            which contains both eta.fu and phi.u values.
 #' @param countries The countries for which final-to useful efficiency plots are to be created.
-#' @param plots The name of the output column containing final-to useful efficiency graphs. Default is "plots".
+#' @param plots The name of the output column containing final-to useful efficiency graphs. 
+#'              Default is "plots".
 #' @param country See `IEATools::iea_cols`.
 #' @param year See `IEATools::iea_cols`. Passed to `alloc_graph()`.
 #' @param .values,machine,eu_product See `IEATools::template_cols`. Passed to `eta_fu_graph()`.
@@ -560,7 +562,7 @@ phi_u_graph <- function(.df,
 #' The data frame is grouped by `machine`, and `eu_product` and nested prior to making the graphs,
 #' meaning that one exergy-to-energy ratio graph is constructed for each combination of machine, and eu_product.
 #'
-#' @param .df The completed final-to useful efficiency tables data frame. Which contains both eta.fu and phi.u values. Default is `drake::readd(PFUDatabase::target_names$completed_efficiency_tables, path = cache_path, character_only = TRUE)`.
+#' @param .df The completed final-to useful efficiency tables data frame, which contains both eta.fu and phi.u values.
 #' @param countries The countries for which exergy-to-energy ratio plots are to be created.
 #' @param plots The name of the output column containing exergy-to-energy ratio graph. Default is "plots".
 #' @param country See `IEATools::iea_cols`.

@@ -1,4 +1,4 @@
 library(testthat)
-library(PFUDatabase)
+library(PFUPipeline)
 
-test_check("PFUDatabase")
+test_check("PFUPipeline")

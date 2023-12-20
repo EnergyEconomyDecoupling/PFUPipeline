@@ -20,7 +20,7 @@ library(magrittr)
 library(MKHthemes)
 library(parsedate)
 library(rprojroot)
-library(PFUDatabase)
+library(PFUPipeline)
 library(targets)
 
 # Set up the root directory
@@ -37,7 +37,7 @@ Note that numbers following "##" are the row number in the `EfficiencyGraphs` da
 
 
 ```{r, echo = FALSE}
-eta_fu_plots <- targets::tar_read_raw(PFUDatabase::target_names$efficiency_graphs, store = cache_path) %>% 
+eta_fu_plots <- targets::tar_read_raw(PFUPipeline::target_names$efficiency_graphs, store = cache_path) %>% 
   magrittr::extract2("Plots")
 ```
 
