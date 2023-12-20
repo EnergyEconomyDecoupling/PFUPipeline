@@ -59,9 +59,9 @@ Remotes:
     github::MatthewHeun/MKHthemes,
     github::EnergyEconomyDecoupling/MWTools,
     github::MatthewHeun/IEATools,
-    github::MatthewHeun/Recca
+    github::MatthewHeun/Recca,
     github::EnergyEconomyDecoupling/PFUSetup,
-    github::EnergyEconomyDecoupling/PFUPipelineTools,
+    github::EnergyEconomyDecoupling/PFUPipelineTools
 Depends: 
     R (>= 2.10)
 VignetteBuilder: knitr
