@@ -8,7 +8,7 @@ Cite all releases with doi [10.5281/zenodo.5228375](https://doi.org/10.5281/zeno
 which always resolves to the latest release.
 
 
-
+# PFUPipeline 0.1.7 (2023-12-20)
 * Name change to `PFUPipeline`.
 
 

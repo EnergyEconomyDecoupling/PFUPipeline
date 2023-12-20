@@ -4,12 +4,12 @@ citEntry(entry = "Manual",
   title        = "PFUDatabase: Functions and Workflows for Primary-Final-Useful Societal Exergy Analysis Within the PSUT Framework",
   author       = personList(as.person("Matthew Kuperus Heun"), as.person("Zeke Marshall")),
   year         = "2023",
-  note         = "R package version 0.1.6",
+  note         = "R package version 0.1.7",
   url          = "https://doi.org/10.5281/zenodo.5228375",
 
   textVersion  =
   paste("Matthew Kuperus Heun (2023).",
         "Functions and Workflows for Primary-Final-Useful Societal Exergy Analysis Within the PSUT Framework.",
-        "R package version 0.1.6.",
+        "R package version 0.1.7.",
         "https://doi.org/10.5281/zenodo.5228375")
 )
