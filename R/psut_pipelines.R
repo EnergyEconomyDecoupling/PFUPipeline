@@ -329,12 +329,23 @@ get_pipeline <- function(countries = "all",
     
 
     # (12) Extend to useful stage
-    targets::tar_target_raw("PSUTUsefulIEA", quote(move_to_useful(psut_final = PSUTFinalIEA,
-                                                                  C_mats = Cmats,
-                                                                  eta_phi_vecs = EtafuPhiuvecs,
-                                                                  countries = Countries)),
+    
+    # (12.1) Calculate with detailed matrices
+    targets::tar_target_raw("PSUTUsefulIEAWithDetails", 
+                            quote(move_to_useful_with_details(psut_final = PSUTFinalIEA,
+                                                              C_mats = Cmats,
+                                                              eta_phi_vecs = EtafuPhiuvecs,
+                                                              countries = Countries)),
                             pattern = quote(map(Countries))),
-
+    
+    # (12.2) Keep only the PSUT matrices for the energy conversion chains
+    targets::tar_target_raw("PSUTUsefulIEA", quote(PSUTUsefulIEAWithDetails |> 
+                                                     dplyr::select(-c(IEATools::psut_cols$Y_fu_detailed, 
+                                                                      IEATools::psut_cols$U_eiou_fu_detailed))),
+                            pattern = quote(map(Countries))),
+    
+    # (12.3) Keep the detailed matrices for another product
+    
     # (13) Add other methods
 
 

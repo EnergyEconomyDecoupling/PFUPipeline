@@ -130,9 +130,11 @@ sep_eta_fu_phi_u <- function(eta_fu_phi_u_vecs,
 }
 
 
-#' Move the last stage of the energy conversion chain from final stage to useful stage
+#' Move the last stage of the energy conversion chain from final stage to useful stage with details
 #'
 #' Extends the energy conversion chain from a final energy last stage to useful energy last stage.
+#' Details about the conversion from final to useful are retained via matrices
+#' **Y_fu_detailed** and **U_EIOU_fu_detailed**.
 #' The last-stage-useful energy conversion chain PSUT matrices are bound as rows at the bottom
 #' of the `psut_final` data frame,
 #' albeit with "Useful" instead of "Final" in the `Last.stage` column.
@@ -147,14 +149,14 @@ sep_eta_fu_phi_u <- function(eta_fu_phi_u_vecs,
 #' @return A data frame with energy conversion chain matrices with last stage as useful energy.
 #'
 #' @export
-move_to_useful <- function(psut_final,
-                           C_mats,
-                           eta_phi_vecs,
-                           countries,
-                           country = IEATools::iea_cols$country,
-                           year = IEATools::iea_cols$year,
-                           C_Y = IEATools::template_cols$C_Y,
-                           C_eiou = IEATools::template_cols$C_eiou) {
+move_to_useful_with_details <- function(psut_final,
+                                        C_mats,
+                                        eta_phi_vecs,
+                                        countries,
+                                        country = IEATools::iea_cols$country,
+                                        year = IEATools::iea_cols$year,
+                                        C_Y = IEATools::template_cols$C_Y,
+                                        C_eiou = IEATools::template_cols$C_eiou) {
   
   # Calculate metadata columns.
   m_cols <- C_mats %>%
