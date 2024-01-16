@@ -339,12 +339,25 @@ get_pipeline <- function(countries = "all",
                             pattern = quote(map(Countries))),
     
     # (12.2) Keep only the PSUT matrices for the energy conversion chains
-    targets::tar_target_raw("PSUTUsefulIEA", quote(PSUTUsefulIEAWithDetails |> 
-                                                     dplyr::select(-c(IEATools::psut_cols$Y_fu_detailed, 
-                                                                      IEATools::psut_cols$U_eiou_fu_detailed))),
+    targets::tar_target_raw("PSUTUsefulIEA",
+                            quote(PSUTUsefulIEAWithDetails |> 
+                                    dplyr::select(-dplyr::any_of(c(IEATools::psut_cols$Y_fu_detailed, 
+                                                                   IEATools::psut_cols$U_eiou_fu_detailed)))),
                             pattern = quote(map(Countries))),
     
     # (12.3) Keep the detailed matrices for another product
+    targets::tar_target_raw("YfuUEIOUfudetailed", 
+                            quote(PSUTUsefulIEAWithDetails |> 
+                                    dplyr::filter(.data[[IEATools::iea_cols$last_stage]] == IEATools::all_stages$useful) |> 
+                                    dplyr::select(-dplyr::any_of(c(IEATools::psut_cols$R, 
+                                                                   IEATools::psut_cols$U,
+                                                                   IEATools::psut_cols$U_feed,
+                                                                   IEATools::psut_cols$U_eiou,
+                                                                   IEATools::psut_cols$r_eiou,
+                                                                   IEATools::psut_cols$V,
+                                                                   IEATools::psut_cols$Y,
+                                                                   IEATools::psut_cols$s_units)))),
+                            pattern = quote(map(Countries))),
     
     # (13) Add other methods
 

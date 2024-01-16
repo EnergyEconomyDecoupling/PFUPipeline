@@ -9,7 +9,7 @@ library(PFUPipeline)
 
 
 # Input data version
-version <- "v1.2"
+version <- "v1.3"
 
 # Custom parameters
 
@@ -20,6 +20,7 @@ version <- "v1.2"
 # years <- 1971:1972
 # years <- 1971:1980
 # years <- 1995
+# years <- 1995:2020
 years <- 1960:2020
 
 # Set the years to provide exiobase coefficients
