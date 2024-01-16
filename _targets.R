@@ -20,15 +20,15 @@ version <- "v1.3"
 # years <- 1971:1972
 # years <- 1971:1980
 # years <- 1995
-# years <- 1995:2020
-years <- 1960:2020
+years <- 1995:2020
+# years <- 1960:2020
 
 # Set the years to provide exiobase coefficients
 years_exiobase <- 1995:2020
 
 # countries <- c("ARM", "COL", "WRLD")
 # countries <- c("GBR", "MEX", "GUY")
-# countries <- "USA"
+countries <- "USA"
 # countries <- "GHA"
 # countries <- "COL"
 # countries <- "AGO"
@@ -36,7 +36,7 @@ years_exiobase <- 1995:2020
 # countries <- c("AGO", "COL")
 # countries <- "WRLD"
 # countries <- c("BEN", "WRLD")
-countries <- c(PFUPipeline::canonical_countries, "WRLD") |> as.character()
+# countries <- c(PFUPipeline::canonical_countries, "WRLD") |> as.character()
 
 # Countries with unique allocation data.
 # countries <- c("WRLD", "BRA", "CAN", "CHNM", "DEU", "DNK", "ESP", "FRA", "GBR", "GHA",
