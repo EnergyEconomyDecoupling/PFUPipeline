@@ -143,19 +143,9 @@ get_pipeline <- function(countries = "all",
     #                                                                           agg_cru_cy_metric = c("tmp", "tmn", "tmx"),
     #                                                                           agg_cru_cy_year = 2020))),
 
-    # 
-    # Product N: all_machine_data ----------------------------------------------
-    # 
     targets::tar_target_raw(
       "AllMachineData", 
       quote(read_all_eta_files(eta_fin_paths = get_eta_filepaths(MachineDataPath)))
-    ),
-    targets::tar_target_raw(
-      "ReleaseAllMachineData",
-      quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
-                                             targ = AllMachineData,
-                                             pin_name = "all_machine_data",
-                                             release = Release))
     ),
     
     
@@ -699,13 +689,33 @@ get_pipeline <- function(countries = "all",
       quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
                                              targ = PSUTWithoutNEU,
                                              pin_name = "psut_without_neu",
-                                             release = Release))) #, 
+                                             release = Release))), 
     
-  
+    # 
+    # Product N: all_machine_data ----------------------------------------------
+    # 
+    # Information on all machines in the database.
+    targets::tar_target_raw(
+      "ReleaseAllMachineData",
+      quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                                             targ = AllMachineData,
+                                             pin_name = "all_machine_data",
+                                             release = Release))
+    ),
     
-    
-    
-    
+    # 
+    # Product O: Y_fu_U_EIOU_fu_detailed ---------------------------------------
+    # 
+    # A matsindf data frame of detailed matrices describing
+    # the move from final to useful energy
+    targets::tar_target_raw(
+      "ReleaseYfuUEIOUfudetailed",
+      quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
+                                             targ = AllMachineData,
+                                             pin_name = "Y_fu_U_EIOU_fu_detailed",
+                                             release = Release))
+    )
+
     
     # Zip the targets cache and store it in the pipeline_caches_folder
     # Commented in Dec 2023, because we don't use it.
