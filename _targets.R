@@ -20,10 +20,12 @@ version <- "v1.3"
 # years <- 1971:1972
 # years <- 1971:1980
 # years <- 1995
+# years <- 1995:1996
 # years <- 1995:2020
 years <- 1960:2020
 
 # Set the years to provide exiobase coefficients
+# years_exiobase <- 1995:1996
 years_exiobase <- 1995:2020
 
 # countries <- c("ARM", "COL", "WRLD")
