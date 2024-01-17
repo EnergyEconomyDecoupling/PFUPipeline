@@ -355,22 +355,26 @@ get_pipeline <- function(countries = "all",
     # (12.2) Keep only the PSUT matrices for the energy conversion chains
     targets::tar_target_raw("PSUTUsefulIEA",
                             quote(PSUTUsefulIEAWithDetails |> 
-                                    dplyr::select(-dplyr::any_of(c(IEATools::psut_cols$Y_fu_detailed, 
-                                                                   IEATools::psut_cols$U_eiou_fu_detailed)))),
+                                    remove_cols_from_PSUTUsefulIEAWithDetails(
+                                      cols_to_remove = c(IEATools::psut_cols$Y_fu_detailed, 
+                                                         IEATools::psut_cols$U_eiou_fu_detailed), 
+                                      countries = Countries)),
                             pattern = quote(map(Countries))),
     
     # (12.3) Keep the detailed matrices for another product
     targets::tar_target_raw("YfuUEIOUfudetailed", 
                             quote(PSUTUsefulIEAWithDetails |> 
-                                    dplyr::filter(.data[[IEATools::iea_cols$last_stage]] == IEATools::all_stages$useful) |> 
-                                    dplyr::select(-dplyr::any_of(c(IEATools::psut_cols$R, 
-                                                                   IEATools::psut_cols$U,
-                                                                   IEATools::psut_cols$U_feed,
-                                                                   IEATools::psut_cols$U_eiou,
-                                                                   IEATools::psut_cols$r_eiou,
-                                                                   IEATools::psut_cols$V,
-                                                                   IEATools::psut_cols$Y,
-                                                                   IEATools::psut_cols$s_units)))),
+                                    remove_cols_from_PSUTUsefulIEAWithDetails(
+                                      cols_to_remove = c(IEATools::psut_cols$R, 
+                                                         IEATools::psut_cols$U,
+                                                         IEATools::psut_cols$U_feed,
+                                                         IEATools::psut_cols$U_eiou,
+                                                         IEATools::psut_cols$r_eiou,
+                                                         IEATools::psut_cols$V,
+                                                         IEATools::psut_cols$Y,
+                                                         IEATools::psut_cols$s_units), 
+                                      remove_final = TRUE,
+                                      countries = Countries)),
                             pattern = quote(map(Countries))),
     
     # (13) Add other methods
@@ -711,7 +715,7 @@ get_pipeline <- function(countries = "all",
     targets::tar_target_raw(
       "ReleaseYfuUEIOUfudetailed",
       quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
-                                             targ = AllMachineData,
+                                             targ = YfuUEIOUfudetailed,
                                              pin_name = "Y_fu_U_EIOU_fu_detailed",
                                              release = Release))
     )
