@@ -115,7 +115,7 @@ sep_eta_fu_phi_u <- function(eta_fu_phi_u_vecs,
                              keep = c(IEATools::template_cols$eta_fu, IEATools::template_cols$phi_u),
                              countries,
                              country = IEATools::iea_cols$country) {
-  keep = match.arg(keep, several.ok = FALSE)
+  keep <- match.arg(keep, several.ok = FALSE)
   out <- eta_fu_phi_u_vecs %>%
     dplyr::filter(.data[[country]] %in% countries)
   if (keep == IEATools::template_cols$eta_fu) {
