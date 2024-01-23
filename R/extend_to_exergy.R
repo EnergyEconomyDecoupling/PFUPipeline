@@ -395,26 +395,17 @@ move_to_exergy <- function(psut_energy,
 extend_details_matrices_to_exergy <- function(fu_details_mats, 
                                               phi_vecs, 
                                               countries, 
-                                              exergy_type = IEATools::energy_types$x,
                                               country_colname = IEATools::iea_cols$country, 
-                                              year_colname = IEATools::iea_cols$year, 
-                                              energy_type_colname = IEATools::iea_cols$energy_type, 
-                                              phi_colname = IEATools::phi_constants_names$phi_colname, 
-                                              Y_fu_detailed_colname = "Y_fu_detailed", 
-                                              U_eiou_fu_detailed_colname = "U_EIOU_fu_detailed") {
+                                              year_colname = IEATools::iea_cols$year) {
   # Filter to desired countries
   out <- fu_details_mats |> 
     dplyr::filter(.data[[country_colname]] %in% countries) |> 
     # Add a column of phi vectors
-    dplyr::left_join(phi_vecs, by = c(country_colname, year_colname))
-  # Arrange the column of phi vectors according to the structure and names of the matrices.
-  # We want to multiply the columns of the details matrices by the appropriate
-  # hatized phi vector according to the prefix (useful energy product) of the column names.
-  
-  # Multiply to convert to exergy
-  # Change the Energy.type column to "X"
-  # Stack the data frames.
-  
-  
+    dplyr::left_join(phi_vecs, by = c(country_colname, year_colname)) |> 
+    # Leverage Recca::extend_fu_details_to_exergy()
+    # to move to exergy.
+    # That function arranges the column of phi vectors
+    # according to the structure and names of the matrices.
+    Recca::extend_fu_details_to_exergy()
 }
 

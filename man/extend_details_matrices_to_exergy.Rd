@@ -8,13 +8,8 @@ extend_details_matrices_to_exergy(
   fu_details_mats,
   phi_vecs,
   countries,
-  exergy_type = IEATools::energy_types$x,
   country_colname = IEATools::iea_cols$country,
-  year_colname = IEATools::iea_cols$year,
-  energy_type_colname = IEATools::iea_cols$energy_type,
-  phi_colname = IEATools::phi_constants_names$phi_colname,
-  Y_fu_detailed_colname = "Y_fu_detailed",
-  U_eiou_fu_detailed_colname = "U_EIOU_fu_detailed"
+  year_colname = IEATools::iea_cols$year
 )
 }
 \arguments{
@@ -24,11 +19,11 @@ extend_details_matrices_to_exergy(
 
 \item{countries}{The countries for which this function should be applied.}
 
-\item{exergy_type}{}
-
 \item{country_colname}{}
 
 \item{year_colname}{}
+
+\item{exergy_type}{}
 
 \item{energy_type_colname}{}
 
