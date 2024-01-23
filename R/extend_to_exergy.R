@@ -406,6 +406,6 @@ extend_details_matrices_to_exergy <- function(fu_details_mats,
     # to move to exergy.
     # That function arranges the column of phi vectors
     # according to the structure and names of the matrices.
-    Recca::extend_fu_details_to_exergy()
+    Recca::extend_fu_detailed_to_exergy()
 }
 

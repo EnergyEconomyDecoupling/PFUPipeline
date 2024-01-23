@@ -376,7 +376,8 @@ get_pipeline <- function(countries = "all",
                                       phi_vecs = Phivecs,
                                       remove_final = TRUE,
                                       countries = Countries) |> 
-                                    extend_details_matrices_to_exergy(phi_vecs = Phivecs, countries = Countries)),
+                                    extend_details_matrices_to_exergy(phi_vecs = Phivecs, 
+                                                                      countries = Countries)),
                             pattern = quote(map(Countries))),
     
     # (13) Add other methods
