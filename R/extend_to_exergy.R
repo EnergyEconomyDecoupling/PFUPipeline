@@ -350,3 +350,71 @@ move_to_exergy <- function(psut_energy,
   # In this case, we need to match the noun, not the whole string.
   Recca::extend_to_exergy(df_with_phi, mat_piece = "noun", phi_piece = "all")
 }
+
+
+
+#' Move the useful details energy matrices to exergy
+#' 
+#' A function to extend a data frame of energy fu details matrices to exergy.
+#' 
+#' The final-to-useful details matrices contain information in rows and columns
+#' about the transition from final to useful energy and exergy,
+#' including 
+#'   * the final energy product,
+#'   * the final demand sector,
+#'   * the final-to-useful machine, and 
+#'   * the the useful energy product.
+#'
+#' Entries in the details matrices are useful energy amounts.
+#' Information is encoded in 
+#' row and column labels of the details matrix:
+#'   * Row names use `RCLabels::arrow_notation` with
+#'       - a prefix that identifies the final energy product and 
+#'       - a suffix that identifies the sector in which the final-to-useful
+#'         transformation occurs.
+#'       - Example: "Aviation gasoline -> Domestic aviation".
+#'   * Column names use `RCLabels::from_notation` with
+#'       - a prefix that identifies the useful energy product and
+#'       - a suffix that identifies the final-to-useful machine. 
+#'       - Example: "HPL [from Electric pumps]".
+#'
+#' This function enables mapping over countries.
+#'
+#' @param fu_details_mats 
+#' @param phi_vecs 
+#' @param exergy_type 
+#' @param country_colname 
+#' @param year_colname 
+#' @param energy_type_colname 
+#' @param phi_colname 
+#' @param countries The countries for which this function should be applied.
+#'
+#' @return A version of `fu_details_mats` with matrices containing exergy at the useful stage.
+#' 
+#' @export
+extend_details_matrices_to_exergy <- function(fu_details_mats, 
+                                              phi_vecs, 
+                                              countries, 
+                                              exergy_type = IEATools::energy_types$x,
+                                              country_colname = IEATools::iea_cols$country, 
+                                              year_colname = IEATools::iea_cols$year, 
+                                              energy_type_colname = IEATools::iea_cols$energy_type, 
+                                              phi_colname = IEATools::phi_constants_names$phi_colname, 
+                                              Y_fu_detailed_colname = "Y_fu_detailed", 
+                                              U_eiou_fu_detailed_colname = "U_EIOU_fu_detailed") {
+  # Filter to desired countries
+  out <- fu_details_mats |> 
+    dplyr::filter(.data[[country_colname]] %in% countries) |> 
+    # Add a column of phi vectors
+    dplyr::left_join(phi_vecs, by = c(country_colname, year_colname))
+  # Arrange the column of phi vectors according to the structure and names of the matrices.
+  # We want to multiply the columns of the details matrices by the appropriate
+  # hatized phi vector according to the prefix (useful energy product) of the column names.
+  
+  # Multiply to convert to exergy
+  # Change the Energy.type column to "X"
+  # Stack the data frames.
+  
+  
+}
+

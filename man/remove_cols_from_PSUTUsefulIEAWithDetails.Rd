@@ -7,9 +7,11 @@
 remove_cols_from_PSUTUsefulIEAWithDetails(
   psut_useful_iea_with_details,
   cols_to_remove,
-  remove_final = FALSE,
+  phi_vecs,
+  remove_final = TRUE,
   countries,
   country = IEATools::iea_cols$country,
+  year = IEATools::iea_cols$year,
   last_stage = IEATools::iea_cols$last_stage,
   final = IEATools::all_stages$final
 )
@@ -19,13 +21,18 @@ remove_cols_from_PSUTUsefulIEAWithDetails(
 
 \item{cols_to_remove}{A string vector of columns names to be removed.}
 
-\item{remove_final}{A boolean that tells whether to remove Last.stage = "Final" rows.
-Default is \code{FALSE}.}
+\item{remove_final}{A boolean that tells whether to remove Last.stage == "Final" rows.
+Because the detail matrices contain useful-stage data,
+there is, typically, no need to keep the useful rows.
+Default is \code{TRUE}.}
 
 \item{countries}{The countries for which this function should be applied.}
 
-\item{country}{The name of the \code{Country} column in \code{psut_useful_iea_with_details}.
+\item{country}{The name of the \code{Country} column in \code{psut_useful_iea_with_details} and \code{phi_vecs}.
 Default is \code{IEATools::iea_cols$country}.}
+
+\item{year}{The name of the \code{Year} column in  \code{psut_useful_iea_with_details} and \code{phi_vecs}.
+Default is \code{IEATools::iea_cols$year}.}
 
 \item{last_stage}{The name of the "Last.stage" column.
 Default is \code{IEATools::iea_cols$last_stage}.}
@@ -39,5 +46,7 @@ A version of \code{psut_useful_iea_with_details} with \code{cols_to_remove} remo
 \description{
 A simple wrapper function to assist with removing
 unneeded columns from the \code{PSUTUsefulIEAWithDetails} target.
+}
+\details{
 This function enables mapping over countries.
 }

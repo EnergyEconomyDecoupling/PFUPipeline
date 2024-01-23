@@ -180,15 +180,20 @@ move_to_useful_with_details <- function(psut_final,
 #' 
 #' A simple wrapper function to assist with removing
 #' unneeded columns from the `PSUTUsefulIEAWithDetails` target.
+#'
 #' This function enables mapping over countries.
 #'
 #' @param psut_useful_iea_with_details The target from which columns should be removed.
 #' @param cols_to_remove A string vector of columns names to be removed.
-#' @param remove_final A boolean that tells whether to remove Last.stage = "Final" rows.
-#'                     Default is `FALSE`.
+#' @param remove_final A boolean that tells whether to remove Last.stage == "Final" rows.
+#'                     Because the detail matrices contain useful-stage data,
+#'                     there is, typically, no need to keep the useful rows.
+#'                     Default is `TRUE`.
 #' @param countries The countries for which this function should be applied.
-#' @param country The name of the `Country` column in `psut_useful_iea_with_details`.
+#' @param country The name of the `Country` column in `psut_useful_iea_with_details` and `phi_vecs`.
 #'                Default is `IEATools::iea_cols$country`.
+#' @param year The name of the `Year` column in  `psut_useful_iea_with_details` and `phi_vecs`.
+#'             Default is `IEATools::iea_cols$year`.
 #' @param last_stage The name of the "Last.stage" column. 
 #'                   Default is `IEATools::iea_cols$last_stage`.
 #' @param final The string defining the final stage.
@@ -199,9 +204,11 @@ move_to_useful_with_details <- function(psut_final,
 #' @export
 remove_cols_from_PSUTUsefulIEAWithDetails <- function(psut_useful_iea_with_details, 
                                                       cols_to_remove,
-                                                      remove_final = FALSE,
+                                                      phi_vecs,
+                                                      remove_final = TRUE,
                                                       countries, 
                                                       country = IEATools::iea_cols$country, 
+                                                      year = IEATools::iea_cols$year,
                                                       last_stage = IEATools::iea_cols$last_stage, 
                                                       final = IEATools::all_stages$final) {
   out <- psut_useful_iea_with_details |> 
@@ -213,9 +220,8 @@ remove_cols_from_PSUTUsefulIEAWithDetails <- function(psut_useful_iea_with_detai
   }
   return(out)
 }
-  
-  
-  
+
+
   
   
   

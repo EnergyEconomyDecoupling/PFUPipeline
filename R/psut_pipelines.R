@@ -357,7 +357,7 @@ get_pipeline <- function(countries = "all",
                             quote(PSUTUsefulIEAWithDetails |> 
                                     remove_cols_from_PSUTUsefulIEAWithDetails(
                                       cols_to_remove = c(IEATools::psut_cols$Y_fu_detailed, 
-                                                         IEATools::psut_cols$U_eiou_fu_detailed), 
+                                                         IEATools::psut_cols$U_eiou_fu_detailed),
                                       countries = Countries)),
                             pattern = quote(map(Countries))),
     
@@ -373,8 +373,10 @@ get_pipeline <- function(countries = "all",
                                                          IEATools::psut_cols$V,
                                                          IEATools::psut_cols$Y,
                                                          IEATools::psut_cols$s_units), 
+                                      phi_vecs = Phivecs,
                                       remove_final = TRUE,
-                                      countries = Countries)),
+                                      countries = Countries) |> 
+                                    extend_details_matrices_to_exergy(phi_vecs = Phivecs, countries = Countries)),
                             pattern = quote(map(Countries))),
     
     # (13) Add other methods
