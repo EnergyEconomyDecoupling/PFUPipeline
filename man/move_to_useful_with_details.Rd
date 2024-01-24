@@ -34,7 +34,7 @@ A data frame with energy conversion chain matrices with last stage as useful ene
 \description{
 Extends the energy conversion chain from a final energy last stage to useful energy last stage.
 Details about the conversion from final to useful are retained via matrices
-\strong{Y_fu_detailed} and \strong{U_EIOU_fu_detailed}.
+\strong{Y_fu_details} and \strong{U_EIOU_fu_details}.
 The last-stage-useful energy conversion chain PSUT matrices are bound as rows at the bottom
 of the \code{psut_final} data frame,
 albeit with "Useful" instead of "Final" in the \code{Last.stage} column.

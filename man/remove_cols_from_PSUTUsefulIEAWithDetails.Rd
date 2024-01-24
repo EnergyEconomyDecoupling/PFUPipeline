@@ -8,7 +8,7 @@ remove_cols_from_PSUTUsefulIEAWithDetails(
   psut_useful_iea_with_details,
   cols_to_remove,
   phi_vecs,
-  remove_final = TRUE,
+  remove_final = FALSE,
   countries,
   country = IEATools::iea_cols$country,
   year = IEATools::iea_cols$year,
@@ -22,9 +22,7 @@ remove_cols_from_PSUTUsefulIEAWithDetails(
 \item{cols_to_remove}{A string vector of columns names to be removed.}
 
 \item{remove_final}{A boolean that tells whether to remove Last.stage == "Final" rows.
-Because the detail matrices contain useful-stage data,
-there is, typically, no need to keep the useful rows.
-Default is \code{TRUE}.}
+Default is \code{FALSE}.}
 
 \item{countries}{The countries for which this function should be applied.}
 

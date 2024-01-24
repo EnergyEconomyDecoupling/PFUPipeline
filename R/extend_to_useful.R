@@ -134,7 +134,7 @@ sep_eta_fu_phi_u <- function(eta_fu_phi_u_vecs,
 #'
 #' Extends the energy conversion chain from a final energy last stage to useful energy last stage.
 #' Details about the conversion from final to useful are retained via matrices
-#' **Y_fu_detailed** and **U_EIOU_fu_detailed**.
+#' **Y_fu_details** and **U_EIOU_fu_details**.
 #' The last-stage-useful energy conversion chain PSUT matrices are bound as rows at the bottom
 #' of the `psut_final` data frame,
 #' albeit with "Useful" instead of "Final" in the `Last.stage` column.
@@ -186,9 +186,7 @@ move_to_useful_with_details <- function(psut_final,
 #' @param psut_useful_iea_with_details The target from which columns should be removed.
 #' @param cols_to_remove A string vector of columns names to be removed.
 #' @param remove_final A boolean that tells whether to remove Last.stage == "Final" rows.
-#'                     Because the detail matrices contain useful-stage data,
-#'                     there is, typically, no need to keep the useful rows.
-#'                     Default is `TRUE`.
+#'                     Default is `FALSE`.
 #' @param countries The countries for which this function should be applied.
 #' @param country The name of the `Country` column in `psut_useful_iea_with_details` and `phi_vecs`.
 #'                Default is `IEATools::iea_cols$country`.
@@ -205,7 +203,7 @@ move_to_useful_with_details <- function(psut_final,
 remove_cols_from_PSUTUsefulIEAWithDetails <- function(psut_useful_iea_with_details, 
                                                       cols_to_remove,
                                                       phi_vecs,
-                                                      remove_final = TRUE,
+                                                      remove_final = FALSE,
                                                       countries, 
                                                       country = IEATools::iea_cols$country, 
                                                       year = IEATools::iea_cols$year,

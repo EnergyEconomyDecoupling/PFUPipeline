@@ -344,7 +344,7 @@ get_pipeline <- function(countries = "all",
 
     # (12) Extend to useful stage
     
-    # (12.1) Calculate with detailed matrices
+    # (12.1) Calculate with details matrices
     targets::tar_target_raw("PSUTUsefulIEAWithDetails", 
                             quote(move_to_useful_with_details(psut_final = PSUTFinalIEA,
                                                               C_mats = Cmats,
@@ -356,13 +356,13 @@ get_pipeline <- function(countries = "all",
     targets::tar_target_raw("PSUTUsefulIEA",
                             quote(PSUTUsefulIEAWithDetails |> 
                                     remove_cols_from_PSUTUsefulIEAWithDetails(
-                                      cols_to_remove = c(IEATools::psut_cols$Y_fu_detailed, 
-                                                         IEATools::psut_cols$U_eiou_fu_detailed),
+                                      cols_to_remove = c(IEATools::psut_cols$Y_fu_details, 
+                                                         IEATools::psut_cols$U_eiou_fu_details),
                                       countries = Countries)),
                             pattern = quote(map(Countries))),
     
-    # (12.3) Keep the detailed matrices for another product
-    targets::tar_target_raw("YfuUEIOUfudetailed", 
+    # (12.3) Keep the details matrices for another product
+    targets::tar_target_raw("YfuUEIOUfudetails", 
                             quote(PSUTUsefulIEAWithDetails |> 
                                     remove_cols_from_PSUTUsefulIEAWithDetails(
                                       cols_to_remove = c(IEATools::psut_cols$R, 
@@ -711,15 +711,15 @@ get_pipeline <- function(countries = "all",
     ),
     
     # 
-    # Product O: Y_fu_U_EIOU_fu_detailed ---------------------------------------
+    # Product O: Y_fu_U_EIOU_fu_details ---------------------------------------
     # 
-    # A matsindf data frame of detailed matrices describing
+    # A matsindf data frame of details matrices describing
     # the move from final to useful energy
     targets::tar_target_raw(
-      "ReleaseYfuUEIOUfudetailed",
+      "ReleaseYfuUEIOUfudetails",
       quote(PFUPipelineTools::release_target(pipeline_releases_folder = PipelineReleasesFolder,
-                                             targ = YfuUEIOUfudetailed,
-                                             pin_name = "Y_fu_U_EIOU_fu_detailed",
+                                             targ = YfuUEIOUfudetails,
+                                             pin_name = "Y_fu_U_EIOU_fu_details",
                                              release = Release))
     )
 

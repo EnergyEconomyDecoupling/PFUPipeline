@@ -11,7 +11,7 @@ which always resolves to the latest release.
 * Now producing a matrix containing detailed energy information about 
   the final to useful extension.
   The target is called `PSUTUsefulIEAWithDetails`.
-  The product is called `Y_fu_U_EIOU_fu_detailed`.
+  The product is called `Y_fu_U_EIOU_fu_details`.
 
 
 # PFUPipeline 0.1.7 (2023-12-20) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10413323.svg)](https://doi.org/10.5281/zenodo.10413323)
