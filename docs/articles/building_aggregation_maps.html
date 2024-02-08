@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">PFUPipeline</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.8</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -1294,7 +1294,7 @@ columns.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> Additives/blending components       Oil &amp; oil products  </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> Other hydrocarbons                  Oil &amp; oil products</span></span>
 <span></span>
-<span><span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/aggregation_map_helpers.html" class="external-link">agg_table_to_agg_map</a></span><span class="op">(</span><span class="va">prod_agg_table_example</span>,</span>
+<span><span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/aggregation_map_helpers.html" class="external-link">agg_table_to_agg_map</a></span><span class="op">(</span><span class="va">prod_agg_table_example</span>,</span>
 <span>                                 many_colname <span class="op">=</span> <span class="st">"Many"</span>, </span>
 <span>                                 few_colname <span class="op">=</span> <span class="st">"Few"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $`Coal &amp; coal products`</span></span>
@@ -1314,7 +1314,7 @@ tables can be found in the “Aggregation_maps.xlsx” file in the
 <code class="sourceCode R"><span><span class="va">prod_agg_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"Aggregation_Tables.xlsx"</span>,  </span>
 <span>                            package<span class="op">=</span><span class="st">"PFUPipeline"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">readxl</span><span class="fu">::</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html" class="external-link">read_excel</a></span><span class="op">(</span>sheet <span class="op">=</span> <span class="st">"product_aggregation"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/aggregation_map_helpers.html" class="external-link">agg_table_to_agg_map</a></span><span class="op">(</span>many_colname <span class="op">=</span> <span class="st">"Many"</span>, </span>
+<span>  <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/aggregation_map_helpers.html" class="external-link">agg_table_to_agg_map</a></span><span class="op">(</span>many_colname <span class="op">=</span> <span class="st">"Many"</span>, </span>
 <span>                                   few_colname <span class="op">=</span> <span class="st">"Few"</span><span class="op">)</span></span>
 <span><span class="va">prod_agg_map</span></span>
 <span><span class="co">#&gt; $Biofuels</span></span>
@@ -1426,7 +1426,7 @@ tables can be found in the “Aggregation_maps.xlsx” file in the
 <span><span class="va">ind_agg_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"Aggregation_Tables.xlsx"</span>, </span>
 <span>                              package<span class="op">=</span><span class="st">"PFUPipeline"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">readxl</span><span class="fu">::</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html" class="external-link">read_excel</a></span><span class="op">(</span>sheet <span class="op">=</span> <span class="st">"industry_aggregation"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/aggregation_map_helpers.html" class="external-link">agg_table_to_agg_map</a></span><span class="op">(</span>many_colname <span class="op">=</span> <span class="st">"Many"</span>, </span>
+<span>  <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/aggregation_map_helpers.html" class="external-link">agg_table_to_agg_map</a></span><span class="op">(</span>many_colname <span class="op">=</span> <span class="st">"Many"</span>, </span>
 <span>                                   few_colname <span class="op">=</span> <span class="st">"Few"</span><span class="op">)</span></span>
 <span><span class="va">ind_agg_map</span></span>
 <span><span class="co">#&gt; $`Agriculture, forestry, and fishing`</span></span>
@@ -1506,11 +1506,11 @@ tables can be found in the “Aggregation_maps.xlsx” file in the
 <h2 id="perform-the-aggregations">Perform the aggregations<a class="anchor" aria-label="anchor" href="#perform-the-aggregations"></a>
 </h2>
 <p>There are two <code>matsbyname</code> functions that assist with
-aggregations: <code><a href="https://rdrr.io/pkg/matsbyname/man/aggregate_byname.html" class="external-link">matsbyname::aggregate_byname()</a></code> and
-<code><a href="https://rdrr.io/pkg/matsbyname/man/aggregate_pieces_byname.html" class="external-link">matsbyname::aggregate_pieces_byname()</a></code>. A third function
-(<code><a href="https://rdrr.io/pkg/matsbyname/man/aggregate_to_pref_suff_byname.html" class="external-link">matsbyname::aggregate_to_pref_suff_byname()</a></code>) has been
+aggregations: <code><a href="https://matthewheun.github.io/matsbyname/reference/aggregate_byname.html" class="external-link">matsbyname::aggregate_byname()</a></code> and
+<code><a href="https://matthewheun.github.io/matsbyname/reference/aggregate_pieces_byname.html" class="external-link">matsbyname::aggregate_pieces_byname()</a></code>. A third function
+(<code><a href="https://matthewheun.github.io/matsbyname/reference/aggregate_to_pref_suff_byname.html" class="external-link">matsbyname::aggregate_to_pref_suff_byname()</a></code>) has been
 deprecated in favor of
-<code><a href="https://rdrr.io/pkg/matsbyname/man/aggregate_pieces_byname.html" class="external-link">matsbyname::aggregate_pieces_byname()</a></code>.</p>
+<code><a href="https://matthewheun.github.io/matsbyname/reference/aggregate_pieces_byname.html" class="external-link">matsbyname::aggregate_pieces_byname()</a></code>.</p>
 <p>Knowing that the <code>matsbyname</code> package can aggregate by any
 piece of a row or column label (including prefix, suffix, noun, or
 object of a preposition), aggregation maps can be constructed by
@@ -1524,13 +1524,13 @@ code like the following example.</p>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>    <span class="co"># Aggregate R</span></span>
 <span>    R_agg <span class="op">=</span> <span class="va">.data</span><span class="op">[[</span><span class="st">"R"</span><span class="op">]</span><span class="op">]</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/aggregate_pieces_byname.html" class="external-link">aggregate_pieces_byname</a></span><span class="op">(</span></span>
+<span>      <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/aggregate_pieces_byname.html" class="external-link">aggregate_pieces_byname</a></span><span class="op">(</span></span>
 <span>        piece <span class="op">=</span> <span class="st">"noun"</span>,</span>
 <span>        margin <span class="op">=</span> <span class="st">"Industry"</span>,</span>
 <span>        inf_notation <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>        notation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu">RCLabels</span><span class="fu">::</span><span class="va"><a href="https://matthewheun.github.io/RCLabels/reference/bracket_notation.html" class="external-link">bracket_notation</a></span>, <span class="fu">RCLabels</span><span class="fu">::</span><span class="va"><a href="https://matthewheun.github.io/RCLabels/reference/arrow_notation.html" class="external-link">arrow_notation</a></span><span class="op">)</span><span class="op">)</span>,</span>
 <span>      <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/aggregate_pieces_byname.html" class="external-link">aggregate_pieces_byname</a></span><span class="op">(</span></span>
+<span>      <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/aggregate_pieces_byname.html" class="external-link">aggregate_pieces_byname</a></span><span class="op">(</span></span>
 <span>        piece <span class="op">=</span> <span class="st">"noun"</span>,</span>
 <span>        margin <span class="op">=</span> <span class="st">"Product"</span>,</span>
 <span>        inf_notation <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -1539,14 +1539,14 @@ code like the following example.</p>
 <span>      <span class="op">)</span>,</span>
 <span>    <span class="co"># Aggregate U_feed</span></span>
 <span>    U_feed_agg <span class="op">=</span> <span class="va">.data</span><span class="op">[[</span><span class="st">"U_feed"</span><span class="op">]</span><span class="op">]</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/aggregate_pieces_byname.html" class="external-link">aggregate_pieces_byname</a></span><span class="op">(</span></span>
+<span>      <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/aggregate_pieces_byname.html" class="external-link">aggregate_pieces_byname</a></span><span class="op">(</span></span>
 <span>        piece <span class="op">=</span> <span class="st">"noun"</span>,</span>
 <span>        margin <span class="op">=</span> <span class="st">"Product"</span>,</span>
 <span>        inf_notation <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>        notation <span class="op">=</span> <span class="fu">RCLabels</span><span class="fu">::</span><span class="va"><a href="https://matthewheun.github.io/RCLabels/reference/bracket_notation.html" class="external-link">bracket_notation</a></span>,</span>
 <span>        aggregation_map <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">prod_agg_map</span><span class="op">)</span></span>
 <span>      <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/aggregate_pieces_byname.html" class="external-link">aggregate_pieces_byname</a></span><span class="op">(</span></span>
+<span>      <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/aggregate_pieces_byname.html" class="external-link">aggregate_pieces_byname</a></span><span class="op">(</span></span>
 <span>        piece <span class="op">=</span> <span class="st">"noun"</span>,</span>
 <span>        margin <span class="op">=</span> <span class="st">"Industry"</span>,</span>
 <span>        inf_notation <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -1555,14 +1555,14 @@ code like the following example.</p>
 <span>      <span class="op">)</span>,</span>
 <span>    <span class="co"># Aggregate U_EIOU</span></span>
 <span>    U_EIOU_agg <span class="op">=</span> <span class="va">.data</span><span class="op">[[</span><span class="st">"U_EIOU"</span><span class="op">]</span><span class="op">]</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/aggregate_pieces_byname.html" class="external-link">aggregate_pieces_byname</a></span><span class="op">(</span></span>
+<span>      <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/aggregate_pieces_byname.html" class="external-link">aggregate_pieces_byname</a></span><span class="op">(</span></span>
 <span>        piece <span class="op">=</span> <span class="st">"noun"</span>,</span>
 <span>        margin <span class="op">=</span> <span class="st">"Product"</span>,</span>
 <span>        inf_notation <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>        notation <span class="op">=</span> <span class="fu">RCLabels</span><span class="fu">::</span><span class="va"><a href="https://matthewheun.github.io/RCLabels/reference/bracket_notation.html" class="external-link">bracket_notation</a></span>,</span>
 <span>        aggregation_map <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">prod_agg_map</span><span class="op">)</span></span>
 <span>      <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/aggregate_pieces_byname.html" class="external-link">aggregate_pieces_byname</a></span><span class="op">(</span></span>
+<span>      <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/aggregate_pieces_byname.html" class="external-link">aggregate_pieces_byname</a></span><span class="op">(</span></span>
 <span>        piece <span class="op">=</span> <span class="st">"noun"</span>,</span>
 <span>        margin <span class="op">=</span> <span class="st">"Industry"</span>,</span>
 <span>        inf_notation <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -1570,19 +1570,19 @@ code like the following example.</p>
 <span>        aggregation_map <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">ind_agg_map</span><span class="op">)</span></span>
 <span>      <span class="op">)</span>,</span>
 <span>    <span class="co"># Create aggregated U matrix</span></span>
-<span>    U_agg <span class="op">=</span> <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/sum_byname.html" class="external-link">sum_byname</a></span><span class="op">(</span><span class="va">.data</span><span class="op">[[</span><span class="st">"U_feed_agg"</span><span class="op">]</span><span class="op">]</span>, <span class="va">.data</span><span class="op">[[</span><span class="st">"U_EIOU_agg"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>    U_agg <span class="op">=</span> <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/sum_byname.html" class="external-link">sum_byname</a></span><span class="op">(</span><span class="va">.data</span><span class="op">[[</span><span class="st">"U_feed_agg"</span><span class="op">]</span><span class="op">]</span>, <span class="va">.data</span><span class="op">[[</span><span class="st">"U_EIOU_agg"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
 <span>    <span class="co"># Create aggregated r_EIOU matrix</span></span>
-<span>    r_EIOU_agg <span class="op">=</span> <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/quotient_byname.html" class="external-link">quotient_byname</a></span><span class="op">(</span><span class="va">.data</span><span class="op">[[</span><span class="st">"U_EIOU"</span><span class="op">]</span><span class="op">]</span>, <span class="va">.data</span><span class="op">[[</span><span class="st">"U"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/replaceNaN_byname.html" class="external-link">replaceNaN_byname</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    r_EIOU_agg <span class="op">=</span> <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/quotient_byname.html" class="external-link">quotient_byname</a></span><span class="op">(</span><span class="va">.data</span><span class="op">[[</span><span class="st">"U_EIOU"</span><span class="op">]</span><span class="op">]</span>, <span class="va">.data</span><span class="op">[[</span><span class="st">"U"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>      <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/replaceNaN_byname.html" class="external-link">replaceNaN_byname</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    <span class="co"># Aggregate V</span></span>
 <span>    V_agg <span class="op">=</span> <span class="va">.data</span><span class="op">[[</span><span class="st">"V"</span><span class="op">]</span><span class="op">]</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/aggregate_pieces_byname.html" class="external-link">aggregate_pieces_byname</a></span><span class="op">(</span></span>
+<span>      <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/aggregate_pieces_byname.html" class="external-link">aggregate_pieces_byname</a></span><span class="op">(</span></span>
 <span>        piece <span class="op">=</span> <span class="st">"noun"</span>,</span>
 <span>        margin <span class="op">=</span> <span class="st">"Industry"</span>,</span>
 <span>        inf_notation <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>        notation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu">RCLabels</span><span class="fu">::</span><span class="va"><a href="https://matthewheun.github.io/RCLabels/reference/bracket_notation.html" class="external-link">bracket_notation</a></span>, <span class="fu">RCLabels</span><span class="fu">::</span><span class="va"><a href="https://matthewheun.github.io/RCLabels/reference/arrow_notation.html" class="external-link">arrow_notation</a></span><span class="op">)</span><span class="op">)</span>,</span>
 <span>      <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/aggregate_pieces_byname.html" class="external-link">aggregate_pieces_byname</a></span><span class="op">(</span></span>
+<span>      <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/aggregate_pieces_byname.html" class="external-link">aggregate_pieces_byname</a></span><span class="op">(</span></span>
 <span>        piece <span class="op">=</span> <span class="st">"noun"</span>,</span>
 <span>        margin <span class="op">=</span> <span class="st">"Product"</span>,</span>
 <span>        inf_notation <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -1591,14 +1591,14 @@ code like the following example.</p>
 <span>      <span class="op">)</span>,</span>
 <span>    <span class="co"># Aggregate Y</span></span>
 <span>    Y_agg <span class="op">=</span> <span class="va">.data</span><span class="op">[[</span><span class="st">"Y"</span><span class="op">]</span><span class="op">]</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/aggregate_pieces_byname.html" class="external-link">aggregate_pieces_byname</a></span><span class="op">(</span></span>
+<span>      <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/aggregate_pieces_byname.html" class="external-link">aggregate_pieces_byname</a></span><span class="op">(</span></span>
 <span>        piece <span class="op">=</span> <span class="st">"noun"</span>,</span>
 <span>        margin <span class="op">=</span> <span class="st">"Product"</span>,</span>
 <span>        inf_notation <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>        notation <span class="op">=</span> <span class="fu">RCLabels</span><span class="fu">::</span><span class="va"><a href="https://matthewheun.github.io/RCLabels/reference/bracket_notation.html" class="external-link">bracket_notation</a></span>,</span>
 <span>        aggregation_map <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">prod_agg_map</span><span class="op">)</span></span>
 <span>      <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/aggregate_pieces_byname.html" class="external-link">aggregate_pieces_byname</a></span><span class="op">(</span></span>
+<span>      <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/aggregate_pieces_byname.html" class="external-link">aggregate_pieces_byname</a></span><span class="op">(</span></span>
 <span>        piece <span class="op">=</span> <span class="st">"noun"</span>,</span>
 <span>        margin <span class="op">=</span> <span class="st">"Industry"</span>,</span>
 <span>        inf_notation <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -1754,8 +1754,8 @@ expected.</p>
 </h2>
 <p>Through judicious use of several helpful functions
 (<code><a href="https://matthewheun.github.io/Recca/reference/get_all_products_and_industries.html" class="external-link">Recca::get_all_products_and_industries()</a></code>,
-<code><a href="https://rdrr.io/pkg/matsbyname/man/aggregation_map_helpers.html" class="external-link">matsbyname::agg_table_to_agg_map()</a></code>, and
-<code><a href="https://rdrr.io/pkg/matsbyname/man/aggregate_pieces_byname.html" class="external-link">matsbyname::aggregate_pieces_byname()</a></code>), one can aggregate
+<code><a href="https://matthewheun.github.io/matsbyname/reference/aggregation_map_helpers.html" class="external-link">matsbyname::agg_table_to_agg_map()</a></code>, and
+<code><a href="https://matthewheun.github.io/matsbyname/reference/aggregate_pieces_byname.html" class="external-link">matsbyname::aggregate_pieces_byname()</a></code>), one can aggregate
 PSUT matrices when they are arranged in a matsindf data frame.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

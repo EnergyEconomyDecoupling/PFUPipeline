@@ -133,6 +133,9 @@
     <loc>https://energyeconomydecoupling.github.io/PFUPipeline/reference/expand_phi_vecs.html</loc>
   </url>
   <url>
+    <loc>https://energyeconomydecoupling.github.io/PFUPipeline/reference/extend_details_matrices_to_exergy.html</loc>
+  </url>
+  <url>
     <loc>https://energyeconomydecoupling.github.io/PFUPipeline/reference/filter_mw_to_iea_years.html</loc>
   </url>
   <url>
@@ -196,6 +199,9 @@
     <loc>https://energyeconomydecoupling.github.io/PFUPipeline/reference/move_to_useful.html</loc>
   </url>
   <url>
+    <loc>https://energyeconomydecoupling.github.io/PFUPipeline/reference/move_to_useful_with_details.html</loc>
+  </url>
+  <url>
     <loc>https://energyeconomydecoupling.github.io/PFUPipeline/reference/nonstat_alloc_graph.html</loc>
   </url>
   <url>
@@ -221,6 +227,9 @@
   </url>
   <url>
     <loc>https://energyeconomydecoupling.github.io/PFUPipeline/reference/read_list_exiobase_energy_flows.html</loc>
+  </url>
+  <url>
+    <loc>https://energyeconomydecoupling.github.io/PFUPipeline/reference/remove_cols_from_PSUTUsefulIEAWithDetails.html</loc>
   </url>
   <url>
     <loc>https://energyeconomydecoupling.github.io/PFUPipeline/reference/remove_non_energy_use.html</loc>
