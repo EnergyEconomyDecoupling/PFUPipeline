@@ -185,6 +185,7 @@ move_to_useful_with_details <- function(psut_final,
 #'
 #' @param psut_useful_iea_with_details The target from which columns should be removed.
 #' @param cols_to_remove A string vector of columns names to be removed.
+#' @param phi_vecs The name of the phi vector column in `psut_useful_iea_with_details`.
 #' @param remove_final A boolean that tells whether to remove Last.stage == "Final" rows.
 #'                     Default is `FALSE`.
 #' @param countries The countries for which this function should be applied.

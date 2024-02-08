@@ -21,6 +21,8 @@ remove_cols_from_PSUTUsefulIEAWithDetails(
 
 \item{cols_to_remove}{A string vector of columns names to be removed.}
 
+\item{phi_vecs}{The name of the phi vector column in \code{psut_useful_iea_with_details}.}
+
 \item{remove_final}{A boolean that tells whether to remove Last.stage == "Final" rows.
 Default is \code{FALSE}.}
 

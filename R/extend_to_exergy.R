@@ -376,18 +376,14 @@ move_to_exergy <- function(psut_energy,
 #'   * Column names use `RCLabels::from_notation` with
 #'       - a prefix that identifies the useful energy product and
 #'       - a suffix that identifies the final-to-useful machine. 
-#'       - Example: "HPL [from Electric pumps]".
+#'       - Example: "HPL \[from Electric pumps\]".
 #'
 #' This function enables mapping over countries.
 #'
-#' @param fu_details_mats 
-#' @param phi_vecs 
-#' @param exergy_type 
-#' @param country_colname 
-#' @param year_colname 
-#' @param energy_type_colname 
-#' @param phi_colname 
+#' @param fu_details_mats A data frame containing final-to-useful details matrices.
+#' @param phi_vecs The name of the phi vectors column in `fu_details_mats`.
 #' @param countries The countries for which this function should be applied.
+#' @param country_colname,year_colname Names of columns in `fu_details_mats`.
 #'
 #' @return A version of `fu_details_mats` with matrices containing exergy at the useful stage.
 #' 
@@ -398,7 +394,7 @@ extend_details_matrices_to_exergy <- function(fu_details_mats,
                                               country_colname = IEATools::iea_cols$country, 
                                               year_colname = IEATools::iea_cols$year) {
   # Filter to desired countries
-  out <- fu_details_mats |> 
+  fu_details_mats |> 
     dplyr::filter(.data[[country_colname]] %in% countries) |> 
     # Add a column of phi vectors
     dplyr::left_join(phi_vecs, by = c(country_colname, year_colname)) |> 

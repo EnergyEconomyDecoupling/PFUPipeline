@@ -24,6 +24,9 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
+Config/testthat/edition: 3
+Config/testthat/parallel: false
+Config/testthat/start-first: 
 Imports:
     assertthat,
     dplyr,
@@ -36,8 +39,8 @@ Imports:
     MWTools,
     PFUPipelineTools,
     PFUSetup,
-    purrr,
     pwt10,
+    purrr,
     readr,
     readxl,
     Recca,
@@ -66,6 +69,5 @@ Depends:
     R (>= 2.10)
 VignetteBuilder: knitr
 LazyData: true
-Config/testthat/edition: 3
 Language: en-US
 URL: https://energyeconomydecoupling.github.io/PFUPipeline/

@@ -13,21 +13,13 @@ extend_details_matrices_to_exergy(
 )
 }
 \arguments{
-\item{fu_details_mats}{}
+\item{fu_details_mats}{A data frame containing final-to-useful details matrices.}
 
-\item{phi_vecs}{}
+\item{phi_vecs}{The name of the phi vectors column in \code{fu_details_mats}.}
 
 \item{countries}{The countries for which this function should be applied.}
 
-\item{country_colname}{}
-
-\item{year_colname}{}
-
-\item{exergy_type}{}
-
-\item{energy_type_colname}{}
-
-\item{phi_colname}{}
+\item{country_colname, year_colname}{Names of columns in \code{fu_details_mats}.}
 }
 \value{
 A version of \code{fu_details_mats} with matrices containing exergy at the useful stage.
@@ -61,7 +53,7 @@ transformation occurs.
 \itemize{
 \item a prefix that identifies the useful energy product and
 \item a suffix that identifies the final-to-useful machine.
-\item Example: "HPL \link{from Electric pumps}".
+\item Example: "HPL [from Electric pumps]".
 }
 }
 
