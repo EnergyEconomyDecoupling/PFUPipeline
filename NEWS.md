@@ -9,7 +9,7 @@ which always resolves to the latest release.
 
 
 
-## PFUPipeline 0.1.8 (2024-02-07)
+## PFUPipeline 0.1.8 (2024-02-07) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10633119.svg)](https://doi.org/10.5281/zenodo.10633119)
 
 * Now producing a matrix containing detailed energy information about 
   the final to useful extension.
