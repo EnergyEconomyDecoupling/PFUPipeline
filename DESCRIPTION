@@ -1,7 +1,7 @@
 Package: PFUPipeline
 Title: Functions and Workflows for Primary-Final-Useful Societal Exergy Analysis Within the PSUT Framework
-Version: 0.1.7
-Date: 2023-12-20
+Version: 0.1.8
+Date: 2024-02-07
 Authors@R: 
     c(person(given = "Matthew",
              family = "Heun",
