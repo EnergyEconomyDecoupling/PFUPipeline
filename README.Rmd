@@ -78,7 +78,7 @@ For documentation on the `PFUPipeline` package,
 see <https://EnergyEconomyDecoupling.github.io/PFUPipeline/>.
 
 
-## History
+## Acknowledgements
 
 The CL-PFU database is supported by an EPSRC
 [fellowship](https://environment.leeds.ac.uk/energy-climate-change-mitigation/dir-record/research-projects/1773/epsrc-fellowship-applying-thermodynamic-laws-to-the-energy-gdp-decoupling-problem)
