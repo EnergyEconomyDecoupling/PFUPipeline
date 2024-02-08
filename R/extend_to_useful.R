@@ -115,7 +115,7 @@ sep_eta_fu_phi_u <- function(eta_fu_phi_u_vecs,
                              keep = c(IEATools::template_cols$eta_fu, IEATools::template_cols$phi_u),
                              countries,
                              country = IEATools::iea_cols$country) {
-  keep = match.arg(keep, several.ok = FALSE)
+  keep <- match.arg(keep, several.ok = FALSE)
   out <- eta_fu_phi_u_vecs %>%
     dplyr::filter(.data[[country]] %in% countries)
   if (keep == IEATools::template_cols$eta_fu) {
@@ -130,9 +130,11 @@ sep_eta_fu_phi_u <- function(eta_fu_phi_u_vecs,
 }
 
 
-#' Move the last stage of the energy conversion chain from final stage to useful stage
+#' Move the last stage of the energy conversion chain from final stage to useful stage with details
 #'
 #' Extends the energy conversion chain from a final energy last stage to useful energy last stage.
+#' Details about the conversion from final to useful are retained via matrices
+#' **Y_fu_details** and **U_EIOU_fu_details**.
 #' The last-stage-useful energy conversion chain PSUT matrices are bound as rows at the bottom
 #' of the `psut_final` data frame,
 #' albeit with "Useful" instead of "Final" in the `Last.stage` column.
@@ -147,14 +149,14 @@ sep_eta_fu_phi_u <- function(eta_fu_phi_u_vecs,
 #' @return A data frame with energy conversion chain matrices with last stage as useful energy.
 #'
 #' @export
-move_to_useful <- function(psut_final,
-                           C_mats,
-                           eta_phi_vecs,
-                           countries,
-                           country = IEATools::iea_cols$country,
-                           year = IEATools::iea_cols$year,
-                           C_Y = IEATools::template_cols$C_Y,
-                           C_eiou = IEATools::template_cols$C_eiou) {
+move_to_useful_with_details <- function(psut_final,
+                                        C_mats,
+                                        eta_phi_vecs,
+                                        countries,
+                                        country = IEATools::iea_cols$country,
+                                        year = IEATools::iea_cols$year,
+                                        C_Y = IEATools::template_cols$C_Y,
+                                        C_eiou = IEATools::template_cols$C_eiou) {
   
   # Calculate metadata columns.
   m_cols <- C_mats %>%
@@ -172,3 +174,53 @@ move_to_useful <- function(psut_final,
     IEATools::extend_to_useful() |> 
     IEATools::stack_final_useful_df(psut_final_filtered)
 }
+
+
+#' Remove columns from the PSUTUsefulIEAWithDetails target
+#' 
+#' A simple wrapper function to assist with removing
+#' unneeded columns from the `PSUTUsefulIEAWithDetails` target.
+#'
+#' This function enables mapping over countries.
+#'
+#' @param psut_useful_iea_with_details The target from which columns should be removed.
+#' @param cols_to_remove A string vector of columns names to be removed.
+#' @param remove_final A boolean that tells whether to remove Last.stage == "Final" rows.
+#'                     Default is `FALSE`.
+#' @param countries The countries for which this function should be applied.
+#' @param country The name of the `Country` column in `psut_useful_iea_with_details` and `phi_vecs`.
+#'                Default is `IEATools::iea_cols$country`.
+#' @param year The name of the `Year` column in  `psut_useful_iea_with_details` and `phi_vecs`.
+#'             Default is `IEATools::iea_cols$year`.
+#' @param last_stage The name of the "Last.stage" column. 
+#'                   Default is `IEATools::iea_cols$last_stage`.
+#' @param final The string defining the final stage.
+#'              Default is `IEATools::all_stages$final`.
+#'
+#' @return A version of `psut_useful_iea_with_details` with `cols_to_remove` removed.
+#' 
+#' @export
+remove_cols_from_PSUTUsefulIEAWithDetails <- function(psut_useful_iea_with_details, 
+                                                      cols_to_remove,
+                                                      phi_vecs,
+                                                      remove_final = FALSE,
+                                                      countries, 
+                                                      country = IEATools::iea_cols$country, 
+                                                      year = IEATools::iea_cols$year,
+                                                      last_stage = IEATools::iea_cols$last_stage, 
+                                                      final = IEATools::all_stages$final) {
+  out <- psut_useful_iea_with_details |> 
+    dplyr::filter(.data[[country]] %in% countries) |> 
+    dplyr::select(-dplyr::any_of(cols_to_remove))
+  if (remove_final) {
+    out <- out |> 
+      dplyr::filter(.data[[last_stage]] != final)
+  }
+  return(out)
+}
+
+
+  
+  
+  
+  
