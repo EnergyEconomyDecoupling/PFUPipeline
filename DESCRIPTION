@@ -1,7 +1,7 @@
 Package: PFUPipeline
 Title: Functions and Workflows for Primary-Final-Useful Societal Exergy Analysis Within the PSUT Framework
-Version: 0.1.7
-Date: 2023-12-20
+Version: 0.1.8
+Date: 2024-02-07
 Authors@R: 
     c(person(given = "Matthew",
              family = "Heun",
@@ -23,7 +23,10 @@ Description: Functions and pipelines for primary-final-useful societal exergy an
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
+Config/testthat/edition: 3
+Config/testthat/parallel: false
+Config/testthat/start-first: 
 Imports:
     assertthat,
     dplyr,
@@ -36,8 +39,8 @@ Imports:
     MWTools,
     PFUPipelineTools,
     PFUSetup,
-    purrr,
     pwt10,
+    purrr,
     readr,
     readxl,
     Recca,
@@ -66,6 +69,5 @@ Depends:
     R (>= 2.10)
 VignetteBuilder: knitr
 LazyData: true
-Config/testthat/edition: 3
 Language: en-US
 URL: https://energyeconomydecoupling.github.io/PFUPipeline/

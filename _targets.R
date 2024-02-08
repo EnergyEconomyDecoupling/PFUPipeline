@@ -1,6 +1,9 @@
+# Make sure we library(Matrix) here to force loading now
+# rather than on-demand later.
+library(Matrix)
 library(magrittr)
-library(targets)
 library(PFUPipeline)
+library(targets)
 # targets::tar_make() to run the pipeline
 # targets::tar_make_future(workers = 8) to execute across multiple cores.
 # targets::tar_read(<<target_name>>) to view the results.
@@ -9,7 +12,7 @@ library(PFUPipeline)
 
 
 # Input data version
-version <- "v1.2"
+version <- "v1.3"
 
 # Custom parameters
 
@@ -20,6 +23,8 @@ version <- "v1.2"
 # years <- 1971:1972
 # years <- 1971:1980
 # years <- 1995
+# years <- 1995:1996
+# years <- 1995:2020
 years <- 1960:2020
 
 # Set the years to provide exiobase coefficients
